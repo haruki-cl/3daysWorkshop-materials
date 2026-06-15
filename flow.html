@@ -1,0 +1,942 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3Days ワークショップフロー — 玄米茶</title>
+<style>
+:root{
+  --bg:#faf8f2; --paper:#fffdf8; --ink:#2d2a24; --muted:#6b6453;
+  --accent:#5a7a4f; --accent-deep:#3f5a37; --gold:#c8a96a; --line:#e7e1d3;
+  --code-bg:#f3efe4; --warn-bg:#fcf3e6; --warn-bd:#e3b873;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,system-ui,sans-serif;
+  line-height:1.85; font-size:16px;
+}
+.wrap{max-width:960px; margin:0 auto; padding:56px 28px 120px;}
+article{
+  background:var(--paper); border:1px solid var(--line); border-radius:16px;
+  padding:48px 56px; box-shadow:0 8px 40px rgba(60,50,30,.06);
+}
+h1,h2,h3,h4{font-family:"Hiragino Mincho ProN","Yu Mincho",serif; line-height:1.4; color:var(--accent-deep);}
+h1{font-size:2rem; margin:0 0 .6em; padding-bottom:.5em; border-bottom:3px solid var(--gold);}
+h2{font-size:1.5rem; margin:2.4em 0 .7em; padding-left:.6em; border-left:6px solid var(--accent);}
+h3{font-size:1.2rem; margin:1.8em 0 .5em; color:var(--accent);}
+h4{font-size:1.02rem; margin:1.4em 0 .3em; color:var(--ink);}
+p{margin:.6em 0}
+a{color:var(--accent); }
+strong{color:var(--accent-deep)}
+hr{border:0; border-top:1px dashed var(--line); margin:2.4em 0;}
+ul,ol{margin:.5em 0 .9em; padding-left:1.5em}
+li{margin:.28em 0}
+li::marker{color:var(--gold)}
+code{background:var(--code-bg); padding:.12em .42em; border-radius:5px; font-size:.9em;
+  font-family:"SFMono-Regular",Menlo,Consolas,monospace; color:#7a4f2a;}
+pre{background:#2d2a24; color:#f4efe4; padding:18px 20px; border-radius:10px; overflow:auto;
+  font-size:.86rem; line-height:1.6; box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);}
+pre code{background:none; color:inherit; padding:0; font-size:.95em;}
+blockquote{
+  margin:1.1em 0; padding:.9em 1.2em; background:var(--warn-bg);
+  border-left:5px solid var(--warn-bd); border-radius:0 10px 10px 0; color:#5c4a2e;
+}
+blockquote p{margin:.35em 0}
+blockquote strong{color:#9a6b1f}
+table{border-collapse:collapse; width:100%; margin:1.1em 0; font-size:.93rem;
+  background:#fff; border:1px solid var(--line); border-radius:10px; overflow:hidden;}
+th,td{padding:10px 13px; border:1px solid var(--line); text-align:left; vertical-align:top;}
+thead th{background:var(--accent); color:#fff; font-weight:600; border-color:var(--accent);}
+tbody tr:nth-child(even){background:#faf7ef}
+.badge{display:inline-block;background:var(--gold);color:#fff;font-size:.72rem;
+  padding:.1em .6em;border-radius:99px;vertical-align:middle;margin-left:.4em;}
+.toc{background:#f5f2e8;border:1px solid var(--line);border-radius:12px;padding:18px 24px;margin:0 0 36px;}
+.toc h2{margin:.1em 0 .5em;border:0;padding:0;font-size:1.05rem;color:var(--muted);}
+.toc ul{columns:2;list-style:none;padding:0;margin:0}
+.toc a{text-decoration:none;color:var(--ink);font-size:.9rem}
+.toc a:hover{color:var(--accent)}
+.foot{text-align:center;color:var(--muted);font-size:.8rem;margin-top:30px}
+@media(max-width:640px){article{padding:30px 20px}.toc ul{columns:1}.wrap{padding:28px 12px 80px}}
+</style></head>
+<body><div class="wrap"><article>
+
+<nav class="toc"><h2>もくじ</h2><ul>
+<li><a href="#s-map">全体マップ</a></li>
+<li><a href="#s0">0. ワークショップの目的・ゴール（Day 1 冒頭）</a></li>
+<li><a href="#s-tasks">全体タスクマップ（最初にこれを丸ごと渡す）</a></li>
+<li><a href="#s05">0.5 使う技術の紹介（Day 1 午前）</a></li>
+<li><a href="#s06">0.6 Claude Code の歩き方（Claude Code がはじめての人向け）</a></li>
+<li><a href="#s07">0.7 Git の進め方（dev → main）</a></li>
+<li><a href="#s1">[1] Claude Design でサイトデザイン作成</a></li>
+<li><a href="#s2">[2] Claude Code でフロント作成</a></li>
+<li><a href="#s3">[3] Claude Code でバック作成</a></li>
+<li><a href="#s4">[4] 自動テストの実装</a></li>
+<li><a href="#s5">[5] Cloudflare にデプロイ</a></li>
+<li><a href="#s6">[6] メール機能の実装（Resend）</a></li>
+<li><a href="#s7">[7] 決済機能の実装（Stripe）</a></li>
+<li><a href="#s8">[8] ID 連携機能の実装（Clerk）</a></li>
+<li><a href="#s9">[9] 運用保守</a></li>
+<li><a href="#s10">[10] セキュリティ</a></li>
+<li><a href="#wrap">ラップアップ・発表会（Day 3 午後）</a></li>
+<li><a href="#appendix">付録: タイムテーブル目安</a></li>
+</ul></nav>
+
+<h1 id="top">3Days ワークショップフロー: AI とつくるフルスタック SaaS「玄米茶」</h1>
+
+<blockquote>
+<p><strong>このドキュメントの考え方</strong><br>
+実装はほぼ Claude がやる。だから<strong>手順で縛らない</strong>。代わりに、<strong>最初に「作るもの（タスク）」を丸ごと見せて</strong>、進め方は各自が Claude と相談して決める。資料側が固定するのは2つだけ:</p>
+<ul>
+<li><strong>各タスクの「完了条件」</strong>（これが満たせたらOK、という合格ライン）</li>
+<li><strong>AI が確実に外す「落とし穴」</strong>（Tailwind v4・wrangler の配信設定・D1/KV 作成・テスト設定 等）</li>
+</ul>
+<p>後半の「流れ」（[1]〜[5]）は <strong>推奨順序であって命令ではない</strong>。順番も粒度も変えてよい。困ったときに見る "詳細ガイド" の位置づけ。</p>
+<p>前提: 参加者は完成品コードを渡されず <strong>ゼロから自作</strong>（再現では体験価値が薄れる）。<strong>完成品も雛形も配布しない</strong>（各自のプロジェクトは別物になる前提で進める）。コードの完成形は載せない。題材「玄米茶」は例で、<strong>各自アレンジしてよい</strong>。</p>
+</blockquote>
+
+<h2 id="s-map">全体マップ</h2>
+<table>
+<thead><tr><th>Day</th><th>テーマ</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td><strong>Day 1</strong></td><td>つくる（前半）</td><td>目的・技術紹介 / [1] デザイン / [2] フロント</td></tr>
+<tr><td><strong>Day 2</strong></td><td>つなぐ・公開する</td><td>[3] バック / [4] 自動テスト / [5] デプロイ</td></tr>
+<tr><td><strong>Day 3</strong></td><td>育てる</td><td>オプション課題 [6]〜[10] / ラップアップ・発表会</td></tr>
+</tbody>
+</table>
+<ul>
+<li>Day 1〜2 が<strong>全員共通の本編</strong>。Day 2 終了時点で「公開済み + テスト付き」の状態に揃える</li>
+<li>Day 3 は<strong>選択式</strong>。進捗・興味に応じてオプションを各自選んで取り組む</li>
+</ul>
+
+<hr>
+
+<h2 id="s0">0. ワークショップの目的・ゴール（Day 1 冒頭）</h2>
+
+<h3>目的</h3>
+<ul>
+<li><strong>Claude（Design / Code）を使った開発フローを3日間で一周する</strong>
+  <ul><li>「AI にどう頼むと良いものが出てくるか」の肌感をつかむ</li></ul>
+</li>
+<li>デザイン → フロント → バック → デプロイ → テスト → 機能拡張 という<strong>実務に近い開発サイクル</strong>を、駆け足ではなく<strong>自分の手で納得しながら</strong>回す</li>
+</ul>
+
+<h3>ゴール（完了条件）</h3>
+<table>
+<thead><tr><th>#</th><th>ゴール</th><th>達成タイミング</th><th>確認方法</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>架空 SaaS の LP・マイページがブラウザで動く</td><td>Day 1</td><td>ローカルで表示確認</td></tr>
+<tr><td>2</td><td>API（ライセンス発行・問い合わせ等）が動く</td><td>Day 2</td><td>curl / 画面操作で確認</td></tr>
+<tr><td>3</td><td>Cloudflare 上に公開されている</td><td>Day 2</td><td><code>*.workers.dev</code> の URL にアクセス</td></tr>
+<tr><td>4</td><td>自動テストが通る</td><td>Day 2</td><td><code>npm test</code> がグリーン</td></tr>
+<tr><td>5</td><td>オプション機能を1つ以上追加し、発表する</td><td>Day 3</td><td>最終発表会</td></tr>
+</tbody>
+</table>
+
+<h3>題材: 架空の SaaS「玄米茶」</h3>
+<ul>
+<li>ライセンスキー販売型のサブスク SaaS という想定</li>
+<li>ページ構成: LP（<code>/</code>）・問い合わせ（<code>/contact</code>）・マイページ（<code>/mypage</code>）・購入完了（<code>/success</code>）</li>
+<li>「題材は何でもいい。流れを体験するのが目的」と最初に伝える（3日間あるので、<strong>題材アレンジは歓迎</strong>。ただし Day 2 までは構成を変えすぎないよう注意喚起）</li>
+</ul>
+
+<h3>必須機能（作るものの最低ライン・Day 2 までに）</h3>
+<blockquote>
+<p><strong>最初にこの完成像を提示する。</strong>「何を作ればゴールか」が見えていないと迷うため。題材は変えてよいが、<strong>この5機能に相当するもの</strong>は全員が作る。</p>
+</blockquote>
+<table>
+<thead><tr><th>#</th><th>機能</th><th>中身</th><th>対応ページ</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>LP</strong></td><td>サービス紹介のランディングページ</td><td><code>/</code></td></tr>
+<tr><td>2</td><td><strong>価格表示</strong></td><td>料金プラン（月額／年額など）を見せる</td><td><code>/</code>（または専用）</td></tr>
+<tr><td>3</td><td><strong>お問い合わせフォーム</strong></td><td>入力 → 送信 → 受付（<code>POST /api/contact</code>）</td><td><code>/contact</code></td></tr>
+<tr><td>4</td><td><strong>マイページ</strong></td><td>ログインユーザーの情報・ライセンス表示</td><td><code>/mypage</code></td></tr>
+<tr><td>5</td><td><strong>ライセンスキーの配布</strong></td><td>購入者にキーを発行・表示する。<strong>Day 2 では自分たちで発行する簡易版</strong>（手動 or 固定ロジック）でOK</td><td><code>/success</code> 等</td></tr>
+</tbody>
+</table>
+<ul>
+<li>5 の「Stripe 購入 → Webhook で自動発行」は <strong>Day 3 オプション [7]</strong> に回す。Day 2 の core では<strong>自前でキーを作って配る</strong>ところまで（＝決済なしで配布の形だけ通す）。</li>
+<li>認証（4 のログイン）も Day 2 は<strong>モック認証</strong>でよい（本物の Clerk は Day 3 [8]）。</li>
+</ul>
+
+<hr>
+
+<h2 id="s-tasks">全体タスクマップ（最初にこれを丸ごと渡す）</h2>
+<blockquote>
+<p><strong>使い方</strong>: ワークショップ開始時にこの一覧を提示する。参加者は「この成果物を作る」というゴールだけ持って、<strong>進め方は Claude と相談して決める</strong>。各タスクで固定するのは <strong>成果物 / 完了条件（合格ライン）/ AI が外す落とし穴</strong> の3点だけ。[1]〜[10] の番号は後半の詳細ガイドの番号と対応する（＝この地図のどこを今やっているかが分かる）。</p>
+</blockquote>
+
+<h3>Core（Day 1〜2・全員必達）</h3>
+
+<h4>[1] デザインの方向性を決める（Claude Design）</h4>
+<ul>
+<li>成果物: 全画面分の方向性が決まった<strong>デザイン（Claude Design の Project）</strong>。zip でエクスポートして次タスクに渡せる</li>
+<li>完了条件: 使いたい機能すべてにたどり着ける画面・導線が揃い、デザインを zip で書き出せる</li>
+<li>落とし穴: ピクセル完璧を狙わない。見た目の細部は Claude Design 任せ／Tweaks で調整、指定するのは「中身（機能・売り）」</li>
+</ul>
+
+<h4>[2] フロント（LP・価格表示・各ページ）</h4>
+<ul>
+<li>成果物: <code>/</code>(LP＋価格) <code>/contact</code> <code>/mypage</code> <code>/success</code> が SPA で動く（Vite + React + TS + Tailwind v4）</li>
+<li>完了条件: <code>localhost:5173</code> で表示崩れなし／React Router で4ページ遷移できる</li>
+<li>落とし穴: <strong>Tailwind v4 は Vite プラグイン方式</strong>（<code>@tailwindcss/vite</code>・<code>@import "tailwindcss"</code>）。v3 流儀だと効かない</li>
+</ul>
+
+<h4>[3] バック（API＋ライセンス発行）</h4>
+<ul>
+<li>成果物: <code>POST /api/contact</code>／<code>GET /api/me</code>（モック認証）／<code>POST /api/verify-license</code>／<strong>購入者へキーを自前発行</strong></li>
+<li>完了条件（例・自分の契約に読み替え）: <code>/</code>→200／<code>/mypage</code>→200(SPA)／<code>/api/me</code> 未認証→401／<code>/api/contact</code> 空→400／フロント結合で動く</li>
+<li>落とし穴: ① <strong>D1/KV を先に <code>wrangler … create</code> して id を <code>wrangler.toml</code> に貼る</strong> ② <code>[assets]</code> は <code>dist</code> ＋ <code>not_found_handling="single-page-application"</code> ③ 秘密は <code>.dev.vars</code>（Read 禁止設定も）</li>
+</ul>
+
+<h4>[4] 自動テスト</h4>
+<ul>
+<li>成果物: <code>npm test</code> がグリーン</li>
+<li>完了条件: 純粋関数の単体テスト1つ以上 ＋ API 正常系 ＋ 認証境界の異常系（401）</li>
+<li>落とし穴: <strong><code>@cloudflare/vitest-pool-workers</code> の <code>defineWorkersConfig</code></strong>（素の vitest 設定では動かない）／外部 fetch は全部モック</li>
+</ul>
+
+<h4>[5] デプロイ（公開）</h4>
+<ul>
+<li>成果物: <code>https://&lt;name&gt;.workers.dev</code> で公開</li>
+<li>完了条件: 本番 URL で LP 表示／<code>/mypage</code> が 404 にならない</li>
+<li>落とし穴: <strong>リモート D1 マイグレーション忘れ</strong>／ビルド失敗で deploy が止まる／初回は workers.dev サブドメイン有効化</li>
+</ul>
+
+<h3>Option（Day 3・選択式・1つ以上）</h3>
+<table>
+<thead><tr><th>#</th><th>タスク</th><th>成果物 / 完了条件</th></tr></thead>
+<tbody>
+<tr><td><strong>[6]</strong></td><td>メール（Resend）</td><td>問い合わせ/ライセンス送付メール。自分宛に届く ＋ 連投で 429</td></tr>
+<tr><td><strong>[7]</strong></td><td>決済（Stripe）</td><td>Stripe Checkout → Webhook で自動発行。テストカードでマイページにキー表示</td></tr>
+<tr><td><strong>[8]</strong></td><td>ID 連携（Clerk）</td><td>Clerk。未ログインで <code>/mypage</code> 不可・<code>/api/me</code> 認証必須</td></tr>
+<tr><td><strong>[9]</strong></td><td>運用保守</td><td><code>wrangler tail</code>／KV レート制限が 429 を返すテスト</td></tr>
+<tr><td><strong>[10]</strong></td><td>セキュリティ</td><td>認証境界・IDOR・機密マスクの点検。Claude Code のセキュリティレビュー＋SonarQube。問題1つ修正＋回帰テスト追加</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p>以降の [1]〜[5] は、上のタスクを<strong>こなすときの推奨フロー＋落とし穴の詳細</strong>。<strong>順番どおりにやる必要はない</strong>。詰まったとき・確認したいときに開く詳細ガイド。</p>
+</blockquote>
+
+<hr>
+
+<h2 id="s05">0.5 使う技術の紹介（Day 1 午前）</h2>
+<blockquote>
+<p>資料では1技術1スライド程度。「なぜこれを選ぶか」を一言添える。3日間あるので、Day 1 はここに時間をかけてよい（ライブデモ込みで）。</p>
+</blockquote>
+<table>
+<thead><tr><th>カテゴリ</th><th>技術</th><th>選定理由（一言）</th></tr></thead>
+<tbody>
+<tr><td>AI（デザイン）</td><td>Claude Design</td><td>プロンプトから UI デザインを生成</td></tr>
+<tr><td>AI（実装）</td><td>Claude Code</td><td>ターミナルで動くコーディングエージェント</td></tr>
+<tr><td>フロント</td><td>Vite + React + TypeScript</td><td>デファクト。AI が一番得意なスタック</td></tr>
+<tr><td>スタイル</td><td>Tailwind CSS v4 + shadcn/ui</td><td>デザインの再現がしやすい</td></tr>
+<tr><td>バック</td><td>Hono (TypeScript)</td><td>軽量・Workers と相性抜群</td></tr>
+<tr><td>実行基盤</td><td>Cloudflare Workers</td><td>無料枠で本番公開まで行ける</td></tr>
+<tr><td>DB / KV</td><td>Cloudflare D1 / KV</td><td>Workers にビルトイン。セットアップ最小</td></tr>
+<tr><td>テスト</td><td>Vitest（+ vitest-pool-workers）</td><td>フロント・バックで統一できる</td></tr>
+<tr><td>（Day 3）</td><td>Resend / Stripe / Clerk / SonarQube</td><td>オプション課題で登場、と予告だけ</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Claude Design のアクセス方法</strong>: <strong>claude.ai にブラウザでログインして使う</strong>デザイン生成機能。Claude Code と同じ Claude アカウントで利用できる（追加のインストールは不要）。アカウントまわりの事前準備は別途案内する。</p>
+</blockquote>
+
+<h3>事前準備（参加者に事前周知）</h3>
+<blockquote>
+<p><strong>電話番号が必要なツールは無し</strong>（参加者に安心材料として伝えてよい）。</p>
+</blockquote>
+<h4>① 事前に作っておくアカウント</h4>
+<ul>
+<li><strong>GitHub</strong> — リポジトリ取得・SonarQube のログインにも使う（当日のアカウント作成は時間を食うので必ず事前に）</li>
+</ul>
+<h4>② 事前にインストールしておくツール</h4>
+<ul>
+<li><strong>Claude Code</strong> — 本ワークショップの主役。起動時にサインインが要るので、<strong>インストール＋ログインまで</strong>済ませておく
+  <ul><li>余裕があれば <strong>security-guidance プラグイン</strong>（<code>/plugin install security-guidance@claude-plugins-official</code>）も入れておくと、Day 1 のコーディングから AI のコードを自動でセキュリティ点検してくれる（詳細は 0.6）。<code>python3</code> が PATH に通っていることが前提</li></ul>
+</li>
+<li><strong>Stripe CLI</strong> — 決済課題 [7] のローカル Webhook 検証で使う（<code>stripe listen</code>）</li>
+<li>（エンジニア前提のベースライン）<strong>Node.js 18+（できれば 20+ LTS）</strong> / <strong>git</strong></li>
+</ul>
+<h4>③ 当日それぞれ取得するアカウント（無料・電話番号不要）</h4>
+<ul>
+<li><strong>Cloudflare</strong> — デプロイ先 [5]。取得後 <code>wrangler login</code> する（wrangler はプロジェクトの依存に含まれるので別途インストール不要）</li>
+<li><strong>Resend</strong> — メール課題 [6]</li>
+<li><strong>Stripe</strong> — 決済課題 [7]</li>
+<li><strong>Clerk</strong> — 認証課題 [8]</li>
+<li><strong>SonarQube（SonarCloud）</strong> — セキュリティ課題 [10]。<strong>GitHub アカウントでログイン</strong>できる</li>
+</ul>
+<blockquote>
+<p>Resend / Stripe / Clerk / SonarQube は Day 3 のオプション課題用。<strong>やる課題の分だけ</strong>当日取得すればよい。</p>
+</blockquote>
+
+<h3>環境確認タイム（Day 1 で必ず取る）</h3>
+<ul>
+<li><code>node -v</code>（<strong>18 以上、できれば 20+ LTS</strong>）/ <code>git --version</code> / <code>claude --version</code> を全員で確認</li>
+<li><strong>Claude Code がログイン済み</strong>で起動できるか（<code>claude</code> を叩いて会話できる状態か）</li>
+<li><strong>Claude Design</strong> に claude.ai でアクセスできるか（ブラウザでログイン確認）</li>
+<li>GitHub からリポジトリを clone できるか</li>
+<li>Cloudflare アカウント取得済みの人は <code>wrangler login</code> → <code>wrangler whoami</code> で<strong>想定アカウント</strong>かを確認（複数アカウント持ちは特に注意）</li>
+<li><code>stripe --version</code>（[7] をやる人）</li>
+<li>ここで詰まる人を救済してから先へ進む（3日間の安定運行のための投資）</li>
+<li>補足: wrangler 実行時に出る <code>out-of-date</code> 警告は<strong>無視して進めてOK</strong>（動作に支障なし）</li>
+</ul>
+
+<hr>
+
+<h2 id="s06">0.6 Claude Code の歩き方（Claude Code がはじめての人向け）</h2>
+<blockquote>
+<p>対象は「エンジニアで、<strong>何かしらの AI コーディングツール（Cursor 等）は使ったことがあるが、Claude Code は初めて〜浅い</strong>」層。コードや git は分かる前提で、<strong>Claude Code（CLI）の操縦方法だけ</strong>を最初に揃える。[2]以降はずっとこのループを回す。</p>
+</blockquote>
+
+<h3>基本のループ</h3>
+<ol>
+<li>プロジェクトのディレクトリで <code>claude</code> と打って起動</li>
+<li><strong>日本語で依頼する</strong>（例:「このページにお問い合わせフォームを足して」）</li>
+<li>Claude がファイル編集やコマンド実行を<strong>提案</strong> → 内容を見て <strong>承認 / 拒否</strong></li>
+<li>結果を見て、気になる所を会話で直す（2〜4 を繰り返す）</li>
+</ol>
+
+<h3>最初に知っておくと事故らない8つ</h3>
+<ul>
+<li><strong>権限プロンプト</strong>: ファイル編集やコマンド実行のたびに許可を聞かれる。<code>rm</code> や本番への操作など<strong>破壊的なものは中身を読んでから承認</strong>。怪しければ拒否してOK</li>
+<li><strong>軌道修正は遠慮なく</strong>: 違う方向に進み出したら <code>Esc</code> で止めて「待って、こうして」と割り込む</li>
+<li><strong>コンテキストを渡すと精度が上がる</strong>: 関係するファイル名や、<strong>エラーは全文そのまま貼る</strong></li>
+<li><strong>詰まったらエラーを貼って「直して」</strong>: それでもループするなら一度 git で戻す</li>
+<li><strong><code>/clear</code> で話題をリセット</strong>: 話が長くなったり脱線したら新しい会話で仕切り直す</li>
+<li><strong>大きい変更は計画から</strong>: 「まず計画を立てて」と頼み、方針に納得してから実装させる</li>
+<li><strong>出力は読む</strong>: AI のコードを<strong>読まずに承認しない</strong>。理解できない差分は説明させる</li>
+<li><strong>秘密情報は貼らない</strong>: APIキー・トークンを会話に貼らない（後述の <code>.dev.vars</code> を使う）</li>
+</ul>
+
+<h3>最初に1回やる: 秘密を Claude に読ませない設定</h3>
+<blockquote>
+<p>よくある勘違い: <strong>「<code>.claudeignore</code> を作る」→ Claude Code に <code>.claudeignore</code> は無い</strong>。正しくは <code>.claude/settings.json</code> の <strong><code>permissions.deny</code></strong> で「読み取り禁止」を宣言する。</p>
+</blockquote>
+<p>プロジェクト直下に <code>.claude/settings.json</code> を作り、秘密ファイルへの <code>Read</code> を拒否しておく:</p>
+<pre><code>{
+  "respectGitignore": true,
+  "permissions": {
+    "deny": [
+      "Read(./.dev.vars)",
+      "Read(./**/.dev.vars)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ]
+  }
+}</code></pre>
+<ul>
+<li><code>deny</code> は最優先。これで万一「<code>.dev.vars</code> 読んで」と頼んでも <strong>Claude は読めない＝事故防止</strong></li>
+<li><code>respectGitignore</code>（既定 <code>true</code>）により、<code>.gitignore</code> 済みの <code>node_modules</code> / <code>dist</code> は <code>@</code> のファイル選択に出てこない＝<strong>コンテキストも汚れにくい</strong></li>
+<li>秘密ファイル（<code>.dev.vars</code>）が実際に登場するのは [3] バックから。<strong>設定だけ先に置いておく</strong>のがコツ</li>
+</ul>
+
+<h3>最初に1回やる: security-guidance を入れておく（AI のコードを自動でセキュリティ点検）</h3>
+<blockquote>
+<p><strong>security-guidance とは</strong>: Claude が<strong>生成したコードを自動でセキュリティレビューしてくれる公式プラグイン</strong>（<code>security-guidance</code>）。インジェクション・XSS・SSRF・ハードコードされた秘密・IDOR・認可バイパス・安全でないデシリアライズ・パストラバーサルなど <strong>25 種類以上の脆弱性クラス</strong>を見てくれる。「AI が書いたコードを AI が点検する」を<strong>バックグラウンドで勝手にやってくれる</strong>のがポイント。</p>
+</blockquote>
+<p>3 層構造で動く（参加者は中身を覚えなくてよい。「勝手に守ってくれる」と理解できれば十分）:</p>
+<ol>
+<li><strong>パターン警告</strong> — <code>Edit</code>/<code>Write</code> のたびに、既知の危険パターン（生の <code>innerHTML</code>・秘密のハードコード等）を正規表現で<strong>その場で警告</strong></li>
+<li><strong>差分の LLM レビュー</strong> — Claude が応答を返す直前に<strong>変更差分を別の LLM が点検</strong>し、重大な指摘を Claude にフィードバック → <strong>こちらが見る前に直してくれる</strong></li>
+<li><strong>コミット時のエージェントレビュー</strong> — <code>git commit</code> のとき、関連ファイルを <code>Read</code>/<code>Grep</code> でたどって<strong>複数ファイルにまたがる脆弱性</strong>（IDOR・認可バイパス・横断的な SSRF 等）まで検出</li>
+</ol>
+<p>これで<strong>何ができるようになるか</strong>:</p>
+<ul>
+<li>AI が書いたコードの脆弱性を、<strong>書いた直後・コミット時に自動で気づける</strong>（人間のレビューの取りこぼしを補う）</li>
+<li>玄米茶では特に [3] バックの <code>GET /api/me</code>（モック認証）や <code>verify-license</code>、Day 3 [7] の決済まわりで<strong>IDOR・認可バイパス</strong>が出やすい。security-guidance がここを継続的に見張ってくれる</li>
+<li>Day 3 [10] セキュリティ課題の<strong>下地</strong>になる（手動の <code>/security-review</code> は「狙って点検する」、security-guidance は「常時バックグラウンドで点検する」——役割が違うので<strong>併用が効く</strong>）</li>
+</ul>
+<p>導入（事前準備の段階で1回やっておくと、Day 1 のコーディングから恩恵を受けられる）:</p>
+<pre><code>/plugin install security-guidance@claude-plugins-official</code></pre>
+<ul>
+<li><strong>前提</strong>: Claude Code CLI が新しめ（<code>claude --version</code> で確認）／<code>python3</code> が PATH に通っていること</li>
+<li>うるさく感じたら環境変数 <code>SECURITY_GUIDANCE_DISABLE=1</code> で全体オフにできる（<strong>キルスイッチ</strong>）</li>
+<li>プロジェクト独自のルールは <code>&lt;project&gt;/.claude/claude-security-guidance.md</code> に書いて差分レビューに効かせられる（任意）</li>
+</ul>
+
+<h3>心構え（3日間ずっと効く）</h3>
+<ul>
+<li><strong>1発で完璧を狙わない</strong>。雑に頼んで会話で詰めるのが速い</li>
+<li><strong>「仕様を .md に書かせてから実装させる」</strong>と精度が段違い（手順や API 契約・テスト観点をまず .md 化してから渡す）</li>
+<li>うまくいったプロンプトは覚えておく（最終発表で「効いた工夫」として共有する）</li>
+</ul>
+
+<hr>
+
+<h2 id="s07">0.7 Git の進め方（dev → main）</h2>
+<blockquote>
+<p>リポジトリの置き場所は各自で決めてよいが、<strong>SonarQube に解析させる単位を分けたいので「専用の別リポジトリ」を用意するのが推奨</strong>。</p>
+</blockquote>
+<ul>
+<li>最初に <strong><code>dev</code> ブランチを切り、作業はすべて <code>dev</code></strong> で進める</li>
+<li>区切りのいいところで<strong>こまめに commit / push</strong>（環境が壊れても作業を失わないための保険）</li>
+<li><strong>各日のクロージングで「dev に push 済みか」を必ず確認</strong>（翌日のキャッチアップが楽になる）</li>
+<li>完成したら <strong><code>dev</code> → <code>main</code> にマージ</strong>（<code>main</code> ＝ 公開・解析対象の安定版）</li>
+</ul>
+<pre><code>git switch -c dev      # 最初に dev を切る
+# … dev で実装・こまめに commit / push …
+git switch main
+git merge dev          # 完成したら main へ</code></pre>
+<ul>
+<li>SonarQube は <code>main</code>（または PR）を解析する想定（[10] セキュリティで使う）</li>
+<li><strong>秘密ファイル（<code>.dev.vars</code> 等）は <code>.gitignore</code> で必ず除外</strong>してコミットしない</li>
+</ul>
+
+<hr>
+
+<h1 id="guide">詳細ガイド（推奨フロー・縛らない）</h1>
+<blockquote>
+<p>ここから先（[1]〜[5]）は <strong>「全体タスクマップ」をこなすための推奨手順と落とし穴の詳細</strong>。命令ではないので、順番・粒度は各自で変えてよい。タイムテーブルや進行台本としても使える。</p>
+</blockquote>
+
+<h1 id="day1">Day 1: つくる（前半）</h1>
+
+<h2 id="s1">[1] Claude Design でサイトデザイン作成</h2>
+<p><strong>ゴール</strong>: LP の雰囲気・カラー・セクション構成の方向性を決める（ピクセルパーフェクトなカンプは作らない）</p>
+<blockquote>
+<p><strong>アクセス</strong>: Claude Design は <strong>claude.ai にブラウザでログイン</strong>して使う（Claude Code と同じアカウント）。</p>
+</blockquote>
+
+<h3>流れ</h3>
+<ol>
+<li>Claude Design に「<strong>何を・誰に向けて作るか／何を売るか／欲しい機能</strong>」を伝えてデザインを生成
+  <ul>
+  <li>Claude Design は、トーンや配色など方向性を決める質問を<strong>自分から投げ返してくれる</strong>。だから最初から「和モダンで緑系で…」と細かく指定する必要はない。むしろ<strong>サービスの中身（何のサービスか・売りたいもの・載せたい機能）</strong>を伝える方が効く</li>
+  <li>例:「日本茶サブスク SaaS『玄米茶』の LP。月額／年額プランを売りたい。特徴・料金・FAQ・問い合わせへの導線がほしい」程度でOK</li>
+  <li><strong>1回のプロンプトでデザイン案を3つ</strong>出してくれる</li>
+  </ul>
+</li>
+<li><strong>出てきた3案を見比べて1つ選ぶ</strong>
+  <ul>
+  <li>最初の1案でなんとなく進めず、<strong>3案を見比べてから決める</strong>（選択肢を見てから選ぶのが AI 活用のコツ）</li>
+  <li>演習: どれを・なぜ選んだかを隣の人と見せ合う</li>
+  </ul>
+</li>
+<li><strong>トーン・配色・アクセントは画面上部タブの「Tweaks」から後で調整できる</strong>（プロンプトに盛り込まなくても、触って変えられる）</li>
+<li><strong>時間短縮のコツ: 最初は他ページを盛らず LP だけで3案 → 1つ選ぶ → そのあとに他ページ（マイページ・問い合わせ・サクセス）を追加生成する</strong>
+  <ul><li>選んだデザインシステムが流用されるので、追加ページの生成は速い</li></ul>
+</li>
+<li>仕上がったデザイン（UX 案を含む）は <strong>Claude Design の Project を zip でエクスポート</strong>しておく
+  <ul><li>→ これを [2] でそのまま Claude Code に渡す。<strong>色やフォントを別途テキストで言語化する必要はない</strong>（デザインそのものを渡す方が早くて正確）</li></ul>
+</li>
+</ol>
+
+<h3>ポイント（資料で強調すること）</h3>
+<ul>
+<li><strong>「それっぽいものが作れた」で十分</strong>。完璧より方向性の確定が目的</li>
+<li><strong>指定するのは「中身（機能・売り）」</strong>。見た目の細部は Claude Design に任せる／後から Tweaks で触る</li>
+<li><strong>いきなり1案に飛びつかない</strong>。デフォで出る3案を見比べて選ぶ</li>
+<li><strong>言語化テキストを書くより、デザイン Project（zip）を丸ごと渡す</strong>のが [2] への一番の橋渡し</li>
+</ul>
+
+<h3>✅ 完了の定義（これが満たせたら [2] へ）</h3>
+<ul>
+<li>必要な<strong>全画面</strong>（LP・マイページ・問い合わせ・サクセス相当）の方向性が決まっている</li>
+<li><strong>「使いたい機能すべてにたどり着ける」導線・要素</strong>（ページ・ボタン・リンク）が画面上に揃っている</li>
+<li>デザインを <strong>zip でエクスポートでき、[2] にそのまま渡せる</strong>状態になっている</li>
+</ul>
+
+<hr>
+
+<h2 id="s2">[2] Claude Code でフロント作成</h2>
+<p><strong>ゴール</strong>: デザイン通りの SPA（全画面）がローカル（<code>localhost:5173</code>）で動く（Day 1 終了時の到達点）</p>
+<blockquote>
+<p><strong>大事な前提：フロントとバックは「別プロジェクト」として分ける</strong><br>
+フロントは<strong>フロント専用のディレクトリ</strong>（例 <code>genmaicha_front/</code>）で作る。明日のバックは<strong>別ディレクトリ</strong>（例 <code>genmaicha_back/</code>）で作る。役割（画面 / API・DB）もビルド・デプロイの単位も違うから分ける——これは実務でも基本の考え方。（最終的に配信は Worker 一本にまとめるが、<strong>ソースは分けたまま</strong>：[3]手順6）</p>
+</blockquote>
+
+<h3>流れ</h3>
+<ol>
+<li>フロント専用ディレクトリにプロジェクト雛形を Claude Code に作らせる
+  <ul><li>「Vite + React + TS + Tailwind v4 + shadcn/ui で SPA を作って。ページは <code>/</code> <code>/contact</code> <code>/mypage</code> <code>/success</code>、React Router で」</li></ul>
+</li>
+<li>[1] でエクスポートした <strong>Claude Design の Project（zip）を渡して</strong>「このデザインで実装して」と頼む
+  <ul><li>言語化テキストではなく<strong>デザインそのもの</strong>を渡す。色・フォント・余白の指定はそこから AI が拾う</li></ul>
+</li>
+<li><strong>LP だけでなく全画面（<code>/contact</code> <code>/mypage</code> <code>/success</code>）まで実装させる</strong>
+  <ul><li>この段階では <strong>API がまだ無いので、各画面はモックデータで動かす</strong>（例: マイページはダミーのライセンス情報を表示）。明日 [3] でこのモックを実 API 呼び出しに差し替える</li></ul>
+</li>
+<li><code>npm run dev</code> で確認 → HMR で「AI に直させる → 即見る」を会話で繰り返す</li>
+</ol>
+<blockquote>
+<p>共通パーツ（ナビ・フッター）の切り出しは<strong>AI が自然にやることが多い</strong>ので、こちらから細かく指示しなくてよい。気になったら「共通化して」と頼む程度でOK。</p>
+</blockquote>
+
+<h3>ポイント</h3>
+<ul>
+<li><strong>API はまだ無い</strong>。この段階では<strong>モックデータで画面が動く</strong>状態を作る、と割り切る</li>
+<li>shadcn/ui の追加は <code>npx shadcn@latest add &lt;component&gt;</code>（Claude Code が勝手にやるのを観察するのも面白い）</li>
+<li>HMR（保存即反映）で「AI に直させる → 即見る」のループを体感してもらう</li>
+</ul>
+
+<h3>⚠️ ハマりどころ: Tailwind CSS v4</h3>
+<p>v4 は v3 から設定方法が<strong>大きく変わっている</strong>。AI が古い v3 の流儀で書くと動かないので注意：</p>
+<ul>
+<li><strong>PostCSS / <code>tailwind.config.js</code> は使わない</strong>。代わりに <strong>Vite プラグイン方式</strong>
+  <ul>
+  <li><code>vite.config.ts</code> に <code>import tailwindcss from "@tailwindcss/vite"</code> を入れ、<code>plugins: [react(), tailwindcss()]</code></li>
+  <li>CSS の先頭は <code>@import "tailwindcss";</code>（v3 の <code>@tailwind base/components/utilities</code> ではない）</li>
+  </ul>
+</li>
+<li>テーマ（色）は CSS 変数 + <code>@theme</code> で定義する。<code>src/index.css</code> の例:
+<pre><code>@import "tailwindcss";
+@theme {
+  --color-bg: #faf8f2;
+  --color-accent: #5a7a4f;   /* [1] で決めた色をここに */
+}</code></pre>
+</li>
+<li>「Tailwind が効かない」と感じたら、まずこの v3/v4 混在を疑う</li>
+</ul>
+<p><code>vite.config.ts</code> の要点（これも Claude に作らせてよい。<code>/api</code> プロキシは [3] への伏線）:</p>
+<pre><code>import { defineConfig } from "vite"
+import react from "@vitejs/plugin-react"
+import tailwindcss from "@tailwindcss/vite"
+import path from "node:path"
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: { alias: { "@": path.resolve(__dirname, "./src") } },
+  server: { proxy: { "/api": "http://localhost:8787", "/webhook": "http://localhost:8787" } },
+})</code></pre>
+<blockquote>
+<p><strong>なぜプロキシするのか</strong>: 開発モードはフロント(:5173)とAPI(:8787)がオリジン違いになり、直接 fetch すると <strong>CORS で弾かれる</strong>。<code>/api</code> を :8787 に<strong>プロキシ＝同一オリジン扱い</strong>にして回避する。本番は Worker 一本で配信する（[3]手順6）ので最初から同一オリジン＝CORS の悩みが消える。</p>
+</blockquote>
+
+<h3>✅ 完了の定義（Day 1 の到達点）</h3>
+<ul>
+<li><code>npm run dev</code> で <code>http://localhost:5173</code> を開くと <strong>LP が崩れずに表示される</strong>（Tailwind が効いている）</li>
+<li><code>/</code> <code>/contact</code> <code>/mypage</code> <code>/success</code> の<strong>全画面が実装され</strong>、React Router で<strong>遷移できる</strong>（データは API 前なのでモック）</li>
+<li>デザイン [1] の方向性が画面に反映されている</li>
+</ul>
+
+<h3>Day 1 クロージング</h3>
+<ul>
+<li>各自の LP をスクリーンで何人かに見せてもらう（5分）</li>
+<li>「明日はこれに API をつないで世界に公開します」と予告</li>
+<li><strong>dev に push できているか全員で確認</strong>（環境が壊れても作業を失わないように。※完成品・雛形は配布しない方針なので、各自の保全が頼り）</li>
+</ul>
+
+<hr>
+
+<h1 id="day2">Day 2: つなぐ・公開する</h1>
+
+<h2 id="s3">[3] Claude Code でバック作成</h2>
+<p><strong>ゴール</strong>: フロントと API がつながり、ローカルで一通りの機能が動く</p>
+<blockquote>
+<p><strong>大事な前提：バックはフロントとは別ディレクトリ（別プロジェクト）で作る</strong><br>
+[2] のフロント（<code>genmaicha_front/</code>）とは別に、バックは <code>genmaicha_back/</code> という<strong>別ディレクトリ</strong>で作る。「画面を出す係（フロント）」と「API・DB の係（バック）」を分けるのが基本。最終的に配信は Worker 一本にまとめる（手順6）が、<strong>ソースは分けたまま</strong>。</p>
+</blockquote>
+
+<h3>事前に: Cloudflare にログインする</h3>
+<p>バックはこの先 Cloudflare 上の資源（DB など）を作る・触るので、<strong>最初に CLI でログイン</strong>しておく:</p>
+<pre><code>wrangler login     # ブラウザが開く → Cloudflare 上で「許可」する
+wrangler whoami    # ログインできたか／想定アカウントかを確認</code></pre>
+<ul>
+<li>会社用・個人用など<strong>複数アカウントを持っている人は <code>whoami</code> で取り違えていないか必ず確認</strong>（別アカウントに資源を作る事故を防ぐ）</li>
+<li>wrangler はプロジェクトの依存に含まれるので別途インストール不要（<code>npx wrangler …</code> でも動く）</li>
+</ul>
+
+<h3>流れ</h3>
+<ol>
+<li>Hono + Cloudflare Workers のプロジェクトを Claude Code に作らせる（<code>genmaicha_back/</code>）
+  <ul><li>併せて <strong><code>.gitignore</code> も作らせる</strong>（<code>node_modules</code> / <code>dist</code> / <code>.dev.vars</code> などを除外）。秘密ファイルを誤ってコミットしないための保険</li></ul>
+</li>
+<li><strong>クラウド資源（DB・KV）を先に作る</strong>
+  <ul>
+  <li><strong>何をしている？</strong> → アプリが使う「データの保存場所」を Cloudflare 側に用意している
+    <ul>
+    <li><strong>D1</strong> … Cloudflare の SQLite データベース。問い合わせ・ライセンスなどを保存する</li>
+    <li><strong>KV</strong> … キー：値の簡易ストア。レート制限のカウンタなどに使う</li>
+    </ul>
+  </li>
+  <li>これを先に作らないと、後のマイグレーションもデプロイも<strong>「保存場所が無い」で失敗する</strong>ので最初にやる
+<pre><code>cd genmaicha_back
+wrangler d1 create genmaicha-demo     # → database_id が出力される
+wrangler kv namespace create KV       # → id が出力される</code></pre>
+  </li>
+  <li>出力された id は <strong><code>wrangler.toml</code>（Worker の設定ファイル）に書く</strong>。このファイル自体は Claude Code に作らせてよい</li>
+  <li>大事なのは中身を丸暗記することではなく、<strong>「アプリと、いま作った DB / KV / フロント配信設定を結びつける設定ファイル」だと理解すること</strong>。特に効いてくるのは2つ（意味だけ押さえる）:
+    <ul>
+    <li>フロントの <code>dist/</code> を配信する設定（<code>[assets]</code>）</li>
+    <li>未知パスを <code>index.html</code> に返す <strong>SPA フォールバック</strong>設定（無いと <code>/mypage</code> 直アクセスが 404）</li>
+    </ul>
+  </li>
+  </ul>
+</li>
+<li><strong>API をまとめて実装させる</strong>
+  <ul>
+  <li>必要な機能を<strong>日本語でまとめて伝え、Claude にいっぺんに実装させてよい</strong>（Opus なら1本ずつ刻む必要はない）。API の形（パス・入出力）の設計も AI に任せてよい</li>
+  <li>この題材で要る機能（例。日本語で伝える）:
+    <ul>
+    <li>問い合わせを受け付けて保存する（同一 IP からの連投はクールダウンして弾く → [9] で深掘り）</li>
+    <li>ログイン中ユーザーの情報を返す。<strong>ただしこの場面（Day 2）はモック認証でよい</strong>（リクエストヘッダのメールを信頼して返すだけ。本物の Clerk は Day 3 [8]）。あとで認証だけ差し替えられる作りにしておくと教材として良い</li>
+    <li>ライセンスキーを検証する</li>
+    </ul>
+  </li>
+  <li><strong>保存するデータの中身だけ先に決めておく</strong>と AI が迷わない（例: 問い合わせ＝名前／メール／本文、ライセンス＝キー／メール／プラン／発行日時）。<strong>テーブル定義（SQL）は AI に書かせる</strong></li>
+  </ul>
+</li>
+<li><strong>ローカル用の DB を用意する（マイグレーション）</strong>
+  <blockquote>
+  <p>ここで一度 <strong>「ローカル」と「クラウド（本番）」の違い</strong>を押さえる。ここが曖昧だと「今どっちを触ってる？」になりやすい:</p>
+  <ul>
+  <li>開発中は<strong>手元の PC の中だけにあるローカルの D1</strong>（<code>--local</code>）を使う。壊しても本番に影響しない</li>
+  <li>本番（Cloudflare 上の D1）は<strong>別物</strong>で、[5] デプロイのときに <code>--remote</code> で改めてマイグレーションする</li>
+  <li>つまり手順2で「箱（DB）は Cloudflare に作った」が、<strong>中のテーブルはローカル用・本番用で別々に作る</strong></li>
+  </ul>
+  </blockquote>
+<pre><code>npm run db:migrate:local    # 手元(ローカル)の D1 にテーブルを作る</code></pre>
+</li>
+<li>フロントの<strong>モック表示を、実 API 呼び出しに差し替え</strong>させる</li>
+<li><strong>配信を一本化</strong>（本番の形にする）
+  <ul>
+  <li>フロントを <code>dist/</code> にビルドし、Worker から配信する（未知パスは SPA フォールバックで <code>index.html</code>）</li>
+  <li>これで<strong>フロントと API が同一オリジン</strong>になる＝本番では CORS 設定が要らない</li>
+  <li>ソースは分けたまま、<strong>配信だけ1つの Worker にまとまる</strong>イメージ</li>
+  </ul>
+</li>
+</ol>
+
+<h3>必要な npm scripts（よく使う操作に名前を付けておく）</h3>
+<p><code>wrangler …</code> の長いコマンドを毎回打つ代わりに、<strong>よく使う操作を <code>package.json</code> の script にまとめておく</strong>と楽。これも Claude Code が作るので、下のような操作が<strong>一通り揃っているかだけ見ておく</strong>（足りなければ「この操作の script を足して」と頼む）：</p>
+<table>
+<thead><tr><th>script</th><th>中身</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td><code>dev</code></td><td><code>wrangler dev</code></td><td>ローカル起動（:8787）</td></tr>
+<tr><td><code>build:front</code></td><td><code>npm --prefix ../genmaicha_front run build</code></td><td>フロントを dist/ にビルド</td></tr>
+<tr><td><code>db:migrate:local</code></td><td><code>wrangler d1 migrations apply DB --local</code></td><td>ローカル D1 にマイグレーション</td></tr>
+<tr><td><code>db:migrate:remote</code></td><td><code>wrangler d1 migrations apply DB --remote</code></td><td>本番 D1 にマイグレーション（[5]で使う）</td></tr>
+<tr><td><code>deploy</code></td><td><code>npm run build:front &amp;&amp; wrangler deploy</code></td><td>ビルド→デプロイ一発（[5]で使う）</td></tr>
+<tr><td><code>test</code></td><td><code>vitest run</code></td><td>テスト（[4]で使う）</td></tr>
+</tbody>
+</table>
+
+<h3>ローカルでの動かし方（2モード）</h3>
+<pre><code># A. 本番と同じ形（Worker 一本: :8787）— ビルドしたフロントを Worker が配信
+cd genmaicha_back &amp;&amp; npm run build:front &amp;&amp; npm run dev
+
+# B. フロント開発モード（HMR）— フロント:5173 と バック:8787 を「両方」起動
+cd genmaicha_back  &amp;&amp; npm run dev    # ターミナル1（API の実体: :8787）
+cd genmaicha_front &amp;&amp; npm run dev    # ターミナル2（画面の高速プレビュー: :5173）</code></pre>
+<blockquote>
+<p><strong>B でバックも起動するのは矛盾ではない</strong>。:5173 はあくまで<strong>画面を速く確認するためのプレビュー</strong>で、そこから叩く API の実体は :8787 のバック。だから両方を立て、:5173 の <code>/api</code> を :8787 にプロキシして同一オリジン扱いにする（[2] の <code>vite.config.ts</code> 参照）。「画面を直しながら確認したい」ときが B、「本番と同じ挙動を見たい」ときが A。</p>
+</blockquote>
+
+<h3>ポイント</h3>
+<ul>
+<li>認証（Clerk）・決済（Stripe）・メール（Resend）は<strong>Day 2 では深追いしない</strong> → Day 3 のオプション課題 [6][7][8] で扱う、と予告しておく</li>
+<li><strong>Day 2 のログイン周りはモック認証でよい</strong>（手順3）。本物の Clerk を入れるとき<strong>そこだけ差し替えればいい作り</strong>にしておくと、差し替えポイントが明確で教材としても良い</li>
+<li><strong>秘密情報の扱い</strong>はここで一度釘を刺す:
+  <ul>
+  <li><code>.dev.vars</code>（ローカル）/ <code>wrangler secret put</code>（本番）を使う</li>
+  <li>キーをコードにハードコードしない・AI への指示にも貼らない</li>
+  </ul>
+</li>
+<li><strong>Day 2 core で必要な環境変数は最小限</strong>。Stripe / Clerk / Resend のキーは<strong>無くても起動する</strong>:
+  <ul>
+  <li>必要なのは <code>ORIGIN</code> / <code>FRONTEND_ORIGIN</code>（ローカルは <code>http://localhost:8787</code>）と、問い合わせ用の <code>EMAIL_*</code> / <code>CONTACT_TO</code> 程度</li>
+  <li>これらは <code>wrangler.toml</code> の <code>[vars]</code>、ローカル上書きは <code>.dev.vars</code> に書く（<code>.dev.vars</code> は <code>.gitignore</code> 済みであることを確認）</li>
+  </ul>
+</li>
+</ul>
+
+<h3>✅ 完了の定義（[4] へ進む条件）</h3>
+<p>ローカル（<code>npm run build:front &amp;&amp; npm run dev</code> で :8787）で次がすべて満たせること（<strong>レスポンスの形は AI に決めさせた API に読み替える</strong>。下の値は一例）：</p>
+<ul>
+<li><code>curl http://localhost:8787/</code> → <strong>200</strong> で LP の HTML が返る</li>
+<li><code>curl http://localhost:8787/mypage</code> → <strong>200</strong>（SPA フォールバックが効いている）</li>
+<li>認証が要る API（例 <code>/api/me</code>）は<strong>未認証だと弾かれる</strong>（401 など）</li>
+<li>必須項目が欠けた問い合わせは<strong>バリデーションで弾かれる</strong>（400 など）</li>
+<li><strong>そして必ず「人の目」で確認する</strong>: ブラウザで実際に画面を操作（問い合わせ送信・マイページ表示等）し、実 API とつながって<strong>期待どおり動く</strong>こと
+  <ul><li>⚠️ <strong>curl が通っても、ブラウザでは動かないことがある</strong>（CORS・表示・状態管理など）。コマンドの結果だけで満足せず、<strong>画面で目視確認</strong>するまでが完了</li></ul>
+</li>
+</ul>
+
+<hr>
+
+<h2 id="s4">[4] 自動テストの実装</h2>
+<p><strong>ゴール</strong>: <code>npm test</code> で回帰検知ができる状態にする（<strong>デプロイ前にここを緑にする</strong>）</p>
+<blockquote>
+<p><strong>進行メモ: テスト → デプロイ の順にする理由</strong></p>
+<ul>
+<li>実務の王道どおり「<strong>テストが緑になってから公開する</strong>」。壊れたものを世に出さない流れを体で覚えてもらう</li>
+<li>公開（[5]）の盛り上がり🎉を <strong>Day 2 のフィナーレ</strong>に置けて、終わり方が綺麗になる</li>
+<li>テストは時間が押したら本数を絞ってよいが、<strong>最低でも1ケースは緑にしてから [5] デプロイへ進む</strong></li>
+<li>CI（push したら自動でテスト→デプロイ）の話も、この順番に絡めて口頭で補足すると刺さる</li>
+</ul>
+</blockquote>
+
+<h3>考え方（資料で伝えるテスト戦略）</h3>
+<p>テストは3層。<strong>上から順に費用対効果が高い</strong>:</p>
+<ol>
+<li><strong>バックエンド統合テスト</strong> — Hono app にリクエストを投げて検証（Vitest + <code>@cloudflare/vitest-pool-workers</code>、D1/KV は実バインディング）</li>
+<li><strong>純粋関数の単体テスト</strong> — キー生成・マスク処理など</li>
+<li><strong>フロントのコンポーネントテスト</strong> — 状態分岐が多いものだけ（全網羅しない）</li>
+</ol>
+<p>外部サービスへの fetch は<strong>モックする</strong>（テストを外部に依存させず、速く・安定して回すため）。</p>
+
+<h3>流れ</h3>
+<ol>
+<li>Claude Code に<strong>まずテスト方針を .md で書かせる</strong>（どこを・どうテストすべきかも AI に洗い出させてよい）</li>
+<li>単体テスト（純粋関数）→ 環境の動作確認を兼ねる</li>
+<li>API のテスト（正常系 ＋ 認証境界の異常系）</li>
+<li><code>npm test</code> でグリーンを確認</li>
+</ol>
+<blockquote>
+<p><strong>「テスト観点の固定表」はあえて載せない</strong>。こちらが観点を決め打ちすると「表に無い＝テストしない」になりがち。<strong>どこを・どうテストするかも含めて AI に出させ、人はそれをレビューする</strong>方が、抜けが出にくい。</p>
+</blockquote>
+
+<h3>ポイント</h3>
+<ul>
+<li>「AI が書いたコードこそテストが要る」がメッセージ</li>
+<li><strong>方針（何を守りたいか）を先に書かせてから実装</strong>させると精度が上がる（観点の洗い出しごと AI に任せてよい）</li>
+<li>Day 3 でオプション機能を足すとき、<strong>このテストが守ってくれる</strong>実感を仕込む布石</li>
+</ul>
+
+<h3>⚠️ ハマりどころ: テスト環境の設定</h3>
+<p>バックの統合テストは普通の Vitest 設定では動かない。<strong>Workers 専用プール</strong>が要る：</p>
+<ul>
+<li><code>@cloudflare/vitest-pool-workers</code> を devDependency に入れ、<code>vitest.config.ts</code> を <strong><code>defineWorkersConfig</code></strong> で書く（普通の <code>defineConfig</code> ではない）</li>
+<li>D1 マイグレーションをテストに読ませる: <code>readD1Migrations(...)</code> を使う</li>
+<li>外部サービスのキーは<strong>テスト用ダミー</strong>を <code>miniflare.bindings</code> に渡す（本物は絶対に使わない）</li>
+</ul>
+<p><code>vitest.config.ts</code> の骨格（Claude に「これをベースに作って」と渡せる）:</p>
+<pre><code>import path from "node:path"
+import { defineWorkersConfig, readD1Migrations } from "@cloudflare/vitest-pool-workers/config"
+
+export default defineWorkersConfig(async () =&gt; {
+  const migrations = await readD1Migrations(path.join(__dirname, "migrations"))
+  return {
+    test: {
+      poolOptions: {
+        workers: {
+          wrangler: { configPath: "./wrangler.toml" },
+          miniflare: {
+            bindings: { TEST_MIGRATIONS: migrations, ORIGIN: "http://localhost:8787" },
+          },
+        },
+      },
+    },
+  }
+})</code></pre>
+<p>（<code>test/setup.ts</code> で <code>TEST_MIGRATIONS</code> を D1 に流し込んでからテストを走らせる）</p>
+
+<h3>✅ 完了の定義（Day 2 の到達点・前半）</h3>
+<ul>
+<li><code>npm test</code> が<strong>グリーン</strong>（全ケース pass）</li>
+<li>最低限カバーできている：
+  <ul>
+  <li>純粋関数の単体テスト（キー生成・マスク等）が1つ以上</li>
+  <li>API の<strong>正常系</strong>（例: 問い合わせが 200）と<strong>認証境界の異常系</strong>（例: 未認証で 401）</li>
+  </ul>
+</li>
+<li>→ これが緑になったら [5] デプロイへ</li>
+</ul>
+
+<hr>
+
+<h2 id="s5">[5] Cloudflare にデプロイ</h2>
+<p><strong>ゴール</strong>: 自分の URL（<code>https://&lt;name&gt;.workers.dev</code>）で世界に公開（<strong>Day 2 のフィナーレ</strong>）</p>
+
+<h3>流れ</h3>
+<ol>
+<li><code>wrangler.toml</code> を確認(Claude Code に説明させると教材として良い)</li>
+<li>リモート DB のマイグレーション: <code>npm run db:migrate:remote</code></li>
+<li>Secrets の投入: <code>wrangler secret put &lt;NAME&gt;</code>（必要なものだけ）</li>
+<li>デプロイ:
+<pre><code>cd genmaicha_back
+npm run deploy   # フロントのビルド → wrangler deploy まで一発</code></pre>
+</li>
+<li>発行された URL にアクセスして動作確認 🎉</li>
+<li>お互いの URL をチャットで共有して見せ合う</li>
+</ol>
+
+<h3>ポイント</h3>
+<ul>
+<li>ここが<strong>一番の盛り上がりポイント</strong>。「もう公開されてます」で休憩を入れると良い</li>
+<li><strong>[4] のテストが緑なのを確認してから公開する</strong>（テスト → デプロイ の順を体で覚える）</li>
+<li>ローカル（<code>--local</code> の D1）と本番（リモート D1）はデータが別物、を説明</li>
+<li>無料枠の範囲で完結することを伝えて安心させる</li>
+<li><strong>Day 2 core では Secrets 投入（手順3）は不要</strong>（Stripe/Clerk/Resend を使う [6][7][8] で初めて要る）</li>
+</ul>
+
+<h3>⚠️ ハマりどころ: 初回デプロイ</h3>
+<ul>
+<li>初めて <code>*.workers.dev</code> に出す人は、Cloudflare ダッシュ → Workers &amp; Pages で<strong>workers.dev サブドメインの有効化</strong>を一度求められることがある</li>
+<li><code>npm run deploy</code> が「フロントのビルド込み」なので、<strong>ビルドが通らないとデプロイも止まる</strong> → デプロイ前にローカルで <code>npm run build:front</code> が成功するか確認しておくと安全</li>
+<li>リモート D1 のマイグレーション（<code>db:migrate:remote</code>）を忘れると、API が「テーブルが無い」で失敗する</li>
+</ul>
+
+<h3>✅ 完了の定義（Day 2 の到達点・後半）</h3>
+<ul>
+<li>自分の <strong><code>https://&lt;name&gt;.workers.dev</code> にブラウザでアクセスして LP が表示</strong>される</li>
+<li>本番 URL で <code>/mypage</code> 等のルーティングも 404 にならず動く</li>
+<li>（API を使う画面が）本番でも動作する</li>
+<li>（余裕があれば）公開した本番 URL に<strong>軽くスモークアクセス</strong>して、ローカルと同じ挙動かを確認</li>
+</ul>
+
+<h3>Day 2 クロージング</h3>
+<ul>
+<li>全員が「<code>npm test</code> グリーン + 公開 URL」に到達しているか確認</li>
+<li><strong>dev に push 済みかを確認</strong>（必要なら <code>dev</code> → <code>main</code> にマージして安定版を残す）</li>
+<li>Day 3 のオプション課題メニューを提示し、<strong>どれをやるか各自決めて帰ってもらう</strong>（Stripe / Clerk / Resend のアカウント作成を宿題にしてもよい）</li>
+</ul>
+
+<hr>
+
+<h1 id="day3">Day 3: 育てる（オプション課題 + 発表会）</h1>
+<blockquote>
+<p>Day 3 は選択式。各課題は「お題 + 参考実装の場所 + 完了条件」だけ提示し、進め方は各自が Claude Code と相談して決める（= 実務に一番近い演習）。資料では各課題1〜2スライド。</p>
+</blockquote>
+
+<h2 id="s6">[6] メール機能の実装（Resend）</h2>
+<ul>
+<li><strong>お題</strong>: 問い合わせ内容の通知メール / ライセンスキーの送付メールを実装する</li>
+<li><strong>参考実装</strong>: <code>genmaicha_back/src/email.ts</code></li>
+<li><strong>完了条件</strong>: 自分宛にメールが届く。連打対策（クールダウン → 429）がある</li>
+<li><strong>学び</strong>: 外部 API 連携の基本形・Secrets 管理</li>
+</ul>
+
+<h2 id="s7">[7] 決済機能の実装（Stripe）</h2>
+<ul>
+<li><strong>お題</strong>: プラン購入（Stripe Checkout）→ Webhook でライセンス自動発行</li>
+<li><strong>参考実装</strong>: <code>genmaicha_back/src/stripe.ts</code> / <code>license.ts</code></li>
+<li><strong>完了条件</strong>: テストカードで購入 → マイページにライセンスが表示される</li>
+<li><strong>学び</strong>: Webhook の冪等性（同一イベント再送で二重発行しない）・署名検証</li>
+<li>補足: <code>stripe listen --forward-to localhost:8787/webhook/stripe</code> でローカル検証</li>
+</ul>
+
+<h2 id="s8">[8] ID 連携機能の実装（Clerk）</h2>
+<ul>
+<li><strong>お題</strong>: ログイン必須のマイページを作る（未ログイン → サインインへリダイレクト）</li>
+<li><strong>参考実装</strong>: <code>@clerk/hono</code>（バック）+ <code>@clerk/clerk-react</code>（フロント）</li>
+<li><strong>完了条件</strong>: 未ログインで <code>/mypage</code> に入れない。<code>GET /api/me</code> が認証必須</li>
+<li><strong>学び</strong>: JWT 検証をバックでやる理由（フロントの見た目だけの保護は無意味）</li>
+<li>⚠️ <strong>ハマりどころ（実地で判明）</strong>: Clerk の<strong>共有（デフォルト）クレデンシャルのまま</strong>だと、サインイン後に一度 Clerk 側へ戻されてループしがち。<strong>自分の専用アプリ（専用クレデンシャル）を作って</strong> publishable / secret キーを差し替えること</li>
+</ul>
+
+<h2 id="s9">[9] 運用保守</h2>
+<ul>
+<li><strong>お題</strong>: 公開後の運用を体験する
+  <ul>
+  <li><code>wrangler tail</code> でリアルタイムログ確認</li>
+  <li>KV を使った IP レート制限の実装（参考: <code>genmaicha_back/src/rate-limit.ts</code>）</li>
+  <li>エラー時の挙動確認・ログに個人情報を出さない確認</li>
+  <li><strong>運用チェックを Claude Code の「スキル」にして繰り返し使う</strong>（後述）</li>
+  </ul>
+</li>
+<li><strong>完了条件</strong>: レート制限が 429 を返すことをテストで証明</li>
+</ul>
+
+<h3>運用保守スキル（Claude Code の Skill 化で「定番チェック」を再利用する）</h3>
+<blockquote>
+<p>運用は毎回同じことを確認する。それを<strong>自然言語の手順書（Skill）として <code>.claude/skills/</code> に置いておけば、「運用チェックして」の一言で Claude Code が一気通貫で回してくれる</strong>。本リポジトリに参考実装（玄米茶用にチューニング済み）が入っているので、自分のサービス向けに直して使う。</p>
+</blockquote>
+<table>
+<thead><tr><th>スキル</th><th>役割</th><th>参考実装</th></tr></thead>
+<tbody>
+<tr><td>インフラ障害確認</td><td>依存サービス（Cloudflare/Clerk/Stripe/Resend）の公開ステータスを確認</td><td><code>.claude/skills/infra-status/</code></td></tr>
+<tr><td>ログ取得</td><td><code>wrangler tail</code>＋（トークンがあれば）GraphQL で過去〜集計のエラー/レイテンシ</td><td><code>.claude/skills/cf-log-check/</code></td></tr>
+<tr><td>障害箇所の特定</td><td>ログ／直近デプロイ履歴をソースと突き合わせて原因を絞る</td><td><code>.claude/skills/fault-localize/</code></td></tr>
+<tr><td>対策・ワークアラウンド提示</td><td>診断結果から恒久対策・暫定回避策（必要なら修正差分）を出す</td><td><code>.claude/skills/remediate/</code></td></tr>
+<tr><td>コストモニタリング</td><td>requests / CPU 時間からコストを試算</td><td><code>.claude/skills/cost-monitor/</code></td></tr>
+</tbody>
+</table>
+<ul>
+<li>上記を一気通貫で回す<strong>統合スキル <code>ops-check</code></strong> もある（<code>.claude/skills/ops-check/</code>）。「運用チェックして」で 障害確認→ログ→（異常あれば）原因特定→対策→コスト目安 まで順に実施</li>
+<li>Cloudflare 周りは <strong>wrangler コマンドでできる範囲でOK</strong>（GraphQL Analytics は API トークンがある人だけ）</li>
+</ul>
+
+<h2 id="s10">[10] セキュリティ</h2>
+<ul>
+<li><strong>お題</strong>: 自分のアプリをセキュリティ観点で点検する
+  <ul>
+  <li>認証境界（未認証 / 偽造 JWT で 401 になるか）</li>
+  <li>IDOR（他人の email を body に入れても無視されるか）</li>
+  <li>機密のマスク（API レスポンスにフルのライセンスキーが含まれないか）</li>
+  </ul>
+</li>
+<li><strong>ツール</strong>:
+  <ul>
+  <li><strong>Claude Code のセキュリティレビュー</strong>（<code>/security-review</code>）で差分・コードを点検させる</li>
+  <li><strong>SonarQube（SonarCloud）</strong> で静的解析にかけてみる（<code>main</code> / PR を解析）</li>
+  </ul>
+</li>
+<li><strong>参考</strong>: 本リポジトリ <code>TEST.md</code> の A 系ケース（認証境界の回帰テスト一覧）</li>
+<li><strong>完了条件</strong>: 見つけた問題を1つ以上修正し、回帰テストを追加</li>
+</ul>
+
+<hr>
+
+<h2 id="wrap">ラップアップ・発表会（Day 3 午後）</h2>
+
+<h3>最終発表会（1人5分目安）</h3>
+<ul>
+<li>自分の公開 URL のデモ</li>
+<li>Day 3 で追加した機能の紹介</li>
+<li>「AI への頼み方で一番効いた工夫」を1つ共有</li>
+</ul>
+
+<h3>振り返り</h3>
+<ul>
+<li>3日間で体験した開発サイクル: <strong>デザイン生成 → 実装 → テスト → 公開 → 機能拡張 → 点検</strong></li>
+<li>AI 開発で効いたコツの総まとめ
+  <ul>
+  <li>1発で完璧を狙わず、会話で直す</li>
+  <li>やりたいこと・受け入れ条件を先に .md 化してから渡す（細かい設計やテスト観点の洗い出しは AI に任せる）</li>
+  <li>秘密情報は AI に渡さない</li>
+  <li>テストがあるから大胆に拡張できる</li>
+  </ul>
+</li>
+<li>持ち帰り: 自分の URL で公開された自分の SaaS 🍵</li>
+<li>質疑応答・アンケート</li>
+</ul>
+
+<hr>
+
+<h2 id="appendix">付録: タイムテーブル目安（各日 10:00–17:00 / 昼休憩1h の場合）</h2>
+
+<h3>Day 1</h3>
+<table>
+<thead><tr><th>時間</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>10:00–10:30</td><td>オープニング: 目的・ゴール・3日間の全体像</td></tr>
+<tr><td>10:30–11:30</td><td>技術紹介（ライブデモ込み）+ 環境確認タイム</td></tr>
+<tr><td>11:30–12:00</td><td>[1] Claude Design（前半: 生成・イテレーション）</td></tr>
+<tr><td>12:00–13:00</td><td>昼休憩</td></tr>
+<tr><td>13:00–14:00</td><td>[1] Claude Design（後半: 他ページ追加・見せ合い演習）</td></tr>
+<tr><td>14:00–16:30</td><td>[2] フロント作成（適宜休憩）</td></tr>
+<tr><td>16:30–17:00</td><td>Day 1 クロージング: LP 披露・明日の予告</td></tr>
+</tbody>
+</table>
+
+<h3>Day 2</h3>
+<table>
+<thead><tr><th>時間</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>10:00–10:15</td><td>Day 1 振り返り・キャッチアップ確認</td></tr>
+<tr><td>10:15–12:00</td><td>[3] バック作成（前半: API 実装）</td></tr>
+<tr><td>12:00–13:00</td><td>昼休憩</td></tr>
+<tr><td>13:00–14:00</td><td>[3] バック作成（後半: フロント結合・配信一本化）</td></tr>
+<tr><td>14:00–15:30</td><td>[4] 自動テスト（緑にする）</td></tr>
+<tr><td>15:30–16:30</td><td>[5] デプロイ 🎉 + URL 見せ合い + 休憩</td></tr>
+<tr><td>16:30–17:00</td><td>Day 2 クロージング: 到達確認・Day 3 課題選択</td></tr>
+</tbody>
+</table>
+
+<h3>Day 3</h3>
+<table>
+<thead><tr><th>時間</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>10:00–10:30</td><td>オプション課題の説明・進め方ガイダンス</td></tr>
+<tr><td>10:30–12:00</td><td>オプション課題（前半）</td></tr>
+<tr><td>12:00–13:00</td><td>昼休憩</td></tr>
+<tr><td>13:00–15:00</td><td>オプション課題（後半）</td></tr>
+<tr><td>15:00–16:30</td><td>最終発表会</td></tr>
+<tr><td>16:30–17:00</td><td>ラップアップ・アンケート</td></tr>
+</tbody>
+</table>
+
+<p class="foot">3Days ワークショップフロー — AI とつくるフルスタック SaaS「玄米茶」</p>
+</article></div></body></html>

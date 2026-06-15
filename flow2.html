@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 3 オプション課題ガイド — 玄米茶</title>
+<style>
+:root{
+  --bg:#faf8f2; --paper:#fffdf8; --ink:#2d2a24; --muted:#6b6453;
+  --accent:#5a7a4f; --accent-deep:#3f5a37; --gold:#c8a96a; --line:#e7e1d3;
+  --code-bg:#f3efe4; --warn-bg:#fcf3e6; --warn-bd:#e3b873;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,system-ui,sans-serif;
+  line-height:1.85; font-size:16px;
+}
+.wrap{max-width:960px; margin:0 auto; padding:56px 28px 120px;}
+article{
+  background:var(--paper); border:1px solid var(--line); border-radius:16px;
+  padding:48px 56px; box-shadow:0 8px 40px rgba(60,50,30,.06);
+}
+h1,h2,h3,h4{font-family:"Hiragino Mincho ProN","Yu Mincho",serif; line-height:1.4; color:var(--accent-deep);}
+h1{font-size:2rem; margin:0 0 .6em; padding-bottom:.5em; border-bottom:3px solid var(--gold);}
+h2{font-size:1.5rem; margin:2.4em 0 .7em; padding-left:.6em; border-left:6px solid var(--accent);}
+h3{font-size:1.2rem; margin:1.8em 0 .5em; color:var(--accent);}
+h4{font-size:1.02rem; margin:1.4em 0 .3em; color:var(--ink);}
+p{margin:.6em 0}
+a{color:var(--accent); }
+strong{color:var(--accent-deep)}
+hr{border:0; border-top:1px dashed var(--line); margin:2.4em 0;}
+ul,ol{margin:.5em 0 .9em; padding-left:1.5em}
+li{margin:.28em 0}
+li::marker{color:var(--gold)}
+code{background:var(--code-bg); padding:.12em .42em; border-radius:5px; font-size:.9em;
+  font-family:"SFMono-Regular",Menlo,Consolas,monospace; color:#7a4f2a;}
+pre{background:#2d2a24; color:#f4efe4; padding:18px 20px; border-radius:10px; overflow:auto;
+  font-size:.86rem; line-height:1.6; box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);}
+pre code{background:none; color:inherit; padding:0; font-size:.95em;}
+blockquote{
+  margin:1.1em 0; padding:.9em 1.2em; background:var(--warn-bg);
+  border-left:5px solid var(--warn-bd); border-radius:0 10px 10px 0; color:#5c4a2e;
+}
+blockquote p{margin:.35em 0}
+blockquote strong{color:#9a6b1f}
+table{border-collapse:collapse; width:100%; margin:1.1em 0; font-size:.93rem;
+  background:#fff; border:1px solid var(--line); border-radius:10px; overflow:hidden;}
+th,td{padding:10px 13px; border:1px solid var(--line); text-align:left; vertical-align:top;}
+thead th{background:var(--accent); color:#fff; font-weight:600; border-color:var(--accent);}
+tbody tr:nth-child(even){background:#faf7ef}
+.badge{display:inline-block;background:var(--gold);color:#fff;font-size:.72rem;
+  padding:.1em .6em;border-radius:99px;vertical-align:middle;margin-left:.4em;}
+.toc{background:#f5f2e8;border:1px solid var(--line);border-radius:12px;padding:18px 24px;margin:0 0 36px;}
+.toc h2{margin:.1em 0 .5em;border:0;padding:0;font-size:1.05rem;color:var(--muted);}
+.toc ul{columns:2;list-style:none;padding:0;margin:0}
+.toc a{text-decoration:none;color:var(--ink);font-size:.9rem}
+.toc a:hover{color:var(--accent)}
+.foot{text-align:center;color:var(--muted);font-size:.8rem;margin-top:30px}
+@media(max-width:640px){article{padding:30px 20px}.toc ul{columns:1}.wrap{padding:28px 12px 80px}}
+</style></head>
+<body><div class="wrap"><article>
+
+<nav class="toc"><h2>もくじ</h2><ul>
+<li><a href="#common">まず全課題に共通すること</a></li>
+<li><a href="#s6">[6] メール機能の実装（Resend）</a></li>
+<li><a href="#s7">[7] 決済機能の実装（Stripe）</a></li>
+<li><a href="#s8">[8] ID 連携機能の実装（Clerk）</a></li>
+<li><a href="#s9">[9] 運用保守</a></li>
+<li><a href="#s10">[10] セキュリティ</a></li>
+<li><a href="#wrap">ラップアップへ</a></li>
+</ul></nav>
+
+<h1 id="top">Day 3 オプション課題ガイド: 育てる（玄米茶）</h1>
+
+<blockquote>
+<p><strong>このドキュメントの位置づけ</strong><br>
+<code>flow.md</code>（Day 1〜2 の本編）の続き。<strong>Day 3 のオプション課題 [6]〜[10] の "詳細ガイド"</strong>。固定するのは「お題 + 完了条件」だけ。<strong>進め方は各自 Claude Code と相談して決める</strong>のは本編と同じ。ここに載せる手順は、<strong>外部サービス側のクリック操作など AI に任せられない部分</strong>が中心。コード実装そのもの（API・スキーマ・テスト）は <strong>Claude にまとめて頼んでよい</strong>。</p>
+</blockquote>
+
+<h2 id="common">まず全課題に共通すること</h2>
+<ul>
+<li><strong>秘密情報の置き場所</strong>（本編 [3] のおさらい）
+<table>
+<thead><tr><th></th><th>置き場所</th></tr></thead>
+<tbody>
+<tr><td>ローカル</td><td><code>genmaicha_back/.dev.vars</code>（<code>.gitignore</code> 済み。雛形は <code>.dev.vars.sample</code>）</td></tr>
+<tr><td>本番</td><td><code>wrangler secret put &lt;NAME&gt;</code> または <strong>Cloudflare ダッシュボードの環境変数</strong></td></tr>
+</tbody>
+</table>
+キーは<strong>コードにも AI への指示にも貼らない</strong>。<code>.dev.vars</code> に入れて参照させる。</li>
+<li><strong>必要な環境変数は、まず AI に聞く</strong> →「この機能に要る環境変数を <code>.dev.vars.sample</code> に追記して」</li>
+<li><strong><code>.dev.vars</code> を書き換えたら <code>npm run dev</code> を再起動</strong>（読み込みは起動時）</li>
+<li><strong>npm パッケージ（SDK）も AI が入れてくれる</strong>（Resend / Stripe SDK・<code>@clerk/*</code> など）。自分で調べて入れる必要はない</li>
+<li>各サービスのログインは基本 <strong>Google SSO</strong>（電話番号不要）</li>
+<li><strong>どの課題も流れは共通</strong>:
+  <ol>
+  <li>外部サービスでキー（と必要なら ID）を取得</li>
+  <li><code>.dev.vars</code> に入れて<strong>ローカルで動かす</strong></li>
+  <li><strong>動いたら、同じ値を本番にも入れてデプロイ</strong>（<code>wrangler secret put</code> / ダッシュボードの環境変数）</li>
+  </ol>
+</li>
+<li>どれも <strong>1つ以上</strong>やれば Day 3 の完了条件。興味のあるものから着手してよい</li>
+</ul>
+
+<hr>
+
+<h2 id="s6">[6] メール機能の実装（Resend）</h2>
+<p><strong>お題</strong>: 問い合わせ通知メール／ライセンスキー送付メールを実装する<br>
+<strong>参考実装</strong>: <code>genmaicha_back/src/email.ts</code> ／ <strong>学び</strong>: 外部 API 連携の基本形・Secrets 管理</p>
+
+<h3>サービス側の準備</h3>
+<ol>
+<li><a href="https://resend.com/login">https://resend.com/login</a> で <strong>Google SSO ログイン</strong></li>
+<li>左タブ <strong>API keys → Create API Key</strong>（権限は <strong>Sending access</strong> で十分。名前は各自）</li>
+<li>発行された <strong>API キーを <code>.dev.vars</code> にセット</strong>（例 <code>RESEND_API_KEY=...</code>）</li>
+</ol>
+
+<h3>送信ドメインはどうする？（ここがつまずきやすい）</h3>
+<p>独自ドメインから送るには <strong>DNS 検証</strong>が必要で、それは自分のドメインが決まる<strong>公開後</strong>の話。ワークショップでは次の方針を推奨：</p>
+<ul>
+<li><strong>動作確認は Resend のテスト用アドレス <code>onboarding@resend.dev</code> を From に使う</strong>
+  <ul>
+  <li>この From は<strong>ドメイン検証なしで送れる</strong>が、宛先は<strong>自分（アカウントの登録メール）</strong>に限られる</li>
+  <li>「自分宛に届く」を確認するには十分</li>
+  </ul>
+</li>
+<li><strong>独自ドメインからの送信は任意</strong>（やりたい人だけ、デプロイ後に DNS を設定）</li>
+</ul>
+
+<h3>実装〜確認</h3>
+<ul>
+<li>From / To をどうするかも含めて AI に相談し、まず<strong>ローカルで往復</strong>させる</li>
+<li>送ったら Resend ダッシュボードの <strong>Logs で Status を確認</strong></li>
+<li><strong>200 以外</strong>が出たら、<strong>エラー本文をそのまま AI に渡して直す</strong></li>
+<li>本番でも使うなら、<code>RESEND_API_KEY</code> を<strong>本番側にも設定</strong>してデプロイ（共通②③）</li>
+</ul>
+
+<blockquote>
+<p>✅ <strong>完了の定義</strong>: 自分宛にメールが届く／連投対策（クールダウン → <strong>429</strong>）が効く（本編 [9] の KV レート制限と同じ）。テストでは外部 fetch をモックし、実送信を起こさない。</p>
+</blockquote>
+
+<hr>
+
+<h2 id="s7">[7] 決済機能の実装（Stripe）</h2>
+<p><strong>お題</strong>: プラン購入（Stripe Checkout）→ Webhook でライセンス自動発行<br>
+<strong>参考実装</strong>: <code>genmaicha_back/src/stripe.ts</code> / <code>license.ts</code><br>
+<strong>学び</strong>: Webhook の冪等性（再送で二重発行しない）・署名検証</p>
+<blockquote>
+<p>Day 2 で「自前発行」していたライセンスを、<strong>決済イベント起点の自動発行</strong>に置き換える課題。手順が多いので <strong>4 フェーズ</strong>に分けて進める。</p>
+</blockquote>
+
+<h3>① アカウントとキーの準備</h3>
+<ol>
+<li><a href="https://dashboard.stripe.com/login">https://dashboard.stripe.com/login</a> で <strong>Google SSO ログイン</strong></li>
+<li><strong>サンドボックス（テストモード）</strong>に切り替える（ワークショップは終始これ）</li>
+<li>必要な環境変数を AI に聞き、<code>.dev.vars.sample</code> に雛形を作る</li>
+<li><strong>Developers → API keys</strong> から <strong>Secret key（<code>sk_test_...</code>）</strong>を取得 → <code>.dev.vars</code> にセット</li>
+<li>ターミナルで <strong><code>stripe login</code></strong> し、Stripe CLI にアカウントを認証</li>
+</ol>
+
+<h3>② プラン（商品）を作る</h3>
+<p><strong>商品カタログ → ＋商品を作成</strong>で、2つの継続課金プランを作る：</p>
+<table>
+<thead><tr><th>プラン名</th><th>種別</th><th>金額</th><th>請求</th></tr></thead>
+<tbody>
+<tr><td>genmaicha 月額プラン</td><td>継続</td><td>¥300 JPY</td><td>毎月</td></tr>
+<tr><td>genmaicha 年額プラン</td><td>継続</td><td>¥3000 JPY</td><td>毎年</td></tr>
+</tbody>
+</table>
+<ul>
+<li>作成後、各プランの <strong>Price ID（<code>price_...</code>）を控える</strong>
+  <ul>
+  <li>商品詳細ページの「価格」欄に出る <code>price_...</code> が<strong>それ</strong>。Checkout に渡すのはこの <strong>Price ID</strong></li>
+  <li>（<code>prod_...</code> は商品そのものの ID。コードで使うのは基本 <code>price_...</code> の方）</li>
+  </ul>
+</li>
+<li>2つの <strong>Price ID を <code>.dev.vars</code> にセット</strong>（例 <code>PRICE_MONTHLY=price_...</code> / <code>PRICE_YEARLY=price_...</code>）</li>
+</ul>
+
+<h3>③ ローカルで Webhook を検証する</h3>
+<blockquote>
+<p>ターミナルを<strong>2つ</strong>使う。<strong>バック（<code>npm run dev</code>、:8787）を起動したまま</strong>、別ターミナルで <code>stripe listen</code> を動かす。</p>
+</blockquote>
+<ol>
+<li>別ターミナルで <strong>Stripe CLI を listen</strong>（転送先・ポートは AI に確認。例:）
+<pre><code>stripe listen --forward-to localhost:8787/webhook/stripe</code></pre>
+</li>
+<li>listen 開始時に表示される <strong>Webhook 署名シークレット（<code>whsec_...</code>）を <code>.dev.vars</code> にセット</strong>して <code>npm run dev</code> を再起動</li>
+<li><strong>テストカードで購入</strong>して、購入 → Webhook 受信 → ライセンス発行までローカルで通す
+  <ul><li>テストカード番号は <strong><code>4242 4242 4242 4242</code></strong>（有効期限＝未来の任意の日付／CVC＝任意の3桁）</li></ul>
+</li>
+</ol>
+
+<h3>④ 本番（デプロイ後）に Webhook を設定する</h3>
+<ol>
+<li><strong>デプロイ前に</strong>、ローカルの <code>.dev.vars</code> に入れた値（<strong>Secret key・Price ID など</strong>）を<strong>本番側にも設定</strong>しておく（<code>wrangler secret put</code> / ダッシュボード）。※ Webhook 署名シークレットだけは本番用を後から（手順6）入れる</li>
+<li>本編 [5] の手順で <strong>Cloudflare にデプロイ</strong></li>
+<li>Stripe ダッシュボードの検索窓で「<strong>Webhook を作成</strong>」を検索して進む</li>
+<li><strong>送信するイベントを AI に聞いて</strong>選ぶ（例: <code>checkout.session.completed</code> など）</li>
+<li><strong>エンドポイント URL</strong> に <strong>Cloudflare の公開ドメイン</strong>（例 <code>https://&lt;name&gt;.workers.dev/webhook/stripe</code>）を入力</li>
+<li>作成後に表示される<strong>本番用の署名シークレット</strong>を取得 → <strong>Cloudflare の環境変数</strong>に投入</li>
+<li>本番で<strong>決済確認</strong></li>
+</ol>
+
+<h3>購入後の戻り先とマイページ表示（つなぎ込み）</h3>
+<ul>
+<li>Checkout には<strong>決済後の戻り先 URL（<code>success_url</code> / <code>cancel_url</code>）が要る</strong>。成功時は Day 2 で作った <strong><code>/success</code> ページ</strong>につなぐ（AI に「購入後 <code>/success</code> に戻して」と頼めばよい）</li>
+<li><strong>「マイページにライセンスが出る」ための紐付け</strong>に注意:
+  <ul>
+  <li>Webhook で発行したライセンスは<strong>購入者の email</strong>に紐づく。マイページは<strong>ログイン中ユーザーの email</strong>でライセンスを引く</li>
+  <li><strong>[8] Clerk をやらない場合</strong>は、Day 2 の<strong>モック認証の email</strong>（ヘッダ <code>x-user-email</code>）と<strong>購入時の email を一致させる</strong>こと。ここがズレると「購入したのにマイページに出ない（別人扱い）」になる</li>
+  </ul>
+</li>
+</ul>
+
+<h3>⚠️ ハマりどころ</h3>
+<ul>
+<li><strong>署名シークレットはローカル（③）と本番（④）で別物</strong>。混同しない</li>
+<li><strong>署名検証</strong>は「生のリクエストボディ」で行う（フレームワークが body をパースする前に処理する）</li>
+<li><strong>冪等性</strong>: 同じイベントが再送されても<strong>二重発行しない</strong>（処理済みイベント ID を覚える等）</li>
+<li><strong>email の不一致</strong>で「マイページに出ない」が起きやすい（上記の紐付けを参照）</li>
+</ul>
+
+<blockquote>
+<p>✅ <strong>完了の定義</strong>: テストカードで購入 → <strong>マイページにライセンスが表示</strong>される／同一イベント再送で<strong>二重発行されない</strong>。</p>
+</blockquote>
+
+<hr>
+
+<h2 id="s8">[8] ID 連携機能の実装（Clerk）</h2>
+<p><strong>お題</strong>: ログイン必須のマイページ（未ログイン → サインインへリダイレクト）<br>
+<strong>参考実装</strong>: <code>@clerk/clerk-react</code>（フロント）＋ Hono 側でトークン検証<br>
+<strong>学び</strong>: JWT 検証を<strong>バックでやる理由</strong>（フロントの見た目だけの保護は無意味）</p>
+<blockquote>
+<p>Day 2 で<strong>モック認証</strong>にしておいた <code>GET /api/me</code> を、<strong>本物の Clerk 認証に差し替える</strong>課題。差し替え箇所が1か所に寄っているほど楽（本編 [3] の作りが効いてくる）。</p>
+</blockquote>
+
+<h3>サービス側の準備</h3>
+<ol>
+<li><a href="https://dashboard.clerk.com/">https://dashboard.clerk.com/</a> で <strong>Google SSO ログイン</strong></li>
+<li><strong>アプリケーションを作成</strong></li>
+<li><strong>Configure → User &amp; Authentication</strong> を開き、サインイン方法を絞る：
+  <ul>
+  <li><strong>Email の項目はすべてオフ</strong>（メール認証は使わない）</li>
+  <li><strong>SSO Connections で Google が有効</strong>になっていることを確認</li>
+  </ul>
+</li>
+<li><strong>Developers → API keys</strong> から2つのキーを取得し、<strong>置き場所を分ける</strong>（ここを間違えやすい）：
+<table>
+<thead><tr><th>キー</th><th>置き場所</th><th>性質</th></tr></thead>
+<tbody>
+<tr><td><strong>Publishable key</strong></td><td><strong>フロント</strong>の env（Vite なら <code>genmaicha_front/.env</code> に <code>VITE_CLERK_PUBLISHABLE_KEY=...</code>）</td><td>公開してよい</td></tr>
+<tr><td><strong>Secret key</strong></td><td><strong>バック</strong>の <code>genmaicha_back/.dev.vars</code></td><td>秘密。漏らさない</td></tr>
+</tbody>
+</table>
+</li>
+</ol>
+
+<h3>実装メモ</h3>
+<ul>
+<li>必要なパッケージ（フロント <code>@clerk/clerk-react</code> ／ バック <code>@hono/clerk-auth</code>）も <strong>AI が導入してくれる</strong></li>
+<li>フロントはアプリを <strong><code>&lt;ClerkProvider&gt;</code></strong> で包み、サインイン UI を置く。<strong>未ログインなら <code>/mypage</code> に入れない</strong>ようガード</li>
+<li><strong>JWT 検証は <code>@hono/clerk-auth</code> が推奨</strong>（バックでのトークン検証が一気に楽になる）</li>
+<li>バックは<strong>必ずトークンを検証</strong>してから保護 API を返す（フロントの出し分けだけでは保護にならない）</li>
+<li>Day 2 のモック認証（ヘッダ <code>x-user-email</code> を信頼）を、<strong>この Clerk トークン検証に差し替える</strong>のがゴール</li>
+</ul>
+
+<h3>⚠️ ハマりどころ</h3>
+<ul>
+<li>当日は <strong>共有（デフォルト）クレデンシャルで進めてよい</strong>が、<strong>サインイン後に Clerk 側へ戻されてループ</strong>することがある。
+  <ul><li>起きたら<strong>自分専用のアプリ（専用クレデンシャル）を作成</strong>し、Publishable / Secret キーを差し替える</li></ul>
+</li>
+<li><strong>本番（デプロイ後）でサインインが弾かれる</strong>ときは、Clerk ダッシュボードに<strong>公開ドメイン（<code>https://&lt;name&gt;.workers.dev</code>）を許可オリジンとして登録</strong>する（dev インスタンス/共有クレデンシャルでは緩いこともある）</li>
+</ul>
+
+<blockquote>
+<p>✅ <strong>完了の定義</strong>: 未ログインで <code>/mypage</code> に入れない／<code>GET /api/me</code> が<strong>認証必須</strong>（トークン無し・偽造で弾かれる）。</p>
+</blockquote>
+
+<hr>
+
+<h2 id="s9">[9] 運用保守</h2>
+<p><strong>お題</strong>: 公開後の運用を体験する（監視・ログ・障害特定・対策・コスト）<br>
+<strong>参考実装</strong>: <code>genmaicha_back/src/rate-limit.ts</code>、<code>.claude/skills/</code>（運用スキル一式）<br>
+<strong>学び</strong>: 公開後の「運用」を Claude Code のスキルで仕組み化する</p>
+
+<h3>まず: Cloudflare API トークンを用意する</h3>
+<p><code>wrangler</code> だけだと取得できる情報に制限がある。ログ集計やコスト試算には <strong>API トークン</strong>が要る。</p>
+<ol>
+<li>Cloudflare ダッシュボードの<strong>検索窓で「API」</strong>を検索 → API トークン作成画面へ</li>
+<li><strong>Create Token → 「Create Custom Token」</strong></li>
+<li>Permissions を <strong>Account / Account Analytics / Read</strong> にして作成</li>
+<li>取得したトークンを <strong><code>genmaicha_back/.dev.vars</code> に追記</strong>（例 <code>CLOUDFLARE_API_TOKEN=...</code>）</li>
+</ol>
+<blockquote>
+<p><strong>このトークンは Worker が使うのではなく、運用スキルが「shell から <code>.dev.vars</code> を読んで」使う</strong>（GraphQL を叩くため）。なので<strong>本番 secret に入れる必要はない</strong>（ローカルの <code>.dev.vars</code> にあれば十分）。トークンが無くても <strong><code>wrangler tail</code> のライブログ</strong>は見られる。集計・コスト試算だけがトークン必須。</p>
+</blockquote>
+
+<h3>運用チェックを「スキル」にする</h3>
+<p>毎回同じ確認を <strong>Claude Code のスキル（<code>.claude/skills/</code>）</strong>にしておけば、「<strong>運用チェックして</strong>」の一言で再利用できる。作ってもらうスキルは5つ：</p>
+<table>
+<thead><tr><th>#</th><th>スキル</th><th>やること</th><th>参考実装</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>インフラ障害確認</td><td>依存サービス（Cloudflare/Clerk/Stripe/Resend）の公開ステータスを確認</td><td><code>.claude/skills/infra-status/</code></td></tr>
+<tr><td>2</td><td>ログ取得</td><td>Cloudflare のログ／エラーを取得して問題がないか確認</td><td><code>.claude/skills/cf-log-check/</code></td></tr>
+<tr><td>3</td><td>障害箇所の特定</td><td>ログ・直近デプロイをソースと突き合わせて原因を絞る</td><td><code>.claude/skills/fault-localize/</code></td></tr>
+<tr><td>4</td><td>対策・回避策</td><td>ログ内容から恒久対策・暫定ワークアラウンドを出す</td><td><code>.claude/skills/remediate/</code></td></tr>
+<tr><td>5</td><td>コストモニタリング</td><td>requests / CPU 時間からコストを試算</td><td><code>.claude/skills/cost-monitor/</code></td></tr>
+</tbody>
+</table>
+<blockquote>
+<p>5つを一気通貫で回す<strong>統合スキル <code>ops-check</code></strong> もある（<code>.claude/skills/ops-check/</code>）。本リポジトリの参考実装は玄米茶用にチューニング済み。<strong>自分のサービス向けに直して使う</strong>。</p>
+</blockquote>
+
+<h3>手順</h3>
+<ol>
+<li>API トークンを用意（無い人は <code>wrangler tail</code> だけでもOK）</li>
+<li>スキルを作ってもらう（or 参考実装を調整）→ <strong>「運用チェックして」で実際に動くか確認</strong></li>
+<li>KV を使った IP レート制限を入れ、<strong>429 を返すことをテストで証明</strong></li>
+</ol>
+
+<h3>⚠️ ハマりどころ</h3>
+<ul>
+<li><strong>Account Analytics（GraphQL）は API トークン必須</strong>。ライブログ（<code>wrangler tail</code>）はトークン不要</li>
+<li>ログに<strong>個人情報を出さない</strong>（本編 [3] の禁止事項）</li>
+</ul>
+
+<blockquote>
+<p>✅ <strong>完了の定義</strong>: レート制限が <strong>429 を返すことをテストで証明</strong>できる（余裕があれば運用スキルが一通り動く）。</p>
+</blockquote>
+
+<hr>
+
+<h2 id="s10">[10] セキュリティ</h2>
+<p><strong>お題</strong>: 自分のアプリをセキュリティ観点で点検し、最低1つ直す<br>
+<strong>ツール</strong>: Claude Code（<code>/security-review</code>・常時の <code>security-guidance</code>）＋ <strong>SonarCloud</strong><br>
+<strong>参考</strong>: 本リポジトリ <code>TEST.md</code> の A 系ケース（認証境界の回帰テスト一覧）<br>
+<strong>学び</strong>: 「AI が書いたコード」を自分で点検できるようになる</p>
+
+<h3>見る観点</h3>
+<ul>
+<li><strong>認証境界</strong>: 未認証／偽造 JWT で <strong>401</strong> になるか</li>
+<li><strong>IDOR</strong>: 他人の email を body に入れても<strong>無視される</strong>か（他人のデータを引けないか）</li>
+<li><strong>機密のマスク</strong>: API レスポンスに<strong>フルのライセンスキー</strong>が含まれていないか</li>
+</ul>
+
+<h3>2通りの点検を併用する</h3>
+<ul>
+<li><strong>Claude Code</strong>
+  <ul>
+  <li><code>/security-review</code> で差分・コードを点検させる</li>
+  <li>本編 0.6 で <code>security-guidance</code> を入れていれば、編集・コミットのたびに<strong>自動で点検</strong>されている</li>
+  </ul>
+</li>
+<li><strong>SonarCloud（静的解析）</strong>
+  <ol>
+  <li>点検対象を <strong><code>main</code> ブランチに push</strong>（SonarCloud は <code>main</code> / PR を解析）</li>
+  <li><a href="https://sonarcloud.io">https://sonarcloud.io</a> で <strong>GitHub SSO ログイン</strong></li>
+  <li>右上の <strong>＋ → Analyze new project</strong></li>
+  <li><strong>対象の GitHub プロジェクトを指定</strong>（初回は SonarCloud に<strong>リポジトリへのアクセス許可</strong>を求められるので、対象リポジトリを選んで許可）</li>
+  <li>解析方式は <strong>「Automatic Analysis」</strong>を選ぶと設定が楽（以後 push のたびに自動解析）</li>
+  <li>解析完了を待ち、出た指摘を <strong>AI と一緒にレビュー</strong>（意味・直し方を AI に説明させる）</li>
+  </ol>
+</li>
+</ul>
+
+<h3>⚠️ ハマりどころ</h3>
+<ul>
+<li>SonarCloud の指摘には<strong>誤検知（false positive）</strong>もある。<strong>鵜呑みにせず AI と判断</strong>する</li>
+<li>解析単位を分けたいので、<strong>専用リポジトリ</strong>を対象にするのが推奨（本編 0.7）</li>
+</ul>
+
+<blockquote>
+<p>✅ <strong>完了の定義</strong>: 見つけた問題を <strong>1つ以上修正</strong>し、<strong>回帰テストを追加</strong>する。</p>
+</blockquote>
+
+<hr>
+
+<h2 id="wrap">ラップアップへ</h2>
+<ul>
+<li>ここで追加した機能を守ってくれるのが本編 [4] のテスト。「テストがあるから大胆に拡張できた」を発表で共有する</li>
+<li>続きは <code>flow.md</code> の「ラップアップ・発表会」へ</li>
+</ul>
+
+<p class="foot">Day 3 オプション課題ガイド — AI とつくるフルスタック SaaS「玄米茶」</p>
+</article></div></body></html>
