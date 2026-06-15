@@ -5,7 +5,7 @@
 <style>
 :root{
   --bg:#faf8f2; --paper:#fffdf8; --ink:#2d2a24; --muted:#6b6453;
-  --accent:#5a7a4f; --accent-deep:#3f5a37; --gold:#c8a96a; --line:#e7e1d3;
+  --accent:#0d9488; --accent-deep:#0f766e; --gold:#c8a96a; --line:#e7e1d3;
   --code-bg:#f3efe4; --warn-bg:#fcf3e6; --warn-bd:#e3b873;
   /* Day カラー */
   --d1-bg:#eaf3fb; --d1-bd:#3a7bd5; --d1-text:#1a4a80;
@@ -44,7 +44,7 @@ h1#guide{
   border-radius:0; color:var(--muted);
 }
 h2{font-size:1.5rem; margin:2.4em 0 .7em; padding:.35em .8em;
-  border-left:6px solid var(--accent); border-radius:0 6px 6px 0; background:#f4f9f2;}
+  border-left:6px solid var(--accent); border-radius:0 6px 6px 0; background:#f0fafa;}
 h3{font-size:1.2rem; margin:1.8em 0 .5em; color:var(--accent);}
 h4{font-size:1.02rem; margin:1.4em 0 .3em; color:var(--ink);}
 p{margin:.6em 0}
@@ -78,7 +78,7 @@ blockquote.key{
 }
 blockquote.key strong{color:#9a6b1f}
 /* ✅ 完了の定義 */
-h3.done{margin:1.7em 0 .4em; padding:.45em .85em; background:#eef5ea;
+h3.done{margin:1.7em 0 .4em; padding:.45em .85em; background:#e6fafa;
   border-left:5px solid var(--accent); border-radius:0 8px 8px 0;
   color:var(--accent-deep); font-size:1.08rem;}
 /* ⚠️ ハマりどころ */
@@ -195,7 +195,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 <li><strong>各タスクの「完了条件」</strong>（これが満たせたらOK、という合格ライン）</li>
 <li><strong>AI が確実に外す「落とし穴」</strong>（Tailwind v4・wrangler の配信設定・D1/KV 作成・テスト設定 等）</li>
 </ul>
-<p>後半の「流れ」（[1]〜[5]）は <strong>推奨順序であって命令ではない</strong>。順番も粒度も変えてよい。困ったときに見る "詳細ガイド" の位置づけ。</p>
+<p>後半の「流れ」（[1]〜[5]）は <strong>[1]→[5] の順で進める</strong>。粒度は各自で変えてよい。困ったときに見る "詳細ガイド" の位置づけ。</p>
 <p>前提: 参加者は完成品コードを渡されず <strong>ゼロから自作</strong>（再現では体験価値が薄れる）。<strong>完成品も雛形も配布しない</strong>（各自のプロジェクトは別物になる前提で進める）。コードの完成形は載せない。<strong>題材は「各自が作りたい SaaS の MVP」</strong>（事前に考えてきてもらう）。資料に出てくる「玄米茶」はあくまで<strong>説明用の共通サンプル</strong>で、各自は自分の題材に読み替えて進める。</p>
 </blockquote>
 
@@ -257,7 +257,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 
 <hr>
 
-<h2 id="s0">0. ワークショップの目的・ゴール（Day 1 冒頭）</h2>
+<h2 id="s0">ワークショップの目的・ゴール（Day 1 冒頭）</h2>
 
 <h3>前提知識（この3日間で前提とすること）</h3>
 <ul>
@@ -283,8 +283,8 @@ tbody tr:nth-child(even){background:#faf7ef}
 <tbody>
 <tr><td>1</td><td>架空 SaaS の LP・マイページがブラウザで動く</td><td>Day 1</td><td>ローカルで表示確認</td></tr>
 <tr><td>2</td><td>API（ライセンス発行・問い合わせ等）が動く</td><td>Day 2</td><td>curl / 画面操作で確認</td></tr>
-<tr><td>3</td><td>Cloudflare 上に公開されている</td><td>Day 2</td><td><code>*.workers.dev</code> の URL にアクセス</td></tr>
-<tr><td>4</td><td>自動テストが通る</td><td>Day 2</td><td><code>npm test</code> がグリーン</td></tr>
+<tr><td>3</td><td>自動テストが通る</td><td>Day 2</td><td><code>npm test</code> がグリーン</td></tr>
+<tr><td>4</td><td>Cloudflare 上に公開されている</td><td>Day 2</td><td><code>*.workers.dev</code> の URL にアクセス</td></tr>
 <tr><td>5</td><td>（任意）オプション機能を追加して発表する</td><td>Day 3</td><td>最終発表会</td></tr>
 </tbody>
 </table>
@@ -392,7 +392,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 
 <hr>
 
-<h2 id="s05">0.5 使う技術の紹介（Day 1 冒頭）</h2>
+<h2 id="s05">使う技術の紹介（Day 1 冒頭）</h2>
 <blockquote>
 <p>資料では1技術1スライド程度。「なぜこれを選ぶか」を一言添える。<strong>各日2時間と短いので、技術紹介は要点のみ・手短に</strong>（深掘りは各自で。Day 1 は早めに手を動かし始める）。</p>
 </blockquote>
@@ -464,7 +464,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 
 <hr>
 
-<h2 id="s06">0.6 Claude Code のセキュリティ対策</h2>
+<h2 id="s06">Claude Code のセキュリティ対策</h2>
 <blockquote>
 <p>Claude Code の基本操作（起動・依頼・承認/拒否）は前提知識（0節）として扱う。ここでは <strong>AI に開発させるうえで最初に固めておきたいセキュリティ設定</strong>だけを揃える。どちらも<strong>事前準備〜Day 1 冒頭に1回</strong>やっておけば、以降のコーディングがずっと安全になる。</p>
 </blockquote>
@@ -521,7 +521,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 
 <hr>
 
-<h2 id="s07">0.7 Git の進め方（dev → main）</h2>
+<h2 id="s07">Git の進め方（dev → main）</h2>
 <blockquote>
 <p>リポジトリの置き場所は各自で決めてよいが、<strong>SonarQube に解析させる単位を分けたいので「専用の別リポジトリ」を用意するのが推奨</strong>。</p>
 </blockquote>
@@ -544,7 +544,7 @@ git merge dev          # 完成したら main へ</code></pre>
 
 <h1 id="guide">詳細ガイド（推奨フロー）</h1>
 <blockquote>
-<p>ここから先（[1]〜[5]）は <strong>「全体タスクマップ」をこなすための推奨手順と落とし穴の詳細</strong>。順番・粒度は各自で変えてよい。タイムテーブルや進行台本としても使える。</p>
+<p>ここから先（[1]〜[5]）は <strong>「全体タスクマップ」をこなすための推奨手順と落とし穴の詳細</strong>。<strong>順番は [1]→[5] の通りに進める</strong>。粒度は各自で変えてよい。タイムテーブルや進行台本としても使える。</p>
 </blockquote>
 
 <h1 id="day1">Day 1: つくる（前半）</h1>
@@ -1301,11 +1301,11 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
   <ul>
     <li><a href="#s-map">全体マップ</a></li>
     <li><a href="#s-time">タイムテーブル目安</a></li>
-    <li><a href="#s0">0. ワークショップの目的・ゴール</a></li>
+    <li><a href="#s0">ワークショップの目的・ゴール</a></li>
     <li><a href="#s-tasks">全体タスクマップ</a></li>
-    <li><a href="#s05">0.5 使う技術の紹介</a></li>
-    <li><a href="#s06">0.6 セキュリティ対策</a></li>
-    <li><a href="#s07">0.7 Git の進め方</a></li>
+    <li><a href="#s05">使う技術の紹介</a></li>
+    <li><a href="#s06">セキュリティ対策</a></li>
+    <li><a href="#s07">Git の進め方</a></li>
   </ul>
   <p class="toc-group-label toc-d1">Day 1 ― つくる（前半）</p>
   <ul>
