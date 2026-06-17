@@ -50,7 +50,7 @@
 |---|---|
 | 0:00–0:10 | 前回振り返り・キャッチアップ |
 | 0:10–1:05 | [3] バック作成（API 実装 → フロント結合 → 配信一本化） |
-| 1:05–1:35 | [4] 自動テスト（**最低1ケース緑**にする） |
+| 1:05–1:35 | [4] 自動テスト（複数層をカバー: バリデーション／API／E2E 最低1本ずつ） |
 | 1:35–1:55 | [5] デプロイ 🎉 |
 | 1:55–2:00 | クロージング: 到達確認・Day 3 課題選択（やる人だけ） |
 
@@ -737,7 +737,7 @@ export default defineWorkersConfig(async () => {
 - 自分の **`https://<name>.workers.dev` にブラウザでアクセスして LP が表示**される
 - 本番 URL で `/mypage` 等のルーティングも 404 にならず動く
 - （API を使う画面が）本番でも動作する
-- （余裕があれば）公開した本番 URL に**軽くスモークアクセス**して、ローカルと同じ挙動かを確認
+- （余裕があれば）公開した本番 URL で**トップページ・`/mypage`・API を1つ**ブラウザで開き、ローカルと同じ挙動か目視確認する
 
 ### Day 2 クロージング
 
@@ -749,6 +749,14 @@ export default defineWorkersConfig(async () => {
 ---
 
 # Day 3: 育てる（オプション課題 + 発表会）
+
+| # | タスク | 難易度 |
+|---|---|---|
+| **[6]** | メール（Resend） | ★☆☆ |
+| **[7]** | 決済（Stripe） | ★★★ |
+| **[8]** | ID 連携（Clerk） | ★★☆ |
+| **[9]** | 運用保守 | ★★☆ |
+| **[10]** | セキュリティ | ★★★ |
 
 > Day 3 は選択式。各課題は「お題 + 参考実装の場所 + 完了条件」だけ提示し、
 > 進め方は各自が Claude Code と相談して決める（= 実務に一番近い演習）。
@@ -776,7 +784,7 @@ export default defineWorkersConfig(async () => {
 
 ---
 
-## [6] メール機能の実装（Resend）
+## [6] メール機能の実装（Resend） ★☆☆
 
 **お題**: 問い合わせ通知メール／ライセンスキー送付メールを実装する
 **参考実装**: `genmaicha_back/src/email.ts` ／ **学び**: 外部 API 連携の基本形・Secrets 管理
@@ -797,6 +805,9 @@ export default defineWorkersConfig(async () => {
   - 「自分宛に届く」を確認するには十分
 - **独自ドメインからの送信は任意**（やりたい人だけ、デプロイ後に DNS を設定）
 
+> **API キー作成時のスコープ設定について（本ワークショップでの方針）**  
+> Resend の API キー作成画面では「Sending domain」を絞り込めますが、**本ワークショップでは "All domains" を選んで作成してください**。独自ドメインを別途追加・DNS 検証しないと特定ドメインのキーが発行できず、手順が止まってしまいます。
+
 ### 実装〜確認
 
 - From / To をどうするかも含めて AI に相談し、まず**ローカルで往復**させる
@@ -810,11 +821,11 @@ export default defineWorkersConfig(async () => {
 
 ---
 
-## [7] 決済機能の実装（Stripe）
+## [7] 決済機能の実装（Stripe） ★★★
 
 **お題**: プラン購入（Stripe Checkout）→ Webhook でライセンス自動発行
 **参考実装**: `genmaicha_back/src/stripe.ts` / `license.ts`
-**学び**: Webhook の冪等性（再送で二重発行しない）・署名検証
+**学び**: Webhook の二重発行防止（同じイベントが再送されてもライセンスを1件だけ出す）・署名検証
 
 > Day 2 で「自前発行」していたライセンスを、**決済イベント起点の自動発行**に置き換える課題。
 > 手順が多いので **4 フェーズ**に分けて進める。
@@ -849,6 +860,8 @@ export default defineWorkersConfig(async () => {
 
 ### ③ ローカルで Webhook を検証する
 
+> **ローカル環境では Stripe から直接 Webhook が届かない**（インターネットに公開されていないため）。Stripe CLI の `stripe listen` を使って、Stripe のイベントを手元の :8787 に転送する必要がある。
+>
 > ターミナルを**2つ**使う。**バック（`npm run dev`、:8787）を起動したまま**、別ターミナルで `stripe listen` を動かす。
 
 1. 別ターミナルで **Stripe CLI を listen**（転送先・ポートは AI に確認。例:）
@@ -860,6 +873,7 @@ export default defineWorkersConfig(async () => {
 2. listen 開始時に表示される **Webhook 署名シークレット（`whsec_...`）を `.dev.vars` にセット**して `npm run dev` を再起動
 3. **テストカードで購入**して、購入 → Webhook 受信 → ライセンス発行までローカルで通す
    - テストカード番号は **`4242 4242 4242 4242`**（有効期限＝未来の任意の日付／CVC＝任意の3桁）
+   - **テストモードのため実際の課金は行われない**
 
 ### ④ 本番（デプロイ後）に Webhook を設定する
 
@@ -882,7 +896,7 @@ export default defineWorkersConfig(async () => {
 
 - **署名シークレットはローカル（③）と本番（④）で別物**。混同しない
 - **署名検証**は「生のリクエストボディ」で行う（フレームワークが body をパースする前に処理する）
-- **冪等性**: 同じイベントが再送されても**二重発行しない**（処理済みイベント ID を覚える等）
+- **二重発行防止**: Stripe は同じイベントを複数回送ってくることがある。同じ購入イベントが2回届いても**ライセンスを1件だけ発行**するように実装する（処理済みのイベント ID を記録して、既に処理済みなら無視する）
 - **email の不一致**で「マイページに出ない」が起きやすい（上記の紐付けを参照）
 
 ### ✅ 完了の定義
@@ -891,7 +905,7 @@ export default defineWorkersConfig(async () => {
 
 ---
 
-## [8] ID 連携機能の実装（Clerk）
+## [8] ID 連携機能の実装（Clerk） ★★☆
 
 **お題**: ログイン必須のマイページ（未ログイン → サインインへリダイレクト）
 **参考実装**: `@clerk/clerk-react`（フロント）＋ Hono 側でトークン検証
@@ -905,7 +919,9 @@ export default defineWorkersConfig(async () => {
 1. <https://dashboard.clerk.com/> で **Google SSO ログイン**
 2. **アプリケーションを作成**
 3. **Configure → User & Authentication** を開き、サインイン方法を絞る：
-   - **Email の項目はすべてオフ**（メール認証は使わない）
+   - **Email タブ → "Sign-up with email" と "Sign-in with email" の両方をオフ**（メール認証は使わない）  
+     **2つとも下げる必要がある**ので注意（どちらか片方だけでは不十分）  
+     ![Clerk の User & Authentication 画面 — Sign-up with email と Sign-in with email の両トグルがオフになっている](img/ClerkDisableEmail.png)
    - **SSO Connections で Google が有効**になっていることを確認
 4. **Developers → API keys** から2つのキーを取得し、**置き場所を分ける**（ここを間違えやすい）：
 
@@ -934,7 +950,7 @@ export default defineWorkersConfig(async () => {
 
 ---
 
-## [9] 運用保守
+## [9] 運用保守 ★★☆
 
 **お題**: 公開後の運用を体験する（監視・ログ・障害特定・対策・コスト）
 **参考実装**: `genmaicha_back/src/rate-limit.ts`、`.claude/skills/`（運用スキル一式）
@@ -985,7 +1001,7 @@ export default defineWorkersConfig(async () => {
 
 ---
 
-## [10] セキュリティ
+## [10] セキュリティ ★★★
 
 **お題**: 自分のアプリをセキュリティ観点で点検し、最低1つ直す
 **ツール**: Claude Code（`/security-review`・常時の `security-guidance`）＋ **SonarCloud**

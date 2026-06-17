@@ -37,12 +37,6 @@ h1[id^="day"]{
 h1#day1{background:var(--d1-bg); border-top:4px solid var(--d1-bd); border-bottom:1px solid #c0d8f0; color:var(--d1-text);}
 h1#day2{background:var(--d2-bg); border-top:4px solid var(--d2-bd); border-bottom:1px solid #f0d8a0; color:var(--d2-text);}
 h1#day3{background:var(--d3-bg); border-top:4px solid var(--d3-bd); border-bottom:1px solid #d8c8f0; color:var(--d3-text);}
-/* 詳細ガイド区切り */
-h1#guide{
-  font-size:1.2rem; margin:3em -56px 1.4em; padding:.55em 56px;
-  background:#f0ede4; border-top:2px solid var(--line); border-bottom:1px solid var(--line);
-  border-radius:0; color:var(--muted);
-}
 h2{font-size:1.5rem; margin:2.4em 0 .7em; padding:.35em .8em;
   border-left:6px solid var(--accent); border-radius:0 6px 6px 0; background:#f0fafa;}
 h3{font-size:1.2rem; margin:1.8em 0 .5em; color:var(--accent);}
@@ -88,8 +82,9 @@ h3.warn{margin:1.7em 0 .4em; padding:.45em .85em; background:var(--danger-bg);
 .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1.1em 0;}
 table{border-collapse:collapse; width:100%; margin:0; font-size:.93rem;
   background:#fff; border:1px solid var(--line); border-radius:10px; overflow:hidden;}
-th,td{padding:10px 13px; border:1px solid var(--line); text-align:left; vertical-align:top; white-space:nowrap;}
-td:nth-child(3),th:nth-child(3){white-space:normal;min-width:180px;}
+th,td{padding:10px 13px; border:1px solid var(--line); text-align:left; vertical-align:top; white-space:normal;}
+td:first-child,th:first-child{white-space:nowrap;}
+.diff{font-size:.82rem;margin-left:.45em;opacity:.8;letter-spacing:.05em;}
 thead th{background:var(--accent); color:#fff; font-weight:600; border-color:var(--accent);}
 tbody tr:nth-child(even){background:#faf7ef}
 .badge{display:inline-block;background:var(--gold);color:#fff;font-size:.72rem;
@@ -209,7 +204,7 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
   box-shadow:0 8px 60px rgba(0,0,0,.6);object-fit:contain;}
 @media(max-width:640px){
   article{padding:30px 20px}
-  h1[id^="day"],h1#guide{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px;}
+  h1[id^="day"]{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px;}
   .toc ul{columns:1}
   .wrap{padding:28px 12px 80px}
 }
@@ -280,7 +275,7 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 <tbody>
 <tr><td>0:00–0:10</td><td>前回振り返り・キャッチアップ</td></tr>
 <tr><td>0:10–1:05</td><td>[3] バック作成（API 実装 → フロント結合 → 配信一本化）</td></tr>
-<tr><td>1:05–1:35</td><td>[4] 自動テスト（<strong>最低1ケース緑</strong>にする）</td></tr>
+<tr><td>1:05–1:35</td><td>[4] 自動テスト（複数層をカバー: バリデーション／API／E2E 最低1本ずつ）</td></tr>
 <tr><td>1:35–1:55</td><td>[5] デプロイ 🎉</td></tr>
 <tr><td>1:55–2:00</td><td>クロージング: 到達確認・Day 3 課題選択（やる人だけ）</td></tr>
 </tbody>
@@ -412,13 +407,13 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 
 <h3>Option（Day 3・選択式・必須ではない）</h3>
 <table>
-<thead><tr><th>#</th><th>タスク</th><th>成果物 / 完了条件</th></tr></thead>
+<thead><tr><th>#</th><th>タスク</th><th>難易度</th><th>成果物 / 完了条件</th></tr></thead>
 <tbody>
-<tr><td><strong>[6]</strong></td><td>メール（Resend）</td><td>問い合わせ/ライセンス送付メール。自分宛に届く ＋ 連投で 429</td></tr>
-<tr><td><strong>[7]</strong></td><td>決済（Stripe）</td><td>Stripe Checkout → Webhook で自動発行。テストカードでマイページにキー表示</td></tr>
-<tr><td><strong>[8]</strong></td><td>ID 連携（Clerk）</td><td>Clerk。未ログインで <code>/mypage</code> 不可・<code>/api/me</code> 認証必須</td></tr>
-<tr><td><strong>[9]</strong></td><td>運用保守</td><td><code>wrangler tail</code>／KV レート制限が 429 を返すテスト</td></tr>
-<tr><td><strong>[10]</strong></td><td>セキュリティ</td><td>認証境界・IDOR・機密マスクの点検。Claude Code のセキュリティレビュー＋SonarQube。問題1つ修正＋回帰テスト追加</td></tr>
+<tr><td><strong>[6]</strong></td><td>メール（Resend）</td><td>★☆☆</td><td>問い合わせ/ライセンス送付メール。自分宛に届く ＋ 連投で 429</td></tr>
+<tr><td><strong>[7]</strong></td><td>決済（Stripe）</td><td>★★★</td><td>Stripe Checkout → Webhook で自動発行。テストカードでマイページにキー表示</td></tr>
+<tr><td><strong>[8]</strong></td><td>ID 連携（Clerk）</td><td>★★☆</td><td>Clerk。未ログインで <code>/mypage</code> 不可・<code>/api/me</code> 認証必須</td></tr>
+<tr><td><strong>[9]</strong></td><td>運用保守</td><td>★★☆</td><td><code>wrangler tail</code>／KV レート制限が 429 を返すテスト</td></tr>
+<tr><td><strong>[10]</strong></td><td>セキュリティ</td><td>★★★</td><td>認証境界・IDOR・機密マスクの点検。Claude Code のセキュリティレビュー＋SonarQube。問題1つ修正＋回帰テスト追加</td></tr>
 </tbody>
 </table>
 <blockquote>
@@ -572,8 +567,6 @@ git merge dev          # 完成したら main へ</code></pre>
 </ul>
 
 <hr>
-
-<h1 id="guide">詳細ガイド（推奨フロー）</h1>
 
 <h1 id="day1">Day 1: つくる（前半）</h1>
 
@@ -978,7 +971,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <li>自分の <strong><code>https://&lt;name&gt;.workers.dev</code> にブラウザでアクセスして LP が表示</strong>される</li>
 <li>本番 URL で <code>/mypage</code> 等のルーティングも 404 にならず動く</li>
 <li>（API を使う画面が）本番でも動作する</li>
-<li>（余裕があれば）公開した本番 URL に<strong>軽くスモークアクセス</strong>して、ローカルと同じ挙動かを確認</li>
+<li>（余裕があれば）公開した本番 URL で<strong>トップページ・<code>/mypage</code>・API を1つ</strong>ブラウザで開き、ローカルと同じ挙動か目視確認する</li>
 </ul>
 
 <h3>Day 2 クロージング</h3>
@@ -991,6 +984,17 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <hr>
 
 <h1 id="day3">Day 3: 育てる（オプション課題 + 発表会）</h1>
+
+<table>
+<thead><tr><th>#</th><th>タスク</th><th>難易度</th><th>詳細へ</th></tr></thead>
+<tbody>
+<tr><td><strong>[6]</strong></td><td>メール（Resend）</td><td>★☆☆</td><td><a href="#s6">→ [6] メール</a></td></tr>
+<tr><td><strong>[7]</strong></td><td>決済（Stripe）</td><td>★★★</td><td><a href="#s7">→ [7] 決済</a></td></tr>
+<tr><td><strong>[8]</strong></td><td>ID 連携（Clerk）</td><td>★★☆</td><td><a href="#s8">→ [8] ID 連携</a></td></tr>
+<tr><td><strong>[9]</strong></td><td>運用保守</td><td>★★☆</td><td><a href="#s9">→ [9] 運用保守</a></td></tr>
+<tr><td><strong>[10]</strong></td><td>セキュリティ</td><td>★★★</td><td><a href="#s10">→ [10] セキュリティ</a></td></tr>
+</tbody>
+</table>
 
 <h2 id="common">まず全課題に共通すること</h2>
 <ul>
@@ -1019,7 +1023,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 
 <hr>
 
-<h2 id="s6">[6] メール機能の実装（Resend）</h2>
+<h2 id="s6">[6] メール機能の実装（Resend）<span class="diff">★☆☆</span></h2>
 <p><strong>お題</strong>: 問い合わせ通知メール／ライセンスキー送付メールを実装する<br>
 <strong>学び</strong>: 外部 API 連携の基本形・Secrets 管理</p>
 
@@ -1035,12 +1039,16 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <ul>
 <li><strong>動作確認は Resend のテスト用アドレス <code>onboarding@resend.dev</code> を From に使う</strong>
   <ul>
-  <li>この From は<strong>ドメイン検証なしで送れる</strong>が、宛先は<strong>自分（アカウントの登録メール）に限られる</strong>。別のアドレスに送ると Resend が拒否するので注意</li>
+  <li>この From は<strong>ドメイン検証なしで送れる</strong>が、<strong>宛先は Resend に登録したアカウントのメールアドレス1つだけ</strong>に限られる。それ以外のアドレスに送ると Resend がエラーを返す</li>
   <li>「自分宛に届く」を確認するには十分</li>
   </ul>
 </li>
 <li><strong>独自ドメインからの送信は任意</strong>（やりたい人だけ、デプロイ後に DNS を設定）</li>
 </ul>
+<blockquote>
+<p><strong>API キー作成時のスコープ設定について（本ワークショップでの方針）</strong><br>
+Resend の API キー作成画面では「Sending domain」を絞り込めますが、<strong>本ワークショップでは "All domains" を選んで作成してください</strong>。独自ドメインを別途追加・DNS 検証しないと特定ドメインのキーが発行できず、手順が止まってしまいます。</p>
+</blockquote>
 
 <h3>実装〜確認</h3>
 <ul>
@@ -1055,10 +1063,10 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 
 <hr>
 
-<h2 id="s7">[7] 決済機能の実装（Stripe）</h2>
+<h2 id="s7">[7] 決済機能の実装（Stripe）<span class="diff">★★★</span></h2>
 <p><strong>お題</strong>: プラン購入（Stripe Checkout）→ Webhook でライセンス自動発行<br>
 <strong>参考実装</strong>: <code>genmaicha_back/src/stripe.ts</code> / <code>license.ts</code><br>
-<strong>学び</strong>: Webhook の冪等性（再送で二重発行しない）・署名検証</p>
+<strong>学び</strong>: Webhook の二重発行防止（同じイベントが再送されてもライセンスを1件だけ出す）・署名検証</p>
 <figure class="diagram">
 <img src="img/stripe_flow.svg" alt="Stripe 決済フロー: ブラウザ→Hono API→Stripe Checkout→Webhook→D1保存→/success→マイページ表示">
 </figure>
@@ -1104,6 +1112,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 
 <h3>③ ローカルで Webhook を検証する</h3>
 <blockquote>
+<p><strong>ローカル環境では Stripe から直接 Webhook が届かない</strong>（インターネットに公開されていないため）。Stripe CLI の <code>stripe listen</code> を使って、Stripe のイベントを手元の :8787 に転送する必要がある。</p>
 <p>ターミナルを<strong>2つ</strong>使う。<strong>バック（<code>npm run dev</code>、:8787）を起動したまま</strong>、別ターミナルで <code>stripe listen</code> を動かす。</p>
 </blockquote>
 <ol>
@@ -1112,7 +1121,10 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 </li>
 <li>listen 開始時に表示される <strong>Webhook 署名シークレット（<code>whsec_...</code>）を <code>.dev.vars</code> にセット</strong>して <code>npm run dev</code> を再起動（<code>stripe listen</code> は止めなくてよい。バックのターミナルだけ Ctrl+C → 再起動）</li>
 <li><strong>テストカードで購入</strong>して、購入 → Webhook 受信 → ライセンス発行までローカルで通す
-  <ul><li>テストカード番号は <strong><code>4242 4242 4242 4242</code></strong>（有効期限＝未来の任意の日付／CVC＝任意の3桁）</li></ul>
+  <ul>
+  <li>テストカード番号は <strong><code>4242 4242 4242 4242</code></strong>（有効期限＝未来の任意の日付／CVC＝任意の3桁）</li>
+  <li><strong>テストモードのため実際の課金は行われない</strong>。本物のカードを入れても安全だが、テストカードを使うのが確実</li>
+  </ul>
 </li>
 </ol>
 
@@ -1154,7 +1166,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <ul>
 <li><strong>署名シークレットはローカル（③）と本番（④）で別物</strong>。混同しない</li>
 <li><strong>署名検証</strong>は「生のリクエストボディ」で行う（フレームワークが body をパースする前に処理する）</li>
-<li><strong>冪等性</strong>: 同じイベントが再送されても<strong>二重発行しない</strong>（処理済みイベント ID を覚える等）</li>
+<li><strong>二重発行防止</strong>: Stripe は同じイベントを複数回送ってくることがある。同じ購入イベントが2回届いても<strong>ライセンスを1件だけ発行</strong>するように実装する（処理済みのイベント ID を記録して、既に処理済みなら無視する）</li>
 <li><strong>email の不一致</strong>で「マイページに出ない」が起きやすい（上記の紐付けを参照）</li>
 </ul>
 
@@ -1163,7 +1175,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 
 <hr>
 
-<h2 id="s8">[8] ID 連携機能の実装（Clerk）</h2>
+<h2 id="s8">[8] ID 連携機能の実装（Clerk）<span class="diff">★★☆</span></h2>
 <p><strong>お題</strong>: ログイン必須のマイページ（未ログイン → サインインへリダイレクト）<br>
 <strong>参考実装</strong>: <code>@clerk/clerk-react</code>（フロント）＋ Hono 側でトークン検証<br>
 <strong>学び</strong>: JWT 検証を<strong>バックでやる理由</strong>（フロントの見た目だけの保護は無意味）</p>
@@ -1177,7 +1189,12 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <li><strong>アプリケーションを作成</strong></li>
 <li><strong>Configure → User &amp; Authentication</strong> を開き、サインイン方法を絞る：
   <ul>
-  <li><strong>Email の項目はすべてオフ</strong>（メール認証は使わない）</li>
+  <li><strong>Email タブ → "Sign-up with email" と "Sign-in with email" の両方をオフ</strong>（メール認証は使わない）<br>
+  <strong>2つとも下げる必要がある</strong>ので注意（どちらか片方だけでは不十分）：
+  <figure class="diagram">
+  <img src="img/ClerkDisableEmail.png" alt="Clerk の User &amp; Authentication 画面 — Sign-up with email と Sign-in with email の両トグルがオフになっている">
+  </figure>
+  </li>
   <li><strong>SSO Connections で Google が有効</strong>になっていることを確認</li>
   </ul>
 </li>
@@ -1216,7 +1233,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 
 <hr>
 
-<h2 id="s9">[9] 運用保守</h2>
+<h2 id="s9">[9] 運用保守<span class="diff">★★☆</span></h2>
 <p><strong>お題</strong>: 公開後の運用を体験する（監視・ログ・障害特定・対策・コスト）<br>
 <strong>参考実装</strong>: <code>genmaicha_back/src/rate-limit.ts</code>、<code>.claude/skills/</code>（運用スキル一式）<br>
 <strong>学び</strong>: 公開後の「運用」を Claude Code のスキルで仕組み化する</p>
@@ -1267,7 +1284,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 
 <hr>
 
-<h2 id="s10">[10] セキュリティ</h2>
+<h2 id="s10">[10] セキュリティ<span class="diff">★★★</span></h2>
 <p><strong>お題</strong>: 自分のアプリをセキュリティ観点で点検し、最低1つ直す<br>
 <strong>ツール</strong>: Claude Code（<code>/security-review</code>・常時の <code>security-guidance</code>）＋ <strong>SonarCloud</strong><br>
 <strong>参考</strong>: 本リポジトリ <code>TEST.md</code> の A 系ケース（認証境界の回帰テスト一覧）<br>
@@ -1428,20 +1445,27 @@ darkBtn.addEventListener('click',()=>{
 });
 
 // 上下キーでセクション（h1・h2）間を移動
-const headings=()=>[...document.querySelectorAll('article h1, article h2')];
+// navIdx でインデックスを記憶し、アニメーション中の getBCR ズレを回避する
+const getHeadings=()=>[...document.querySelectorAll('article h1, article h2')];
+let navIdx=null, navTimer;
 document.addEventListener('keydown',e=>{
   if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
   if(e.key!=='ArrowDown'&&e.key!=='ArrowUp') return;
   e.preventDefault();
-  const hs=headings();
-  const scrollY=window.scrollY+8;
-  if(e.key==='ArrowDown'){
-    const next=hs.find(h=>h.getBoundingClientRect().top+window.scrollY>scrollY);
-    if(next) next.scrollIntoView({behavior:'smooth',block:'start'});
-  } else {
-    const prev=[...hs].reverse().find(h=>h.getBoundingClientRect().top+window.scrollY<scrollY-8);
-    if(prev) prev.scrollIntoView({behavior:'smooth',block:'start'});
+  clearTimeout(navTimer);
+  const hs=getHeadings();
+  if(navIdx===null){
+    // スクロール位置からインデックスを初期化（初回 or 手動スクロール後）
+    navIdx=0;
+    for(let i=0;i<hs.length;i++){
+      if(hs[i].getBoundingClientRect().top<=1) navIdx=i;
+    }
   }
+  if(e.key==='ArrowDown') navIdx=Math.min(navIdx+1,hs.length-1);
+  else navIdx=Math.max(navIdx-1,0);
+  hs[navIdx].scrollIntoView({behavior:'smooth',block:'start'});
+  // アニメーション完了後にリセット（次回は手動スクロール位置から再計算）
+  navTimer=setTimeout(()=>{ navIdx=null; },700);
 });
 
 // テーブルを横スクロールラッパーで包む
