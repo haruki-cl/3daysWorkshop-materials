@@ -1,0 +1,91 @@
+<svg width="100%" viewBox="0 0 720 260" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Git フロー図: dev → main</title>
+  <desc>dev ブランチで作業しこまめに commit/push、完成後に main へマージする流れ</desc>
+
+  <defs>
+    <marker id="arr-main" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#0d9488" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arr-dev" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#3a7bd5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arr-merge" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#0d9488" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="720" height="260" rx="16" fill="#faf8f2"/>
+
+  <!-- title -->
+  <text x="360" y="30" text-anchor="middle" font-family="Hiragino Mincho ProN,Yu Mincho,serif" font-size="16" font-weight="700" fill="#0f766e">Git の進め方（dev → main）</text>
+
+  <!-- ===== BRANCH LABELS ===== -->
+  <rect x="20" y="88" width="72" height="24" rx="6" fill="#0d9488"/>
+  <text x="56" y="104" text-anchor="middle" font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="11" font-weight="700" fill="#fff">main</text>
+
+  <rect x="20" y="148" width="72" height="24" rx="6" fill="#3a7bd5"/>
+  <text x="56" y="164" text-anchor="middle" font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="11" font-weight="700" fill="#fff">dev</text>
+
+  <!-- ===== MAIN LINE ===== -->
+  <!-- initial main commit -->
+  <circle cx="130" cy="100" r="10" fill="#0d9488" stroke="#fff" stroke-width="2"/>
+  <!-- main line (dashed until merge) -->
+  <line x1="140" y1="100" x2="590" y2="100" stroke="#0d9488" stroke-width="2" stroke-dasharray="6 4"/>
+  <!-- merge commit on main -->
+  <circle cx="600" cy="100" r="12" fill="#0d9488" stroke="#fff" stroke-width="2.5"/>
+  <text x="600" y="104" text-anchor="middle" font-size="11" fill="#fff">M</text>
+  <!-- final main commit -->
+  <circle cx="660" cy="100" r="10" fill="#0d9488" stroke="#fff" stroke-width="2"/>
+  <line x1="612" y1="100" x2="650" y2="100" stroke="#0d9488" stroke-width="2" marker-end="url(#arr-main)"/>
+
+  <!-- branch off arrow -->
+  <path d="M130 110 Q130 160 148 160" fill="none" stroke="#3a7bd5" stroke-width="2" marker-end="url(#arr-dev)"/>
+  <text x="92" y="138" text-anchor="middle" font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="9" fill="#3a7bd5">switch -c dev</text>
+
+  <!-- ===== DEV LINE ===== -->
+  <!-- dev commits -->
+  <line x1="158" y1="160" x2="560" y2="160" stroke="#3a7bd5" stroke-width="2"/>
+
+  <!-- commit 1 - Day1 -->
+  <circle cx="220" cy="160" r="10" fill="#3a7bd5" stroke="#fff" stroke-width="2"/>
+  <text x="220" y="164" text-anchor="middle" font-size="10" fill="#fff">●</text>
+
+  <!-- commit 2 - Day1 -->
+  <circle cx="300" cy="160" r="10" fill="#3a7bd5" stroke="#fff" stroke-width="2"/>
+  <text x="300" y="164" text-anchor="middle" font-size="10" fill="#fff">●</text>
+
+  <!-- commit 3 - Day2 -->
+  <circle cx="390" cy="160" r="10" fill="#3a7bd5" stroke="#fff" stroke-width="2"/>
+  <text x="390" y="164" text-anchor="middle" font-size="10" fill="#fff">●</text>
+
+  <!-- commit 4 - Day2 final -->
+  <circle cx="490" cy="160" r="10" fill="#3a7bd5" stroke="#fff" stroke-width="2"/>
+  <text x="490" y="164" text-anchor="middle" font-size="10" fill="#fff">●</text>
+
+  <!-- merge arrow from dev to main -->
+  <path d="M560 160 Q590 160 594 112" fill="none" stroke="#0d9488" stroke-width="2" marker-end="url(#arr-merge)"/>
+  <text x="592" y="142" font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="9" fill="#0f766e">merge</text>
+
+  <!-- ===== ANNOTATIONS ===== -->
+  <!-- Day 1 push -->
+  <rect x="198" y="184" width="114" height="36" rx="6" fill="#eaf3fb" stroke="#3a7bd5" stroke-width="0.8"/>
+  <text x="255" y="199" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="9" font-weight="700" fill="#1a4a80">Day 1 クロージング</text>
+  <text x="255" y="213" text-anchor="middle" font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="8" fill="#3a7bd5">git push origin dev</text>
+  <line x1="255" y1="170" x2="255" y2="184" stroke="#3a7bd5" stroke-width="1" stroke-dasharray="3 2"/>
+
+  <!-- Day 2 push -->
+  <rect x="368" y="184" width="134" height="36" rx="6" fill="#eaf3fb" stroke="#3a7bd5" stroke-width="0.8"/>
+  <text x="435" y="199" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="9" font-weight="700" fill="#1a4a80">Day 2 クロージング</text>
+  <text x="435" y="213" text-anchor="middle" font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="8" fill="#3a7bd5">git push origin dev</text>
+  <line x1="435" y1="170" x2="435" y2="184" stroke="#3a7bd5" stroke-width="1" stroke-dasharray="3 2"/>
+
+  <!-- merge label -->
+  <rect x="580" y="56" width="122" height="36" rx="6" fill="#e6fafa" stroke="#0d9488" stroke-width="0.8"/>
+  <text x="641" y="71" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="9" font-weight="700" fill="#085450">完成後に main へ</text>
+  <text x="641" y="85" text-anchor="middle" font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="8" fill="#0d9488">git merge dev</text>
+  <line x1="628" y1="92" x2="609" y2="97" stroke="#0d9488" stroke-width="1" stroke-dasharray="3 2"/>
+
+  <!-- bottom note -->
+  <rect x="20" y="228" width="680" height="22" rx="6" fill="#f5f2e8"/>
+  <text x="360" y="243" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10" fill="#6b6453">⚠️ <tspan font-weight="700" fill="#8a3010">.dev.vars などの秘密ファイルは .gitignore で除外</tspan> — コミットしない・main にも入れない</text>
+</svg>

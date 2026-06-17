@@ -94,7 +94,9 @@ tbody tr:nth-child(even){background:#faf7ef}
   padding:.1em .6em;border-radius:99px;vertical-align:middle;margin-left:.4em;}
 .toc{background:#f5f2e8;border:1px solid var(--line);border-radius:12px;padding:18px 24px;margin:0 0 36px;}
 .toc h2{margin:.1em 0 .5em;border:0;padding:0;font-size:1.05rem;color:var(--muted);background:none;}
-.toc ul{columns:2;list-style:none;padding:0;margin:0}
+.toc ul{display:grid;grid-template-columns:1fr 1fr;gap:.1em 1.2em;list-style:none;padding:0;margin:0}
+.toc li.toc-group-label{grid-column:1/-1;margin:.9em 0 .2em;}
+.toc li.toc-d2{background:#fddea0; color:var(--d2-text);}
 .toc a{text-decoration:none;color:var(--ink);font-size:.9rem}
 .toc a:hover{color:var(--accent)}
 .foot{text-align:center;color:var(--muted);font-size:.8rem;margin-top:30px}
@@ -154,7 +156,8 @@ tbody tr:nth-child(even){background:#faf7ef}
 #totop.show{opacity:1; pointer-events:auto;}
 #totop:hover{background:var(--accent-deep);}
 .diagram{margin:1.4em 0;padding:18px 16px;background:#fff;border:1px solid var(--line);border-radius:10px;text-align:center;}
-.diagram img{display:block;width:100%;max-width:620px;height:auto;margin:0 auto;}
+.diagram img{display:block;width:100%;max-width:800px;height:auto;margin:0 auto;}
+.diagram img.portrait{max-width:360px;}
 @media(max-width:640px){
   article{padding:30px 20px}
   h1[id^="day"],h1#guide{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px;}
@@ -165,25 +168,29 @@ tbody tr:nth-child(even){background:#faf7ef}
 <body><div class="wrap"><article>
 
 <nav class="toc"><h2>もくじ</h2><ul>
+<li class="toc-group-label">前提・準備</li>
 <li><a href="#s-map">全体マップ</a></li>
-<li><a href="#s0">0. ワークショップの目的・ゴール（Day 1 冒頭）</a></li>
-<li><a href="#s-tasks">全体タスクマップ</a></li>
 <li><a href="#s-time">タイムテーブル目安</a></li>
-<li><a href="#s05">0.5 使う技術の紹介（Day 1 冒頭）</a></li>
-<li><a href="#s06">0.6 Claude Code のセキュリティ対策</a></li>
+<li><a href="#s0">0. ワークショップの目的・ゴール</a></li>
+<li><a href="#s-tasks">全体タスクマップ</a></li>
+<li><a href="#s05">0.5 使う技術の紹介</a></li>
+<li><a href="#s06">0.6 セキュリティ対策</a></li>
 <li><a href="#s07">0.7 Git の進め方（dev → main）</a></li>
-<li><a href="#s1">[1] Claude Design でサイトデザイン作成</a></li>
-<li><a href="#s2">[2] Claude Code でフロント作成</a></li>
-<li><a href="#s3">[3] Claude Code でバック作成</a></li>
-<li><a href="#s4">[4] 自動テストの実装</a></li>
-<li><a href="#s5">[5] Cloudflare にデプロイ</a></li>
-<li><a href="#common">まず全課題に共通すること</a></li>
-<li><a href="#s6">[6] メール機能の実装（Resend）</a></li>
-<li><a href="#s7">[7] 決済機能の実装（Stripe）</a></li>
-<li><a href="#s8">[8] ID 連携機能の実装（Clerk）</a></li>
+<li class="toc-group-label toc-d1">Day 1 — つくる（前半）</li>
+<li><a href="#s1">[1] Claude Design でデザイン作成</a></li>
+<li><a href="#s2">[2] フロント作成</a></li>
+<li class="toc-group-label toc-d2">Day 2 — つなぐ・公開する</li>
+<li><a href="#s3">[3] バック作成</a></li>
+<li><a href="#s4">[4] 自動テスト</a></li>
+<li><a href="#s5">[5] デプロイ</a></li>
+<li class="toc-group-label toc-d3">Day 3 — 育てる（オプション）</li>
+<li><a href="#common">全課題に共通すること</a></li>
+<li><a href="#s6">[6] メール（Resend）</a></li>
+<li><a href="#s7">[7] 決済（Stripe）</a></li>
+<li><a href="#s8">[8] ID 連携（Clerk）</a></li>
 <li><a href="#s9">[9] 運用保守</a></li>
 <li><a href="#s10">[10] セキュリティ</a></li>
-<li><a href="#wrap">ラップアップ・発表会（Day 3 の最後 30 分）</a></li>
+<li><a href="#wrap">ラップアップ・発表会</a></li>
 </ul></nav>
 
 <h1 id="top">3Days ワークショップフロー: AI とつくる「自分の SaaS の MVP」</h1>
@@ -372,7 +379,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 <ul>
 <li>成果物: <code>https://&lt;name&gt;.workers.dev</code> で公開</li>
 <li>完了条件: 本番 URL で LP 表示／<code>/mypage</code> が 404 にならない</li>
-<li>落とし穴: <strong>リモート D1 マイグレーション忘れ</strong>／ビルド失敗で deploy が止まる／初回は workers.dev サブドメイン有効化</li>
+<li>落とし穴: <strong>リモート D1 マイグレーション忘れ</strong>／ビルド失敗で deploy が止まる</li>
 </ul>
 
 <h3>Option（Day 3・選択式・必須ではない）</h3>
@@ -396,6 +403,9 @@ tbody tr:nth-child(even){background:#faf7ef}
 <blockquote>
 <p>資料では1技術1スライド程度。「なぜこれを選ぶか」を一言添える。<strong>各日2時間と短いので、技術紹介は要点のみ・手短に</strong>（深掘りは各自で。Day 1 は早めに手を動かし始める）。</p>
 </blockquote>
+<figure class="diagram">
+<img src="img/tech_stack.svg" alt="技術スタック一覧: Claude Design, Claude Code, Vite+React+TS, Tailwind v4+shadcn/ui, Hono, Cloudflare Workers, D1/KV, Vitest と Day3オプション">
+</figure>
 <table>
 <thead><tr><th>カテゴリ</th><th>技術</th><th>選定理由（一言）</th></tr></thead>
 <tbody>
@@ -531,6 +541,9 @@ tbody tr:nth-child(even){background:#faf7ef}
 <li><strong>各日のクロージングで「dev に push 済みか」を必ず確認</strong>（翌日のキャッチアップが楽になる）</li>
 <li>完成したら <strong><code>dev</code> → <code>main</code> にマージ</strong>（<code>main</code> ＝ 公開・解析対象の安定版）</li>
 </ul>
+<figure class="diagram">
+<img src="img/git_flow.svg" alt="Git フロー図: dev ブランチで作業しこまめに commit/push、完成後に main へマージ">
+</figure>
 <pre><code>git switch -c dev      # 最初に dev を切る
 # … dev で実装・こまめに commit / push …
 git switch main
@@ -569,13 +582,23 @@ git merge dev          # 完成したら main へ</code></pre>
   <li>最初の1案でなんとなく進めず、<strong>3案を見比べてから決める</strong>（選択肢を見てから選ぶのが AI 活用のコツ）</li>
   <li>演習: どれを・なぜ選んだかを隣の人と見せ合う</li>
   </ul>
+  <figure class="diagram">
+  <img src="img/ClaudeDesign3p.png" alt="Claude Design で3案が横並びに表示されている画面">
+  </figure>
 </li>
-<li><strong>トーン・配色・アクセントは画面上部タブの「Tweaks」から後で調整できる</strong>（プロンプトに盛り込まなくても、触って変えられる）</li>
+<li><strong>トーン・配色・アクセントは画面上部タブの「Tweaks」から後で調整できる</strong>（プロンプトに盛り込まなくても、触って変えられる）
+  <figure class="diagram">
+  <img src="img/ClaudeDesignTweek.png" alt="Claude Design の Tweaks パネル（カラーテーマ選択）" class="portrait">
+  </figure>
+</li>
 <li><strong>時間短縮のコツ: 最初は他ページを盛らず LP だけで3案 → 1つ選ぶ → そのあとに他ページ（マイページ・問い合わせ・サクセス）を追加生成する</strong>
   <ul><li>選んだデザインシステムが流用されるので、追加ページの生成は速い</li></ul>
 </li>
 <li>仕上がったデザイン（UX 案を含む）は <strong>Claude Design の Project を zip でエクスポート</strong>しておく
   <ul><li>→ これを [2] でそのまま Claude Code に渡す。<strong>色やフォントを別途テキストで言語化する必要はない</strong>（デザインそのものを渡す方が早くて正確）</li></ul>
+  <figure class="diagram">
+  <img src="img/ClaudeDesignShareZip.png" alt="Claude Design のエクスポート画面（Project archive .zip を選択）" class="portrait">
+  </figure>
 </li>
 </ol>
 
@@ -746,6 +769,9 @@ wrangler kv namespace create KV       # → id が出力される</code></pre>
   <li>本番（Cloudflare 上の D1）は<strong>別物</strong>で、[5] デプロイのときに <code>--remote</code> で改めてマイグレーションする</li>
   <li>つまり手順2で「箱（DB）は Cloudflare に作った」が、<strong>中のテーブルはローカル用・本番用で別々に作る</strong></li>
   </ul>
+  <figure class="diagram">
+  <img src="img/arch_local_vs_prod.svg" alt="ローカル vs 本番 アーキテクチャ図: 開発時はフロント(:5173)とバック(:8787)が分離しプロキシで通信、本番はCloudflare Worker一本で配信">
+  </figure>
   </blockquote>
 <pre><code>npm run db:migrate:local    # 手元(ローカル)の D1 にテーブルを作る</code></pre>
 </li>
@@ -926,7 +952,6 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 
 <h3 class="warn">⚠️ ハマりどころ: 初回デプロイ</h3>
 <ul>
-<li>初めて <code>*.workers.dev</code> に出す人は、Cloudflare ダッシュ → Workers &amp; Pages で<strong>workers.dev サブドメインの有効化</strong>を一度求められることがある</li>
 <li><code>npm run deploy</code> が「フロントのビルド込み」なので、<strong>ビルドが通らないとデプロイも止まる</strong> → デプロイ前にローカルで <code>npm run build:front</code> が成功するか確認しておくと安全</li>
 <li>リモート D1 のマイグレーション（<code>db:migrate:remote</code>）を忘れると、API が「テーブルが無い」で失敗する</li>
 </ul>
@@ -1027,7 +1052,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <h3>① アカウントとキーの準備</h3>
 <ol>
 <li><a href="https://dashboard.stripe.com/login">https://dashboard.stripe.com/login</a> で <strong>Google SSO ログイン</strong></li>
-<li><strong>サンドボックス（テストモード）</strong>に切り替える（ワークショップは終始これ）</li>
+<li><strong>サンドボックス（テストモード）</strong>はデフォルトで有効（ワークショップは終始これ）</li>
 <li>必要な環境変数を AI に聞き、<code>.dev.vars.sample</code> に雛形を作る</li>
 <li><strong>Developers → API keys</strong> から <strong>Secret key（<code>sk_test_...</code>）</strong>を取得 → <code>.dev.vars</code> にセット</li>
 <li>ターミナルで <strong><code>stripe login</code></strong> し、Stripe CLI にアカウントを認証</li>
@@ -1045,9 +1070,17 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <ul>
 <li>作成後、各プランの <strong>Price ID（<code>price_...</code>）を控える</strong>
   <ul>
-  <li>商品詳細ページの「価格」欄に出る <code>price_...</code> が<strong>それ</strong>。Checkout に渡すのはこの <strong>Price ID</strong></li>
-  <li>（<code>prod_...</code> は商品そのものの ID。コードで使うのは基本 <code>price_...</code> の方）</li>
+  <li>上の手順のとおり、ワークベンチのデータマップから取得する。Checkout に渡すのはこの <strong>Price ID</strong></li>
+  <li>（<code>prod_...</code> は商品そのものの ID。コードで使うのは <code>price_...</code> の方）</li>
   </ul>
+  <figure class="diagram">
+  <img src="img/StripePrice1.png" alt="Stripe ダッシュボード下部に表示される prod_... ボタン — クリックするとワークベンチが開く">
+  <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">① 商品カタログで該当のプランを選択したのちに、下部の <code>prod_...</code> をクリック → ワークベンチが開く</figcaption>
+  </figure>
+  <figure class="diagram">
+  <img src="img/StripePrice2.png" alt="Stripe Workbench のデータマップ: Product（prod_...）配下に Price（price_...）が紐づく構造">
+  <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">② ワークベンチのデータマップで <code>Product（prod_...）</code> 配下の <code>Price（price_...）</code> を確認</figcaption>
+  </figure>
 </li>
 <li>2つの <strong>Price ID を <code>.dev.vars</code> にセット</strong>（例 <code>PRICE_MONTHLY=price_...</code> / <code>PRICE_YEARLY=price_...</code>）</li>
 </ul>
