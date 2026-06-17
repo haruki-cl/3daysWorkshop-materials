@@ -4,7 +4,7 @@
 <title>3Days ワークショップフロー — 自分の SaaS の MVP</title>
 <style>
 :root{
-  --bg:#faf8f2; --paper:#fffdf8; --ink:#2d2a24; --muted:#6b6453;
+  --bg:#d6d3ca; --paper:#fffdf8; --ink:#2d2a24; --muted:#6b6453;
   --accent:#0d9488; --accent-deep:#0f766e; --gold:#c8a96a; --line:#e7e1d3;
   --code-bg:#f3efe4; --warn-bg:#fcf3e6; --warn-bd:#e3b873;
   /* Day カラー */
@@ -85,9 +85,11 @@ h3.done{margin:1.7em 0 .4em; padding:.45em .85em; background:#e6fafa;
 h3.warn{margin:1.7em 0 .4em; padding:.45em .85em; background:var(--danger-bg);
   border-left:5px solid var(--danger-bd); border-radius:0 8px 8px 0;
   color:var(--danger-text); font-size:1.08rem;}
-table{border-collapse:collapse; width:100%; margin:1.1em 0; font-size:.93rem;
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1.1em 0;}
+table{border-collapse:collapse; width:100%; margin:0; font-size:.93rem;
   background:#fff; border:1px solid var(--line); border-radius:10px; overflow:hidden;}
-th,td{padding:10px 13px; border:1px solid var(--line); text-align:left; vertical-align:top;}
+th,td{padding:10px 13px; border:1px solid var(--line); text-align:left; vertical-align:top; white-space:nowrap;}
+td:nth-child(3),th:nth-child(3){white-space:normal;min-width:180px;}
 thead th{background:var(--accent); color:#fff; font-weight:600; border-color:var(--accent);}
 tbody tr:nth-child(even){background:#faf7ef}
 .badge{display:inline-block;background:var(--gold);color:#fff;font-size:.72rem;
@@ -155,9 +157,47 @@ tbody tr:nth-child(even){background:#faf7ef}
 }
 #totop.show{opacity:1; pointer-events:auto;}
 #totop:hover{background:var(--accent-deep);}
+/* ダークモードトグル */
+#dark-btn{
+  position:fixed; bottom:82px; right:28px;
+  width:44px; height:44px; border-radius:50%;
+  background:var(--accent); color:#fff; border:none; cursor:pointer;
+  font-size:1.2rem; box-shadow:0 4px 14px rgba(0,0,0,.18);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .2s; z-index:100;
+}
+#dark-btn:hover{background:var(--accent-deep);}
+/* ダークモード変数 */
+body.dark{
+  --bg:#1a1917; --paper:#23211e; --ink:#e8e2d8; --muted:#a09880;
+  --accent:#2dd4bf; --accent-deep:#14b8a6; --gold:#c8a96a; --line:#3a3730;
+  --code-bg:#2e2c28; --warn-bg:#2e2416; --warn-bd:#b8843a;
+  --d1-bg:#162033; --d1-bd:#3a7bd5; --d1-text:#7eb3f0;
+  --d2-bg:#2a1e08; --d2-bd:#d97706; --d2-text:#f0b84a;
+  --d3-bg:#1e1628; --d3-bd:#7c5cbf; --d3-text:#b8a0e8;
+  --danger-bg:#2a1410; --danger-bd:#dc6931; --danger-text:#f0a080;
+}
+body.dark .diagram{background:#1e1c19;}
+body.dark pre{background:#111;}
+body.dark code{color:#7dd3c8;}
+body.dark blockquote{background:#1e1c18; border-left-color:#4a4640; color:#b0a890;}
+body.dark blockquote.key{background:#241f12; border-left-color:#7a5f1a; color:#c8b888;}
+body.dark blockquote.key strong{color:#e0c070;}
+body.dark ul>li strong{color:#c8c0b0;}
+body.dark .table-wrap{background:transparent;}
+body.dark table{border-color:#3a3630;}
+body.dark th,body.dark td{border-color:#3a3630;}
+body.dark thead th{background:#1a3a38; color:#a0d8d4; border-color:#1a3a38;}
+body.dark tbody tr:nth-child(even){background:#1e1c18;}
+body.dark tbody tr:nth-child(odd){background:#181612;}
 .diagram{margin:1.4em 0;padding:18px 16px;background:#fff;border:1px solid var(--line);border-radius:10px;text-align:center;}
-.diagram img{display:block;width:100%;max-width:800px;height:auto;margin:0 auto;}
+.diagram img{display:block;width:100%;max-width:800px;height:auto;margin:0 auto;cursor:zoom-in;}
 .diagram img.portrait{max-width:360px;}
+#lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:2000;
+  cursor:zoom-out;align-items:center;justify-content:center;padding:16px;}
+#lightbox.show{display:flex;}
+#lightbox img{max-width:94vw;max-height:94vh;border-radius:10px;
+  box-shadow:0 8px 60px rgba(0,0,0,.6);object-fit:contain;}
 @media(max-width:640px){
   article{padding:30px 20px}
   h1[id^="day"],h1#guide{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px;}
@@ -224,10 +264,6 @@ tbody tr:nth-child(even){background:#faf7ef}
 <hr>
 
 <h2 id="s-time">タイムテーブル目安（各日 2 時間 × 3 日 ＝ 計 6 時間）</h2>
-<blockquote>
-<p>全体像を先につかむために<strong>最初に提示する</strong>。時刻は「開始からの経過」で表記（実際の開始時刻に読み替える）。<strong>時間が短いので分単位できつめ</strong>。詰まったら粘らず AI に丸投げ＆次へ進むのがコツ。あくまで目安で各日内で調整してよい。</p>
-</blockquote>
-
 <h3>Day 1: つくる（前半）— デザイン＋フロント</h3>
 <table>
 <thead><tr><th>経過</th><th>内容</th></tr></thead>
@@ -313,9 +349,6 @@ tbody tr:nth-child(even){background:#faf7ef}
 </ul>
 
 <h3>必須機能（作るものの最低ライン・Day 2 までに）</h3>
-<blockquote>
-<p><strong>最初にこの完成像を提示する。</strong>「何を作ればゴールか」が見えていないと迷うため。題材は変えてよいが、<strong>この5機能に相当するもの</strong>は全員が作る。</p>
-</blockquote>
 <table>
 <thead><tr><th>#</th><th>機能</th><th>中身</th><th>対応ページ</th></tr></thead>
 <tbody>
@@ -334,9 +367,6 @@ tbody tr:nth-child(even){background:#faf7ef}
 <hr>
 
 <h2 id="s-tasks">全体タスクマップ</h2>
-<blockquote>
-<p><strong>使い方</strong>: ワークショップ開始時にこの一覧を提示する。参加者は「この成果物を作る」というゴールだけ持って、<strong>進め方は Claude と相談して決める</strong>。各タスクで固定するのは <strong>成果物 / 完了条件（合格ライン）/ AI が外す落とし穴</strong> の3点だけ。[1]〜[10] の番号は後半の詳細ガイドの番号と対応する（＝この地図のどこを今やっているかが分かる）。</p>
-</blockquote>
 
 <figure class="diagram">
 <img src="img/workshop_flow_diagram.svg" alt="ワークショップフロー図: Core（[1]デザイン→[2]フロント→[3]バック→[4]自動テスト→[5]デプロイ）と Option（[6]メール/[7]決済/[8]ID連携/[9]運用保守/[10]セキュリティ）">
@@ -400,9 +430,6 @@ tbody tr:nth-child(even){background:#faf7ef}
 <hr>
 
 <h2 id="s05">使う技術の紹介（Day 1 冒頭）</h2>
-<blockquote>
-<p>資料では1技術1スライド程度。「なぜこれを選ぶか」を一言添える。<strong>各日2時間と短いので、技術紹介は要点のみ・手短に</strong>（深掘りは各自で。Day 1 は早めに手を動かし始める）。</p>
-</blockquote>
 <figure class="diagram">
 <img src="img/tech_stack.svg" alt="技術スタック一覧: Claude Design, Claude Code, Vite+React+TS, Tailwind v4+shadcn/ui, Hono, Cloudflare Workers, D1/KV, Vitest と Day3オプション">
 </figure>
@@ -556,9 +583,6 @@ git merge dev          # 完成したら main へ</code></pre>
 <hr>
 
 <h1 id="guide">詳細ガイド（推奨フロー）</h1>
-<blockquote>
-<p>ここから先（[1]〜[5]）は <strong>「全体タスクマップ」をこなすための推奨手順と落とし穴の詳細</strong>。<strong>順番は [1]→[5] の通りに進める</strong>。粒度は各自で変えてよい。タイムテーブルや進行台本としても使える。</p>
-</blockquote>
 
 <h1 id="day1">Day 1: つくる（前半）</h1>
 
@@ -984,9 +1008,6 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <hr>
 
 <h1 id="day3">Day 3: 育てる（オプション課題 + 発表会）</h1>
-<blockquote>
-<p>Day 3 は選択式。各課題は「お題 + 参考実装の場所 + 完了条件」だけ提示し、進め方は各自が Claude Code と相談して決める（= 実務に一番近い演習）。資料では各課題1〜2スライド。</p>
-</blockquote>
 
 <h2 id="common">まず全課題に共通すること</h2>
 <ul>
@@ -1372,6 +1393,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
     <li><a href="#wrap">ラップアップ・発表会</a></li>
   </ul>
 </nav>
+<button id="dark-btn" title="ダークモード切替">🌙</button>
 <button id="totop" title="ページ先頭へ" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <script>
 // ↑ ボタン
@@ -1391,5 +1413,55 @@ document.getElementById('toc-btn').addEventListener('click',openToc);
 document.getElementById('toc-overlay').addEventListener('click',closeToc);
 // リンクをクリックしたら閉じる
 panel.addEventListener('click',e=>{if(e.target.tagName==='A')closeToc();});
+
+// ダークモードトグル
+const darkBtn=document.getElementById('dark-btn');
+const applyDark=on=>{
+  document.body.classList.toggle('dark',on);
+  darkBtn.textContent=on?'☀️':'🌙';
+};
+applyDark(localStorage.getItem('dark')==='1');
+darkBtn.addEventListener('click',()=>{
+  const on=!document.body.classList.contains('dark');
+  applyDark(on);
+  localStorage.setItem('dark',on?'1':'0');
+});
+
+// 上下キーでセクション（h1・h2）間を移動
+const headings=()=>[...document.querySelectorAll('article h1, article h2')];
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  if(e.key!=='ArrowDown'&&e.key!=='ArrowUp') return;
+  e.preventDefault();
+  const hs=headings();
+  const scrollY=window.scrollY+8;
+  if(e.key==='ArrowDown'){
+    const next=hs.find(h=>h.getBoundingClientRect().top+window.scrollY>scrollY);
+    if(next) next.scrollIntoView({behavior:'smooth',block:'start'});
+  } else {
+    const prev=[...hs].reverse().find(h=>h.getBoundingClientRect().top+window.scrollY<scrollY-8);
+    if(prev) prev.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+});
+
+// テーブルを横スクロールラッパーで包む
+document.querySelectorAll('article table').forEach(t=>{
+  const w=document.createElement('div');
+  w.className='table-wrap';
+  t.parentNode.insertBefore(w,t);
+  w.appendChild(t);
+});
+
+// ライトボックス
+const lb=document.createElement('div');
+lb.id='lightbox';
+const lbImg=document.createElement('img');
+lb.appendChild(lbImg);
+document.body.appendChild(lb);
+lb.addEventListener('click',()=>lb.classList.remove('show'));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('show');});
+document.querySelectorAll('.diagram img').forEach(img=>{
+  img.addEventListener('click',()=>{lbImg.src=img.src;lb.classList.add('show');});
+});
 </script>
 </body></html>
