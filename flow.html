@@ -288,7 +288,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 <table>
 <thead><tr><th>#</th><th>ゴール</th><th>達成タイミング</th><th>確認方法</th></tr></thead>
 <tbody>
-<tr><td>1</td><td>架空 SaaS の LP・マイページがブラウザで動く</td><td>Day 1</td><td>ローカルで表示確認</td></tr>
+<tr><td>1</td><td>自分の SaaS の LP・マイページがブラウザで動く</td><td>Day 1</td><td>ローカルで表示確認</td></tr>
 <tr><td>2</td><td>API（ライセンス発行・問い合わせ等）が動く</td><td>Day 2</td><td>curl / 画面操作で確認</td></tr>
 <tr><td>3</td><td>自動テストが通る</td><td>Day 2</td><td><code>npm test</code> がグリーン</td></tr>
 <tr><td>4</td><td>Cloudflare 上に公開されている</td><td>Day 2</td><td><code>*.workers.dev</code> の URL にアクセス</td></tr>
@@ -394,7 +394,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 </tbody>
 </table>
 <blockquote>
-<p>以降の [1]〜[5] は、上のタスクを<strong>こなすときの推奨フロー＋落とし穴の詳細</strong>。<strong>順番どおりにやる必要はない</strong>。詰まったとき・確認したいときに開く詳細ガイド。</p>
+<p>以降の [1]〜[5] は、上のタスクを<strong>こなすときの推奨フロー＋落とし穴の詳細</strong>。詰まったとき・確認したいときに開く詳細ガイド。</p>
 </blockquote>
 
 <hr>
@@ -566,6 +566,10 @@ git merge dev          # 完成したら main へ</code></pre>
 <p><strong>ゴール:</strong> LP の雰囲気・カラー・セクション構成の方向性を決める（ピクセルパーフェクトなカンプは作らない）</p>
 <blockquote>
 <p><strong>アクセス</strong>: Claude Design は <strong>claude.ai にブラウザでログイン</strong>して使う（Claude Code と同じアカウント）。</p>
+</blockquote>
+<blockquote>
+<p><strong>なぜ Design.md を作らないのか</strong><br>
+UX デザインの一般的なフローは「Design.md で構造・要件を言語化 → Claude Design でビジュアライズ」だが、今回は省略している。理由は、LP・問い合わせ・マイページ・購入完了という<strong>ごく一般的な SaaS の画面構成</strong>であり、Claude Design 自体がそのパターンを熟知しているため、事前に言語化しなくても十分なアウトプットが出るから。Design.md が効くのは<strong>独自のユーザーフロー・複雑な要件・チームでの認識合わせ</strong>が必要な場合。今回はいずれも該当しないので、サービスの内容を直接伝えるだけで十分。</p>
 </blockquote>
 
 <h3>流れ</h3>
@@ -769,6 +773,13 @@ wrangler kv namespace create KV       # → id が出力される</code></pre>
   <li>本番（Cloudflare 上の D1）は<strong>別物</strong>で、[5] デプロイのときに <code>--remote</code> で改めてマイグレーションする</li>
   <li>つまり手順2で「箱（DB）は Cloudflare に作った」が、<strong>中のテーブルはローカル用・本番用で別々に作る</strong></li>
   </ul>
+  <table>
+  <thead><tr><th>タイミング</th><th>コマンド</th><th>対象</th></tr></thead>
+  <tbody>
+  <tr><td>API 実装中（今ここ）</td><td><code>npm run db:migrate:local</code></td><td>手元の D1（ローカル）</td></tr>
+  <tr><td>デプロイ直前（[5]）</td><td><code>npm run db:migrate:remote</code></td><td>Cloudflare の D1（本番）</td></tr>
+  </tbody>
+  </table>
   <figure class="diagram">
   <img src="img/arch_local_vs_prod.svg" alt="ローカル vs 本番 アーキテクチャ図: 開発時はフロント(:5173)とバック(:8787)が分離しプロキシで通信、本番はCloudflare Worker一本で配信">
   </figure>
