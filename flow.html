@@ -185,6 +185,15 @@ body.dark blockquote.key{background:#241f12; border-left-color:#7a5f1a; color:#c
 body.dark blockquote.key strong{color:#e0c070;}
 body.dark ul>li strong{color:#c8c0b0;}
 body.dark .table-wrap{background:transparent;}
+body.dark .toc{background:#1a1815; border-color:#3a3630;}
+body.dark .toc h2{color:#7a7060;}
+body.dark .toc a{color:#b8b0a0;}
+body.dark .toc a:hover{color:#7dd3c8;}
+body.dark .toc-group-label{background:#2e2b26; color:#7a7060;}
+body.dark .toc-d1{background:#1a2a3a; color:#7ab0d8;}
+body.dark .toc-d2{background:#2e2208; color:#d4a030;}
+body.dark .toc-d3{background:#221a30; color:#9878c8;}
+body.dark .diagram.keep-light{background:#f5f2e8;}
 body.dark table{border-color:#3a3630;}
 body.dark th,body.dark td{border-color:#3a3630;}
 body.dark thead th{background:#1a3a38; color:#a0d8d4; border-color:#1a3a38;}
@@ -317,7 +326,7 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 <li><strong>Claude（Design / Code）を使った開発フローを3日間で一周する</strong>
   <ul><li>「AI にどう頼むと良いものが出てくるか」の肌感をつかむ</li></ul>
 </li>
-<li>デザイン → フロント → バック → デプロイ → テスト → 機能拡張 という<strong>実務に近い開発サイクル</strong>を、駆け足ではなく<strong>自分の手で納得しながら</strong>回す</li>
+<li>デザイン → フロント → バック → テスト → デプロイ → 機能拡張 という<strong>実務に近い開発サイクル</strong>を、駆け足ではなく<strong>自分の手で納得しながら</strong>回す</li>
 </ul>
 
 <h3>ゴール（完了条件）</h3>
@@ -368,7 +377,7 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 
 <h2 id="s-tasks">全体タスクマップ</h2>
 
-<figure class="diagram">
+<figure class="diagram keep-light">
 <img src="img/workshop_flow_diagram.svg" alt="ワークショップフロー図: Core（[1]デザイン→[2]フロント→[3]バック→[4]自動テスト→[5]デプロイ）と Option（[6]メール/[7]決済/[8]ID連携/[9]運用保守/[10]セキュリティ）">
 </figure>
 <blockquote>
@@ -394,7 +403,7 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 <h4>[3] バック（API＋ライセンス発行）</h4>
 <ul>
 <li>成果物: <code>POST /api/contact</code>／<code>GET /api/me</code>（モック認証）／<code>POST /api/verify-license</code>／<strong>購入者へキーを自前発行</strong></li>
-<li>完了条件（例・自分の契約に読み替え）: <code>/</code>→200／<code>/mypage</code>→200(SPA)／<code>/api/me</code> 未認証→401／<code>/api/contact</code> 空→400／フロント結合で動く</li>
+<li>完了条件（例・自分の題材に読み替え）: <code>/</code>→200／<code>/mypage</code>→200(SPA)／<code>/api/me</code> 未認証→401／<code>/api/contact</code> 空→400／フロント結合で動く</li>
 <li>落とし穴: ① <strong>D1/KV を先に <code>wrangler … create</code> して id を <code>wrangler.toml</code> に貼る</strong> ② <code>[assets]</code> は <code>dist</code> ＋ <code>not_found_handling="single-page-application"</code> ③ 秘密は <code>.dev.vars</code>（Read 禁止設定も）</li>
 </ul>
 
@@ -1030,7 +1039,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 
 <h2 id="s6">[6] メール機能の実装（Resend）</h2>
 <p><strong>お題</strong>: 問い合わせ通知メール／ライセンスキー送付メールを実装する<br>
-<strong>参考実装</strong>: <code>genmaicha_back/src/email.ts</code> ／ <strong>学び</strong>: 外部 API 連携の基本形・Secrets 管理</p>
+<strong>学び</strong>: 外部 API 連携の基本形・Secrets 管理</p>
 
 <h3>サービス側の準備</h3>
 <ol>
@@ -1044,7 +1053,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <ul>
 <li><strong>動作確認は Resend のテスト用アドレス <code>onboarding@resend.dev</code> を From に使う</strong>
   <ul>
-  <li>この From は<strong>ドメイン検証なしで送れる</strong>が、宛先は<strong>自分（アカウントの登録メール）</strong>に限られる</li>
+  <li>この From は<strong>ドメイン検証なしで送れる</strong>が、宛先は<strong>自分（アカウントの登録メール）に限られる</strong>。別のアドレスに送ると Resend が拒否するので注意</li>
   <li>「自分宛に届く」を確認するには十分</li>
   </ul>
 </li>
@@ -1119,7 +1128,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <li>別ターミナルで <strong>Stripe CLI を listen</strong>（転送先・ポートは AI に確認。例:）
 <pre><code>stripe listen --forward-to localhost:8787/webhook/stripe</code></pre>
 </li>
-<li>listen 開始時に表示される <strong>Webhook 署名シークレット（<code>whsec_...</code>）を <code>.dev.vars</code> にセット</strong>して <code>npm run dev</code> を再起動</li>
+<li>listen 開始時に表示される <strong>Webhook 署名シークレット（<code>whsec_...</code>）を <code>.dev.vars</code> にセット</strong>して <code>npm run dev</code> を再起動（<code>stripe listen</code> は止めなくてよい。バックのターミナルだけ Ctrl+C → 再起動）</li>
 <li><strong>テストカードで購入</strong>して、購入 → Webhook 受信 → ライセンス発行までローカルで通す
   <ul><li>テストカード番号は <strong><code>4242 4242 4242 4242</code></strong>（有効期限＝未来の任意の日付／CVC＝任意の3桁）</li></ul>
 </li>
