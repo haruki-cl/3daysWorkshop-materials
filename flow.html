@@ -734,6 +734,9 @@ export default defineConfig({
 <p><strong>大事な前提：バックはフロントとは別ディレクトリ（別プロジェクト）で作る</strong><br>
 [2] のフロント（<code>genmaicha_front/</code>）とは別に、バックは <code>genmaicha_back/</code> という<strong>別ディレクトリ</strong>で作る。「画面を出す係（フロント）」と「API・DB の係（バック）」を分けるのが基本。最終的に配信は Worker 一本にまとめる（手順6）が、<strong>ソースは分けたまま</strong>。</p>
 </blockquote>
+<figure class="diagram">
+<img src="img/frontend_backend_integration.svg" alt="フロント・バック構成図: 開発時はVite(:5173)+プロキシ+Hono(:8787)、本番はWorker一本で静的アセットとAPIを統合配信">
+</figure>
 
 <h3>事前に: Cloudflare にログインする</h3>
 <p>バックはこの先 Cloudflare 上の資源（DB など）を作る・触るので、<strong>最初に CLI でログイン</strong>しておく:</p>
@@ -1076,6 +1079,9 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <p><strong>お題</strong>: プラン購入（Stripe Checkout）→ Webhook でライセンス自動発行<br>
 <strong>参考実装</strong>: <code>genmaicha_back/src/stripe.ts</code> / <code>license.ts</code><br>
 <strong>学び</strong>: Webhook の冪等性（再送で二重発行しない）・署名検証</p>
+<figure class="diagram">
+<img src="img/stripe_flow.svg" alt="Stripe 決済フロー: ブラウザ→Hono API→Stripe Checkout→Webhook→D1保存→/success→マイページ表示">
+</figure>
 <blockquote>
 <p>Day 2 で「自前発行」していたライセンスを、<strong>決済イベント起点の自動発行</strong>に置き換える課題。手順が多いので <strong>4 フェーズ</strong>に分けて進める。</p>
 </blockquote>
@@ -1140,6 +1146,18 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <li>作成後に表示される<strong>本番用の署名シークレット</strong>を取得 → <strong>Cloudflare の環境変数</strong>に投入</li>
 <li>本番で<strong>決済確認</strong></li>
 </ol>
+<figure class="diagram">
+<img src="img/StripeWebhook.png" alt="Stripe ダッシュボードの検索結果 — 「Webhook を作成」をクリック">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">① 検索窓で「webhook」と検索 → <strong>「Webhook を作成」</strong>をクリック</figcaption>
+</figure>
+<figure class="diagram">
+<img src="img/StripeWebhookCreating1.png" alt="Stripe Webhook作成 — イベントを選択する画面。「お客様のアカウント」を選びcheckout.session.completedなどを選択">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">② イベントを選択 → <strong>「お客様のアカウント」</strong>を選択し、送信するイベント（例: <code>checkout.session.completed</code>）を AI に聞いて選ぶ</figcaption>
+</figure>
+<figure class="diagram">
+<img src="img/StripeWebhookCreating2.png" alt="Stripe Webhook作成 — 送信先を設定する画面。エンドポイントURLにCloudflareのドメインを入力">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">③ 送信先を設定する → <strong>エンドポイント URL</strong> に <code>https://&lt;name&gt;.workers.dev/webhook/stripe</code> を入力して「続行」</figcaption>
+</figure>
 
 <h3>購入後の戻り先とマイページ表示（つなぎ込み）</h3>
 <ul>
@@ -1203,12 +1221,14 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <li>Day 2 のモック認証（ヘッダ <code>x-user-email</code> を信頼）を、<strong>この Clerk トークン検証に差し替える</strong>のがゴール</li>
 </ul>
 
+<blockquote class="key">
+<p><strong>本ワークショップでは専用クレデンシャル（Custom Credentials）を使用します。</strong><br>
+サインイン完了後に Clerk のページへ戻されることがありますが、<strong>これは本ワークショップにおいては正常な動作</strong>です。そのまま続行してください。</p>
+</blockquote>
+
 <h3 class="warn">⚠️ ハマりどころ</h3>
 <ul>
-<li>当日は <strong>共有（デフォルト）クレデンシャルで進めてよい</strong>が、<strong>サインイン後に Clerk 側へ戻されてループ</strong>することがある。
-  <ul><li>起きたら<strong>自分専用のアプリ（専用クレデンシャル）を作成</strong>し、Publishable / Secret キーを差し替える</li></ul>
-</li>
-<li><strong>本番（デプロイ後）でサインインが弾かれる</strong>ときは、Clerk ダッシュボードに<strong>公開ドメイン（<code>https://&lt;name&gt;.workers.dev</code>）を許可オリジンとして登録</strong>する（dev インスタンス/共有クレデンシャルでは緩いこともある）</li>
+<li><strong>本番（デプロイ後）でサインインが弾かれる</strong>ときは、Clerk ダッシュボードに<strong>公開ドメイン（<code>https://&lt;name&gt;.workers.dev</code>）を許可オリジンとして登録</strong>する</li>
 </ul>
 
 <h3 class="done">✅ 完了の定義</h3>
