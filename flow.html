@@ -244,17 +244,6 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 
 <h1 id="top">3Days ワークショップフロー: AI とつくる「自分の SaaS の MVP」</h1>
 
-<blockquote>
-<p><strong>このドキュメントの考え方</strong><br>
-実装はほぼ Claude がやる。代わりに、<strong>最初に「作るもの（タスク）」を丸ごと見せて</strong>、進め方は各自が Claude と相談して決める。資料側が固定するのは2つだけ:</p>
-<ul>
-<li><strong>各タスクの「完了条件」</strong>（これが満たせたらOK、という合格ライン）</li>
-<li><strong>AI が確実に外す「落とし穴」</strong>（Tailwind v4・wrangler の配信設定・D1/KV 作成・テスト設定 等）</li>
-</ul>
-<p>後半の「流れ」（[1]〜[5]）は <strong>[1]→[5] の順で進める</strong>。粒度は各自で変えてよい。困ったときに見る "詳細ガイド" の位置づけ。</p>
-<p>前提: 参加者は完成品コードを渡されず <strong>ゼロから自作</strong>（再現では体験価値が薄れる）。<strong>完成品も雛形も配布しない</strong>（各自のプロジェクトは別物になる前提で進める）。コードの完成形は載せない。<strong>題材は「各自が作りたい SaaS の MVP」</strong>（事前に考えてきてもらう）。資料に出てくる「玄米茶」はあくまで<strong>説明用の共通サンプル</strong>で、各自は自分の題材に読み替えて進める。</p>
-</blockquote>
-
 <h2 id="s-map">全体マップ</h2>
 <table>
 <thead><tr><th>Day</th><th>テーマ</th><th>内容</th></tr></thead>
@@ -462,7 +451,7 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 
 <h3>事前準備（参加者に事前周知）</h3>
 <blockquote>
-<p><strong>電話番号が必要なツールは無し</strong>（参加者に安心材料として伝えてよい）。</p>
+<p><strong>電話番号が必要なツールは無し</strong>。</p>
 </blockquote>
 <h4>⓪ 考えてくる</h4>
 <ul>
@@ -495,25 +484,18 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 </blockquote>
 
 <h3>環境確認タイム（Day 1 で必ず取る）</h3>
-<blockquote>
-<p><strong>時間短縮のため、ツール導入・各アカウント作成・<code>wrangler login</code> は事前準備で済ませておく</strong>。ここでは「ちゃんと動くか」の最終確認だけを手短に（詰まっている人の救済を優先）。長引かせない。</p>
-</blockquote>
 <ul>
-<li><code>node -v</code>（<strong>18 以上、できれば 20+ LTS</strong>）/ <code>git --version</code> / <code>claude --version</code> を全員で確認</li>
+<li><code>node -v</code>（<strong>18 以上、できれば 20+ LTS</strong>）/ <code>git --version</code> / <code>claude --version</code> を確認</li>
 <li><strong>Claude Code がログイン済み</strong>で起動できるか（<code>claude</code> を叩いて会話できる状態か）</li>
 <li><strong>Claude Design</strong> に claude.ai でアクセスできるか（ブラウザでログイン確認）</li>
 <li>GitHub からリポジトリを clone できるか</li>
 <li>Cloudflare に <code>wrangler login</code> 済みで、<code>wrangler whoami</code> が<strong>想定アカウント</strong>を返すか（複数アカウント持ちは特に注意）</li>
-<li>ここで詰まる人を救済してから先へ進む（3日間の安定運行のための投資）</li>
 <li>補足: wrangler 実行時に出る <code>out-of-date</code> 警告は<strong>無視して進めてOK</strong>（動作に支障なし）</li>
 </ul>
 
 <hr>
 
 <h2 id="s06">Claude Code のセキュリティ対策</h2>
-<blockquote>
-<p>Claude Code の基本操作（起動・依頼・承認/拒否）は前提知識（0節）として扱う。ここでは <strong>AI に開発させるうえで最初に固めておきたいセキュリティ設定</strong>だけを揃える。どちらも<strong>事前準備〜Day 1 冒頭に1回</strong>やっておけば、以降のコーディングがずっと安全になる。</p>
-</blockquote>
 <blockquote class="key">
 <p>大前提（3日間ずっと効く）: <strong>秘密情報（API キー・トークン）は Claude への指示にも会話にも貼らない</strong>。後述の <code>.dev.vars</code> に入れて参照させる。AI が書いたコードも<strong>読まずに承認しない</strong>。</p>
 </blockquote>
@@ -730,7 +712,7 @@ export default defineConfig({
 <ul>
 <li>各自の LP をスクリーンで何人かに見せてもらう（5分）</li>
 <li>明日は API をつないで Cloudflare に公開します</li>
-<li><strong>dev に push できているか全員で確認</strong>（環境が壊れても作業を失わないように。※完成品・雛形は配布しない方針なので、各自の保全が頼り）</li>
+<li><strong>dev に push できているか確認</strong>（環境が壊れても作業を失わないように）</li>
 </ul>
 
 <hr>
