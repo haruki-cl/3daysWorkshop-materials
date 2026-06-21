@@ -1617,7 +1617,14 @@ function showPage(pid){
   });
   navIdx=null;
   sessionStorage.setItem('activePage',pid);
-  window.scrollTo({top:0,behavior:'instant'});
+  const anchorMap={'ps-day1':'day1','ps-day2':'day2','ps-day3':'day3'};
+  const anchor=anchorMap[pid]?document.getElementById(anchorMap[pid]):null;
+  if(anchor){
+    window.scrollTo({top:0,behavior:'instant'});
+    requestAnimationFrame(()=>anchor.scrollIntoView({behavior:'instant',block:'start'}));
+  } else {
+    window.scrollTo({top:0,behavior:'instant'});
+  }
 }
 
 document.querySelectorAll('.page-btn').forEach(btn=>{
