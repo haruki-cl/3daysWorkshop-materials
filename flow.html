@@ -1583,7 +1583,8 @@ document.addEventListener('keydown',e=>{
   const hs=getHeadings();
   if(navIdx===null){
     // スクロール位置からインデックスを初期化（初回 or 手動スクロール後）
-    navIdx=0;
+    // -1 から始めることで、ページトップで↓を押すと最初の見出しへ正しく飛ぶ
+    navIdx=-1;
     for(let i=0;i<hs.length;i++){
       if(hs[i].getBoundingClientRect().top<=1) navIdx=i;
     }
