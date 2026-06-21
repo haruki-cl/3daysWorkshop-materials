@@ -1582,11 +1582,12 @@ document.addEventListener('keydown',e=>{
   clearTimeout(navTimer);
   const hs=getHeadings();
   if(navIdx===null){
-    // スクロール位置からインデックスを初期化（初回 or 手動スクロール後）
-    // -1 から始めることで、ページトップで↓を押すと最初の見出しへ正しく飛ぶ
+    // scroll-margin-top(≈45px)分だけ見出しが viewport top より下に止まるため
+    // 閾値を固定ナビの高さより少し大きい値にして正しく現在位置を検出する
+    const threshold=(document.querySelector('.page-nav')||{offsetHeight:56}).offsetHeight+16;
     navIdx=-1;
     for(let i=0;i<hs.length;i++){
-      if(hs[i].getBoundingClientRect().top<=1) navIdx=i;
+      if(hs[i].getBoundingClientRect().top<=threshold) navIdx=i;
     }
   }
   if(e.key==='ArrowDown') navIdx=Math.min(navIdx+1,hs.length-1);
