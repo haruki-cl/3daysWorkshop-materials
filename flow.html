@@ -21,7 +21,7 @@ body{
   font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,system-ui,sans-serif;
   line-height:1.85; font-size:16px;
 }
-.wrap{max-width:960px; margin:0 auto; padding:56px 28px 120px;}
+.wrap{max-width:960px; margin:0 auto; padding:56px 28px 120px; padding-top:calc(56px + 2.8em);}
 article{
   background:var(--paper); border:1px solid var(--line); border-radius:16px;
   padding:48px 56px; box-shadow:0 8px 40px rgba(60,50,30,.06);
@@ -85,12 +85,20 @@ p.warn{margin:.8em 0; padding:.75em 1.1em; background:var(--danger-bg);
 p.warn strong{color:var(--danger-text);}
 p.note{margin:.6em 0; padding:.6em 1em; background:#f5f2ea; border-left:3px solid var(--line);
   border-radius:0 6px 6px 0; font-size:.92rem; color:var(--muted);}
-/* ページ分割ナビ */
-.page-nav{display:flex;gap:.5em;flex-wrap:wrap;margin:1.2em 0 2em;padding:.7em 0;border-bottom:2px solid var(--line);}
-.page-btn{padding:.4em 1.2em;border:2px solid var(--line);border-radius:20px;background:none;cursor:pointer;
-  font-size:.92rem;font-family:inherit;color:var(--fg);transition:all .15s;}
+/* ページ分割ナビ — 画面上部固定 */
+.page-nav{
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  display:flex; justify-content:center; gap:.5em; flex-wrap:wrap;
+  padding:.55em 1em;
+  background:rgba(250,248,242,.88); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  box-shadow:0 2px 12px rgba(60,50,30,.08);
+}
+.page-btn{padding:.35em 1.1em;border:1.5px solid var(--line);border-radius:20px;background:none;cursor:pointer;
+  font-size:.88rem;font-family:inherit;color:var(--fg);transition:all .15s;}
 .page-btn:hover{border-color:var(--accent);color:var(--accent);}
 .page-btn.active{background:var(--accent-deep);color:#fff;border-color:var(--accent-deep);}
+body.dark .page-nav{background:rgba(30,28,24,.88);}
 body.dark .page-btn{color:var(--fg);}
 body.dark .page-btn.active{background:var(--accent);border-color:var(--accent);}
 .page-section{display:none;}
@@ -225,7 +233,14 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
   .wrap{padding:28px 12px 80px}
 }
 </style></head>
-<body><div class="wrap"><article>
+<body>
+<nav class="page-nav" aria-label="ページ切り替え">
+  <button class="page-btn" data-page="ps-overview">全体・準備</button>
+  <button class="page-btn" data-page="ps-day1">Day 1</button>
+  <button class="page-btn" data-page="ps-day2">Day 2</button>
+  <button class="page-btn" data-page="ps-day3">Day 3</button>
+</nav>
+<div class="wrap"><article>
 
 <nav class="toc"><h2>もくじ</h2><ul>
 <li class="toc-group-label">前提・準備</li>
@@ -252,13 +267,6 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 <li><a href="#s10">[10] セキュリティ</a></li>
 <li><a href="#wrap">ラップアップ・発表会</a></li>
 </ul></nav>
-
-<nav class="page-nav" aria-label="ページ切り替え">
-  <button class="page-btn" data-page="ps-overview">全体・準備</button>
-  <button class="page-btn" data-page="ps-day1">Day 1</button>
-  <button class="page-btn" data-page="ps-day2">Day 2</button>
-  <button class="page-btn" data-page="ps-day3">Day 3</button>
-</nav>
 
 <section class="page-section" id="ps-overview">
 <h1 id="top">3Days ワークショップフロー: AI とつくる「自分の SaaS の MVP」</h1>
