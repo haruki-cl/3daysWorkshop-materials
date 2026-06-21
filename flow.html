@@ -1575,7 +1575,8 @@ darkBtn.addEventListener('click',()=>{
 // 上下キーでセクション間を移動。手動スクロール時のみ navIdx をリセットする。
 // タイマーリセット方式だとスムーススクロール中にタイマーが切れて
 // 再初期化が狂うため、scroll イベントで管理する。
-const getHeadings=()=>[...(document.querySelector('.page-section.active')||document).querySelectorAll('h1, h2')];
+// h1#day1/2/3 はページ切り替えで自動表示済みのため矢印キー対象から除外
+const getHeadings=()=>[...(document.querySelector('.page-section.active')||document).querySelectorAll('h1, h2')].filter(h=>!/^day\d$/.test(h.id));
 let navIdx=null, keyNavActive=false, keyNavTimer;
 window.addEventListener('scroll',()=>{ if(!keyNavActive) navIdx=null; },{passive:true});
 document.addEventListener('keydown',e=>{
