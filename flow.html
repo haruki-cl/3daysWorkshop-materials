@@ -1572,18 +1572,21 @@ darkBtn.addEventListener('click',()=>{
 });
 
 // 上下キーでセクション（h1・h2）間を移動
-// navIdx でインデックスを記憶し、アニメーション中の getBCR ズレを回避する
+// 上下キーでセクション間を移動。手動スクロール時のみ navIdx をリセットする。
+// タイマーリセット方式だとスムーススクロール中にタイマーが切れて
+// 再初期化が狂うため、scroll イベントで管理する。
 const getHeadings=()=>[...(document.querySelector('.page-section.active')||document).querySelectorAll('h1, h2')];
-let navIdx=null, navTimer;
+let navIdx=null, keyNavActive=false, keyNavTimer;
+window.addEventListener('scroll',()=>{ if(!keyNavActive) navIdx=null; },{passive:true});
 document.addEventListener('keydown',e=>{
   if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
   if(e.key!=='ArrowDown'&&e.key!=='ArrowUp') return;
   e.preventDefault();
-  clearTimeout(navTimer);
+  keyNavActive=true;
+  clearTimeout(keyNavTimer);
+  keyNavTimer=setTimeout(()=>{ keyNavActive=false; },1000);
   const hs=getHeadings();
   if(navIdx===null){
-    // scroll-margin-top(≈45px)分だけ見出しが viewport top より下に止まるため
-    // 閾値を固定ナビの高さより少し大きい値にして正しく現在位置を検出する
     const threshold=(document.querySelector('.page-nav')||{offsetHeight:56}).offsetHeight+16;
     navIdx=-1;
     for(let i=0;i<hs.length;i++){
@@ -1593,8 +1596,6 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowDown') navIdx=Math.min(navIdx+1,hs.length-1);
   else navIdx=Math.max(navIdx-1,0);
   hs[navIdx].scrollIntoView({behavior:'smooth',block:'start'});
-  // アニメーション完了後にリセット（次回は手動スクロール位置から再計算）
-  navTimer=setTimeout(()=>{ navIdx=null; },700);
 });
 
 // ページ切り替え
