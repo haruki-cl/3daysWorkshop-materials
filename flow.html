@@ -666,36 +666,35 @@ export default defineConfig({
 <li>デザイン [1] の方向性が画面に反映されている</li>
 </ul>
 
-<h2 id="s3">[3] Day 1 フロントデプロイ（Cloudflare Pages）</h2>
+<h2 id="s3">[3] Day 1 フロントデプロイ（Cloudflare Workers）</h2>
 <p><strong>ゴール:</strong> フロントが完成したらすぐに公開 URL を手に入れる（バックは Day 2 で繋ぐ）</p>
 <blockquote>
-<p>Cloudflare Pages はフロント静的ファイルをそのまま公開できるサービス。今日はここでフロントだけ先にデプロイし、Day 2 に バックと統合した Workers URL に移行する。</p>
+<p>Cloudflare Workers は静的ファイルも配信できる。今日はフロントだけを Worker としてデプロイし、Day 2 で API を追加して同じ Worker に統合する。デプロイ先は最初から <code>workers.dev</code> の 1 URL に統一する。</p>
 </blockquote>
 <ol>
-<li>フロントをビルドする:
-<pre><code>cd genmaicha_front
-npm run build</code></pre>
+<li>フロントリポジトリのルートにいることを確認し、ビルドする:
+<pre><code>npm run build</code></pre>
 </li>
-<li>Cloudflare Pages にデプロイ:
-<pre><code>npx wrangler pages deploy dist --project-name &lt;あなたの名前&gt;-front</code></pre>
-<p class="note">初回は「プロジェクトを作成しますか?」と聞かれる。<strong>Yes</strong> を選ぶ。2回目以降は同じコマンドで上書きデプロイされる。</p>
+<li>Cloudflare Workers にデプロイ:
+<pre><code>wrangler deploy</code></pre>
+<p class="note">初回は <code>wrangler.toml</code> の <code>name</code> が Worker 名として登録される。2回目以降は同じコマンドで上書きデプロイされる。</p>
 </li>
-<li>発行された URL（<code>https://&lt;name&gt;.pages.dev</code>）をブラウザで開いて LP が表示されることを確認 🎉</li>
+<li>発行された URL（<code>https://&lt;name&gt;.&lt;account&gt;.workers.dev</code>）をブラウザで開いて LP が表示されることを確認 🎉</li>
 <li>URL をチャットに貼って共有する</li>
 </ol>
-<p class="note">Day 1 のデプロイは API が無いのでデータはモック表示のまま。Day 2 でバックを繋いで <code>workers.dev</code> URL に移行する（再デプロイ）。</p>
+<p class="note">Day 1 のデプロイは API が無いのでデータはモック表示のまま。Day 2 で API を追加して同じ URL のまま再デプロイする。</p>
 
 <h3 class="done">✅ Day 1 の到達点</h3>
 <ul>
 <li><code>localhost:5173</code> で LP・全ページが表示できる</li>
-<li><code>https://&lt;name&gt;.pages.dev</code> で公開 URL から LP が表示できる</li>
+<li><code>https://&lt;name&gt;.&lt;account&gt;.workers.dev</code> で公開 URL から LP が表示できる</li>
 <li>dev ブランチに push 済み</li>
 </ul>
 
 <h3>Day 1 クロージング</h3>
 <ul>
 <li>各自の公開 URL をスクリーンで何人かに見せてもらう（5分）</li>
-<li>明日は API をつないで Cloudflare Workers に再デプロイします</li>
+<li>明日は API を追加して同じ Worker URL のまま再デプロイします</li>
 <li><code>.gitignore</code> に <code>node_modules</code> と <code>dist</code> が含まれているか確認する</li>
 <li>フロントのリポジトリを dev ブランチで push する（詳細は <a href="#s07">Git ブランチ</a> 参照）</li>
 </ul>
