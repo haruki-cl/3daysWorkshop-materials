@@ -796,7 +796,7 @@ id      = "&lt;ここに出力された id を貼る&gt;"</code></pre>
   <li>前提: <code>my-back</code> で <code>npm run dev</code>（:8787）を起動した状態で作業する</li>
   <li>Claude Code への指示例: 「モックを実 API 呼び出しに変えて。バックは localhost:8787」</li>
   <li>差し替え後はモード B（フロント:5173 + バック:8787）でブラウザ確認する</li>
-  <li>CORS エラーが出たら <code>vite.config.ts</code> のプロキシ設定を確認（[2] 参照）</li>
+  <li>API を呼び出したときにエラーが出たら、後述のプロキシ設定が <code>vite.config.ts</code> に入っているか確認する</li>
   </ul>
 </li>
 <li id="s4-step6"><strong>配信を一本化する</strong>（本番の形にする）
@@ -831,8 +831,15 @@ cd my-back &amp;&amp; npm run build:front &amp;&amp; npm run dev
 cd my-back  &amp;&amp; npm run dev    # ターミナル1（API の実体: :8787）
 cd my-front &amp;&amp; npm run dev    # ターミナル2（画面の高速プレビュー: :5173）</code></pre>
 <blockquote>
-<p><strong>B でバックも起動するのは矛盾ではない</strong>。:5173 はあくまで<strong>画面を速く確認するためのプレビュー</strong>で、そこから叩く API の実体は :8787 のバック。だから両方を立て、:5173 の <code>/api</code> を :8787 にプロキシして同一オリジン扱いにする（[2] の <code>vite.config.ts</code> 参照）。「画面を直しながら確認したい」ときが B、「本番と同じ挙動を見たい」ときが A。</p>
+<p><strong>B でバックも起動するのは矛盾ではない</strong>。:5173 はあくまで<strong>画面を速く確認するためのプレビュー</strong>で、そこから叩く API の実体は :8787 のバック。「画面を直しながら確認したい」ときが B、「本番と同じ挙動を見たい」ときが A。</p>
 </blockquote>
+
+<h4>モード B を使う前に: <code>vite.config.ts</code> にプロキシ設定を追加する</h4>
+<p>モード B では、フロント（:5173）とバック（:8787）が別々のポートで動いている。この状態でフロントから <code>/api</code> を呼び出すと、<strong>ブラウザが「別のサーバーへの通信」と判断してブロック</strong>してしまう。</p>
+<p>これを回避するのがプロキシ設定——<code>/api</code> へのリクエストをこっそりバック（:8787）に転送する中継役。ブラウザからは「同じサーバーに話しかけている」ように見えるので、ブロックされない。<strong>本番（Worker 一本）では最初から同じ URL で動くのでこの設定は不要</strong>で、開発時だけの仕組み。</p>
+<p>Day 1 でコメントアウトしておいた箇所を Claude Code に追記させる:</p>
+<pre><code>vite.config.ts の server.proxy に設定を追加して。
+/api へのリクエストを http://localhost:8787 に転送したい。</code></pre>
 
 <h3>ポイント</h3>
 <ul>
