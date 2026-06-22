@@ -645,7 +645,7 @@ API はまだないので各画面はモックデータで表示してOK。
 <li><strong>API はまだ無い</strong>。この段階では<strong>モックデータで画面が動く</strong>状態を作る、と割り切る</li>
 </ul>
 
-<p><code>vite.config.ts</code> はこの内容で Claude Code に作らせてよい（Day 2 の [4] でプロキシ設定を追記する）:</p>
+<p><code>vite.config.ts</code> はこの内容で Claude Code に作らせてよい:</p>
 <pre><code>import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
 import tailwindcss from "@tailwindcss/vite"
@@ -654,7 +654,6 @@ import path from "node:path"
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: { alias: { "@": path.resolve(__dirname, "./src") } },
-  // server: { proxy: ... }  // ← Day 2 の [4] でここに追記
 })</code></pre>
 
 <h3 class="done">✅ 完了の定義（Day 1 の到達点）</h3>
@@ -793,10 +792,9 @@ id      = "&lt;ここに出力された id を貼る&gt;"</code></pre>
 </li>
 <li><strong>フロントのモック表示を実 API 呼び出しに差し替える</strong>
   <ul>
-  <li>前提: <code>my-back</code> で <code>npm run dev</code>（:8787）を起動した状態で作業する</li>
+  <li>前提: <code>my-back</code> で <code>npm run build:front &amp;&amp; npm run dev</code>（:8787）を起動した状態で作業する</li>
   <li>Claude Code への指示例: 「モックを実 API 呼び出しに変えて。バックは localhost:8787」</li>
-  <li>差し替え後はモード B（フロント:5173 + バック:8787）でブラウザ確認する</li>
-  <li>API を呼び出したときにエラーが出たら、後述のプロキシ設定が <code>vite.config.ts</code> に入っているか確認する</li>
+  <li>差し替え後は <code>http://localhost:8787</code> でブラウザ確認する</li>
   </ul>
 </li>
 <li id="s4-step6"><strong>配信を一本化する</strong>（本番の形にする）
@@ -823,23 +821,9 @@ id      = "&lt;ここに出力された id を貼る&gt;"</code></pre>
 </tbody>
 </table>
 
-<h3>ローカルでの動かし方（2モード）</h3>
-<pre><code># A. 本番と同じ形（Worker 一本: :8787）— ビルドしたフロントを Worker が配信
-cd my-back &amp;&amp; npm run build:front &amp;&amp; npm run dev
-
-# B. フロント開発モード（HMR）— フロント:5173 と バック:8787 を「両方」起動
-cd my-back  &amp;&amp; npm run dev    # ターミナル1（API の実体: :8787）
-cd my-front &amp;&amp; npm run dev    # ターミナル2（画面の高速プレビュー: :5173）</code></pre>
-<blockquote>
-<p><strong>B でバックも起動するのは矛盾ではない</strong>。:5173 はあくまで<strong>画面を速く確認するためのプレビュー</strong>で、そこから叩く API の実体は :8787 のバック。「画面を直しながら確認したい」ときが B、「本番と同じ挙動を見たい」ときが A。</p>
-</blockquote>
-
-<h4>モード B を使う前に: <code>vite.config.ts</code> にプロキシ設定を追加する</h4>
-<p>モード B ではフロント（:5173）とバック（:8787）が別々のポートで動いている。この状態でフロントから <code>/api</code> を呼び出すと、<strong>ブラウザが「別のサーバーへの通信だ」と判断してブロック</strong>してしまう（異なるポートは別サーバー扱い）。</p>
-<p>そこでプロキシ（代わりに取り次いでくれる中継役）設定を使う。フロント（:5173）が <code>/api</code> を呼んだとき、<strong>Vite が代わりにバック（:8787）へ取り次いで結果を返す</strong>。ブラウザからは「:5173 と話しているだけ」に見えるのでブロックされない。<strong>本番（Worker 一本）では最初から同じ URL で動くのでこの設定は不要</strong>で、開発時だけの仕組み。</p>
-<p>Day 1 でコメントアウトしておいた箇所を Claude Code に追記させる:</p>
-<pre><code>vite.config.ts の server.proxy に設定を追加して。
-/api へのリクエストを http://localhost:8787 に転送したい。</code></pre>
+<h3>ローカルでの動かし方</h3>
+<pre><code>cd my-back &amp;&amp; npm run build:front &amp;&amp; npm run dev</code></pre>
+<p class="note">フロントを変更したら毎回 <code>npm run build:front</code> が必要。<code>http://localhost:8787</code> で確認する。</p>
 
 <h3>ポイント</h3>
 <ul>
