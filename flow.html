@@ -354,6 +354,59 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 </tbody>
 </table>
 
+
+<hr>
+
+<h2 id="s-map">全体マップ</h2>
+<table>
+<thead><tr><th>Day</th><th>テーマ</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td><strong>Day 1</strong></td><td>つくる（前半）</td><td>目的・技術紹介 / 環境確認 / [1] デザイン / [2] フロント / フロントデプロイ</td></tr>
+<tr><td><strong>Day 2</strong></td><td>つなぐ・公開する</td><td>[4] バック / [5] 自動テスト / [6] デプロイ（Cloudflare Workers）再デプロイ</td></tr>
+<tr><td><strong>Day 3</strong></td><td>育てる</td><td>オプション課題 [7]〜[11] / ラップアップ・発表会</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>各日2時間 × 3日（計6時間）の短期集中型</strong>。AI に大胆に任せてテンポよく進める</li>
+<li>Day 1〜2 が<strong>全員共通の本編（必達）</strong>。<strong>Day 1 でフロント完成後にデプロイ、Day 2 でバックを繋いで再デプロイ</strong>が目標</li>
+<li>Day 3 の<strong>オプション課題は必須ではない</strong>。興味・進捗に応じて選ぶ</li>
+</ul>
+
+<h2 id="s-time">タイムテーブル目安（各日 2 時間 × 3 日 ＝ 計 6 時間）</h2>
+<h3>Day 1: つくる（前半）— 環境確認 + デザイン + フロント + デプロイ</h3>
+<table>
+<thead><tr><th>経過</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>0:00–0:10</td><td>オープニング: 目的・ゴール・技術紹介・全体像</td></tr>
+<tr><td>0:10–0:20</td><td>環境確認（node / git / claude / wrangler 確認。手短に）</td></tr>
+<tr><td>0:20–0:50</td><td>[1] Claude Design（LP を中心に3案 → 1つ選ぶ → 他ページを追加生成）</td></tr>
+<tr><td>0:50–1:35</td><td>[2] フロント作成（デザイン zip を渡して全画面・モックで動かす）</td></tr>
+<tr><td>1:35–1:50</td><td>[3] フロントを Cloudflare Workers にデプロイ（URL を共有） 🎉</td></tr>
+<tr><td>1:50–2:00</td><td>クロージング: dev ブランチに git push できているか確認</td></tr>
+</tbody>
+</table>
+
+<h3>Day 2: つなぐ・公開する — バック＋テスト＋デプロイ（<strong>ここがマスト</strong>）</h3>
+<table>
+<thead><tr><th>経過</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>0:00–0:10</td><td>前回振り返り・キャッチアップ</td></tr>
+<tr><td>0:10–1:05</td><td>[4] バック作成（API 実装 → フロント結合 → 配信一本化）</td></tr>
+<tr><td>1:05–1:35</td><td>[5] 自動テスト（正常系・異常系・未認証テストを最低1本ずつ）</td></tr>
+<tr><td>1:35–1:55</td><td>[6] デプロイ（wrangler deploy + D1 マイグレーション → workers.dev URL で動作確認・再デプロイ） 🎉</td></tr>
+<tr><td>1:55–2:00</td><td>クロージング: 到達確認・Day 3 課題選択（やる人だけ）</td></tr>
+</tbody>
+</table>
+
+<h3>Day 3: 育てる（オプション課題 ＋ 発表会）</h3>
+<table>
+<thead><tr><th>経過</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>0:00–0:10</td><td>オプション課題のガイダンス（必須ではない・やらない・1つだけ、も可）</td></tr>
+<tr><td>0:10–1:30</td><td>自由作業: <strong>Day 1〜2 の残タスクを続ける</strong>、または<strong>オプション課題</strong>（[7]〜[11] から1つ）——どちらでも可</td></tr>
+<tr><td>1:30–2:00</td><td><strong>最終発表会（1人3分）＋ ラップアップ・アンケート</strong></td></tr>
+</tbody>
+</table>
 <hr>
 
 <h2 id="s05">使う技術の紹介</h2>
@@ -408,59 +461,6 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 <li><strong>Clerk</strong>（ユーザー認証 SaaS）— 認証課題 [9] で使用</li>
 <li><strong>SonarQube（SonarCloud）</strong> — セキュリティ課題 [11]。GitHub アカウントでログインできる</li>
 </ul>
-
-<hr>
-
-<h2 id="s-map">全体マップ</h2>
-<table>
-<thead><tr><th>Day</th><th>テーマ</th><th>内容</th></tr></thead>
-<tbody>
-<tr><td><strong>Day 1</strong></td><td>つくる（前半）</td><td>目的・技術紹介 / 環境確認 / [1] デザイン / [2] フロント / フロントデプロイ</td></tr>
-<tr><td><strong>Day 2</strong></td><td>つなぐ・公開する</td><td>[4] バック / [5] 自動テスト / [6] デプロイ（Cloudflare Workers）再デプロイ</td></tr>
-<tr><td><strong>Day 3</strong></td><td>育てる</td><td>オプション課題 [7]〜[11] / ラップアップ・発表会</td></tr>
-</tbody>
-</table>
-<ul>
-<li><strong>各日2時間 × 3日（計6時間）の短期集中型</strong>。AI に大胆に任せてテンポよく進める</li>
-<li>Day 1〜2 が<strong>全員共通の本編（必達）</strong>。<strong>Day 1 でフロント完成後にデプロイ、Day 2 でバックを繋いで再デプロイ</strong>が目標</li>
-<li>Day 3 の<strong>オプション課題は必須ではない</strong>。興味・進捗に応じて選ぶ</li>
-</ul>
-
-<h2 id="s-time">タイムテーブル目安（各日 2 時間 × 3 日 ＝ 計 6 時間）</h2>
-<h3>Day 1: つくる（前半）— 環境確認 + デザイン + フロント + デプロイ</h3>
-<table>
-<thead><tr><th>経過</th><th>内容</th></tr></thead>
-<tbody>
-<tr><td>0:00–0:10</td><td>オープニング: 目的・ゴール・技術紹介・全体像</td></tr>
-<tr><td>0:10–0:20</td><td>環境確認（node / git / claude / wrangler 確認。手短に）</td></tr>
-<tr><td>0:20–0:50</td><td>[1] Claude Design（LP を中心に3案 → 1つ選ぶ → 他ページを追加生成）</td></tr>
-<tr><td>0:50–1:35</td><td>[2] フロント作成（デザイン zip を渡して全画面・モックで動かす）</td></tr>
-<tr><td>1:35–1:50</td><td>[3] フロントを Cloudflare Workers にデプロイ（URL を共有） 🎉</td></tr>
-<tr><td>1:50–2:00</td><td>クロージング: dev ブランチに git push できているか確認</td></tr>
-</tbody>
-</table>
-
-<h3>Day 2: つなぐ・公開する — バック＋テスト＋デプロイ（<strong>ここがマスト</strong>）</h3>
-<table>
-<thead><tr><th>経過</th><th>内容</th></tr></thead>
-<tbody>
-<tr><td>0:00–0:10</td><td>前回振り返り・キャッチアップ</td></tr>
-<tr><td>0:10–1:05</td><td>[4] バック作成（API 実装 → フロント結合 → 配信一本化）</td></tr>
-<tr><td>1:05–1:35</td><td>[5] 自動テスト（正常系・異常系・未認証テストを最低1本ずつ）</td></tr>
-<tr><td>1:35–1:55</td><td>[6] デプロイ（wrangler deploy + D1 マイグレーション → workers.dev URL で動作確認・再デプロイ） 🎉</td></tr>
-<tr><td>1:55–2:00</td><td>クロージング: 到達確認・Day 3 課題選択（やる人だけ）</td></tr>
-</tbody>
-</table>
-
-<h3>Day 3: 育てる（オプション課題 ＋ 発表会）</h3>
-<table>
-<thead><tr><th>経過</th><th>内容</th></tr></thead>
-<tbody>
-<tr><td>0:00–0:10</td><td>オプション課題のガイダンス（必須ではない・やらない・1つだけ、も可）</td></tr>
-<tr><td>0:10–1:30</td><td>自由作業: <strong>Day 1〜2 の残タスクを続ける</strong>、または<strong>オプション課題</strong>（[7]〜[11] から1つ）——どちらでも可</td></tr>
-<tr><td>1:30–2:00</td><td><strong>最終発表会（1人3分）＋ ラップアップ・アンケート</strong></td></tr>
-</tbody>
-</table>
 
 <hr>
 
@@ -1426,9 +1426,9 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
   <ul>
     <li><a href="#s0">目的・ゴール</a></li>
     <li><a href="#s-tasks">全体タスクマップ</a></li>
-    <li><a href="#s05">使う技術</a></li>
     <li><a href="#s-map">全体マップ</a></li>
     <li><a href="#s-time">タイムテーブル</a></li>
+    <li><a href="#s05">使う技術</a></li>
     <li><a href="#s07">Git ブランチ</a></li>
   </ul>
   <p class="toc-group-label toc-d1">Day 1 ― つくる（前半）</p>
