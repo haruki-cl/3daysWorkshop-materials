@@ -1,111 +1,118 @@
-<svg width="100%" viewBox="0 0 680 420" role="img" style="" xmlns="http://www.w3.org/2000/svg">
-  <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">ワークショップフロー図</title>
-  <desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Core（全員必達）5ステージとOption（選択式）5テーマのフローチャート</desc>
+<svg width="100%" viewBox="0 0 780 420" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title style="fill:rgb(0,0,0)">ワークショップフロー図</title>
+  <desc style="fill:rgb(0,0,0)">Core（全員必達）6ステージとOption（選択式）5テーマのフローチャート</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </marker>
-  <mask id="imagine-text-gaps-d565n2" maskUnits="userSpaceOnUse"><rect x="0" y="0" width="680" height="420" fill="white"/><rect x="46" y="24" width="161.265625" height="19" fill="black" rx="2"/><rect x="54.5546875" y="67" width="82.890625" height="22" fill="black" rx="2"/><rect x="51.0078125" y="86.5" width="89.984375" height="19" fill="black" rx="2"/><rect x="176.71875" y="67" width="86.5625" height="22" fill="black" rx="2"/><rect x="204.5859375" y="86.5" width="30.828125" height="19" fill="black" rx="2"/><rect x="308.09375" y="67" width="71.8125" height="22" fill="black" rx="2"/><rect x="297.296875" y="86.5" width="93.40625" height="19" fill="black" rx="2"/><rect x="417.90625" y="67" width="100.1875" height="22" fill="black" rx="2"/><rect x="431.84375" y="86.5" width="72.3125" height="19" fill="black" rx="2"/><rect x="548.84375" y="67" width="86.3125" height="22" fill="black" rx="2"/><rect x="567.7265625" y="85.5" width="49.53564453125" height="21" fill="black" rx="2"/><rect x="46" y="254" width="227.765625" height="19" fill="black" rx="2"/><rect x="60.0234375" y="295" width="71.953125" height="22" fill="black" rx="2"/><rect x="70.984375" y="314.5" width="50.03125" height="19" fill="black" rx="2"/><rect x="191.046875" y="295" width="57.90625" height="22" fill="black" rx="2"/><rect x="199.1328125" y="314.5" width="41.734375" height="19" fill="black" rx="2"/><rect x="307.6875" y="295" width="72.625" height="22" fill="black" rx="2"/><rect x="325.2109375" y="314.5" width="37.578125" height="19" fill="black" rx="2"/><rect x="424.8125" y="295" width="86.375" height="22" fill="black" rx="2"/><rect x="532.3046875" y="295" width="119.390625" height="22" fill="black" rx="2"/></mask></defs>
+  </defs>
 
-  
-  <rect x="0" y="0" width="680" height="420" fill="#ffffff" rx="0"/>
-  <rect x="30" y="18" width="620" height="210" rx="14" fill="none" stroke="var(--color-border-secondary)" stroke-width="1" stroke-dasharray="6 4" style="fill:none;stroke:rgba(31, 30, 29, 0.3);color:rgb(0, 0, 0);stroke-width:1px;stroke-dasharray:6px, 4px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <text x="50" y="38" style="font-weight:500;fill:var(--color-text-secondary);fill:rgb(61, 61, 58);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:500;text-anchor:start;dominant-baseline:auto">Core — Day 1〜2・全員必達</text>
+  <!-- Core area -->
+  <rect x="30" y="18" width="720" height="210" rx="14" fill="none" stroke="rgba(31,30,29,0.3)" stroke-width="1" stroke-dasharray="6 4"/>
+  <text x="50" y="38" style="font-size:12px;font-weight:500;fill:rgb(61,61,58);font-family:-apple-system,system-ui,sans-serif">Core — Day 1〜2・全員必達</text>
 
-  
-  
-  <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
-    <rect x="44" y="54" width="104" height="56" rx="8" stroke-width="0.5" style="fill:rgb(238, 237, 254);stroke:rgb(83, 74, 183);color:rgb(0, 0, 0);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-    <text x="96" y="78" text-anchor="middle" dominant-baseline="central" style="fill:rgb(60, 52, 137);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">[1] デザイン</text>
-    <text x="96" y="96" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">Claude Design</text>
-  </g>
-  
-  <line x1="148" y1="82" x2="168" y2="82" marker-end="url(#arrow)" style="fill:none;stroke:rgb(115, 114, 108);color:rgb(0, 0, 0);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
-  
-  <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
-    <rect x="168" y="54" width="104" height="56" rx="8" stroke-width="0.5" style="fill:rgb(225, 245, 238);stroke:rgb(15, 110, 86);color:rgb(0, 0, 0);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-    <text x="220" y="78" text-anchor="middle" dominant-baseline="central" style="fill:rgb(8, 80, 65);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">[2] フロント</text>
-    <text x="220" y="96" text-anchor="middle" dominant-baseline="central" style="fill:rgb(15, 110, 86);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">SPA</text>
-  </g>
-  
-  <line x1="272" y1="82" x2="292" y2="82" marker-end="url(#arrow)" style="fill:none;stroke:rgb(115, 114, 108);color:rgb(0, 0, 0);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
-  
-  <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
-    <rect x="292" y="54" width="104" height="56" rx="8" stroke-width="0.5" style="fill:rgb(225, 245, 238);stroke:rgb(15, 110, 86);color:rgb(0, 0, 0);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-    <text x="344" y="78" text-anchor="middle" dominant-baseline="central" style="fill:rgb(8, 80, 65);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">[3] バック</text>
-    <text x="344" y="96" text-anchor="middle" dominant-baseline="central" style="fill:rgb(15, 110, 86);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">API＋ライセンス</text>
-  </g>
-  
-  <line x1="396" y1="82" x2="416" y2="82" marker-end="url(#arrow)" style="fill:none;stroke:rgb(115, 114, 108);color:rgb(0, 0, 0);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
-  
-  <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
-    <rect x="416" y="54" width="104" height="56" rx="8" stroke-width="0.5" style="fill:rgb(250, 238, 218);stroke:rgb(133, 79, 11);color:rgb(0, 0, 0);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-    <text x="468" y="78" text-anchor="middle" dominant-baseline="central" style="fill:rgb(99, 56, 6);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">[4] 自動テスト</text>
-    <text x="468" y="96" text-anchor="middle" dominant-baseline="central" style="fill:rgb(133, 79, 11);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">npm test 緑</text>
-  </g>
-  
-  <line x1="520" y1="82" x2="540" y2="82" marker-end="url(#arrow)" style="fill:none;stroke:rgb(115, 114, 108);color:rgb(0, 0, 0);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
-  
-  <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
-    <rect x="540" y="54" width="104" height="56" rx="8" stroke-width="0.5" style="fill:rgb(234, 243, 222);stroke:rgb(59, 109, 17);color:rgb(0, 0, 0);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-    <text x="592" y="78" text-anchor="middle" dominant-baseline="central" style="fill:rgb(39, 80, 10);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">[5] デプロイ</text>
-    <text x="592" y="96" text-anchor="middle" dominant-baseline="central" style="fill:rgb(59, 109, 17);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">公開 🎉</text>
+  <!-- [1] デザイン: x=42, center=90 -->
+  <g>
+    <rect x="42" y="54" width="96" height="56" rx="8" fill="rgb(238,237,254)" stroke="rgb(83,74,183)" stroke-width="0.5"/>
+    <text x="90" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:13px;font-weight:500;fill:rgb(60,52,137);font-family:-apple-system,system-ui,sans-serif">[1] デザイン</text>
+    <text x="90" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:rgb(83,74,183);font-family:-apple-system,system-ui,sans-serif">Claude Design</text>
   </g>
 
-  
-  <line x1="592" y1="110" x2="592" y2="178" marker-end="url(#arrow)" stroke="var(--color-border-secondary)" style="fill:none;stroke:rgb(115, 114, 108);color:rgb(0, 0, 0);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <line x1="592" y1="178" x2="540" y2="178" stroke="var(--color-border-secondary)" stroke-width="1.5" fill="none" marker-end="url(#arrow)" style="fill:none;stroke:rgba(31, 30, 29, 0.3);color:rgb(0, 0, 0);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <line x1="138" y1="82" x2="162" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
 
-  
-  <rect x="30" y="248" width="620" height="150" rx="14" fill="none" stroke="var(--color-border-secondary)" stroke-width="1" stroke-dasharray="6 4" style="fill:none;stroke:rgba(31, 30, 29, 0.3);color:rgb(0, 0, 0);stroke-width:1px;stroke-dasharray:6px, 4px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <text x="50" y="268" style="font-weight:500;fill:var(--color-text-secondary);fill:rgb(61, 61, 58);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:500;text-anchor:start;dominant-baseline:auto">Option — Day 3・選択式・必須ではない</text>
-
-  
-  
-  <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
-    <rect x="44" y="282" width="104" height="56" rx="8" stroke-width="0.5" style="fill:rgb(230, 241, 251);stroke:rgb(24, 95, 165);color:rgb(0, 0, 0);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-    <text x="96" y="306" text-anchor="middle" dominant-baseline="central" style="fill:rgb(12, 68, 124);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">[6] メール</text>
-    <text x="96" y="324" text-anchor="middle" dominant-baseline="central" style="fill:rgb(24, 95, 165);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">Resend</text>
+  <!-- [2] フロント: x=162, center=210 -->
+  <g>
+    <rect x="162" y="54" width="96" height="56" rx="8" fill="rgb(225,245,238)" stroke="rgb(15,110,86)" stroke-width="0.5"/>
+    <text x="210" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:13px;font-weight:500;fill:rgb(8,80,65);font-family:-apple-system,system-ui,sans-serif">[2] フロント</text>
+    <text x="210" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:rgb(15,110,86);font-family:-apple-system,system-ui,sans-serif">SPA</text>
   </g>
 
-  
-  <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
-    <rect x="168" y="282" width="104" height="56" rx="8" stroke-width="0.5" style="fill:rgb(230, 241, 251);stroke:rgb(24, 95, 165);color:rgb(0, 0, 0);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-    <text x="220" y="306" text-anchor="middle" dominant-baseline="central" style="fill:rgb(12, 68, 124);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">[7] 決済</text>
-    <text x="220" y="324" text-anchor="middle" dominant-baseline="central" style="fill:rgb(24, 95, 165);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">Stripe</text>
+  <line x1="258" y1="82" x2="282" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+
+  <!-- [3] フロントデプロイ: x=282, center=330 -->
+  <g>
+    <rect x="282" y="54" width="96" height="56" rx="8" fill="rgb(225,245,238)" stroke="rgb(15,110,86)" stroke-width="0.5"/>
+    <text x="330" y="75" text-anchor="middle" dominant-baseline="central" style="font-size:13px;font-weight:500;fill:rgb(8,80,65);font-family:-apple-system,system-ui,sans-serif">[3] フロント</text>
+    <text x="330" y="93" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:rgb(15,110,86);font-family:-apple-system,system-ui,sans-serif">デプロイ</text>
   </g>
 
-  
-  <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
-    <rect x="292" y="282" width="104" height="56" rx="8" stroke-width="0.5" style="fill:rgb(230, 241, 251);stroke:rgb(24, 95, 165);color:rgb(0, 0, 0);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-    <text x="344" y="306" text-anchor="middle" dominant-baseline="central" style="fill:rgb(12, 68, 124);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">[8] ID連携</text>
-    <text x="344" y="324" text-anchor="middle" dominant-baseline="central" style="fill:rgb(24, 95, 165);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">Clerk</text>
+  <line x1="378" y1="82" x2="402" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+
+  <!-- [4] バック: x=402, center=450 -->
+  <g>
+    <rect x="402" y="54" width="96" height="56" rx="8" fill="rgb(225,245,238)" stroke="rgb(15,110,86)" stroke-width="0.5"/>
+    <text x="450" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:13px;font-weight:500;fill:rgb(8,80,65);font-family:-apple-system,system-ui,sans-serif">[4] バック</text>
+    <text x="450" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:rgb(15,110,86);font-family:-apple-system,system-ui,sans-serif">API＋ライセンス</text>
   </g>
 
-  
-  <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
-    <rect x="416" y="282" width="104" height="56" rx="8" stroke-width="0.5" style="fill:rgb(230, 241, 251);stroke:rgb(24, 95, 165);color:rgb(0, 0, 0);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-    <text x="468" y="306" text-anchor="middle" dominant-baseline="central" style="fill:rgb(12, 68, 124);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">[9] 運用保守</text>
-    <text x="468" y="324" text-anchor="middle" dominant-baseline="central" style="fill:rgb(24, 95, 165);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central"> </text>
+  <line x1="498" y1="82" x2="522" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+
+  <!-- [5] 自動テスト: x=522, center=570 -->
+  <g>
+    <rect x="522" y="54" width="96" height="56" rx="8" fill="rgb(250,238,218)" stroke="rgb(133,79,11)" stroke-width="0.5"/>
+    <text x="570" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:13px;font-weight:500;fill:rgb(99,56,6);font-family:-apple-system,system-ui,sans-serif">[5] 自動テスト</text>
+    <text x="570" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:rgb(133,79,11);font-family:-apple-system,system-ui,sans-serif">npm test 緑</text>
   </g>
 
-  
-  <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
-    <rect x="540" y="282" width="104" height="56" rx="8" stroke-width="0.5" style="fill:rgb(230, 241, 251);stroke:rgb(24, 95, 165);color:rgb(0, 0, 0);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-    <text x="592" y="306" text-anchor="middle" dominant-baseline="central" style="fill:rgb(12, 68, 124);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">[10] セキュリティ</text>
-    <text x="592" y="324" text-anchor="middle" dominant-baseline="central" style="fill:rgb(24, 95, 165);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central"> </text>
+  <line x1="618" y1="82" x2="642" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+
+  <!-- [6] デプロイ: x=642, center=690 -->
+  <g>
+    <rect x="642" y="54" width="96" height="56" rx="8" fill="rgb(234,243,222)" stroke="rgb(59,109,17)" stroke-width="0.5"/>
+    <text x="690" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:13px;font-weight:500;fill:rgb(39,80,10);font-family:-apple-system,system-ui,sans-serif">[6] デプロイ</text>
+    <text x="690" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:rgb(59,109,17);font-family:-apple-system,system-ui,sans-serif">公開 🎉</text>
   </g>
 
-  
-  
-  <line x1="96" y1="178" x2="540" y2="178" stroke="var(--color-border-secondary)" stroke-width="1" fill="none" style="fill:none;stroke:rgba(31, 30, 29, 0.3);color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <line x1="96" y1="178" x2="96" y2="282" marker-end="url(#arrow)" stroke="var(--color-border-secondary)" mask="url(#imagine-text-gaps-d565n2)" style="fill:none;stroke:rgb(115, 114, 108);color:rgb(0, 0, 0);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <line x1="220" y1="178" x2="220" y2="282" marker-end="url(#arrow)" stroke="var(--color-border-secondary)" mask="url(#imagine-text-gaps-d565n2)" style="fill:none;stroke:rgb(115, 114, 108);color:rgb(0, 0, 0);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <line x1="344" y1="178" x2="344" y2="282" marker-end="url(#arrow)" stroke="var(--color-border-secondary)" style="fill:none;stroke:rgb(115, 114, 108);color:rgb(0, 0, 0);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <line x1="468" y1="178" x2="468" y2="282" marker-end="url(#arrow)" stroke="var(--color-border-secondary)" style="fill:none;stroke:rgb(115, 114, 108);color:rgb(0, 0, 0);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <line x1="592" y1="178" x2="592" y2="282" marker-end="url(#arrow)" stroke="var(--color-border-secondary)" style="fill:none;stroke:rgb(115, 114, 108);color:rgb(0, 0, 0);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Feedback loop from [6] デプロイ back toward [5] テスト -->
+  <line x1="690" y1="110" x2="690" y2="178" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+  <line x1="690" y1="178" x2="570" y2="178" stroke="rgba(31,30,29,0.3)" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Option area -->
+  <rect x="30" y="248" width="720" height="150" rx="14" fill="none" stroke="rgba(31,30,29,0.3)" stroke-width="1" stroke-dasharray="6 4"/>
+  <text x="50" y="268" style="font-size:12px;font-weight:500;fill:rgb(61,61,58);font-family:-apple-system,system-ui,sans-serif">Option — Day 3・選択式・必須ではない</text>
+
+  <!-- [7] メール: x=58, center=110 -->
+  <g>
+    <rect x="58" y="282" width="104" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="110" y="306" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[7] メール</text>
+    <text x="110" y="324" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Resend</text>
+  </g>
+
+  <!-- [8] 決済: x=198, center=250 -->
+  <g>
+    <rect x="198" y="282" width="104" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="250" y="306" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[8] 決済</text>
+    <text x="250" y="324" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Stripe</text>
+  </g>
+
+  <!-- [9] ID連携: x=338, center=390 -->
+  <g>
+    <rect x="338" y="282" width="104" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="390" y="306" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[9] ID連携</text>
+    <text x="390" y="324" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Clerk</text>
+  </g>
+
+  <!-- [10] 運用保守: x=478, center=530 -->
+  <g>
+    <rect x="478" y="282" width="104" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="530" y="306" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[10] 運用保守</text>
+    <text x="530" y="324" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif"> </text>
+  </g>
+
+  <!-- [11] セキュリティ: x=618, center=670 -->
+  <g>
+    <rect x="618" y="282" width="104" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="670" y="306" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[11] セキュリティ</text>
+    <text x="670" y="324" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif"> </text>
+  </g>
+
+  <!-- Spine at y=178, from first Core center to last Option center -->
+  <line x1="90" y1="178" x2="670" y2="178" stroke="rgba(31,30,29,0.3)" stroke-width="1" fill="none"/>
+
+  <!-- Vertical arrows from spine down to Option boxes -->
+  <line x1="110" y1="178" x2="110" y2="282" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+  <line x1="250" y1="178" x2="250" y2="282" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+  <line x1="390" y1="178" x2="390" y2="282" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+  <line x1="530" y1="178" x2="530" y2="282" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+  <line x1="670" y1="178" x2="670" y2="282" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
 </svg>
