@@ -248,7 +248,7 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 <li><strong>Claude（Design / Code）を使った開発フローを3日間で一周する</strong>
   <ul><li>「AI にどう頼むと良いものが出てくるか」の肌感をつかむ</li></ul>
 </li>
-<li>デザイン → フロント → バック → テスト → デプロイ → 機能拡張 という<strong>実務に近い開発サイクル</strong>を、駆け足ではなく<strong>自分の手で納得しながら</strong>回す</li>
+<li>デザイン → フロント → バック → テスト → デプロイ → 機能拡張 という<strong>実務に近い開発サイクル</strong>を、<strong>AI を駆動しながら</strong>一通り体験する</li>
 </ul>
 
 <h3>題材: 各自が作りたい SaaS の MVP（<strong>事前に考えてきてもらう</strong>）</h3>
@@ -451,7 +451,7 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 <li><strong>Claude Code CLI</strong> — <code>npm install -g @anthropic-ai/claude-code</code> でインストール。<strong>インストール＋ログインまで</strong>済ませておく
   <ul><li>余裕があれば <strong>security-guidance プラグイン</strong>（<code>/plugin install security-guidance@claude-plugins-official</code> ※失敗したらスキップ可）も入れておくと Day 1 から AI のコードを自動でセキュリティ点検してくれる（詳細は Day 1 の<a href="#s06">セキュリティ対策参照</a>）</li></ul>
 </li>
-<li><strong>Stripe CLI</strong> — <strong>[8] 決済をやる場合のみ。インストールだけ事前に済ませる</strong>: <code>brew install stripe/stripe-cli/stripe</code></li>
+<li><strong>Stripe CLI</strong>: <code>brew install stripe/stripe-cli/stripe</code></li>
 <li><strong>Node.js 18+（できれば 20+ LTS）</strong> / <strong>git</strong></li>
 </ul>
 <h4>③ 当日取得するアカウント（無料・電話番号不要）</h4>
@@ -1351,7 +1351,11 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
     </figure>
   </li>
   <li>（上記で <code>Only select repositories</code> に設定済みであることを確認してから）解析方式は <strong>「Automatic Analysis」</strong> を選ぶと設定が楽（以後 push のたびに自動解析）</li>
-  <li>解析完了を待ち、出た指摘を <strong>AI と一緒にレビュー</strong>（意味・直し方を AI に説明させる）</li>
+  <li>解析完了を待ち、出た指摘を <strong>AI と一緒にレビュー</strong>（意味・直し方を AI に説明させる）
+    <figure class="diagram">
+    <img src="img/SonarCloudResult.png" alt="SonarCloud の解析結果画面 — Quality Gate Passed、Security A・Reliability A・Maintainability A などが表示される">
+    </figure>
+  </li>
   </ol>
 </li>
 </ul>
