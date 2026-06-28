@@ -58,13 +58,13 @@
 
   <!-- front dir label -->
   <rect x="32" y="200" width="110" height="50" rx="6" fill="#f0f7ff" stroke="#93c5fd" stroke-width="0.8" stroke-dasharray="4 2"/>
-  <text x="87" y="219" text-anchor="middle" font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="9" fill="#1e40af">genmaicha_front/</text>
+  <text x="87" y="219" text-anchor="middle" font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="9" fill="#1e40af">frontend/</text>
   <text x="87" y="233" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="8" fill="#3a7bd5">React + TS + Tailwind</text>
   <text x="87" y="245" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="8" fill="#3a7bd5">npm run dev → :5173</text>
 
   <!-- back dir label -->
   <rect x="148" y="264" width="110" height="16" rx="4" fill="none"/>
-  <text x="196" y="275" text-anchor="middle" font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="9" fill="#7a3d00">genmaicha_back/</text>
+  <text x="196" y="275" text-anchor="middle" font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="9" fill="#7a3d00">backend/</text>
 
   <!-- ===== SEPARATOR ===== -->
   <line x1="360" y1="56" x2="360" y2="276" stroke="#c8a96a" stroke-width="1.5" stroke-dasharray="6 3"/>
