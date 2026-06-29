@@ -332,7 +332,7 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 <h4>[4] バック（API＋ライセンス発行）</h4>
 <ul>
 <li>成果物: <code>POST /api/contact</code>／<code>GET /api/me</code>（モック認証）／<code>POST /api/verify-license</code>／購入者へキーを自前発行</li>
-<li>完了条件: トップページ・<code>/mypage</code>・API がローカルで動き、フロントと連動すること</li>
+<li>完了条件: トップページ・<code>/contact</code>・API がローカルで動き、フロントと連動すること（<code>/mypage</code> は SPA ルーティングとして 404 にならない確認のみ。ログイン後の表示確認は Day 3 Clerk 実装後）</li>
 <li>落とし穴: ① D1/KV を先に作って id を <code>wrangler.toml</code> に貼る ② <code>[assets]</code> に SPA フォールバック設定 ③ 秘密は <code>.dev.vars</code>（<a href="#s06">セキュリティ対策参照</a>）</li>
 </ul>
 
@@ -346,7 +346,7 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 <h4>[6] デプロイ（公開）</h4>
 <ul>
 <li>成果物: <code>https://&lt;name&gt;.workers.dev</code> で公開</li>
-<li>完了条件: 本番 URL で LP 表示／<code>/mypage</code> が 404 にならない</li>
+<li>完了条件: 本番 URL で LP 表示・問い合わせ送信が動く／<code>/mypage</code> が 404 にならない（ルーティングの確認のみ）</li>
 <li>落とし穴: リモート D1 マイグレーション忘れ（deploy 前に <code>npm run db:migrate:remote</code> を必ず実行）／ビルド失敗で deploy が止まる／バックの <code>wrangler.toml</code> の <code>name</code> を [3] フロントデプロイ時と同じ値にする（違うと URL が変わり、フロントとバックが別 Worker になってしまう）</li>
 </ul>
 
@@ -917,7 +917,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <li><code>curl http://localhost:8787/mypage</code> → <strong>200</strong>（SPA フォールバックが効いている）<br>（SPA フォールバックが効かない場合は <code>wrangler.toml</code> の <code>[assets]</code> に <code>not_found_handling = "single-page-application"</code> を追加する）</li>
 <li>認証が要る API（例 <code>/api/me</code>）は<strong>未認証だと弾かれる</strong>（401 など）</li>
 <li>必須項目が欠けた問い合わせは<strong>バリデーションで弾かれる</strong>（400 など）</li>
-<li><strong>そして必ず「人の目」で確認する</strong>: ブラウザで実際に画面を操作（問い合わせ送信・マイページ表示等）し、実 API とつながって<strong>期待どおり動く</strong>こと
+<li><strong>そして必ず「人の目」で確認する</strong>: ブラウザで実際に画面を操作（問い合わせ送信等）し、実 API とつながって<strong>期待どおり動く</strong>こと（<code>/mypage</code> は画面が表示されれば OK。ログイン後の表示確認は Day 3 Clerk 実装後）
   <ul><li>⚠️ <strong>curl が通っても、ブラウザでは動かないことがある</strong>（CORS・表示・状態管理など）。コマンドの結果だけで満足せず、<strong>画面で目視確認</strong>するまでが完了</li></ul>
 </li>
 </ul>
@@ -940,16 +940,30 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 
 <h3>流れ</h3>
 <ol>
-<li>以下のプロンプトで TEST.md + テストファイルを生成させる:
-<pre><code>このバックエンド（backend/）のテストを書いてください。
-
-まずコードを読んでテスト戦略を docs/TEST.md にまとめてから実装してください。
+<li>以下のプロンプトで <strong>TEST.md（戦略書）だけ</strong>を作らせる:
+<pre><code>このバックエンド（backend/）のコードを読んで、テスト戦略を docs/TEST.md にまとめてください。
 テスト戦略には「何を・なぜテストするか・しないか」の判断も含めること。
+テストファイルの実装はまだしないでください。</code></pre>
+</li>
+<li><strong><code>docs/TEST.md</code> を開いて読み、内容をレビューする</strong>
+  <ul>
+  <li>AI が選んだ観点を確認し、抜けがあればチャットで指摘して修正させる</li>
+  <li>以下の4点が TEST.md に含まれているか確認する（無ければ追記させる）:
+    <ul>
+    <li>外部サービスに依存しない純粋な関数（キー生成・文字列マスク等）のテスト</li>
+    <li>正しい入力で API が成功レスポンスを返すテスト（例: 問い合わせフォームに正しい内容を入れたとき、受付完了が返る）</li>
+    <li>不正な入力で API が適切にエラーを返すテスト（例: 必須項目が空のまま送信したとき、入力エラーとして弾かれる）</li>
+    <li>未認証でログインが必要な API にアクセスしたとき、拒否されるテスト（例: ログインせずにマイページ API を叩いたら弾かれる）</li>
+    </ul>
+  </li>
+  </ul>
+</li>
+<li>TEST.md が固まったらテストファイルを実装させる:
+<pre><code>docs/TEST.md の方針に従ってテストを実装してください。
 
 使用する環境: @cloudflare/vitest-pool-workers + defineWorkersConfig
 外部サービスへの fetch はすべてモックしてください。</code></pre>
 </li>
-<li><strong><code>docs/TEST.md</code> を開いて読む</strong> — AI が選んだ観点を確認し、抜けがあれば「〇〇のテストも追加して」と追加依頼する。ここが唯一の人間レビューポイント</li>
 <li><code>npm test</code> でグリーンを確認</li>
 </ol>
 
