@@ -530,6 +530,18 @@ body.dark tbody tr:nth-child(odd){background:#181612;}
 <li>うるさく感じたら <code>SECURITY_GUIDANCE_DISABLE=1</code> で全体オフできる（キルスイッチ）</li>
 </ul>
 
+<h3>npm パッケージの取り込みを制限する</h3>
+<blockquote>
+<p>公開直後のパッケージは、乗っ取られたメンテナー権限で悪意あるコードが仕込まれていても発覚が追いついていないリスクがある。プロジェクト直下に <code>.npmrc</code> を作り、<strong>公開から7日未満のパッケージを取り込まない</strong>設定と、インストール時の<strong>既知脆弱性チェックを必須化</strong>する設定を入れておく。</p>
+</blockquote>
+<pre><code>min-release-age=7
+audit=true</code></pre>
+<ul>
+<li><code>min-release-age=7</code>: 公開7日未満のバージョンは <code>npm install</code> の対象外にする（typosquatting・乗っ取りアカウントからの悪性パッケージが広まりやすい初動期間を避ける）</li>
+<li><code>audit=true</code>: <code>npm install</code> 実行時に自動で <code>npm audit</code> 相当の脆弱性チェックが走る（デフォルトで有効だが、明示しておくと誤ってオフにされにくい）</li>
+<li>AI に依存パッケージを追加してもらう場面（[4] バック実装など）でも、この設定は自動的に効く</li>
+</ul>
+
 <hr>
 
 <h2 id="s0-nav">画面構成とナビゲーション定義（[1] 着手前に確認する）</h2>
