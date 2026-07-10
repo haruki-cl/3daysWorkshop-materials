@@ -165,6 +165,39 @@ tbody tr:nth-child(even){background:#faf7ef}
 }
 #totop.show{opacity:1; pointer-events:auto;}
 #totop:hover{background:var(--accent-deep);}
+/* ディレクトリ構成のフローティング表示 */
+#tree-btn{
+  position:fixed; bottom:82px; right:28px;
+  width:44px; height:44px; border-radius:50%;
+  background:var(--accent); color:#fff; border:none; cursor:pointer;
+  font-size:1.15rem; box-shadow:0 4px 14px rgba(0,0,0,.18);
+  display:flex; align-items:center; justify-content:center;
+  z-index:150; transition:background .2s;
+}
+#tree-btn:hover,#tree-btn.active{background:var(--accent-deep);}
+#tree-float{
+  position:fixed; right:24px; bottom:136px;
+  width:min(460px, calc(100vw - 48px)); max-height:calc(100vh - 172px);
+  background:#2d2a24; color:#f4efe4; border-radius:10px;
+  box-shadow:0 10px 40px rgba(0,0,0,.4);
+  display:none; flex-direction:column; overflow:hidden; z-index:150;
+}
+#tree-float.show{display:flex;}
+#tree-float-head{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 14px; background:rgba(255,255,255,.06);
+  font-family:system-ui,sans-serif; font-size:.82rem; color:#d8d0bf;
+  border-bottom:1px solid rgba(255,255,255,.08); flex:0 0 auto;
+}
+#tree-float-close{
+  background:none; border:none; color:#d8d0bf; font-size:1.15rem;
+  cursor:pointer; line-height:1; padding:0 4px;
+}
+#tree-float-close:hover{color:#fff;}
+#tree-float pre{
+  margin:0; border-radius:0; box-shadow:none;
+  overflow:auto; font-size:.78rem; padding:12px 16px;
+}
 /* コピーボタン */
 .copy-wrap{position:relative;}
 .copy-btn{
@@ -401,22 +434,21 @@ tbody tr:nth-child(even){background:#faf7ef}
 <hr>
 
 <h2 id="s07">Git ブランチ（dev → main）</h2>
-<p>前提: GitHub でリポジトリを新規作成し、ローカルに clone してから以下を実施する。<strong>フロント・バックは同じリポジトリ（モノレポ）で管理する</strong>。</p>
+<p>前提: GitHub でリポジトリ（名前は全員共通で <code>3days-workshop</code>）を新規作成し、ローカルに clone してから以下を実施する。<strong>フロント・バックは同じリポジトリ（モノレポ）で管理する</strong>。</p>
 <ul>
-<li>最初に <strong><code>dev</code> ブランチを切り、作業はすべて <code>dev</code></strong> で進める（空リポジトリの場合は README 等を main に最初の commit で push してから dev を切る）</li>
+<li>最初に <strong><code>dev</code> ブランチを切り、作業はすべて <code>dev</code></strong> で進める</li>
 <li>区切りのいいところで<strong>こまめに commit / push</strong>（環境が壊れても作業を失わないための保険）</li>
 <li><strong>各日のクロージングで「dev に push 済みか」を必ず確認</strong>（翌日のキャッチアップが楽になる）</li>
-<li>完成したら <strong><code>dev</code> → <code>main</code> にマージ</strong>（<code>main</code> ＝ 公開・解析対象の安定版）</li>
+<li><code>dev</code> → <code>main</code> への<strong>マージは、セキュリティ課題（SonarCloud 解析）に着手する前に行う</strong>（SonarCloud 無料版は <code>main</code> ブランチしか解析しないため）。<code>main</code> ＝ 公開・解析対象の安定版。セキュリティ課題をやらない場合は、最後に一度マージして締めればよい（任意）</li>
 </ul>
 <figure class="diagram">
 <img src="img/git_flow.svg" alt="Git フロー図: dev ブランチで作業しこまめに commit/push、完成後に main へマージ">
 </figure>
 <p>Claude Code へのプロンプト例（最初の1回）:</p>
 <pre><code>dev ブランチを切って、リモートに push して。</code></pre>
-<p>完成後のマージ:</p>
+<p><code>main</code> へのマージ（セキュリティ課題の前、またはやらない場合は最後に）:</p>
 <pre><code>dev ブランチを main にマージして、main をリモートに push して。</code></pre>
 <ul>
-<li>SonarCloudの無料版は mainブランチのみ解析対象となるため、開発ブランチとmainブランチは分けておく（[11] セキュリティで使う）</li>
 <li><strong>秘密ファイル（<code>.dev.vars</code>＝ローカル開発用のシークレット置き場。Day 2 [4] で作る——等）は <code>.gitignore</code> で必ず除外</strong>してコミットしない</li>
 </ul>
 
@@ -544,7 +576,7 @@ audit=true</code></pre>
 
 <h2 id="s0-repo">リポジトリのディレクトリ構成（[2] 着手前に確認する）</h2>
 <p>フロント・バックは1つのリポジトリ（モノレポ）に <code>frontend/</code>・<code>backend/</code> として並べる。最終的には <code>backend/</code> の Worker が両方まとめて配信する（<a href="#s4-step6">[4] 手順6</a>）。</p>
-<pre><code>repo-root/
+<pre id="repo-tree"><code>repo-root/
 ├── .claude/
 │   └── settings.json        # Claude Code の deny 設定（Day 1 セキュリティ対策）
 ├── .npmrc                   # npm パッケージの取り込み制限（Day 1 セキュリティ対策）
@@ -1765,5 +1797,55 @@ document.querySelectorAll('pre').forEach(pre => {
   });
   wrap.appendChild(btn);
 });
+</script>
+<script>
+// ディレクトリ構成のフローティング表示（全ページ共通で参照できるよう body 直下に複製）
+(function(){
+  const src = document.getElementById('repo-tree');
+  if(!src) return;
+  const btn = document.createElement('button');
+  btn.id = 'tree-btn';
+  btn.type = 'button';
+  btn.title = 'ディレクトリ構成を固定表示';
+  btn.setAttribute('aria-label','ディレクトリ構成を固定表示');
+  btn.setAttribute('aria-expanded','false');
+  btn.textContent = '🗂';
+  document.body.appendChild(btn);
+
+  const panel = document.createElement('div');
+  panel.id = 'tree-float';
+  const head = document.createElement('div');
+  head.id = 'tree-float-head';
+  head.innerHTML = '<span>ディレクトリ構成</span>';
+  const close = document.createElement('button');
+  close.type = 'button';
+  close.id = 'tree-float-close';
+  close.setAttribute('aria-label','閉じる');
+  close.textContent = '×';
+  head.appendChild(close);
+  panel.appendChild(head);
+  const pre = document.createElement('pre');
+  const code = document.createElement('code');
+  // textContent は非表示要素でも取れる（innerText は display:none で空になる）
+  code.textContent = (src.querySelector('code') || src).textContent;
+  pre.appendChild(code);
+  panel.appendChild(pre);
+  document.body.appendChild(panel);
+
+  function toggle(open){
+    const show = (open === undefined) ? !panel.classList.contains('show') : open;
+    panel.classList.toggle('show', show);
+    btn.classList.toggle('active', show);
+    btn.setAttribute('aria-expanded', String(show));
+  }
+  btn.addEventListener('click', ()=>toggle());
+  close.addEventListener('click', ()=>toggle(false));
+  // パネル・ボタン以外（元の画面）をクリックしたら閉じる
+  document.addEventListener('click', (e)=>{
+    if(!panel.classList.contains('show')) return;
+    if(panel.contains(e.target) || btn.contains(e.target)) return;
+    toggle(false);
+  });
+})();
 </script>
 </body></html>
