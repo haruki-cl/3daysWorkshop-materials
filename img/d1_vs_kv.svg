@@ -1,0 +1,70 @@
+<svg width="100%" viewBox="0 0 860 388" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>D1 と KV の使い分け</title>
+  <desc>Cloudflare D1（SQLite データベース）は永続データの保存に、Workers KV は高速なレート制限カウンタに使う。KV は結果整合のため厳密なレート制限には本来不向きで、Cloudflare 公式は Durable Objects を推奨するが、今回は簡易実装と割り切って使う。</desc>
+
+  <defs>
+    <marker id="dk-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#9a5b00" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="860" height="388" rx="16" fill="#faf8f2"/>
+
+  <!-- タイトル -->
+  <text x="430" y="34" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="16" font-weight="700" fill="#5a5040">D1 と KV の使い分け</text>
+  <text x="430" y="52" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10.5" fill="#8a806b">どちらも Cloudflare Workers にビルトイン。役割が違う</text>
+
+  <!-- ========== D1 カード（左） ========== -->
+  <rect x="24" y="66" width="390" height="196" rx="12" fill="#ffffff" stroke="#0d9488" stroke-width="1.5"/>
+
+  <!-- ヘッダ -->
+  <rect x="40" y="82" width="46" height="26" rx="7" fill="#0d9488"/>
+  <text x="63" y="100" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#fff">D1</text>
+  <text x="98" y="94" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="14" font-weight="700" fill="#085450">Cloudflare D1</text>
+  <text x="98" y="109" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10" fill="#0d9488">SQLite データベース</text>
+
+  <line x1="40" y1="120" x2="398" y2="120" stroke="#d9ede9" stroke-width="1"/>
+
+  <!-- 特性 -->
+  <rect x="40" y="130" width="358" height="50" rx="8" fill="#e6fafa"/>
+  <text x="52" y="147" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="9.5" font-weight="700" fill="#0d9488">特性</text>
+  <text x="52" y="167" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="12" fill="#085450">書き込みが比較的重い ／ 永続データ向き</text>
+
+  <!-- 用途 -->
+  <rect x="40" y="188" width="358" height="58" rx="8" fill="#f3faf9"/>
+  <text x="52" y="205" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="9.5" font-weight="700" fill="#0d9488">このアプリでの用途</text>
+  <text x="52" y="225" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="12" fill="#1f2a28">問い合わせ・ライセンスを保存</text>
+  <text x="52" y="240" font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="9" fill="#0d9488">INSERT / SELECT …</text>
+
+  <!-- ========== KV カード（右） ========== -->
+  <rect x="446" y="66" width="390" height="196" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="1.5"/>
+
+  <!-- ヘッダ -->
+  <rect x="462" y="82" width="46" height="26" rx="7" fill="#d97706"/>
+  <text x="485" y="100" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#fff">KV</text>
+  <text x="520" y="94" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="14" font-weight="700" fill="#9a5b00">Workers KV</text>
+  <text x="520" y="109" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10" fill="#d97706">キー・バリューストア（軽量）</text>
+
+  <line x1="462" y1="120" x2="820" y2="120" stroke="#f0e0c4" stroke-width="1"/>
+
+  <!-- 特性 -->
+  <rect x="462" y="130" width="358" height="50" rx="8" fill="#fdf1de"/>
+  <text x="474" y="147" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="9.5" font-weight="700" fill="#d97706">特性</text>
+  <text x="474" y="167" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="12" fill="#9a5b00">高速に読み書き ／ 一時的なカウンタ向き</text>
+
+  <!-- 用途 -->
+  <rect x="462" y="188" width="358" height="58" rx="8" fill="#fdf7ee"/>
+  <text x="474" y="205" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="9.5" font-weight="700" fill="#d97706">このアプリでの用途</text>
+  <text x="474" y="225" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="12" fill="#3a2c14">レート制限のカウンタ</text>
+  <text x="474" y="240" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10" fill="#9a5b00">同一 IP が 1 分に 3 回以上 → <tspan font-family="SFMono-Regular,Menlo,Consolas,monospace" font-weight="700">429</tspan> を返す</text>
+
+  <!-- なぜ D1 でなく KV か -->
+  <text x="430" y="286" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10.5" fill="#8a806b">短時間の一時カウンタに、書き込みの重い D1 は使わず KV を選ぶ</text>
+
+  <!-- ========== 注意ボックス（結果整合の割り切り） ========== -->
+  <rect x="24" y="300" width="812" height="72" rx="10" fill="#fdf4e3" stroke="#e0b877" stroke-width="1.2"/>
+  <text x="44" y="325" font-family="system-ui,sans-serif" font-size="15">⚠️</text>
+  <text x="66" y="323" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="11.5" fill="#5a4a30">KV は書き込みの反映に少し遅れがある<tspan font-weight="700" fill="#8a5a00">「結果整合」</tspan>——厳密なレート制限には本来不向き。</text>
+  <text x="66" y="342" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="11.5" fill="#5a4a30">Cloudflare 公式は <tspan font-weight="700" fill="#8a5a00">Durable Objects</tspan> を推奨するが、今回は<tspan font-weight="700" fill="#8a5a00">簡易実装と割り切って</tspan> KV を使う。</text>
+</svg>
