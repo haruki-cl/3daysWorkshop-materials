@@ -420,7 +420,6 @@ tbody tr:nth-child(even){background:#faf7ef}
 <h4>② 事前にインストールしておくツール</h4>
 <ul>
 <li><strong>Claude Code CLI</strong>:<ul><li>macOS / Linux / WSL は <code>curl -fsSL https://claude.ai/install.sh | bash</code>（Homebrew なら <code>brew install --cask claude-code</code>）</li><li>Windows（ネイティブ）は PowerShell で <code>irm https://claude.ai/install.ps1 | iex</code>（または <code>winget install Anthropic.ClaudeCode</code>）</li></ul></li>
-<li><strong>Stripe CLI</strong>（<strong>Day 3 [8] 決済課題をやる人のみ必要</strong>。迷ったら入れておく）:<ul><li>macOS は <code>brew install stripe/stripe-cli/stripe</code></li><li>Windows は <code>winget install Stripe.StripeCLI</code></li></ul></li>
 <li><strong>Node.js 24 LTS（長期サポート版）を推奨</strong>（最低 20 以上。18 はサポート終了）:<ul><li>未インストールなら <a target="_blank" rel="noopener" href="https://nodejs.org/">nodejs.org</a> のインストーラーで導入</li><li>既にインストール済みでバージョンが古い場合は、<code>nvm</code> 等のバージョン管理ツールがあれば <code>nvm install 24 --lts</code>、なければ nodejs.org から最新 LTS インストーラーを再インストール（上書き）すればよい</li></ul></li>
 <li><strong>git</strong>（各 OS 標準の方法でインストール）</li>
 </ul>
@@ -430,6 +429,10 @@ tbody tr:nth-child(even){background:#faf7ef}
 <li><strong>Stripe</strong> — 決済課題 [8] で使用</li>
 <li><strong>Clerk</strong>（ユーザー認証 SaaS）— 認証課題 [9] で使用</li>
 <li><strong>SonarCloud</strong> — セキュリティ課題 [11]。GitHub アカウントでログインできる</li>
+</ul>
+<h4>④ 当日インストールするツール</h4>
+<ul>
+<li><strong>Stripe CLI</strong>（<strong>Day 3 [8] 決済課題をやる人のみ必要</strong>）:<ul><li>macOS は <code>brew install stripe/stripe-cli/stripe</code></li><li>Windows は <code>winget install Stripe.StripeCLI</code></li></ul></li>
 </ul>
 
 <hr>
@@ -1018,14 +1021,16 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 テスト戦略には「何を・なぜテストするか・しないか」の判断も含めること。
 テストファイルの実装はまだしないでください。</code></pre>
 </li>
-<li><strong>TEST.md のレビューも Claude Code にやらせる</strong>（時間が限られるワークショップでは、人間が全文を読み込むより AI に観点の抜けを検証させる方が早い）
-  <pre><code>docs/TEST.md の内容を確認して、以下の観点が含まれているか検証してください：
-- 外部サービスに依存しない純粋な関数のテスト
-- 正しい入力で API が成功レスポンスを返すテスト
-- 不正な入力で API が適切にエラーを返すテスト
-- 未認証でログインが必要な API にアクセスしたとき、拒否されるテスト
-抜けていたら追記してください。</code></pre>
-  <p class="note">時間に余裕がある場合は、この4点だけでなく <code>docs/TEST.md</code> 全文に目を通し、AI の判断を人間が検証・調整するのが本来望ましい。</p>
+<li><strong>人間が TEST.md をレビューする</strong> — <code>docs/TEST.md</code> を自分で開き、最低限以下の4観点が含まれているかを確認する:
+  <ul>
+  <li>外部サービスに依存しない純粋な関数のテスト</li>
+  <li>正しい入力で API が成功レスポンスを返すテスト</li>
+  <li>不正な入力で API が適切にエラーを返すテスト</li>
+  <li>未認証でログインが必要な API にアクセスしたとき、拒否されるテスト</li>
+  </ul>
+  <p>抜けている観点があれば Claude Code に伝えて追記させる:</p>
+<pre><code>TEST.md に「未認証でログイン必須 API にアクセスしたとき拒否される」観点が抜けているので追記して。</code></pre>
+  <p class="note">時間に余裕があれば、4観点のチェックだけでなく全文に目を通し、「これはテストしなくていい」という箇所の指摘まで行うのが本来のレビュー。</p>
 </li>
 <li>TEST.md が固まったらテストファイルを実装させる:
 <pre><code>docs/TEST.md の方針に従ってテストを実装してください。
@@ -1259,7 +1264,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">② 標準キーの <strong>シークレットキー（<code>sk_test_...</code>）</strong>をクリックしてコピー → <code>.dev.vars</code> にセット</figcaption>
 </figure>
 </li>
-<li>（Stripe CLI が未インストールの場合は事前準備 ② を参照してインストールしてから実行）ターミナルで <strong><code>stripe login</code></strong> し、Stripe CLI にアカウントを認証</li>
+<li>（Stripe CLI が未インストールの場合は事前準備 ④ を参照してインストールしてから実行）ターミナルで <strong><code>stripe login</code></strong> し、Stripe CLI にアカウントを認証</li>
 </ol>
 
 <h3>② プラン（商品）を作る</h3>
@@ -1525,7 +1530,12 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <ul>
 <li><strong>Claude Code</strong>
   <ul>
-  <li><code>/security-review</code> で差分・コードを点検させる</li>
+  <li><code>/security-review</code> で差分・コードを点検させる
+<figure class="diagram">
+<img src="img/SecurityReviewSample.png" alt="/security-review の実行例 — 新設の GET /api/contacts エンドポイントに認証チェックがない Broken Access Control / IDOR（Severity: High）を検出し、Exploit Scenario と修正の推奨（認証済み identity でゲートし結果を本人分に絞る）まで提示している">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">/security-review の実行例: 認証チェックのないエンドポイント（IDOR）を Severity・攻撃シナリオ・修正案つきで検出している</figcaption>
+</figure>
+</li>
   <li>事前に <code>security-guidance</code> を入れていれば、編集・コミットのたびに<strong>自動で点検</strong>されている（<a href="#s06">Claude Code セキュリティ対策参照</a>）</li>
   </ul>
 </li>
