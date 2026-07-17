@@ -1204,7 +1204,7 @@ npm run deploy               # ビルド → デプロイ</code></pre>
   <img src="img/ResendCreateAPIKEY2.png" alt="Resend の Add API Key ダイアログ — Name 欄に入力し Add ボタンを押す">
   </figure>
 </li>
-<li>発行された <strong>API キーを <code>.dev.vars</code> にセット</strong>（<code>.dev.vars</code> は <code>backend/</code> 直下にある Cloudflare Workers のローカル用環境変数ファイル。存在しない場合は新規作成）（例 <code>RESEND_API_KEY=...</code>）</li>
+<li>発行された <strong>API キーを手元にコピーしておく</strong>（<code>.dev.vars</code> への投入は、次の「実装〜確認」で変数名が決まってから行う）</li>
 </ol>
 
 <h3>送信ドメインはどうする？（ここがつまずきやすい）</h3>
@@ -1225,7 +1225,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 
 <h3>実装〜確認</h3>
 <ul>
-<li>From / To をどうするかも含めて AI に相談し、まず<strong>ローカルで往復</strong>させる</li>
+<li>From / To をどうするかも含めて AI に相談して<strong>実装する</strong>。あわせて<strong>「この機能に要る環境変数を <code>.dev.vars.sample</code> に追記して」</strong>と依頼し、確定した変数名で <code>.dev.vars</code>（<code>backend/</code> 直下のローカル用環境変数ファイル。無ければ新規作成）に、サービス側の準備で取得した API キーを入れる（例 <code>RESEND_API_KEY=...</code>）。入れたら <code>npm run dev</code> を(再)起動して、まず<strong>ローカルで往復</strong>させる</li>
 <li>送ったら Resend ダッシュボードの <strong>Logs で Status を確認</strong></li>
 <li><strong>200 以外</strong>が出たら、<strong>エラー本文をそのまま AI に渡して直す</strong></li>
 <li>本番でも使うなら、<code>RESEND_API_KEY</code> を<strong>本番側にも設定</strong>してデプロイ（<a href="#common">[7][8][9] 共通の手順</a>参照）</li>
@@ -1393,7 +1393,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
   <img src="img/ClerkCreateApplication.png" alt="Clerk のアプリケーション作成画面 — Application name と Sign in options。Email/Phone number/Username をオフ、Google をオンにして「Create application」。右側は Continue with Google のみのプレビュー">
   </figure>
 </li>
-<li><strong>Configure → Instance → API keys</strong> から2つのキーを取得し、<strong>置き場所を分ける</strong>（ここを間違えやすい）：
+<li><strong>Configure → Instance → API keys</strong> から2つのキーを<strong>手元にコピーしておく</strong>。env への<strong>投入は次の「実装メモ」で AI にパッケージを導入させたあと</strong>に行う（変数名は <code>@clerk/*</code> の規約で下表に固定。<strong>置き場所を分ける</strong>のがポイント——ここを間違えやすい）：
 <table>
 <thead><tr><th>キー</th><th>置き場所</th><th>性質</th></tr></thead>
 <tbody>
@@ -1409,7 +1409,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 
 <h3>実装メモ</h3>
 <ul>
-<li>必要なパッケージ（フロント <code>@clerk/clerk-react</code> ／ バック <code>@hono/clerk-auth</code>）も <strong>AI が導入してくれる</strong></li>
+<li>必要なパッケージ（フロント <code>@clerk/clerk-react</code> ／ バック <code>@hono/clerk-auth</code>）も <strong>AI が導入してくれる</strong>。導入できたら、サービス側の準備でコピーした2つのキーを<strong>上表のとおり env にセット</strong>して <code>npm run dev</code> を(再)起動する</li>
 <li>フロントはアプリを <strong><code>&lt;ClerkProvider&gt;</code></strong> で包み、サインイン UI を置く。<strong>未ログインなら <code>/mypage</code> に入れない</strong>ようガード</li>
 <li><strong>JWT 検証は <code>@hono/clerk-auth</code> が推奨</strong>（バックでのトークン検証が一気に楽になる）</li>
 <li>バックは<strong>必ずトークンを検証</strong>してから保護 API を返す（フロントの出し分けだけでは保護にならない）</li>
