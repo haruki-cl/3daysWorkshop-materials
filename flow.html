@@ -98,6 +98,10 @@ td:first-child,th:first-child{white-space:nowrap;}
 thead th{background:var(--accent); color:#fff; font-weight:600; border-color:var(--accent);}
 tbody tr:nth-child(even){background:#faf7ef}
 .foot{text-align:center;color:var(--muted);font-size:.8rem;margin-top:30px}
+details.spec{margin:1.1em 0;border:1px solid var(--line);border-radius:10px;background:#fbf9f2;padding:0 1.1em;}
+details.spec>summary{cursor:pointer;padding:.85em .2em;font-weight:600;color:var(--accent-deep);font-family:"Hiragino Mincho ProN","Yu Mincho",serif;list-style-position:inside;}
+details.spec[open]{padding-bottom:.8em;}
+details.spec pre{margin:.5em 0 0;}
 /* 目次フローティングボタン — モバイル専用 */
 #toc-btn{
   position:fixed; bottom:28px; left:28px;
@@ -276,7 +280,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 <h3>必須機能（Day 2 までに作るものの最低ライン）</h3>
 <p><strong>ライセンスキー（購入の証として発行する一意の文字列）の配布は、題材によらず全員共通の実装要件</strong>。「ライセンスキー」は玄米茶サンプルでの呼び方なので、自分の SaaS では呼び名と意味づけ（アクセス権の証・ダウンロードコード等）だけを自分のサービスに合わせる。</p>
 <p class="note">Day 2 到達時点の見本（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://testai-genmaicha.ha-toge.workers.dev/">https://testai-genmaicha.ha-toge.workers.dev/</a> — 下の5機能が動く状態がゴール。</p>
-<p class="note">各ページの URL・役割・ナビゲーションの遷移先は <a href="#s0-nav">画面構成とナビゲーション</a> で定義する。ここでは「Day 2 までに動くべき機能」だけを挙げる。</p>
+<p class="note">各リンクの遷移先・購入導線は <a href="#s0-nav">画面構成とナビゲーション</a> で、各画面の中身は [2] の <code>SCREEN_SPEC.md</code> で定義する。ここでは「Day 2 までに動くべき機能」だけを挙げる。</p>
 <table>
 <thead><tr><th>#</th><th>機能</th><th>Day 2 までの完成ライン</th></tr></thead>
 <tbody>
@@ -549,19 +553,8 @@ audit=true</code></pre>
 
 <h2 id="s0-nav">画面構成とナビゲーション（[1] 着手前に確認する）</h2>
 <blockquote class="key">
-<p><strong>[1] Claude Design を始める前に、この構成を固める。</strong> あいまいなまま渡すと「購入する」ボタンが問い合わせに飛んだり、マイページがダッシュボード型（問い合わせ数・AI解決率などの運用指標を並べる画面）になったりする。以下は玄米茶サンプルでの例。自分の題材ではページ名・役割（「ライセンスキー」など）を自分のサービスに読み替えて、同じ形式で定義を固める。</p>
+<p><strong>[1] Claude Design を始める前に、この構成を固める。</strong> あいまいなまま渡すと「購入する」ボタンが問い合わせに飛んだり、マイページがダッシュボード型（問い合わせ数・AI解決率などの運用指標を並べる画面）になったりする。以下は玄米茶サンプルでのナビゲーション例。自分の題材に読み替えて、各リンクの遷移先と購入導線を固める（各画面の中身は [2] の <code>SCREEN_SPEC.md</code> で書く）。</p>
 </blockquote>
-
-<h3>ページ構成</h3>
-<table>
-<thead><tr><th>URL</th><th>ページ名</th><th>役割</th></tr></thead>
-<tbody>
-<tr><td><code>/</code></td><td>LP</td><td>ヒーロー（メインビジュアルセクション）・特徴・料金・FAQ。行動を促すボタン（CTA）から購入フローへ</td></tr>
-<tr><td><code>/contact</code></td><td>問い合わせ</td><td>フォーム送信（<code>POST /api/contact</code>）</td></tr>
-<tr><td><code>/mypage</code></td><td>マイページ</td><td>アカウント情報・ライセンスキー・サブスクリプション（Day 2 はメールアドレス入力画面経由）</td></tr>
-<tr><td><code>/success</code></td><td>購入完了</td><td>購入フロー（料金セクションのメールアドレス入力）から遷移して表示する完了画面。<strong>直接開くページではない</strong>（Day 3 [8] で決済後の戻り先に差し替え）</td></tr>
-</tbody>
-</table>
 
 <h3>ナビゲーション・ボタンの遷移先</h3>
 <p class="note">グローバルナビ＝全ページ共通で上部に置くメニュー。</p>
@@ -625,7 +618,7 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 <figure class="diagram compact">
 <img src="img/ClaudeDesignPromptModelBar.png" alt="Claude Design のプロンプト入力画面。左上にデザインシステム／テンプレート名のドロップダウンが残っている例">
 </figure>
-<p>同じ画面にモデルと Effort（AI がどれだけ深く考えるかの設定）もある。執筆時点（2026-07）の推奨は <strong>Opus 4.8 / Effort: High</strong>。モデル名は更新されるので、その時点の最上位モデル＋高い Effort になっているか確かめてから生成する。</p>
+<p>同じ画面にモデルと Effort（AI がどれだけ深く考えるかの設定）もある。<strong>Effort が高いほど品質は上がるがトークン消費も増える</strong>ので、トークン節約のため <strong>推奨は Effort: Medium</strong>（Team standard などトークンに余裕がないプラン向け。一周体験が目的なのでこれで十分）。<strong>Team Premium / Max などトークンに余裕があるプランの人は High 以上に上げてよい。</strong>モデルは、その時点で使える上位モデル（執筆時点 2026-07 は Opus 4.8）を選ぶ。</p>
 <p class="note">この画面の配置は Claude Design のバージョン更新で変わることがある（プラン・環境によって表示が異なる場合もある）。見当たらない場合は入力欄の周辺・設定メニューを探す。</p>
 
 <h3>流れ</h3>
@@ -742,6 +735,44 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 
 ## /success (購入完了)
 - 購入完了メッセージ＋マイページへのリンク</code></pre>
+<details class="spec">
+<summary>もっと具体的な記入例（玄米茶サンプル）を見る — 参考</summary>
+<pre><code># SCREEN_SPEC.md — 玄米茶（Slack AI サブスク SaaS）
+
+サービス概要: Slack に入れると会話の要約・タスク代行・検索をしてくれる AI bot。月額/年額のサブスク。
+
+## 共通
+- グローバルナビ: ロゴ「玄米茶」/ 特徴 / 料金 / FAQ / お問い合わせ / マイページ / **購入する**（CTA）
+- CTA「購入する」は料金セクション（`#pricing`）へ。**「無料で試す」等の文言は使わない**
+- フッター: ナビ再掲・© 玄米茶
+
+## / (LP)
+- ヒーロー: キャッチ「Slackの会話、ぜんぶ玄米茶におまかせ。」＋サブコピー＋CTA「購入する」→ 料金へ
+- 特徴（features）: 要約 / タスク代行 / 検索・思い出し / 日本語理解 の4つ
+- 使い方（3ステップ）: 追加 → 声かける → おまかせ
+- 料金プラン（pricing）: 月額 ¥300/月 ・ 年額 ¥3000/年（いちばん人気）。各プランの CTA「購入する」→ メールアドレス入力フォーム
+- FAQ: 5問
+- 問い合わせ導線
+
+## /contact (問い合わせ)
+- フォーム: 名前・メール・本文 → 送信（`POST /api/contact`）→ 受付メッセージ
+
+## /mypage (マイページ) — 購入者向けアカウント管理画面
+アクセス時にまずメールアドレス入力フォーム → 本人確認後に以下3ブロックを表示:
+
+### アカウント
+- メールアドレス / ステータスバッジ「✓ 契約中」
+### ライセンスキー
+- マスク表示（例: GMC-●●●●-●●●●-XXXX）/「メールで送信」ボタン /「セキュリティのため全体は表示していません」
+### サブスクリプション
+- 現在のプラン（例: 年間プラン）/ 次回更新日 /「プランを変更」「支払い方法を変更」「解約する」ボタン
+
+## /success (購入完了)
+- メールアドレス入力後の購入完了メッセージ ＋ 発行されたライセンスキー表示 ＋ マイページへのリンク
+
+## 購入フロー（Day 2・決済なし簡易版）
+- 「購入する」→ メールアドレス入力 → `POST` でライセンスキー発行 → `/success` で表示（Day 3 [8] で Stripe に差し替え）</code></pre>
+</details>
 <p class="note">ページ自体を増減してもよい（例: マイページの代わりにダッシュボードにする、等）。書き換えたら、下の Claude Code へのプロンプトに「この <code>SCREEN_SPEC.md</code> を参考に実装して」と一言添えて渡す。</p>
 
 <blockquote class="key">
@@ -1009,17 +1040,24 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <hr>
 
 <h2 id="s5">[5] 自動テストの実装</h2>
-<p><strong>ゴール:</strong> 「正しいリクエストは通る・壊れたリクエストは弾く・ログインなしで保護 API に入れない」を <code>npm test</code> で自動確認できる状態にする。デプロイ前にここを緑にする</p>
+<p><strong>ゴール:</strong> AI が書いたコードを<strong>検証</strong>してデプロイに備える。<strong>2段構え</strong>で進める：<strong>① レビュー</strong>（Claude Code のコマンドで差分を点検）→ <strong>② 自動テスト</strong>（<code>npm test</code> で「正しいリクエストは通る・壊れたリクエストは弾く・ログインなしで保護 API に入れない」を毎回自動確認）。デプロイ前にここまで通す。</p>
 
-<p>このステップは<strong>「AI が書いたコードを検証する」</strong>。<strong>①レビュー</strong>（Claude Code のコマンドで差分を点検）→ <strong>②自動テスト</strong>（<code>npm test</code> で毎回自動確認）の順で進める。以下は①レビュー、続く「考え方」以降が②自動テスト。</p>
-
-<h3>① レビュー: Claude Code のコマンドで点検する（コミット／push 前）</h3>
+<h3>① レビュー: Claude Code のコマンドで点検する</h3>
 <p>ローカルの差分を、Claude Code の組み込みコマンド（最初から使える <code>/名前</code> のコマンド。スキルの自作は Day 3 [10] で扱う）で点検する。ローカルの差分に対して動くので <strong>git push は不要</strong>。</p>
+<p class="note">⚙️ <strong>Claude Code の Effort（どれだけ深く考えるか）はトークン消費に直結する。</strong>レビューはコード全体を読むため特に消費が大きい。<strong>既定の Medium で実行するのを推奨</strong>（Team standard などトークンに余裕がないプランで途中枯渇を防ぐため）。<strong>Team Premium / Max などトークンに余裕があるプランの人は High 以上に上げてよい。</strong></p>
 <ul>
 <li><code>/code-review</code> — コードの正しさ・簡潔さ・効率のレビュー。バグや冗長な実装を指摘してくれる</li>
 <li><code>/security-review</code> — セキュリティ観点のレビュー。SQL インジェクション等・認証の抜け・シークレットの扱いなどを確認してくれる</li>
 <li><strong>security-guidance</strong>（Day 1 で導入したプラグイン）— 編集・コミットのたびに<strong>自動で</strong>セキュリティ点検が走っている（自分で実行する必要はない。<a href="#s06">Day 1 のセキュリティ対策参照</a>）</li>
 </ul>
+<figure class="diagram">
+<img src="img/CodeReviewSample.png" alt="/code-review の実行例 — 新設の未認証エンドポイント backend/src/routes/contacts.ts に対し、他人の連絡先 PII を誰でも取得できる IDOR / PII 漏洩・レート制限なし・SELECT に LIMIT なし・認証設計の誤り（モック認証の流儀を無視）の4点を、それぞれ失敗シナリオ付きで検出している">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">/code-review の実行例: 未認証で他人の連絡先 PII を返す重大バグ（IDOR/PII 漏洩）などを、根拠となる失敗シナリオ付きで指摘している（欠陥のないファイルは「問題なし」と判定）</figcaption>
+</figure>
+<figure class="diagram">
+<img src="img/SecurityReviewSample.png" alt="/security-review の実行例 — 新設の GET /api/contacts エンドポイントに認証チェックがない Broken Access Control / IDOR（Severity: High）を検出し、Exploit Scenario と修正の推奨（認証済み identity でゲートし結果を本人分に絞る）まで提示している">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">/security-review の実行例: 認証チェックのないエンドポイント（IDOR）を Severity・攻撃シナリオ・修正案つきで検出している</figcaption>
+</figure>
 <p class="note">指摘があれば修正してから進む。大きな問題がなければそのまま push してよい。この3つは Day 3 <a href="#s11">[11] セキュリティ</a>の点検でもそのまま使う。</p>
 
 <h3>② 自動テスト — 考え方（AI との壁打ち）</h3>
@@ -1551,12 +1589,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <ul>
 <li><strong>Claude Code</strong>（<code>/code-review</code>・<code>/security-review</code>・<code>security-guidance</code> の基本は <a href="#s5">[5] のレビュー節</a>にまとめてある。ここではセキュリティ点検に実際に使う）
   <ul>
-  <li><code>/security-review</code> で差分・コードを点検させる
-<figure class="diagram">
-<img src="img/SecurityReviewSample.png" alt="/security-review の実行例 — 新設の GET /api/contacts エンドポイントに認証チェックがない Broken Access Control / IDOR（Severity: High）を検出し、Exploit Scenario と修正の推奨（認証済み identity でゲートし結果を本人分に絞る）まで提示している">
-<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">/security-review の実行例: 認証チェックのないエンドポイント（IDOR）を Severity・攻撃シナリオ・修正案つきで検出している</figcaption>
-</figure>
-</li>
+  <li><code>/security-review</code> で差分・コードを点検させる（実行例は <a href="#s5">[5] のレビュー節</a>にある）</li>
   <li>事前に <code>security-guidance</code> を入れていれば、編集・コミットのたびに<strong>自動で点検</strong>されている（<a href="#s06">Claude Code セキュリティ対策参照</a>）</li>
   </ul>
 </li>
