@@ -251,12 +251,12 @@ tbody tr:nth-child(even){background:#faf7ef}
 <li><strong>Claude（Design / Code）を使った開発フローを3日間で一周する</strong>
   <ul><li>「AI にどう頼むと良いものが出てくるか」の肌感をつかむ</li></ul>
 </li>
-<li>デザイン → フロント → バック → テスト → デプロイ → 機能拡張 という<strong>実務に近い開発サイクル</strong>を、<strong>AI を駆動しながら</strong>一通り体験する</li>
+<li>デザイン → フロント → バック → テスト → デプロイ → 機能拡張 という<strong>実務に近い開発サイクル</strong>を、AI を駆動しながら一通り体験する</li>
 </ul>
 
 <h3>題材: 各自が作りたい SaaS の MVP（<strong>事前に考えてきてもらう</strong>）</h3>
 <ul>
-<li><strong>題材は各自が作りたい SaaS を持ち寄る</strong>。「流れを体験するのが目的」なので題材は自由だが、<strong>サブスクリプション（月額/年額課金）を必須</strong>とする</li>
+<li>題材は各自が作りたい SaaS を持ち寄る。「流れを体験するのが目的」なので題材は自由だが、<strong>サブスクリプション（月額/年額課金）を必須</strong>とする</li>
 <li>ただし3日間で一周できるよう、<strong>MVP</strong>（Minimum Viable Product＝必要最小限の機能に絞った最初の製品版）に落とし込んでおく</li>
 <li>資料中の例「玄米茶」は<strong>説明用の共通サンプル</strong>: 「チャットの中に、ちいさな相棒を」という会話アシスタントを、ライセンスキーの月額/年額サブスクで売る小さな SaaS
   <ul>
@@ -281,14 +281,14 @@ tbody tr:nth-child(even){background:#faf7ef}
 <thead><tr><th>#</th><th>機能</th><th>Day 2 までの完成ライン</th></tr></thead>
 <tbody>
 <tr><td>1</td><td><strong>LP</strong></td><td>サービス紹介と料金を掲載し、公開 URL で表示できる</td></tr>
-<tr><td>2</td><td><strong>価格表示</strong></td><td>料金プラン（月額／年額など）を見せ、行動を促すボタン（CTA）から<strong>購入フロー（メールアドレス入力）</strong>に進める</td></tr>
+<tr><td>2</td><td><strong>価格表示</strong></td><td>料金プラン（月額／年額など）を見せ、行動を促すボタン（CTA）から購入フロー（メールアドレス入力）に進める</td></tr>
 <tr><td>3</td><td><strong>お問い合わせフォーム</strong></td><td>入力 → 送信 → 受付（<code>POST /api/contact</code>）が通る</td></tr>
-<tr><td>4</td><td><strong>マイページ</strong></td><td>メールアドレス入力の<strong>簡易ログイン</strong>で購入情報・ライセンスを表示（本物のログインは Day 3 Clerk [9]）</td></tr>
-<tr><td>5</td><td><strong>ライセンスキーの配布</strong></td><td><strong>メールアドレスのみ入力 → ライセンスキーを発行 → 完了画面で表示</strong>（決済なしの簡易版）</td></tr>
+<tr><td>4</td><td><strong>マイページ</strong></td><td>メールアドレス入力の簡易ログインで購入情報・ライセンスを表示（本物のログインは Day 3 Clerk [9]）</td></tr>
+<tr><td>5</td><td><strong>ライセンスキーの配布</strong></td><td>メールアドレスのみ入力 → ライセンスキーを発行 → 完了画面で表示（決済なしの簡易版）</td></tr>
 </tbody>
 </table>
 <ul>
-<li>5 は Day 2 では<strong>決済なし・メールアドレス入力のみ</strong>でキーを発行する流れまでを実装する。「Stripe 購入 → Webhook（決済完了などのイベントを、外部サービスが自分の API の URL に通知してくる仕組み）で自動発行」への差し替えは <strong>Day 3 オプション [8]</strong>。</li>
+<li>5 は Day 2 では<strong>決済なし・メールアドレス入力のみ</strong>でキーを発行する流れまでを実装する。「Stripe 購入 → Webhook（決済完了などのイベントを、外部サービスが自分の API の URL に通知してくる仕組み）で自動発行」への差し替えは Day 3 オプション [8]。</li>
 </ul>
 
 <hr>
@@ -363,7 +363,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 <thead><tr><th>経過</th><th>内容</th></tr></thead>
 <tbody>
 <tr><td>0:00–0:10</td><td>オプション課題のガイダンス（必須ではない・やらない・1つだけ、も可）</td></tr>
-<tr><td>0:10–1:30</td><td>自由作業: <strong>Day 1〜2 の残タスクを続ける</strong>、または<strong>オプション課題</strong>（[7]〜[11] から1つ）——どちらでも可</td></tr>
+<tr><td>0:10–1:30</td><td>自由作業: Day 1〜2 の残タスクを続ける、またはオプション課題（[7]〜[11] から1つ）——どちらでも可</td></tr>
 <tr><td>1:30–2:00</td><td><strong>最終発表会（1人3分）＋ ラップアップ・アンケート</strong></td></tr>
 </tbody>
 </table>
@@ -392,7 +392,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 
 <h3>参考バージョン（動作確認時点: 2026-07）</h3>
 <blockquote>
-<p>下記は本ワークショップで<strong>一周を通して動作確認したときの版</strong>（あくまで参考）。<strong>基本は最新版で進めてよい</strong>が、ライブラリ更新で手順や API が変わって詰まることがある（特にテスト系）。うまくいかないときは、この版に戻すと安定する。</p>
+<p>下記は本ワークショップで一周を通して動作確認したときの版（あくまで参考）。<strong>基本は最新版で進めてよい</strong>が、ライブラリ更新で手順や API が変わって詰まることがある（特にテスト系）。うまくいかないときは、この版に戻すと安定する。</p>
 </blockquote>
 <table>
 <thead><tr><th>対象</th><th>パッケージ＠バージョン</th></tr></thead>
@@ -411,7 +411,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 </blockquote>
 <h4>⓪ 考えてくる</h4>
 <ul>
-<li><strong>自分が作りたい SaaS の MVP</strong>をざっくり考えてくる（どんなサービスか・必須機能をどう満たすか）。<strong>サブスクリプション（月額/年額課金）を必須</strong>とする。迷う人は「玄米茶」をそのまま自分の題材にしてもよい</li>
+<li>自分が作りたい SaaS の MVP をざっくり考えてくる（どんなサービスか・必須機能をどう満たすか）。<strong>サブスクリプション（月額/年額課金）を必須</strong>とする。迷う人は「玄米茶」をそのまま自分の題材にしてもよい</li>
 </ul>
 <h4>① 事前に作っておくアカウント（全員必須）</h4>
 <ul>
@@ -440,7 +440,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 <hr>
 
 <h2 id="s07">Git ブランチ（dev → main）</h2>
-<p>前提: GitHub でリポジトリ（名前は全員共通で <code>3days-workshop</code>、<strong>Private</strong>）を新規作成し、ローカルに clone してから以下を実施する。<strong>フロント・バックは同じリポジトリ（モノレポ）で管理する</strong>。</p>
+<p>前提: GitHub でリポジトリ（名前は全員共通で <code>3days-workshop</code>、<strong>Private</strong>）を新規作成し、ローカルに clone してから以下を実施する。フロント・バックは同じリポジトリ（モノレポ）で管理する。</p>
 <ul>
 <li>最初に <strong><code>dev</code> ブランチを切り、作業はすべて <code>dev</code></strong> で進める</li>
 <li>区切りのいいところで<strong>こまめに commit / push</strong>（環境が壊れても作業を失わないための保険）</li>
