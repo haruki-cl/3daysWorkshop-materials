@@ -296,7 +296,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 <h2 id="s-map">全体マップ</h2>
 
 <figure class="diagram keep-light">
-<img src="img/workshop_flow_diagram.svg" alt="ワークショップフロー図: Core（[1]デザイン→[2]フロント→[3]フロントデプロイ→[4]バック→[5]自動テスト→[6]デプロイ）と Option（[7]メール/[8]決済/[9]ID連携/[10]運用保守/[11]セキュリティ）">
+<img src="img/workshop_flow_diagram.svg" alt="ワークショップフロー図: Core（[1]デザイン→[2]フロント→[3]フロントデプロイ→[4]バック→[5]自動テスト→[6]デプロイ）と Option（[7]メール/[8]決済/[9]ID連携/[10]運用保守/[11]セキュリティ/[12]テスト設計）">
 </figure>
 
 <table>
@@ -304,7 +304,7 @@ tbody tr:nth-child(even){background:#faf7ef}
 <tbody>
 <tr><td><strong>Day 1</strong></td><td>つくる</td><td>目的・技術紹介 / 環境確認 / [1] デザイン / [2] フロント / [3] フロントデプロイ</td></tr>
 <tr><td><strong>Day 2</strong></td><td>つなぐ・公開する</td><td>[4] バック / [5] 自動テスト / [6] 再デプロイ（Day 1 と同じ URL に API を統合）</td></tr>
-<tr><td><strong>Day 3</strong></td><td>育てる</td><td>オプション課題 [7]〜[11] / ラップアップ・発表会</td></tr>
+<tr><td><strong>Day 3</strong></td><td>育てる</td><td>オプション課題 [7]〜[12] / ラップアップ・発表会</td></tr>
 </tbody>
 </table>
 
@@ -323,10 +323,11 @@ tbody tr:nth-child(even){background:#faf7ef}
 <tr><td><strong>[9]</strong></td><td>ID 連携（Clerk）</td><td>Day 3</td><td>★★☆</td><td>未ログインで <code>/mypage</code> に入れない・<code>/api/me</code> がログイン必須になっている</td></tr>
 <tr><td><strong>[10]</strong></td><td>運用保守（Cloudflare ログ確認・スキル化）</td><td>Day 3</td><td>★☆☆</td><td><code>wrangler tail</code> でログ確認できる・運用スキルが1つ動作する</td></tr>
 <tr><td><strong>[11]</strong></td><td>セキュリティ（SonarCloud 静的解析・脆弱性レビュー）</td><td>Day 3</td><td>★★★</td><td>認証境界・IDOR・機密マスクを点検し、問題を最低1つ修正（余裕があれば回帰テストを追加）</td></tr>
+<tr><td><strong>[12]</strong></td><td>テスト設計（何をテストすべきか自分で決める）</td><td>Day 3</td><td>★★★</td><td>主要機能を1つ選び「こう動くべき」を自分で仕様化→期待動作表→テストまで設計。AI に丸投げせず、壊すとテストが赤くなることまで確認できる</td></tr>
 </tbody>
 </table>
 <blockquote class="key">
-<p><strong>必達は [1]〜[6]（Day 1〜2 全員）</strong>。<br><strong>Day 3 の [7]〜[11] は任意</strong>(やらない／1つだけ、も可)。</p>
+<p><strong>必達は [1]〜[6]（Day 1〜2 全員）</strong>。<br><strong>Day 3 の [7]〜[12] は任意</strong>(やらない／1つだけ、も可)。</p>
 </blockquote>
 
 <hr>
@@ -606,25 +607,25 @@ audit=true</code></pre>
 <hr>
 
 <h2 id="s1">[1] Claude Design でサイトデザイン作成</h2>
-<p><strong>ゴール:</strong> LP のデザインシステム（配色・トーン・コンポーネントの雰囲気）を確定し、zip でエクスポートする。<strong>作るのは LP（<code>/</code>）のみ</strong>。機能ページ（マイページ・問い合わせ・サクセス）は [2] で Claude Code が実装する</p>
+<p><strong>ゴール:</strong> LP のデザインシステム（配色・トーン・コンポーネントの雰囲気）を確定し、zip でエクスポートする。<strong>作るのは LP（<code>/</code>）のみ</strong> — 機能ページは [2] で Claude Code が実装する。</p>
 <blockquote>
-<p><strong>アクセス</strong>: Claude Design は <strong>claude.ai にブラウザでログイン</strong>して使う（Claude Code と同じアカウント）。左サイドバーの「Explore Claude」→「Claude Design」を選ぶか、<a target="_blank" rel="noopener" href="https://claude.ai/design">https://claude.ai/design</a> に直接アクセス。</p>
+<p><strong>アクセス</strong>: Claude Design は claude.ai にブラウザでログインして使う（Claude Code と同じアカウント）。左サイドバーの「Explore Claude」→「Claude Design」を選ぶか、<a target="_blank" rel="noopener" href="https://claude.ai/design">https://claude.ai/design</a> に直接アクセス。</p>
 </blockquote>
 <blockquote>
 <p><strong>なぜ LP だけなのか</strong><br>
-Claude Design はトークン消費量が多く、無料〜標準的なプランでは全ページ分を作り込む余裕がない。そのため今回は LP のデザインシステムづくりに絞り、機能ページ（マイページ・問い合わせ・サクセス）は前のセクション「画面構成とナビゲーション」で決めた仕様を Claude Code に渡して実装させる。<strong>より多くトークンを使えるプランであれば、フロント全ページを Claude Design で作ることも可能</strong>。</p>
+Claude Design はトークン消費量が多く、標準的なプランでは全ページ分を作り込む余裕がないため、今回は LP のデザインシステムに絞る（機能ページは「画面構成とナビゲーション」で決めた仕様を Claude Code に実装させる）。トークンに余裕があれば全ページを Claude Design で作ることも可能。</p>
 </blockquote>
 
 <h3>事前確認: モデルと Effort の設定・デザインシステムのリセット</h3>
-<p class="note">Claude Design を開くと「Make something new」の一覧が表示される。ここでは<strong>「Product prototype」を選ぶ</strong>（Slides・Document 等はこのワークショップでは使わない）。また一覧の右上に <strong>「Design system: None」</strong> という表示がある。過去に別のデザインシステムを使っていると、ここに前回のデザインシステム名が残っていることがあるので、<strong>「None」になっているか確認し、なっていなければ選び直してリセットしてから始める</strong>。</p>
+<p class="note">Claude Design を開くと「Make something new」の一覧が表示される。ここでは「Product prototype」を選ぶ（Slides・Document 等は使わない）。一覧の右上に「Design system: None」表示がある。過去に使ったデザインシステム名が残っていることがあるので、<strong>「None」になっているか確認し、違えばリセットしてから始める</strong>。</p>
 <figure class="diagram">
 <img src="img/ClaudeDesignHomeReset.png" alt="Claude Design のホーム画面。「Make something new」の一覧で「Product prototype」を選択し、右上の「Design system: None」がリセットされていることを確認する">
 </figure>
-<p>「Product prototype」を選ぶと、プロンプト入力欄の画面に移る。ここにも<strong>デザインシステムのリセット確認ポイントが1つある</strong>: 入力欄の左上にドロップダウンがあり、以前使ったデザインシステム名（例:「White base mono tone page…」）が残っていることがある。玄米茶を新規に作る場合は<strong>この欄をクリックして「None」相当の状態に戻してから</strong>プロンプトを入力する。</p>
+<p>「Product prototype」を選ぶと、プロンプト入力欄の画面に移る。ここにも<strong>リセット確認ポイントが1つ</strong>: 入力欄の左上のドロップダウンに以前のデザインシステム名（例「White base mono tone page…」）が残っていることがある。新規に作る場合はこの欄を「None」相当に戻してからプロンプトを入力する。</p>
 <figure class="diagram compact">
 <img src="img/ClaudeDesignPromptModelBar.png" alt="Claude Design のプロンプト入力画面。左上にデザインシステム／テンプレート名のドロップダウンが残っている例">
 </figure>
-<p>同じ画面には<strong>モデルと Effort（AI がどれだけ深く考えるかの設定）</strong>もある。執筆時点（2026-07）の推奨は <strong>Claude Opus 4.8 / Effort: High</strong>。モデル名は更新されていくので、<strong>その時点で使える最上位モデル＋高い Effort</strong> になっていることを確かめてから生成を開始する。</p>
+<p>同じ画面にモデルと Effort（AI がどれだけ深く考えるかの設定）もある。執筆時点（2026-07）の推奨は <strong>Opus 4.8 / Effort: High</strong>。モデル名は更新されるので、その時点の最上位モデル＋高い Effort になっているか確かめてから生成する。</p>
 <p class="note">この画面の配置は Claude Design のバージョン更新で変わることがある（プラン・環境によって表示が異なる場合もある）。見当たらない場合は入力欄の周辺・設定メニューを探す。</p>
 
 <h3>流れ</h3>
@@ -1146,9 +1147,10 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <tr><td><strong>[9]</strong></td><td>ID 連携（Clerk）</td><td>「メール入力の簡易ログイン」→ <strong>本物のログイン</strong>（未ログインはサインインへ）</td><td>★★☆</td><td><a href="#s9">→ [9] ID 連携</a></td></tr>
 <tr><td><strong>[10]</strong></td><td>運用保守</td><td>「運用チェックして」で<strong>監視・ログ・コストが見られる</strong>ように</td><td>★☆☆</td><td><a href="#s10">→ [10] 運用保守</a></td></tr>
 <tr><td><strong>[11]</strong></td><td>セキュリティ</td><td>自分のアプリの<strong>脆弱性を点検して1つ直す</strong>（＋回帰テスト）</td><td>★★★</td><td><a href="#s11">→ [11] セキュリティ</a></td></tr>
+<tr><td><strong>[12]</strong></td><td>テスト設計（自分で決める）</td><td>[5] の与えられた観点を卒業し、<strong>何をテストすべきかを自分で判断して設計</strong>する（仕様起点の機能テスト＋リスクで優先順位）</td><td>★★★</td><td><a href="#s12">→ [12] テスト設計</a></td></tr>
 </tbody>
 </table>
-<p class="note">選び方: <strong>作りたい変化で選ぶ</strong>（上表）。<strong>依存</strong>: [11] は [9]（本物の認証）まで終えていると効果が高い（偽造トークンの検証はモック認証では試せない）。<strong>目安</strong>: ★＝重さ＝所要時間の目安（★☆☆ ≈ 30〜45分 / ★★☆ ≈ 45〜60分 / ★★★ ≈ 60分〜）。1つだけなら軽い [7]・[10] から。</p>
+<p class="note">選び方: <strong>作りたい変化で選ぶ</strong>（上表）。<strong>依存</strong>: [11] は [9]（本物の認証）まで終えていると効果が高い（偽造トークンの検証はモック認証では試せない）。[12] は他の課題（特に [7][8][9]）まで実装したあとにやると、増えたコードをテスト対象にできて効果が高い。<strong>目安</strong>: ★＝重さ＝所要時間の目安（★☆☆ ≈ 30〜45分 / ★★☆ ≈ 45〜60分 / ★★★ ≈ 60分〜）。1つだけなら軽い [7]・[10] から。</p>
 
 <h2 id="common">まず [7][8][9] に共通すること</h2>
 <ul>
@@ -1593,6 +1595,110 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 
 <hr>
 
+<h2 id="s12">[12] テスト設計（自分で決める）<span class="diff">★★★</span></h2>
+<p><strong>お題</strong>: 自分のアプリで<strong>「間違うと一番痛い」機能を1つ</strong>選び、その正しい振る舞いを<strong>自分で仕様化</strong>して、そこから要るテストを<strong>自分で決めて</strong>実装する<br>
+<strong>ツール</strong>: Vitest ＋ Claude Code<br>
+<strong>前提</strong>: [5] の <code>backend/docs/TEST.md</code> とテスト一式（まだなら先に [5]）／[2] の <code>SCREEN_SPEC.md</code>（意図した仕様）<br>
+<strong>学び</strong>: 「AI が書いたコードのテスト」を AI 任せにせず、<strong>何をテストすべきかを自分の判断で設計</strong>できるようになる</p>
+
+<blockquote class="key">
+<p><strong>[5] は「与えられた4観点」を通す最低ライン</strong>だった。[12] はその観点を渡さない——<strong>何をテストすべきかを自分で決める</strong>のがゴール。テストの本数ではなく、判断の練習。<br>
+<strong>⚠️ 一番の罠</strong>: AI に「テスト書いて」と丸投げすると、AI は<strong>実装を読んで「今のコードがやっていること」をテスト</strong>にする＝<strong>AI のバグごと正解として固定</strong>してしまう。だから機能テストは、まず<strong>意図した仕様</strong>（自分の言葉／<code>SCREEN_SPEC.md</code>）から導き、実装と突き合わせる。この順序が逆になった瞬間、テストは実装追認装置になる。</p>
+</blockquote>
+
+<h3>2つのレンズと、人間／AI の分担</h3>
+<ul>
+<li><strong>機能レンズ（仕様起点・体系的）</strong>＝機能テストの土台。「この機能は何を保証すべきか」を仕様から積み上げ、入力・状態ごとに<strong>期待する結果</strong>を決める</li>
+<li><strong>リスクレンズ（被害起点）</strong>＝「壊れたら困る」で<strong>どれを実際に書くか優先順位</strong>をつける。仕様に落ちない穴探し（探索的・モンキー的）も緩くここで</li>
+</ul>
+<table>
+<thead><tr><th>作業</th><th>人間</th><th>AI</th></tr></thead>
+<tbody>
+<tr><td>意図した仕様を言葉にする</td><td>◎ 人間のみ</td><td>✕ 実装から推測させない</td></tr>
+<tr><td>期待動作表の行出し（入力クラス・状態遷移）</td><td>○ 抜けと過剰を取捨</td><td>◎ 候補を機械的に大量列挙</td></tr>
+<tr><td>各行の期待結果（具体値）を確定</td><td>◎ 意図に照らして決める</td><td>△ 提案のみ・実装を根拠にさせない</td></tr>
+<tr><td>どのケースを書くか絞る</td><td>◎「壊れたら困る」で判断</td><td>△ 影響度の観点出し</td></tr>
+<tr><td>テスト実装・効き目検証・カバレッジ</td><td>○ 指示とレビュー</td><td>◎ 実装・実行・破壊・計測</td></tr>
+</tbody>
+</table>
+<blockquote class="key"><p>背骨: <strong>人間＝意図と判断</strong>（何が正しいか／何を書くか／なぜ）、<strong>AI＝量・機構・批判</strong>（候補列挙／コード／実行／反例）。</p></blockquote>
+
+<h3>流れ（1機能・約60分）</h3>
+<ol>
+<li><strong>（5分）対象を1機能に絞り、名前をつける</strong> — 自分のアプリで「間違うと一番痛い」機能を1つ選び、短い<strong>機能名</strong>をつける（例:「マイページのライセンス表示」「問い合わせ受付」／[8] をやった人は「決済 Webhook でのライセンス発行」）。この機能名を、以降のプロンプトの <code>&lt;機能名&gt;</code> に入れる。<strong>全機能はやらない</strong>。ここがリスクレンズの入口</li>
+<li><strong>（15分）その機能の「あるべき動作」（＝どう動くのが正しいか）を自分の言葉で書く</strong>
+  <p>ここが [12] の心臓部。<strong>実装が今どう動いているか</strong>ではなく、<strong>自分が作りたかった正しい動き</strong>を書く。白紙が難しければ、コードは見ずに<strong>次の3問に答える</strong>だけでよい:</p>
+  <ol>
+  <li>この機能は<strong>誰の・何のため</strong>か</li>
+  <li>正常に使い終わったとき、<strong>何が「真」であるべき</strong>か（例: 本人の購入だけが見える）</li>
+  <li><strong>絶対に起きてはいけないこと</strong>は何か（例: 他人の購入が見える／未ログインで中身が返る）</li>
+  </ol>
+  <p class="note">記入例: 機能名を「マイページのライセンス表示」とした場合、上の3問への答え（＝あるべき動作）はこう書ける:</p>
+<pre><code>- ログイン中の本人の購入・ライセンスだけが見える
+- 他人のメールを指定しても、他人のデータは絶対に見えない
+- 未ログインでは中身を返さず弾く
+- ライセンスキーは全部見せず末尾数桁だけにする（漏洩対策）
+- 購入がない人にはエラーではなく「購入なし」を返す</code></pre>
+  <blockquote class="warn"><p><strong>⚠️ ここを AI に丸投げしない。</strong> 「この機能の仕様をまとめて」のように AI に書かせると、AI は <strong>backend の実装を読んで書く</strong>ので、出てくるのは"仕様"ではなく<strong>"今のコードがやっていることの説明"</strong>。それを土台にすると実装追認に逆戻りする。どうしても手伝わせるなら <strong>「backend のコードは読まず、<code>SCREEN_SPEC.md</code> と私の説明だけを根拠に」</strong>と縛り、<strong>出てきた各行を自分で取捨</strong>して、自分で理由を説明できる状態にしてから次へ進む。</p></blockquote>
+</li>
+<li><strong>（この続き）書いた「あるべき動作」を AI に期待動作表へ展開させ、<code>docs/TEST.md</code> に書き出す</strong>
+<pre><code>次は私が書いた「&lt;機能名&gt; のあるべき動作（正しくはこう動く）」です:
+（↑で書いた3〜5行を貼る）
+
+これを期待動作表に展開して、docs/TEST.md に「[12] &lt;機能名&gt; 期待動作表」として追記して。
+表は「入力・状態 | 期待結果 | 書く」の3列にする。
+入力の同値クラス（正常・不正・境界・空・重複）と、状態・遷移
+（例: 購入→マイページ表示、二重実行、未ログイン→ログイン後）で行を増やして。
+ただし「期待結果」と「書く」の2列は空欄のままにして——そこは私が埋める。
+実装コードは読まず、上の仕様だけを根拠にすること。</code></pre>
+  <ul><li><code>docs/TEST.md</code> を自分で開き、<strong>各行の「期待結果」列を埋める</strong>（AI が埋めた場合も、意図に照らして検算する）。「エラーが出ない」ではなく<strong>「この値が返る」</strong>まで書く</li></ul>
+</li>
+<li><strong>（10分）書くケースを絞る</strong> — 行は多すぎるので全部は書かない。<code>docs/TEST.md</code> の表の<strong>「書く」列に、今回テストする行だけ ◎ を入れる</strong>（「壊れたら困る」順に選ぶ。全部には付けない＝これがリスクレンズ）</li>
+<li><strong>（15分）AI にテスト実装させる</strong>（期待値は自分の表の値を使わせる）
+<pre><code>docs/TEST.md の期待動作表で「書く」列が ◎ の行だけ、テストを実装して。
+各テストの期待値は表の「期待結果」列の値をそのまま使い、
+あなたが実装コードから推測しないこと。外部サービスへの fetch はモックのままで。</code></pre>
+  <ul><li><code>npm test</code> でグリーンを確認</li></ul>
+</li>
+<li><strong>（10分）わざとコードを壊して効き目を検証 ＋ 敵対的レビュー1往復</strong>
+<pre><code>① いま追加したテストが「効いている」か確認したい。対象の関数のしきい値／条件を
+   1つだけ一時的に壊して、該当テストが赤くなることを見せて。確認できたら元に戻して。
+② 私の期待動作表から漏れている振る舞いはある? また、書いたテストの中で
+   不要と思うものがあれば根拠つきで指摘して。</code></pre>
+  <ul><li>赤くならないテストは<strong>結果を検証できていない</strong>（例: レスポンスの中身を見ていない）→ 直す</li><li>②の指摘は<strong>採否と理由を人間が1行残す</strong>（AI が正しいとは限らない）</li></ul>
+</li>
+<li><strong>（5分）コミットする</strong>
+<pre><code>テスト設計の作業をコミットして push して。</code></pre>
+</li>
+</ol>
+
+<h3>さらに余裕があれば（任意）</h3>
+<ul>
+<li>2機能目に同じループを回す</li>
+<li>カバレッジで<strong>表から漏れた挙動</strong>を発見する（数字を目標にしない・発見ツールとして使う）:
+<pre><code>テストをカバレッジ付きで実行して、一度も通っていない分岐を教えて。
+それが期待動作表に無い挙動なら、表に足すか私が判断する。</code></pre>
+</li>
+</ul>
+
+<h3 class="warn">⚠️ ハマりどころ</h3>
+<ul>
+<li><strong>丸投げ厳禁</strong>: 「いい感じにテスト書いて」だと AI は実装の“現状”をテストにする＝<strong>バグごと固定</strong>。意図した仕様を先に自分で書くのが唯一の防ぎ方</li>
+<li>期待結果を「エラーが出ない」で済ませない。<strong>「この値が返る」</strong>まで書かないと、壊しても赤にならない</li>
+<li><strong>全機能を網羅しようとしない</strong>。1機能で時間切れなら深掘りは切ってよい</li>
+</ul>
+
+<h3 class="done">✅ 完了の定義（判断の跡で確認）</h3>
+<ul>
+<li>1機能について「あるべき動作（正しくはどう動くか）」を<strong>自分の言葉で書いた</strong></li>
+<li>期待動作表を起こし、<strong>各行の期待結果を自分で埋めた</strong></li>
+<li>リスクレンズで「書く／書かない」を判断した（<code>docs/TEST.md</code> の「書く」列に ◎ がついている）</li>
+<li>追加した各テストが<strong>表のどの行（どの保証）を守るか言える</strong></li>
+<li>1つ以上のテストで<strong>「壊すと赤」</strong>を確認した／<code>npm test</code> が最終的にグリーン</li>
+</ul>
+
+<hr>
+
 <h2 id="wrap">ラップアップ・発表会（Day 3 の最後 30 分）</h2>
 
 <h3>最終発表会（<strong>1人3分</strong>）</h3>
@@ -1640,6 +1746,120 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 
 <p class="foot">3Days ワークショップフロー — AI とつくる「自分の SaaS の MVP」</p>
 </section><!-- /ps-day3 -->
+
+<section class="page-section" id="ps-auth">
+<h1 id="auth">付録: Claude Code 認証切り替えガイド</h1>
+<p class="note">対象: 普段は <strong>API キー</strong>で使っている人が、<strong>一時的に Claude Code サブスク</strong>に切り替え、用が済んだら <strong>API キーに戻す</strong>ための手順。</p>
+
+<blockquote class="key">
+<strong>これだけ覚える:</strong> どのキーを使うかは <code>~/.claude.json</code> の記録で決まる。
+<strong><code>rejected</code> にあるキーは無視され</strong>てサブスクが使われ、<strong><code>approved</code> にあるキーは使われる</strong>（サブスクより優先）。
+切り替えとは、この記録を <code>/config</code> や起動時プロンプトで切り替えること。
+</blockquote>
+
+<h3>認証の記録は <code>~/.claude.json</code> にある</h3>
+<p>「どのキーを使う / 使わない」は <code>~/.claude.json</code> の <code>customApiKeyResponses</code> に記録される。
+<code>approved</code>（使うキー）と <code>rejected</code>（使わないキー）の2つの配列があり、キーは<strong>末尾20文字だけ</strong>が記録される（フルキーは保存されない）。</p>
+<figure class="diagram"><img src="img/ClaudeAPI-approved.png" alt="~/.claude.json の customApiKeyResponses（approved にキーが入った例）"><figcaption><code>~/.claude.json</code> の例 — <code>approved</code> に API キーが入っている＝この API キーで動いている状態</figcaption></figure>
+
+<h3>キーの3つの状態</h3>
+<table>
+<thead><tr><th>状態</th><th>意味</th><th>起動時の挙動</th></tr></thead>
+<tbody>
+<tr><td><code>approved</code></td><td>このキーを使う、と承認済み</td><td>この API キーで動く（サブスクより優先）</td></tr>
+<tr><td><code>rejected</code></td><td>このキーは使わない、と拒否済み</td><td>キーを無視してサブスクで動く</td></tr>
+<tr><td><code>new</code></td><td>まだどちらも選んでいない</td><td>「このキーを使う？」と確認が出る</td></tr>
+</tbody>
+</table>
+
+<h2 id="auth-to-sub">① API → サブスク: 一時的にサブスクへ切り替える</h2>
+<p>普段の API キー運用から、一時的にサブスクを使い始めるとき。</p>
+<ol>
+<li>Claude Code のセッション内でログアウトする（<code>approved</code> が空になり、古いサブスクのログインも消える）。
+<pre><code>/logout</code></pre>
+<figure class="diagram"><img src="img/ClaudeAPI-logout.png" alt="/logout コマンド"><figcaption>/logout（Anthropic アカウントからサインアウト）</figcaption></figure></li>
+<li>Claude Code を起動しなおす。env に API キーが残っているので「このAPIキーを使うか？」と聞かれる。ここで <strong>「2. No (recommended)」</strong>を選ぶ。
+<pre><code>claude</code></pre>
+<figure class="diagram"><img src="img/ClaudeAPI-reLogin.png" alt="環境変数の API キーを使うか確認するプロンプト"><figcaption>env の API キー検出プロンプト → No を選ぶ</figcaption></figure></li>
+<li>No を選ぶと、<strong>ログイン方法の選択画面が自動で表示される</strong>（<code>/login</code> を打つ必要はない）。<strong>「1. Claude account with subscription」</strong>を選び、ブラウザで claude.ai（Pro / Max 等）にログインする。
+<figure class="diagram"><img src="img/ClaudeAPI-subscriptionLogin.png" alt="ログイン方法の選択画面"><figcaption>ログアウト後に claude を再起動すると自動表示される → サブスクを選ぶ</figcaption></figure></li>
+<li>認証方式を確認する。<code>claude.ai</code> になっていれば成功。<code>~/.claude.json</code> は <code>approved</code> が空・<code>rejected</code> に当該キーが入った状態になる。
+<pre><code>/status</code></pre>
+<figure class="diagram"><img src="img/ClaudeAPI-rejected.png" alt="切替後の customApiKeyResponses（rejected にキーが入った状態）"><figcaption>切替後: approved が空、rejected に API キー</figcaption></figure></li>
+</ol>
+<p class="note">環境変数の API キーは <strong>消さなくてよい</strong>（<code>/logout</code> が承認を外すのでサブスクが使われる）。
+ただし起動のたびに確認プロンプトが出るのが煩わしければ、そのシェルで <code>unset ANTHROPIC_API_KEY</code> しておくとプロンプトが出なくなる。</p>
+
+<h2 id="auth-to-api">② サブスク → API: 普段の運用に戻す</h2>
+<p>サブスクの用が済んで、普段の API キーに戻すとき。ゴールはキーを <code>rejected</code> から外すこと。<code>/config</code> の ON で <code>rejected</code> から外れ、<code>approved</code> として記録される。</p>
+<ol>
+<li>env に API キーがあることを確認する（無ければ設定）。普段 <code>~/.zshrc</code> 等に書いてあるならそのままでよい。
+<pre><code>export ANTHROPIC_API_KEY="sk-ant-xxxxxxxx"</code></pre></li>
+<li>Claude Code を起動する。
+<pre><code>claude</code></pre></li>
+<li>API キーを有効化する。① の直後はキーが <code>rejected</code> に入っているため起動時プロンプトは出ない。<code>/config</code> を開き「Use custom API key」を <strong>ON</strong> にする（キーが未決定=<code>new</code> の場合は起動時に確認が出るので、そのときは「1. Yes」でもよい）。
+<pre><code>/config</code></pre></li>
+<li>認証方式を確認する。API キー利用になっていれば成功。<code>~/.claude.json</code> は <code>approved</code> に当該キーが入り <code>rejected</code> が空の状態に戻る（冒頭の <code>~/.claude.json</code> の例と同じ状態）。
+<pre><code>/status</code></pre></li>
+</ol>
+<p class="note">一度「使わない」を選んでいると、キーは <code>rejected</code> に入っている。
+<code>/config</code> の ON で自動的に <code>approved</code> へ移るので問題ない。
+手動でやるなら <code>~/.claude.json</code> の <code>customApiKeyResponses.rejected</code> から
+<strong>該当キーの末尾20文字のエントリ</strong>を削除する（削除すると <code>new</code> に戻り、再度確認プロンプトが出る）。</p>
+
+<h2 id="auth-check">確認とトラブルシュート</h2>
+<h3 class="done">確認に使うコマンド</h3>
+<p>現在の認証方式を見る（Claude Code セッション内）:</p>
+<pre><code>/status</code></pre>
+<p><code>approved</code> / <code>rejected</code> の登録件数を確認する（キーの値は表示されない）:</p>
+<pre><code>jq '.customApiKeyResponses | {approved:(.approved|length), rejected:(.rejected|length)}' ~/.claude.json</code></pre>
+<h3 class="warn">うまく切り替わらないとき</h3>
+<table>
+<thead><tr><th>症状</th><th>原因</th><th>対処</th></tr></thead>
+<tbody>
+<tr><td>サブスクにしたのに API のまま</td><td>キーが <code>approved</code> に残っている</td><td><code>/logout</code>、または <code>/config</code> のトグルを OFF</td></tr>
+<tr><td>API にしたいのに使われない</td><td>キーが <code>approved</code> に無い（<code>new</code>/<code>rejected</code>）</td><td><code>/config</code> を ON、または起動時プロンプトで「使う」</td></tr>
+<tr><td>ログインしても接続が切れる</td><td><code>ANTHROPIC_AUTH_TOKEN</code> / <code>CLAUDE_CODE_OAUTH_TOKEN</code> が env に残存（承認ゲート無しで効く）</td><td>該当変数を <code>unset</code> して再起動</td></tr>
+<tr><td><code>/logout</code> しても API が消えない</td><td><code>/login</code> で入力・保存したキー（keychain）は logout で消えない</td><td><code>/status</code> でソースを確認し、<code>/login</code> でサブスクに入れ直す</td></tr>
+</tbody>
+</table>
+<p class="warn"><strong>秘密情報の扱い:</strong> API キーの値をチャットやコードに貼らない。git 管理下のファイルにも書かない。恒久設定は各自の <code>~/.zshrc</code> 等にとどめる。</p>
+
+<h2 id="auth-detail">仕組み（詳細・読まなくても切り替えはできます）</h2>
+<h3>認証の優先順位</h3>
+<p>複数の認証情報があると、上ほど優先される。</p>
+<table>
+<thead><tr><th>順位</th><th>認証方式</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>クラウドプロバイダの資格情報（Bedrock / Vertex 等）</td></tr>
+<tr><td>2</td><td><code>ANTHROPIC_AUTH_TOKEN</code>（Bearer トークン）</td></tr>
+<tr><td>3</td><td><code>ANTHROPIC_API_KEY</code> — <strong>ただし <code>approved</code> のときだけ</strong>採用</td></tr>
+<tr><td>4</td><td><code>apiKeyHelper</code> スクリプト</td></tr>
+<tr><td>5</td><td><code>CLAUDE_CODE_OAUTH_TOKEN</code></td></tr>
+<tr><td>6</td><td>サブスクの OAuth（<code>/login</code> で保存）</td></tr>
+</tbody>
+</table>
+<p class="note"><code>ANTHROPIC_API_KEY</code> は承認ゲートがあり、未承認なら無視されてサブスクにフォールバックする。
+一方 <code>ANTHROPIC_AUTH_TOKEN</code> / <code>CLAUDE_CODE_OAUTH_TOKEN</code> はゲートが無く、セットされていれば効く。</p>
+
+<h4><code>/logout</code> が実際にすること</h4>
+<ul>
+<li><code>customApiKeyResponses.approved</code> を空にする（承認済みキーが外れる）</li>
+<li>サブスクの OAuth 資格情報を消す</li>
+<li>オンボーディング状態をリセット → 次回起動で確認プロンプトが再表示される</li>
+<li><code>rejected</code> には何も追加しない。<code>/login</code> で保存した keychain 上のキーも消さない</li>
+</ul>
+
+<h4>2つの「キーの保管場所」</h4>
+<ul>
+<li><strong>環境変数</strong> <code>ANTHROPIC_API_KEY</code> … 承認（<code>approved</code>/<code>rejected</code>）で制御。本ガイドの前提。</li>
+<li><strong>保存キー</strong> <code>primaryApiKey</code>（macOS Keychain）… <code>/login</code> でキーを直接入力した場合の保管先。<code>/logout</code> では消えない。env 運用なら基本使われない。</li>
+</ul>
+<p class="note">補足: <code>--bare</code> / <code>CLAUDE_CODE_SIMPLE</code> などの簡易モードや非対話実行（<code>claude -p</code>）では、
+確認プロンプトを出さずに env のキーを直接使う経路がある（＝承認ゲートを通らない）。通常の対話起動は承認ゲート経由。</p>
+
+<p class="foot">出典: Claude Code 公式ドキュメント（authentication）＋ v2.1.216 の実挙動確認。動作確認時点: 2026-07。</p>
+</section><!-- /ps-auth -->
 </article></div>
 <button id="toc-btn" title="目次" aria-label="目次を開く">☰</button>
 <div id="toc-overlay"></div>
@@ -1677,8 +1897,16 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
     <li><a href="#s9">[9] ID 連携</a></li>
     <li><a href="#s10">[10] 運用保守</a></li>
     <li><a href="#s11">[11] セキュリティ</a></li>
+    <li><a href="#s12">[12] テスト設計</a></li>
     <li><a href="#wrap">ラップアップ</a></li>
     <li><a href="#cleanup">後片付け</a></li>
+  </ul>
+  <a class="toc-group-label" href="#auth">付録 ― 認証切り替え</a>
+  <ul>
+    <li><a href="#auth-to-sub">① API→サブスク</a></li>
+    <li><a href="#auth-to-api">② サブスク→API</a></li>
+    <li><a href="#auth-check">確認・トラブル</a></li>
+    <li><a href="#auth-detail">仕組み（詳細）</a></li>
   </ul>
 </nav>
 <button id="totop" title="ページ先頭へ" aria-label="ページ先頭へ戻る" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
@@ -1730,7 +1958,7 @@ document.addEventListener('keydown',e=>{
 });
 
 // ページ切り替え
-const PAGE_IDS = ['ps-overview','ps-day1','ps-day2','ps-day3'];
+const PAGE_IDS = ['ps-overview','ps-day1','ps-day2','ps-day3','ps-auth'];
 const PAGE_MAP = {};
 PAGE_IDS.forEach(pid=>{
   const sec = document.getElementById(pid);
