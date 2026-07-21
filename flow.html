@@ -1749,7 +1749,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 
 <section class="page-section" id="ps-auth">
 <h1 id="auth">付録: Claude Code 認証切り替えガイド</h1>
-<p class="note">対象: 普段は <strong>API キー</strong>で使っている人が、<strong>一時的に Claude Code サブスク</strong>に切り替え、用が済んだら <strong>API キーに戻す</strong>ための手順。</p>
+<p class="note">対象: 普段は API キーで使っている人が、<strong>一時的に Claude Code サブスク</strong>に切り替え、用が済んだら API キーに戻すための手順。</p>
 
 <blockquote class="key">
 <strong>これだけ覚える:</strong> どのキーを使うかは <code>~/.claude.json</code> の記録で決まる。
@@ -1781,7 +1781,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <li>Claude Code を起動しなおす。env に API キーが残っているので「このAPIキーを使うか？」と聞かれる。ここで <strong>「2. No (recommended)」</strong>を選ぶ。
 <pre><code>claude</code></pre>
 <figure class="diagram"><img src="img/ClaudeAPI-reLogin.png" alt="環境変数の API キーを使うか確認するプロンプト"><figcaption>env の API キー検出プロンプト → No を選ぶ</figcaption></figure></li>
-<li>No を選ぶと、<strong>ログイン方法の選択画面が自動で表示される</strong>（<code>/login</code> を打つ必要はない）。<strong>「1. Claude account with subscription」</strong>を選び、ブラウザで claude.ai（Pro / Max 等）にログインする。
+<li>No を選ぶと、ログイン方法の選択画面が自動で表示される（<code>/login</code> を打つ必要はない）。<strong>「1. Claude account with subscription」</strong>を選び、ブラウザで claude.ai（Pro / Max 等）にログインする。
 <figure class="diagram"><img src="img/ClaudeAPI-subscriptionLogin.png" alt="ログイン方法の選択画面"><figcaption>ログアウト後に claude を再起動すると自動表示される → サブスクを選ぶ</figcaption></figure></li>
 <li>認証方式を確認する。<code>claude.ai</code> になっていれば成功。<code>~/.claude.json</code> は <code>approved</code> が空・<code>rejected</code> に当該キーが入った状態になる。
 <pre><code>/status</code></pre>
