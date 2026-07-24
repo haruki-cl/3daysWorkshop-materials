@@ -56,6 +56,19 @@ AI 駆動は出力の個人差が大きく、詰まる人は必ず出る。**最
 
 **15分ルール**: 15分自力で解決しなければ講師か隣の人に聞く（沼を防ぐ）。
 
+**発展（Workers Builds）でAPIが全滅した場合の対処**
+[6] の発展課題でCloudflareのGit連携（Workers Builds）を試した参加者が、pushしたらAPIが全部404になった、と申告してくるケースが想定される。典型的な原因と対処は以下の通り。
+
+- **症状**: `/api/*` が軒並み404（中身が空の404）になる。トップページ自体は表示されることが多い。
+- **典型原因**: Cloudflareダッシュボードの Worker → Settings → Build で、**Root directory（Path）が `backend` に設定されていない**（空欄 or `/` のまま）。このリポジトリは `frontend/`・`backend/` に分かれたモノレポ構成のため、Root directoryを明示しないと `backend/wrangler.jsonc`（D1/KV・APIルーティング入りの本物の設定）が使われない。
+- **見分け方**: GitHubリポジトリのPull Requests一覧に、`cloudflare-workers-and-pages[bot]` が「Add Cloudflare Workers configuration」というPRを勝手に作っていないか確認する。あればほぼこれが原因（Cloudflareが「設定が見つからない」と判断し、簡易的な静的サイト用設定を自動生成してPRを送ってきたもの）。
+- **復旧手順**:
+  1. Cloudflareダッシュボード → 該当Worker → Settings → Build → **Path を `backend` に設定**して Update
+  2. Build command が空なら `npm install --prefix ../frontend && npm run build:front` を設定
+  3. 上記のPRがあればクローズし、ボットが作ったブランチは削除して混乱を防ぐ
+  4. 何かを1行変更して再度 `git push` し、数十秒待ってAPIが復旧するか確認
+  5. 授業時間内に解決しない場合は、いったん手元で `wrangler deploy`（手動デプロイ）に切り替えさせて最低ラインを死守し、Workers Builds復旧は休憩時間や個別対応に回す
+
 ---
 
 ## 4. 事前課題の提出・レビュー（R8-12）

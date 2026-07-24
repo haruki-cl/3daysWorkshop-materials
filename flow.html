@@ -450,6 +450,7 @@ details.spec pre{margin:.5em 0 0;}
 <li>区切りのいいところで<strong>こまめに commit / push</strong>（環境が壊れても作業を失わないための保険）</li>
 <li><strong>各日のクロージングで「dev に push 済みか」を必ず確認</strong>（翌日のキャッチアップが楽になる）</li>
 <li><code>dev</code> → <code>main</code> への<strong>マージは、セキュリティ課題（SonarCloud 解析）に着手する前に行う</strong>（SonarCloud 無料版は <code>main</code> ブランチしか解析しないため）。<code>main</code> ＝ 公開・解析対象の安定版。セキュリティ課題をやらない場合は、最後に一度マージして締めればよい（任意）</li>
+<li>⚠️ <a href="#s6">[6]</a> の発展（Workers Builds）で Production branch を <code>main</code> に設定している場合、<strong>この <code>dev</code> → <code>main</code> マージはそのまま本番デプロイになる</strong>。SonarCloud の解析結果（直すべき点）が出るのはマージ<strong>後</strong>なので、<strong>未修正の脆弱性が一時的に公開される</strong>ことになる。気になる場合は、セキュリティ課題 <a href="#s11">[11]</a> の対応が終わってから <code>main</code> にマージ・pushする運用に変えるとよい</li>
 </ul>
 <figure class="diagram">
 <img src="img/git_flow.svg" alt="Git フロー図: dev ブランチで作業しこまめに commit/push、完成後に main へマージ">
@@ -1178,6 +1179,26 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <li>（余裕があれば）公開した本番 URL で<strong>トップページ・<code>/mypage</code>・API を1つ</strong>ブラウザで開き、ローカルと同じ挙動か目視確認する</li>
 </ul>
 
+<h3>発展: git push だけで自動デプロイする（Workers Builds）</h3>
+<p>ここまでは手元で <code>wrangler deploy</code> を叩く手動デプロイだったが、Cloudflare の
+<strong>Workers Builds</strong> という Git 連携機能を使うと、<code>git push</code> するだけで
+自動的にビルド・デプロイされる状態にできる。</p>
+<ol>
+<li>Cloudflare ダッシュボード → 対象の Worker → <strong>Settings → Build</strong> から GitHub リポジトリを連携する</li>
+<li><strong>Path を <code>backend</code> に設定する</strong>（モノレポ構成のため。ここを空のままにすると
+Cloudflare が自動生成した誤った設定でデプロイされてしまうので注意）</li>
+<li><strong>Build command に <code>npm install --prefix ../frontend && npm run build:front</code> を設定する</strong>
+（フロントのビルドをここで行う）</li>
+<li><strong>Production branch を <code>main</code> に設定する</strong>（<code>dev</code> への push はプレビューのみになる）</li>
+</ol>
+<h3 class="warn">⚠️ ハマりどころ: Workers Builds</h3>
+<ul>
+<li>Path を設定し忘れると、Cloudflare が自動でリポジトリのルートに簡易的な設定ファイルを追加する
+PR を送ってくることがある。これが誤ってデプロイされると API が全滅するので、Path 設定を先に済ませる</li>
+<li>デプロイ直後は数秒〜十数秒、変更が全世界のエッジサーバーに伝播しきっていないことがある。
+すぐにアクセスして 404 が出ても、少し待ってから再確認する</li>
+</ul>
+
 <h3>Day 2 クロージング</h3>
 <ul>
 <li>全員が「<code>npm test</code> グリーン + <code>workers.dev</code> 公開 URL」に到達しているか確認</li>
@@ -1791,6 +1812,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <tr><td>Clerk アプリ</td><td>残すならそのまま</td><td>不要ならアプリを削除。<code>frontend/.env</code> の鍵も消す</td></tr>
 <tr><td>Resend API キー</td><td>公開アプリでメール送信（[7]）を使い続けるなら残す</td><td><strong>ダッシュボードで API キーを Revoke（無効化）</strong></td></tr>
 <tr><td>SonarCloud / GitHub App</td><td>継続解析するなら残す</td><td>不要なら SonarCloud のプロジェクトを削除し、GitHub の Installed App から権限を解除</td></tr>
+<tr><td>Cloudflare Workers Builds（Git 連携。<a href="#s6">[6]</a> の発展を試した場合）</td><td>継続して自動デプロイを使うなら残す</td><td>不要なら Cloudflare の Worker → Settings → Build で「Disconnect」し、GitHub の Settings → Applications → Installed GitHub Apps から <strong>Cloudflare Workers and Pages</strong> のリポジトリアクセス権も解除</td></tr>
 </tbody>
 </table></div>
 <p class="note">原則: <strong>鍵（API キー・トークン）は「消す」より先に「無効化（Revoke）」</strong>する（消しても発行済みの鍵は生きているため）。手元の <code>.dev.vars</code> / <code>.cf-ops.token</code> はローカルファイルなので削除でよい（Git には元々入れていない）。</p>
