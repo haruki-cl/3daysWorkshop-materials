@@ -43,12 +43,12 @@
   <text x="234" y="176" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="9" font-weight="700" fill="#7a3d00">API ルート（Hono）</text>
   <text x="234" y="189" text-anchor="middle" font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="8" fill="#d97706">/api/* → hono handler</text>
 
-  <!-- Arrow Worker to D1/KV local -->
+  <!-- Arrow Worker to D1 local -->
   <line x1="234" y1="214" x2="234" y2="230" stroke="#0d9488" stroke-width="1.5" marker-end="url(#arr-teal)"/>
 
-  <!-- D1/KV local -->
+  <!-- D1 local -->
   <rect x="146" y="230" width="176" height="36" rx="8" fill="#e6fafa" stroke="#0d9488" stroke-width="1.2"/>
-  <text x="234" y="246" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10" font-weight="700" fill="#085450">D1 / KV</text>
+  <text x="234" y="246" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10" font-weight="700" fill="#085450">D1</text>
   <text x="234" y="259" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="8" fill="#0d9488">ローカル miniflare</text>
 
   <!-- key point (dev) -->
@@ -88,12 +88,12 @@
   <text x="594" y="172" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="9" font-weight="700" fill="#7a3d00">API ルート（Hono）</text>
   <text x="594" y="185" text-anchor="middle" font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="8" fill="#d97706">/api/* → hono handler</text>
 
-  <!-- Arrow Worker to D1/KV prod -->
+  <!-- Arrow Worker to D1 prod -->
   <line x1="596" y1="216" x2="596" y2="238" stroke="#0d9488" stroke-width="1.5" marker-end="url(#arr-teal)"/>
 
-  <!-- D1/KV prod -->
+  <!-- D1 prod -->
   <rect x="506" y="238" width="180" height="36" rx="8" fill="#e6fafa" stroke="#0d9488" stroke-width="1.2"/>
-  <text x="596" y="254" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10" font-weight="700" fill="#085450">D1 / KV（本番）</text>
+  <text x="596" y="254" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10" font-weight="700" fill="#085450">D1（本番）</text>
   <text x="596" y="267" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="8" fill="#0d9488">リモート マイグレーション済み</text>
 
   <!-- key point label -->

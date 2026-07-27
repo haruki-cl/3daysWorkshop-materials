@@ -135,6 +135,12 @@ details.spec pre{margin:.5em 0 0;}
   font-size:1rem; font-weight:600; color:var(--muted);
   margin:0 0 12px; padding-bottom:8px; border-bottom:2px solid var(--line);
 }
+#toc-panel a#slides-link{
+  display:block; margin:0 0 14px; padding:.5em .8em; text-align:center;
+  background:var(--accent); color:#fff; border-radius:8px;
+  font-size:.9rem; font-weight:600; text-decoration:none;
+}
+#toc-panel a#slides-link:hover{background:var(--accent-deep); color:#fff;}
 #toc-panel ul{list-style:none; padding:0; margin:0; columns:1;}
 #toc-panel li{margin:.2em 0; font-size:.88rem; font-weight:400; color:var(--ink);}
 #toc-panel a{
@@ -377,7 +383,7 @@ details.spec pre{margin:.5em 0 0;}
 
 <h2 id="s05">使う技術の紹介</h2>
 <figure class="diagram">
-<img src="img/tech_stack.svg" alt="技術スタック一覧: Claude Design, Claude Code, Vite+React+TS, Tailwind CSS v4+shadcn/ui, Hono, Cloudflare Workers, D1/Workers KV, Vitest と Day3オプション">
+<img src="img/tech_stack.svg" alt="技術スタック一覧: Claude Design, Claude Code, Vite+React+TS, Tailwind CSS v4+shadcn/ui, Hono, Cloudflare Workers, Cloudflare D1, Vitest と Day3オプション">
 </figure>
 <table>
 <thead><tr><th>カテゴリ</th><th>技術</th><th>選定理由（一言）</th></tr></thead>
@@ -388,7 +394,7 @@ details.spec pre{margin:.5em 0 0;}
 <tr><td>スタイル</td><td>Tailwind CSS v4 + shadcn/ui</td><td>デザインの再現がしやすい</td></tr>
 <tr><td>バック</td><td>Hono (TypeScript)</td><td>軽量な Web フレームワーク。Workers と相性抜群</td></tr>
 <tr><td>実行基盤</td><td>Cloudflare Workers</td><td>無料枠で本番公開まで行ける</td></tr>
-<tr><td>DB / KV</td><td>Cloudflare D1 / Workers KV</td><td>D1＝SQLite データベース・KV＝キー値ストア。Workers にビルトインでセットアップ最小</td></tr>
+<tr><td>DB</td><td>Cloudflare D1</td><td>SQLite データベース。Workers にビルトインでセットアップ最小</td></tr>
 <tr><td>テスト</td><td>Vitest（+ vitest-pool-workers）</td><td>フロント・バックで統一できる</td></tr>
 <tr><td>（Day 3）</td><td>Resend / Stripe / Clerk / SonarCloud</td><td>Day 3 のオプション課題で登場</td></tr>
 </tbody>
@@ -869,7 +875,7 @@ wrangler whoami    # ログインできたか／想定アカウントかを確�
 <p><strong>このステップでやること（全体像）</strong> — Day 1 で作った「見た目だけ動くフロント」に、中身（API とデータ）をつなぐ。やることは大きく4つ:</p>
 <ol>
 <li><strong>API を作る</strong> — <code>backend/</code> に問い合わせ受付・ライセンス発行などの API を実装する</li>
-<li><strong>データの入れ物を用意</strong> — 保存用の DB（D1）と、軽い一時カウンタ（KV）を作る</li>
+<li><strong>データの入れ物を用意</strong> — 保存用の DB（D1）を作る</li>
 <li><strong>フロントと API を1つにまとめる</strong> — 別々に動いていた2つを Worker 一本に統合し、フロントのモック表示を本物の API 呼び出しに差し替える</li>
 <li><strong>ログインは今は簡易版</strong> — メールアドレスを信じるだけの「モック認証」で進める（本物のログインは Day 3 [9] で差し替え）</li>
 </ol>
@@ -897,18 +903,13 @@ wrangler whoami    # ログインできたか／想定アカウントかを確�
   </li>
   </ul>
 </li>
-<li><strong>クラウド資源（DB・KV）を作って <code>wrangler.jsonc</code> に登録する</strong>
+<li><strong>クラウド資源（DB）を作って <code>wrangler.jsonc</code> に登録する</strong>
   <ul>
   <li>
-    <strong>D1</strong> … Cloudflare の SQLite データベース。問い合わせ・ライセンスなど<strong>ずっと残したいデータ</strong>を保存する<br>
-    <strong>KV</strong> … キーと値だけの軽量ストア。読み書きが速く、<strong>「同じ IP が短時間に何回来たか」のような一時的なカウンタ</strong>向き。このアプリではレート制限に使う
-    <p class="note">補足: D1 は書き込みが比較的重いので一時カウンタには不向き。逆に KV は反映が少し遅れる「結果整合」のため厳密なレート制限には本来不向き（Cloudflare 公式は Durable Objects を推奨）だが、今回は<strong>簡易実装と割り切って</strong>使う。</p>
-    <figure class="diagram">
-    <img src="img/d1_vs_kv.svg" alt="D1 と KV の使い分け: D1（SQLite データベース）は書き込みが重く永続データ向きで問い合わせ・ライセンスを保存。KV は高速な一時カウンタ向きでレート制限に使う。KV は結果整合のため厳密なレート制限には本来不向きで Cloudflare 公式は Durable Objects を推奨するが、今回は簡易実装と割り切って使う">
-    </figure>
+    <strong>D1</strong> … Cloudflare の SQLite データベース。問い合わせ・ライセンスなど<strong>ずっと残したいデータ</strong>を保存する
   </li>
   <li>Claude Code にまとめて任せる:
-<pre><code>Cloudflare の D1 と KV を作成して、wrangler.jsonc に書き込んで。
+<pre><code>Cloudflare の D1 を作成して、wrangler.jsonc に書き込んで。
 なお、wrangler.jsonc の name はフロントの wrangler.jsonc と同じにして。</code></pre>
     <blockquote>
     <p>name をフロントと同じにする理由: Day 2 でバックをデプロイすると<strong>同じ name の Worker を上書き</strong>する形になり、Day 1 で手に入れた URL（<code>https://&lt;name&gt;.workers.dev</code>）がそのまま引き継がれる。name が違うと別 URL になってしまう。</p>
@@ -916,7 +917,7 @@ wrangler whoami    # ログインできたか／想定アカウントかを確�
   </li>
   </ul>
   <blockquote>
-  <p>なぜローカルで使わないのに先に作るのか？ — <code>wrangler.jsonc</code> に実在の <code>database_id</code> / KV id が書かれていないと、[6] のリモートデプロイが失敗するから。ローカル開発自体はクラウドの D1/KV に触れないので、ローカルとクラウドのデータは別物（詳細は手順4）。</p>
+  <p>なぜローカルで使わないのに先に作るのか？ — <code>wrangler.jsonc</code> に実在の <code>database_id</code> が書かれていないと、[6] のリモートデプロイが失敗するから。ローカル開発自体はクラウドの D1 に触れないので、ローカルとクラウドのデータは別物（詳細は手順4）。</p>
   </blockquote>
 </li>
 <li id="s4-step3"><strong>API をまとめて実装させる</strong>
@@ -924,7 +925,7 @@ wrangler whoami    # ログインできたか／想定アカウントかを確�
   <li>必要な機能を日本語でまとめて伝え、Claude にいっぺんに実装させてよい。API のパス・入出力の設計も基本 AI に任せるが、<strong>完了判定に使う <code>POST /api/contact</code> と <code>GET /api/me</code> の2本だけはこのパスに固定</strong>する</li>
   <li>この題材で要る機能の例:
     <ul>
-    <li>問い合わせを受け付けて D1 に保存する（同一 IP から1分以内に3回以上来たら KV でカウントして 429（リクエスト過多）を返す）</li>
+    <li>問い合わせを受け付けて D1 に保存する</li>
     <li>メールアドレスを受け取ってライセンスキーを発行する（決済なし・Day 2 の簡易版。Day 3 [8] で Stripe 購入 → Webhook 発行に差し替え）</li>
     <li>メールアドレスに紐づく情報を D1 から返す（フロントは <code>x-user-email</code> ヘッダでメールを送る）。<strong>これが Day 2 の「簡易ログイン（モック認証）」</strong>——ヘッダのメールを<strong>検証せずそのまま信じて</strong>本人として扱う（該当が無ければ 401／404）。本物の認証は Day 3 [9] Clerk で差し替える</li>
     <li>ライセンスキーを検証する</li>
@@ -933,11 +934,11 @@ wrangler whoami    # ログインできたか／想定アカウントかを確�
   <li>保存するデータの中身（例: 問い合わせ＝名前／メール／本文）だけ先に決めておくと AI が迷わない。テーブル定義は AI に書かせ、<code>migrations/</code> 以下に置くよう指示する</li>
   </ul>
 <pre><code>Hono + Cloudflare Workers + TypeScript でバックエンドを実装して。
-D1（SQLite）と KV を使うこと。マイグレーションファイルは migrations/ 以下に作って。
+D1（SQLite）を使うこと。マイグレーションファイルは migrations/ 以下に作って。
 frontend/ のコードを見て、それに対応する API を backend/ に実装して。
 
 必要な機能:
-- 問い合わせを受け付けて D1 に保存する（同一 IP から1分以内に3回以上来たら KV でカウントして 429 を返す）
+- 問い合わせを受け付けて D1 に保存する
 - メールアドレスを受け取ってライセンスキーを発行する（決済なしの簡易版）
 - x-user-email ヘッダのメールアドレスに紐づく情報を D1 から返す（ヘッダを検証せず信頼するモック認証。見つからなければ 401 か 404）
 - ライセンスキーを検証する
@@ -1040,7 +1041,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <hr>
 
 <h2 id="s5">[5] 自動テストの実装</h2>
-<p><strong>ゴール:</strong> AI が書いたコードを<strong>検証</strong>してデプロイに備える。<strong>2段構え</strong>で進める：<strong>① レビュー</strong>（Claude Code のコマンドで差分を点検）→ <strong>② 自動テスト</strong>（<code>npm test</code> で「正しいリクエストは通る・壊れたリクエストは弾く・ログインなしで保護 API に入れない」を毎回自動確認）。デプロイ前にここまで通す。</p>
+<p><strong>ゴール:</strong> AI が書いたコードを<strong>検証</strong>してデプロイに備える。<strong>2段構え</strong>で進める：<strong>① レビュー</strong>（Claude Code のコマンドで差分を点検）→ <strong>② 自動テスト</strong>（<code>npm test</code> で「正しいリクエストは通る・壊れたリクエストは弾く・ログインなしで保護 API に入れない」を毎回自動確認）。② はバックの API に加え<strong>フロントの主要画面も1本</strong>テストする（どちらも同じ「戦略 → レビュー → 実装」に乗せる）。デプロイ前にここまで通す。</p>
 
 <h3>① レビュー: Claude Code のコマンドで点検する</h3>
 <p>ローカルの差分を、Claude Code の組み込みコマンド（最初から使える <code>/名前</code> のコマンド。スキルの自作は Day 3 [10] で扱う）で点検する。ローカルの差分に対して動くので <strong>git push は不要</strong>。</p>
@@ -1074,30 +1075,36 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 
 <h3>流れ</h3>
 <ol>
-<li>以下のプロンプトで <strong>TEST.md（戦略書）だけ</strong>を作らせる:
-<pre><code>このバックエンド（backend/）のコードを読んで、テスト戦略を docs/TEST.md にまとめてください。
-テスト戦略には「何を・なぜテストするか・しないか」の判断も含めること。
+<li>以下のプロンプトで <strong>TEST.md（戦略書）だけ</strong>を作らせる。<strong>対象はバック（<code>backend/</code>）の API に加え、フロントの主要画面を1つ</strong>——ここで「画面も1本テストする」と戦略に含めて決める:
+<pre><code>backend/ のコードと、frontend/ の主要画面（問い合わせフォーム）を対象に、
+テスト戦略を docs/TEST.md にまとめてください。
+「何を・なぜテストするか・しないか」の判断も含めること。
+画面テストはフロントの主要フロー1本でよい（全画面はやらない）。
 テストファイルの実装はまだしないでください。</code></pre>
 </li>
-<li><strong>人間が TEST.md をレビューする</strong> — <code>docs/TEST.md</code> を自分で開き、最低限以下の4観点が含まれているかを確認する:
+<li><strong>人間が TEST.md をレビューする</strong> — <code>docs/TEST.md</code> を自分で開き、最低限以下が含まれているかを確認する:
   <ul>
   <li>外部サービスに依存しない純粋な関数のテスト</li>
   <li>正しい入力で API が成功レスポンスを返すテスト</li>
   <li>不正な入力で API が適切にエラーを返すテスト</li>
   <li>未認証でログインが必要な API にアクセスしたとき、拒否されるテスト</li>
+  <li><strong>フロントの主要画面（問い合わせフォーム）の画面テスト</strong></li>
   </ul>
   <p>抜けている観点があれば Claude Code に伝えて追記させる:</p>
 <pre><code>TEST.md に「未認証でログイン必須 API にアクセスしたとき拒否される」観点が抜けているので追記して。</code></pre>
-  <p class="note">時間に余裕があれば、4観点のチェックだけでなく全文に目を通し、「これはテストしなくていい」という箇所の指摘まで行うのが本来のレビュー。</p>
+  <p class="note">時間に余裕があれば、上の各観点のチェックだけでなく全文に目を通し、「これはテストしなくていい」という箇所の指摘まで行うのが本来のレビュー。</p>
 </li>
-<li>TEST.md が固まったらテストファイルを実装させる:
+<li>TEST.md が固まったらテストを実装させる。<strong>テストランナーはバック・フロントとも同じ Vitest</strong>だが<strong>実行環境が違う</strong>（バック＝Workers／フロント＝jsdom）ので、それぞれ用意させる:
 <pre><code>docs/TEST.md の方針に従ってテストを実装してください。
 
-テストは @cloudflare/vitest-pool-workers を使い、設定は cloudflareTest プラグイン方式で書いて。
+・バックエンド（backend/）: @cloudflare/vitest-pool-workers を使い、設定は cloudflareTest プラグイン方式で書く
+・フロントの画面テスト（frontend/）: 同じ Vitest を jsdom 環境で使い、@testing-library/react で画面を描画・操作する
+  （frontend にはまだ Vitest が無いので、vitest 本体・@testing-library/react・jsdom を dev 依存に足す）
+
 外部サービスへの fetch はすべてモックしてください。</code></pre>
-  <ul><li><code>@cloudflare/vitest-pool-workers</code>＝テストを Workers と同じ実行環境で動かすための公式アダプタ。プロンプトのこの指定はそのままコピペでよい（設定ファイルの中身は AI が書く）</li></ul>
+  <ul><li><code>@cloudflare/vitest-pool-workers</code>＝バックのテストを Workers と同じ実行環境で動かす公式アダプタ。<strong>新しいテストフレームワークは増えない</strong>——ランナーは Vitest で共通、違うのは実行環境（Workers／jsdom）だけ</li></ul>
 </li>
-<li><code>npm test</code> でグリーンを確認</li>
+<li><code>npm test</code> でグリーンを確認（バックの API テスト＋フロントの画面テスト）</li>
 </ol>
 
 <h3>ポイント</h3>
@@ -1121,6 +1128,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
   <li>未認証でログインが必要な API にアクセスしたとき、アクセスが拒否されることを確認するテスト（例: ログインせずにマイページ API を叩いたら弾かれる）</li>
   </ul>
 </li>
+<li>フロントの主要画面1つに、表示＋正常系操作を確認する<strong>画面テストが1本</strong>ある（Vitest + <code>@testing-library/react</code>）</li>
 <li>→ これが緑になったら [6] デプロイへ</li>
 </ul>
 
@@ -1134,10 +1142,10 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <li><code>wrangler.jsonc</code> を確認・修正する
   <ul>
   <li><code>assets.directory</code> は配信する静的ファイルの場所（フロントのビルド結果）、<code>assets.not_found_handling</code> は存在しないパスへのアクセスを <code>index.html</code> に流す SPA 用の設定</li>
-  <li>binding＝Worker のコードから D1/KV を呼ぶための紐付け設定（[4] 手順2 で <code>wrangler.jsonc</code> に書き込んだ <code>database_id</code>／KV の <code>id</code> のこと）</li>
+  <li>binding＝Worker のコードから D1 を呼ぶための紐付け設定（[4] 手順2 で <code>wrangler.jsonc</code> に書き込んだ <code>database_id</code> のこと）</li>
   </ul>
 <pre><code>wrangler.jsonc を確認して。
-・D1/KV の binding id が実際に作成したリソースと一致しているか
+・D1 の binding id が実際に作成したリソースと一致しているか
 ・assets.directory がフロントのビルド結果を正しく指しているか
 ・assets.not_found_handling が "single-page-application" になっているか
 問題があれば修正して。</code></pre>
@@ -1748,6 +1756,10 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <li>1つ以上のテストで<strong>「壊すと赤」</strong>を確認した／<code>npm test</code> が最終的にグリーン</li>
 </ul>
 
+<blockquote class="warn">
+<p><strong>⚠️ ここまでやっても「本番の品質担保」には届かない。</strong> テストは<strong>あるだけでは安全網にならない</strong>——実務では別途 (1) <strong>CI で強制実行</strong>し、テストが赤ならマージ／デプロイを止める（人の裁量に任せない）、(2) <strong>カバレッジに下限</strong>を設けてゲートにする（[11] の SonarCloud 品質ゲートで縛れる）、の2つが要る。<strong>本ワークショップではスコープ外</strong>だが、顧客に出す規模では前提になる。</p>
+</blockquote>
+
 <hr>
 
 <h2 id="wrap">ラップアップ・発表会（Day 3 の最後 30 分）</h2>
@@ -1785,7 +1797,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <div class="table-wrap"><table>
 <thead><tr><th>リソース</th><th>残す場合</th><th>片付ける場合</th></tr></thead>
 <tbody>
-<tr><td>Cloudflare Worker / D1 / KV</td><td>ポートフォリオとして公開したままでよい（無料枠内）</td><td>ダッシュボードで Worker を削除（D1・KV も個別に削除）</td></tr>
+<tr><td>Cloudflare Worker / D1</td><td>ポートフォリオとして公開したままでよい（無料枠内）</td><td>ダッシュボードで Worker を削除（D1 も個別に削除）</td></tr>
 <tr><td>Cloudflare API トークン（<code>.cf-ops.token</code>）</td><td>[10] の運用チェックを続けるなら残す（低権限の Analytics 読み取り専用）</td><td>ダッシュボードで<strong>トークンを Revoke（無効化）</strong>し、手元の <code>.cf-ops.token</code> も削除</td></tr>
 <tr><td>Stripe（テストモード）</td><td>そのまま放置で害はない（テストモードは課金されない）</td><td>不要なら Webhook エンドポイントを削除（live mode には切り替えていないので実害なし）</td></tr>
 <tr><td>Clerk アプリ</td><td>残すならそのまま</td><td>不要ならアプリを削除。<code>frontend/.env</code> の鍵も消す</td></tr>
@@ -1916,6 +1928,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <div id="toc-overlay"></div>
 <nav id="toc-panel">
   <p id="toc-panel-head">目次</p>
+  <a id="slides-link" href="slides.html" target="_blank" rel="noopener">🎞 スライド版を開く</a>
   <a class="toc-group-label" href="#top">前提・準備</a>
   <ul>
     <li><a href="#s0">目的・ゴール</a></li>

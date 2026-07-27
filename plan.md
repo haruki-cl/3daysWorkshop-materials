@@ -50,3 +50,32 @@ haruki-cl/3daysWorkshop-materials の Issue #1〜#9 を1件ずつ深掘りし、
 ### #9 SCREEN_SPEC.md サンプル追加 ⬜
 - 内容: サンプルがないと作成に迷う。サンプル追加、または AI に作らせる道筋の提示。
 - 完了条件: flow.html に SCREEN_SPEC.md のサンプルまたは生成手順が追加されている。
+
+---
+
+## 別タスク: レート制限＋KV の完全削除 ✅ 完了（配信ファイル・参照SVGは残存ゼロを grep で確認）
+- 追加で判明: 参照SVG 2枚（frontend_backend_integration.svg・arch_local_vs_prod.svg）にも「D1 / KV」ラベルがあり D1 単独に修正済み。
+- d1_vs_kv.svg は参照ゼロで孤立（ファイルは削除せず残置＝要確認）。
+- 未対応（スコープ外・報告のみ）: facilitator-guide.md（生きた講師ガイド、要更新の候補）／review-findings.md・WORKSHOP_LOG.md（過去ログのため改変せず）。
+
+---
+
+## 別タスク: 画面テストの追加＋強制ゲート注記 ✅ 完了（grep・構造目視で確認）
+- 決定事項（ユーザー指示）:
+  - 画面テストは Day 2 の [5] に「1本だけ」軽く足す。[5] を複雑にしない。
+  - 技術スタック（Vitest）で書ける形にする＝新フレームワーク追加なし。Vitest + @testing-library/react（jsdom）のコンポーネント/画面テスト1本、API はモック。
+  - 強制ゲート（CI強制実行＋カバレッジ下限）は実装せず「注記」のみ。置き場所は [12]（[5] に入れると重くなるため）。
+- ステップ:
+  1. flow.html [5] に画面テスト節（軽量）＋完了の定義に1行追加
+  2. flow.html [12] に強制ゲートの注記（スコープ外・SonarCloud品質ゲートに言及）
+  3. slides.html の [5]・[12] 対応スライドに同内容を反映
+  4. grep で整合確認（画面テスト/testing-library/ゲート注記が両ファイルに存在）
+- 完了条件: flow.html と slides.html の [5] に画面テスト1本の記述、[12] にゲート注記があり、[5] が過度に重くなっていない。
+- ゴール: flow.html と slides.html から「レート制限」機能と「Workers KV」への言及を完全削除（代替注記は残さない）。関連 SVG も整合。
+- 前提: KV の唯一用途はレート制限のため機能ごと削除。完了判定（POST /api/contact・GET /api/me）はレート制限非依存で影響なし。flow.html 1054行 CodeReviewSample.png（/code-review デモ alt の「レート制限なし」）は別文脈スクショで対象外。
+- ステップ:
+  1. flow.html 編集（10箇所）— 完了条件: KV/レート制限/429/「一時カウンタ」記述が消え D1 単独に整う
+  2. img/tech_stack.svg 編集（D1/KV ボックス→D1 単独）— 完了条件: 図中に KV 表記が残らない
+  3. slides.html 編集（14箇所）— 完了条件: flow と同内容で KV/レート制限が消え d1_vs_kv.svg 参照を除去
+  4. 全体 grep で残存ゼロ確認（1054行除く）
+- 保留: img/d1_vs_kv.svg は参照除去後に未使用化。ファイル削除は破壊的操作のため実施せず報告で判断を仰ぐ。
