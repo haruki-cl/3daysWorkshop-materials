@@ -1,0 +1,1165 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3Days ワークショップ スライド v2（冒頭ブリーフィング版） — AIとつくる自分の SaaS の MVP</title>
+<style>
+:root{
+  --bg:#d6d3ca; --paper:#fffdf8; --ink:#2d2a24; --muted:#6b6453;
+  --accent:#0d9488; --accent-deep:#0f766e; --gold:#c8a96a; --line:#e7e1d3;
+  --code-bg:#2d2a24; --code-ink:#f4efe4;
+  --warn-bg:#fcf3e6; --warn-bd:#e3b873; --warn-ink:#6b4f22;
+  --danger-bg:#fef0ec; --danger-bd:#dc6931; --danger-ink:#8a3010;
+  --d1:#3a7bd5; --d1-bg:#eaf3fb; --d1-ink:#1a4a80;
+  --d2:#d97706; --d2-bg:#fff3e2; --d2-ink:#7a3d00;
+  --d3:#7c5cbf; --d3-bg:#f0ebf8; --d3-ink:#42207a;
+  --d0:#0f766e; --d0-bg:#e6fafa; --d0-ink:#0f766e;
+  font-size:18px;
+}
+@media(min-width:1280px){:root{font-size:20px}}
+@media(min-width:1680px){:root{font-size:22px}}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,system-ui,sans-serif;
+  line-height:1.7; overflow:hidden;
+}
+h1,h2,h3,h4{font-family:"Hiragino Mincho ProN","Yu Mincho",serif; line-height:1.35; margin:0;}
+code{font-family:"SFMono-Regular",Menlo,Consolas,monospace;}
+
+/* ---- deck / slide ---- */
+#deck{position:fixed; inset:0; overflow:hidden;}
+.slide{position:absolute; inset:0; display:none; flex-direction:column;
+  padding:3.6vh 5vw 7.5vh; overflow-y:auto; background:var(--paper);}
+.slide.current{display:flex;}
+.slide.day1{--dc:var(--d1);--dbg:var(--d1-bg);--dink:var(--d1-ink);}
+.slide.day2{--dc:var(--d2);--dbg:var(--d2-bg);--dink:var(--d2-ink);}
+.slide.day3{--dc:var(--d3);--dbg:var(--d3-bg);--dink:var(--d3-ink);}
+.slide.day0{--dc:var(--d0);--dbg:var(--d0-bg);--dink:var(--d0-ink);}
+.inner{width:100%; max-width:1060px; margin:auto;}
+
+/* kicker + title (content) */
+.kicker{font-size:.9em; font-weight:700; letter-spacing:.08em; color:var(--dc,var(--accent));
+  text-transform:none; margin-bottom:.5em;}
+.s-title{font-size:2.05em; color:var(--ink); padding-bottom:.35em; margin-bottom:.7em;
+  border-bottom:3px solid var(--gold);}
+.slide.day1 .s-title,.slide.day2 .s-title,.slide.day3 .s-title{border-bottom-color:var(--dc);}
+
+/* content blocks */
+.s-h{font-size:1.32em; margin:1.25em 0 .35em; color:var(--dink,var(--ink));
+  padding:.28em .6em; border-left:5px solid var(--dc,var(--accent)); background:#f6f3ea; border-radius:0 6px 6px 0;}
+.s-p{font-size:1.12em; margin:.65em 0;}
+.s-ul{margin:.6em 0 .9em; padding-left:1.5em;}
+.s-ul>li{font-size:1.02em; color:#4d473b; margin:.4em 0;}
+.s-ul>li::marker{color:var(--gold);}
+.s-ol{margin:.6em 0 .9em; padding-left:1.6em;}
+.s-ol>li{font-size:1.1em; margin:.7em 0; padding-left:.2em;}
+.s-ol>li::marker{color:var(--dc,var(--accent)); font-weight:700;}
+.s-ul .s-ol,.s-ol .s-ul{margin:.4em 0;}
+code{background:#efe9db; padding:.1em .4em; border-radius:5px; font-size:.9em; color:#7a4f2a;}
+.s-code{background:var(--code-bg); color:var(--code-ink); padding:.85em 1.1em; border-radius:10px;
+  overflow:auto; font-size:.98em; line-height:1.55; margin:.7em 0; white-space:pre-wrap; word-break:break-word;}
+.s-code code{background:none; color:inherit; padding:0; font-size:1em;}
+.s-key{margin:.8em 0; padding:.85em 1.15em; background:var(--warn-bg);
+  border-left:6px solid var(--warn-bd); border-radius:0 8px 8px 0; font-size:1.05em; color:var(--warn-ink);}
+.s-warn{margin:.8em 0; padding:.8em 1.15em; background:var(--danger-bg);
+  border-left:6px solid var(--danger-bd); border-radius:0 8px 8px 0; font-size:1.02em; color:var(--danger-ink);}
+.sbody a{color:var(--accent); text-underline-offset:2px;}
+.s-note{margin:.7em 0; padding:.65em 1.05em; background:#f5f2ea; border-left:4px solid var(--line);
+  border-radius:0 6px 6px 0; font-size:.98em; color:var(--muted);}
+.s-done{margin:1em 0 .3em; padding:.5em .9em; background:var(--d0-bg); border-left:6px solid var(--accent);
+  border-radius:0 8px 8px 0; color:var(--accent-deep); font-size:1.2em; font-family:"Hiragino Mincho ProN","Yu Mincho",serif;}
+.s-donelist{margin:.3em 0 .9em; padding-left:1.5em;}
+.s-donelist>li{font-size:1.05em; margin:.4em 0;}
+.s-donelist>li::marker{color:var(--accent);}
+.s-fig{margin:.9em 0; text-align:center;}
+.s-fig img{max-width:100%; max-height:min(46vh,24em); border:1px solid var(--line); border-radius:10px; background:#fff; cursor:zoom-in;}
+.s-figrow{display:flex; gap:1.2em; margin:.9em 0; align-items:flex-start; justify-content:center;}
+.s-figrow .s-fig{flex:1; min-width:0; margin:0;}
+.s-figrow .s-fig img{max-height:min(36vh,16em);}
+.s-fig figcaption{font-size:.9em; color:var(--muted); margin-top:.4em;}
+.s-tablewrap{overflow-x:auto; margin:.8em 0;}
+table.s-table{border-collapse:collapse; width:100%; font-size:1em; background:#fff;
+  border:1px solid var(--line); border-radius:10px; overflow:hidden;}
+.s-table th,.s-table td{padding:.5em .7em; border:1px solid var(--line); text-align:left; vertical-align:top;}
+.s-table thead th{background:var(--dc,var(--accent)); color:#fff;}
+.s-table tbody tr:nth-child(even){background:#faf7ef;}
+strong{font-weight:700; color:inherit;}
+
+/* ---- cover ---- */
+.slide.cover{background:radial-gradient(120% 120% at 20% 0%, #fffdf8 0%, #f0ece0 60%, #e4dfd1 100%);}
+.cover .inner{text-align:left;}
+.cover .badge{display:inline-block; font-size:.95em; font-weight:700; letter-spacing:.14em;
+  color:var(--accent-deep); background:#e6fafa; border:1px solid #bfe6e2; padding:.35em .9em; border-radius:999px; margin-bottom:1.1em;}
+.cover h1{font-size:3.1em; line-height:1.25; color:var(--ink); margin-bottom:.5em;}
+.cover .csub{font-size:1.35em; color:var(--muted); margin:.2em 0 1.4em;}
+.cover .cmeta{font-size:1em; color:var(--muted); border-top:1px dashed var(--line); padding-top:1em;}
+.cover .cmeta b{color:var(--accent-deep);}
+
+/* ---- divider ---- */
+.slide.divider{color:#fff;
+  background:linear-gradient(135deg, var(--dc,var(--accent)) 0%, color-mix(in srgb, var(--dc,var(--accent)) 78%, #000) 100%);}
+.divider .dlabel{font-size:1.3em; font-weight:700; letter-spacing:.2em; opacity:.9; margin-bottom:.4em;}
+.divider .dkicker{font-size:1.6em; opacity:.92; margin-bottom:.2em; font-family:"Hiragino Mincho ProN",serif;}
+.divider h1{font-size:3.4em; line-height:1.2; margin:.1em 0 .4em;}
+.divider .dsub{font-size:1.35em; opacity:.95; max-width:24em; line-height:1.6;}
+.divider .drule{width:88px; height:5px; background:rgba(255,255,255,.85); border-radius:3px; margin:1.1em 0;}
+
+/* ---- break（作業タイム） ---- */
+.slide.break{background:linear-gradient(140deg, var(--dbg,#e6fafa) 0%, #fffdf8 55%, var(--dbg,#e6fafa) 100%);}
+.break .inner{max-width:960px;}
+.break .bhead{display:flex; align-items:center; gap:.6em; margin-bottom:.4em;}
+.break .bicon{font-size:1.9em; line-height:1;}
+.break .btag{font-size:1.15em; font-weight:800; letter-spacing:.14em; color:var(--dc);}
+.break .bstep{margin-left:auto; font-size:1em; font-weight:800; color:#fff; background:var(--dc);
+  padding:.28em .8em; border-radius:999px; letter-spacing:.05em;}
+.break .bsec{font-size:1em; color:var(--muted); font-weight:600; margin-bottom:.15em;}
+.break h1{font-size:1.8em; color:var(--ink); line-height:1.35; margin-bottom:.6em;}
+.break .card{background:#fff; border:1px solid var(--line); border-radius:16px;
+  box-shadow:0 10px 40px rgba(60,50,30,.10); padding:1em 1.3em;}
+.break .todo{list-style:none; margin:0; padding:0;}
+.break .todo li{display:flex; align-items:flex-start; gap:.7em; font-size:1.05em;
+  padding:.42em 0; border-bottom:1px dashed var(--line); cursor:pointer;}
+.break .todo li:last-child{border-bottom:none;}
+.break .todo .chk{flex:0 0 auto; width:1.35em; height:1.35em; margin-top:.08em; border-radius:6px;
+  border:2px solid var(--dc); display:inline-flex; align-items:center; justify-content:center;
+  font-size:.95em; color:#fff; transition:background .15s;}
+.break .todo li.done .chk{background:var(--dc);}
+.break .todo li.done .chk::after{content:"✓";}
+.break .todo li.done .txt{color:var(--muted); text-decoration:line-through;}
+.break .bcode{background:var(--code-bg); color:var(--code-ink); padding:.7em 1em; border-radius:10px;
+  margin-top:.8em; font-size:.9em; line-height:1.5; white-space:pre-wrap; word-break:break-word;}
+.break .bcode code{background:none; color:inherit; font-size:1em;}
+.break .bwarn{margin-top:.8em; padding:.6em 1em; background:var(--danger-bg);
+  border-left:5px solid var(--danger-bd); border-radius:0 8px 8px 0; font-size:.92em; color:var(--danger-ink);}
+.break .bdone{margin-top:.9em; font-size:1em; color:var(--accent-deep); font-weight:700;}
+.break .bdone b{color:var(--accent-deep);}
+.break .bnext{margin-top:.9em; text-align:center; font-size:1em; color:var(--dc); font-weight:700;}
+
+/* ---- 縦に収まらないときの自動調整（JS が .cols2 / font-size を付与） ---- */
+.sbody>*{break-inside:avoid;}
+.s-ol .s-ul>li{font-size:.93em;}
+.slide.content .inner.cols2{max-width:1240px;}
+.slide.content .inner.cols2 .sbody{columns:2; column-gap:2.2em;}
+.slide.break .inner.cols2{display:grid; grid-template-columns:1fr 1.15fr; gap:1em 2em; align-items:center; max-width:1200px;}
+.slide.break .inner.cols2 .bhero h1{margin-bottom:0;}
+.slide.break .inner.cols2 .bnext{grid-column:1/-1; margin-top:.2em;}
+/* 画像クリックで拡大表示 */
+#lightbox{display:none; position:fixed; inset:0; background:rgba(0,0,0,.88); z-index:2000;
+  cursor:zoom-out; align-items:center; justify-content:center; padding:16px;}
+#lightbox.show{display:flex;}
+#lightbox img{max-width:94vw; max-height:94vh; border-radius:10px;
+  box-shadow:0 8px 60px rgba(0,0,0,.6); object-fit:contain; background:#fff;}
+
+/* ---- chrome ---- */
+#bar{position:fixed; top:0; left:0; height:5px; background:var(--accent); z-index:50; transition:width .2s;}
+#hud{position:fixed; bottom:0; left:0; right:0; height:5.5vh; min-height:34px; z-index:40;
+  display:flex; align-items:center; gap:12px; padding:0 16px; font-size:.85rem; color:var(--muted);
+  background:linear-gradient(0deg, rgba(255,253,248,.92), rgba(255,253,248,0));}
+#hud .hlabel{font-weight:700;}
+/* 対応する flow.html の章へのリンク（該当章が無いスライドでは非表示） */
+#hud .hflow{color:var(--muted); text-decoration:none; border:1px solid var(--line); border-radius:7px;
+  padding:.15em .6em; font-size:.9em; white-space:nowrap;}
+#hud .hflow:hover{background:#efe9db; color:var(--ink);}
+#hud .hflow.hide{visibility:hidden;}
+#hud .hspace{flex:1;}
+#hud button{background:none; border:1px solid var(--line); color:var(--muted); border-radius:7px;
+  width:30px; height:30px; cursor:pointer; font-size:1rem; line-height:1;}
+#hud button:hover{background:#efe9db; color:var(--ink);}
+#hud .hcount{font-variant-numeric:tabular-nums; min-width:64px; text-align:right;}
+.slide.divider ~ #hud, .slide.break ~ #hud{}
+
+/* overview grid */
+#grid{position:fixed; inset:0; background:rgba(30,26,20,.92); z-index:100; display:none;
+  overflow-y:auto; padding:3vh 3vw;}
+#grid.show{display:block;}
+#grid h2{color:#fffdf8; font-size:1.2rem; margin-bottom:1em;}
+#grid .gwrap{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:12px;}
+#grid .gcard{background:#fffdf8; border-radius:10px; padding:.7em .8em; cursor:pointer; border:2px solid transparent;
+  min-height:74px; display:flex; flex-direction:column; gap:.25em;}
+#grid .gcard:hover{border-color:var(--accent);}
+#grid .gcard.cur{border-color:var(--gold);}
+#grid .gnum{font-size:.72rem; color:var(--muted); font-weight:700;}
+#grid .gtype{font-size:.66rem; font-weight:700; letter-spacing:.06em; padding:.05em .4em; border-radius:4px; align-self:flex-start;}
+#grid .gtype.break{background:#fde8dc;color:#8a3010;}
+#grid .gtype.content{background:#e6fafa;color:#0f766e;}
+#grid .gtype.divider{background:#e9e3f6;color:#42207a;}
+#grid .gtype.cover{background:#f3ecd6;color:#7a5a1a;}
+#grid .gttl{font-size:.82rem; color:var(--ink); line-height:1.3;}
+#help{position:fixed; bottom:6vh; right:16px; z-index:41; font-size:.78rem; color:var(--muted);
+  background:rgba(255,253,248,.9); border:1px solid var(--line); border-radius:8px; padding:.4em .7em; opacity:.85;}
+@media(max-width:820px){ #help{display:none;} .cover h1{font-size:2.2em;} .divider h1{font-size:2.3em;} .s-title{font-size:1.6em;} }
+</style></head>
+<body>
+<div id="bar"></div>
+<div id="deck"></div>
+<div id="hud">
+  <span class="hlabel" id="hlabel"></span>
+  <!-- target は名前付き（毎回新タブを増やさず同じタブを開き直す）。rel=noopener は名前を無効化するため付けない -->
+  <a class="hflow" id="hflow" target="flowdoc" title="このスライドに対応する資料本編を開く">📄 詳細</a>
+  <span class="hspace"></span>
+  <button id="pv" title="前へ (←)">‹</button>
+  <button id="nx" title="次へ (→)">›</button>
+  <button id="ov" title="一覧 (o)">▦</button>
+  <span class="hcount" id="hcount"></span>
+</div>
+<div id="help">← → / Space 移動 ・ o 一覧 ・ f 全画面 ・ 画像クリックで拡大</div>
+<div id="grid"><h2>スライド一覧（クリックで移動 / Esc で閉じる）</h2><div class="gwrap" id="gwrap"></div></div>
+<div id="lightbox"><img alt=""></div>
+
+<script>
+const SLIDES = [
+  { type:'cover', badge:'3Days ワークショップ', title:'AI とつくる<br>「自分の SaaS の MVP」', sub:'Claude Design → Claude Code で、LP＋購入＋マイページを一周する3日間', meta:'<b>Day 1</b> つくる　・　<b>Day 2</b> つなぐ・公開する　・　<b>Day 3</b> 育てる（オプション＋発表会）' },
+
+  { type:'divider', ref:'s0', day:0, label:'OVERVIEW', title:'目的・ゴールと全体像', sub:'この3日間で何を・どう作るか' },
+  { type:'content', day:0, sec:'はじめに', title:'ワークショップの目的', body:[
+    {h:'前提知識'},
+    {ul:['<strong>Claude Code を使ったことがある</strong>（起動・依頼・承認/拒否の基本）','<strong>Git を用いた開発経験</strong>（ブランチ・commit・push）','<strong>ソフトウェア開発の基本知識</strong>（基本情報技術者程度）']},
+    {h:'目的'},
+    {ul:['<strong>Claude（Design / Code）での開発フローを3日で一周する</strong> — 「AI にどう頼むと良いものが出るか」の肌感をつかむ','デザイン→フロント→バック→テスト→デプロイ→拡張 の<strong>実務に近いサイクル</strong>を AI 駆動で体験']},
+  ]},
+  { type:'content', day:0, sec:'はじめに', title:'題材：作りたい SaaS の MVP', body:[
+    {ul:['題材は各自持ち寄り。自由だが<strong>サブスクリプション（月額/年額課金）を必須</strong>とする','3日で一周できるよう <strong>MVP</strong>（必要最小限）に絞る','資料の例「玄米茶」は説明用の共通サンプル。<strong>自分の題材に読み替える</strong>']},
+    {imgrow:[{img:'img/sample_lp.png',cap:'/（LP）'},{img:'img/sample_price.png',cap:'価格'},{img:'img/sample_contact.png',cap:'/contact'},{img:'img/sample_mypage.png',cap:'/mypage'},{img:'img/sample_success.png',cap:'/success'}]},
+    {note:'完成形デモ（玄米茶）: https://genmaicha-back-demo.y-arai-a8a.workers.dev/ — LP＋購入＋マイページの SaaS を「自分の題材で」作る'},
+  ]},
+  { type:'content', day:0, sec:'はじめに', title:'必須機能（Day 2 までの最低ライン）', body:[
+    {p:'<strong>ライセンスキーの配布は全員共通の実装要件</strong>（呼び名と意味づけだけ自分のサービスに合わせる）。'},
+    {table:{head:['#','機能','Day 2 までの完成ライン'],rows:[
+      ['1','LP','サービス紹介と料金を掲載し、公開 URL で表示できる'],
+      ['2','価格表示','料金プラン（月額/年額）を見せ、CTA から購入フロー（メール入力）へ'],
+      ['3','お問い合わせ','入力→送信→受付（<code>POST /api/contact</code>）が通る'],
+      ['4','マイページ','メール入力の簡易ログインで購入情報・ライセンスを表示'],
+      ['5','ライセンス配布','メール入力のみ→キー発行→完了画面で表示（決済なし簡易版）'],
+    ]}},
+    {note:'5 の「Stripe 購入→Webhook で自動発行」への差し替えは Day 3 オプション [8]。'},
+  ]},
+  { type:'content', ref:'s-map', day:0, sec:'はじめに', title:'全体マップ', body:[
+    {img:'img/workshop_flow_diagram.svg'},
+    {table:{head:['Day','テーマ','内容'],rows:[
+      ['Day 1','つくる','目的・技術紹介 / 環境確認 / [1] デザイン / [2] フロント / [3] フロントデプロイ'],
+      ['Day 2','つなぐ・公開する','[4] バック / [5] 自動テスト / [6] 再デプロイ（同じ URL に API 統合）'],
+      ['Day 3','育てる','オプション課題 [7]〜[12] / ラップアップ・発表会'],
+    ]}},
+    {key:'<strong>必達は [1]〜[6]（Day 1〜2・全員）</strong>。Day 3 の [7]〜[12] は任意（やらない／1つだけ、も可）。'},
+  ]},
+  { type:'content', day:0, sec:'はじめに', title:'ゴール（完了条件）①: Day 1〜2（必達）', body:[
+    {table:{head:['#','タスク','Day','完了条件'],rows:[
+      ['[1]','デザイン','1','LP の配色・トーン・構成が決まり zip 書き出しできる'],
+      ['[2]','フロント','1','dev URL で崩れず表示／React Router で4ページ遷移'],
+      ['[3]','フロントデプロイ','1','workers.dev で LP 表示・URL 共有できる'],
+      ['[4]','バック','2','フロントと API がつながる／/api/me 未認証で弾く・/api/contact 不正入力で弾く'],
+      ['[5]','自動テスト','2','バック・フロントそれぞれで npm test グリーン。純粋関数・正常系・異常系・未認証 各1本＋画面テスト1本'],
+      ['[6]','デプロイ','2','自分の workers.dev で LP 表示・/mypage が404にならない'],
+    ]}},
+    {note:'ここまでが<strong>全員必達</strong>（Day 1〜2）。'},
+  ]},
+  { type:'content', day:0, sec:'はじめに', title:'ゴール（完了条件）②: Day 3（オプション）', body:[
+    {table:{head:['#','タスク','難易度','完了条件'],rows:[
+      ['[7]','メール(Resend)','★☆☆','メールを実装し自分宛に届く'],
+      ['[8]','決済(Stripe)','★★★','Checkout→Webhook でキー自動発行・マイページに表示'],
+      ['[9]','ID連携(Clerk)','★★☆','未ログインで /mypage 不可・/api/me がログイン必須'],
+      ['[10]','運用保守','★☆☆','wrangler tail でログ確認・運用スキルが1つ動く'],
+      ['[11]','セキュリティ','★★★','認証境界・IDOR・機密マスクを点検し最低1つ修正'],
+      ['[12]','テスト設計','★★★','主要機能を1つ選び仕様化→期待動作表→テスト設計'],
+    ]}},
+    {note:'Day 3 は<strong>任意</strong>（やらない／1つだけ、も可）。'},
+  ]},
+  { type:'content', ref:'s-time', day:0, sec:'はじめに', title:'このワークショップの進め方', body:[
+    {key:'各日の<strong>冒頭でその日の説明をまとめて行い</strong>、残りの時間は各自のペースで作業する。'},
+    {ol:['<strong>ブリーフィング</strong>（冒頭20〜25分）— その日のタスクを通しで説明＋デモ','<strong>自由作業</strong>（残りの時間）— 作業カード（STEP つきスライド）を見ながら自分のペースで進める','<strong>クロージング</strong>（最後5〜10分）— 到達確認と push']},
+    {ul:['ブリーフィング中に<strong>すでに先へ進んでいる人は聞かなくてよい</strong>（手を止めなくてよい）','<strong>Day 2（[6]）まで終わった人は、その時点で Day 3 のオプション課題に進んでよい</strong>（Day 3 を待たない）','<strong>15分</strong>自力で解決できなければ講師に声をかける（沼を防ぐ）']},
+    {note:'説明スライドと作業カードは分かれている。作業中に手順を忘れたら o キーで一覧を開き、該当タスクの説明スライドに戻る。'},
+  ]},
+  { type:'content', ref:'s-time', day:0, sec:'はじめに', title:'タイムテーブル目安（各日 2 時間）', body:[
+    {h:'Day 1 つくる'},
+    {table:{head:['経過','内容'],rows:[
+      ['0:00–0:10','オープニング（目的・ゴール・技術・全体像・進め方）'],
+      ['0:10–0:25','環境確認（node/git/claude）＋セキュリティ対策'],
+      ['0:25–0:50','<strong>ブリーフィング</strong>：[1][2][3] を通しで説明＋デモ'],
+      ['0:50–1:50','<strong>自由作業</strong>：[1]→[2]→[3]（wrangler は [3] で導入）'],
+      ['1:50–2:00','クロージング（公開 URL 共有・dev push 確認）'],
+    ]}},
+    {h:'Day 2 つなぐ・公開する（ここまで必達）'},
+    {table:{head:['経過','内容'],rows:[
+      ['0:00–0:05','前回の振り返り'],
+      ['0:05–0:30','<strong>ブリーフィング</strong>：[4][5][6]＋Day 3 の入口を通しで説明＋デモ'],
+      ['0:30–1:55','<strong>自由作業</strong>：[4]→[5]→[6]。<strong>[6] まで終わった人はそのまま Day 3 へ</strong>'],
+      ['1:55–2:00','クロージング（到達確認）'],
+    ]}},
+    {h:'Day 3 育てる（オプション＋発表会）'},
+    {table:{head:['経過','内容'],rows:[
+      ['0:00–0:05','今日の進め方（課題の説明は Day 2 で済ませている）'],
+      ['0:05–1:30','自由作業（Day 2 の残り or オプション [7]〜[12]）'],
+      ['1:30–2:00','最終発表会（1人3分）＋ラップアップ'],
+    ]}},
+    {note:'固定休憩は設けず、AI の生成待ち（[1] 3案・[4] 実装など）を小休止に充てる。<strong>Day 3 の課題は Day 2 が終わった人から随時着手</strong>してよい。'},
+  ]},
+  { type:'content', ref:'s05', day:0, sec:'はじめに', title:'使う技術', body:[
+    {img:'img/tech_stack.svg'},
+    {table:{head:['カテゴリ','技術','理由'],rows:[
+      ['AI（デザイン）','Claude Design','プロンプトから UI を生成'],
+      ['AI（実装）','Claude Code','ターミナルで動くコーディングエージェント'],
+      ['フロント','Vite + React + TypeScript','デファクト。AI が最も得意'],
+      ['スタイル','Tailwind CSS v4 + shadcn/ui','デザインの再現がしやすい'],
+      ['バック','Hono (TypeScript)','軽量。Workers と相性抜群'],
+      ['実行基盤','Cloudflare Workers','無料枠で本番公開まで'],
+      ['DB','Cloudflare D1','ビルトインでセットアップ最小'],
+      ['テスト','Vitest (+ vitest-pool-workers)','フロント・バックで統一'],
+      ['（Day 3）','Resend / Stripe / Clerk / SonarCloud','オプション課題で登場'],
+    ]}},
+    {note:'うまくいかない時は参考バージョン（2026-07 動作確認版）に戻すと安定。基本は最新版で進めてよい。'},
+  ]},
+  { type:'content', ref:'s05', day:0, sec:'はじめに', title:'事前準備（参加者に事前周知）', body:[
+    {note:'電話番号が必要なツールは無し。'},
+    {h:'事前に用意（全員必須）'},
+    {ul:['<strong>Claude</strong>（有料 Pro 以上）・<strong>GitHub</strong>・<strong>Cloudflare</strong> のアカウント','<strong>Claude Code CLI</strong> / <strong>Node.js 24 LTS 推奨</strong>（最低20）/ <strong>git</strong>','作りたい SaaS の MVP をざっくり考えてくる（サブスク必須）']},
+    {h:'当日取得（無料・電話番号不要）'},
+    {ul:['Resend [7] / Stripe [8] / Clerk [9] / SonarCloud [11]','Stripe CLI は [8] をやる人のみ当日インストール']},
+  ]},
+  { type:'content', ref:'s07', day:0, sec:'はじめに', title:'Git ブランチ（dev → main）', body:[
+    {p:'GitHub で <strong>Private</strong> リポジトリ（例 <code>3days-workshop</code>）を作成→clone。フロント・バックは同一リポジトリ（モノレポ）。'},
+    {ul:['最初に <strong><code>dev</code> ブランチ</strong>を切り、作業はすべて dev で進める','区切りで<strong>こまめに commit / push</strong>（環境が壊れても失わない保険）','<code>dev</code>→<code>main</code> マージは<strong>セキュリティ課題（SonarCloud）の前</strong>に（無料版は main のみ解析）','秘密ファイル（<code>.dev.vars</code> 等）は <code>.gitignore</code> で必ず除外']},
+    {img:'img/git_flow.svg'},
+    {code:'dev ブランチを切って、リモートに push して。'},
+  ]},
+
+  { type:'divider', ref:'auth', day:0, label:'準備 / 認証切り替え', title:'Claude Code 認証切り替えガイド', sub:'普段 API キー運用の人向け: ワークショップ中は一時的にサブスクへ（手を動かす前に確認）' },
+  { type:'content', day:0, sec:'認証切り替え', title:'これだけ覚える', body:[
+    {key:'どのキーを使うかは <code>~/.claude.json</code> の記録で決まる。<strong><code>rejected</code> のキーは無視されサブスクが使われ、<code>approved</code> のキーは使われる</strong>（サブスクより優先）。切り替え＝この記録を <code>/config</code> や起動時プロンプトで切り替えること。'},
+    {table:{head:['状態','意味','起動時の挙動'],rows:[
+      ['approved','使うと承認済み','この API キーで動く（サブスクより優先）'],
+      ['rejected','使わないと拒否済み','キーを無視してサブスクで動く'],
+      ['new','未選択','「このキーを使う?」と確認が出る'],
+    ]}},
+  ]},
+  { type:'content', ref:'auth-to-sub', day:0, sec:'認証切り替え', title:'① API → サブスク（一時的に切り替え）', body:[
+    {ol:['<code>/logout</code>（approved が空になる）','<code>claude</code> 再起動 → 「このAPIキーを使う?」に <strong>「2. No (recommended)」</strong>','自動表示されるログイン選択で <strong>「1. Claude account with subscription」</strong> → claude.ai でログイン','<code>/status</code> で <code>claude.ai</code> になっていれば成功']},
+    {note:'env の API キーは消さなくてよい（/logout が承認を外すのでサブスクが使われる）。確認プロンプトが煩わしければ <code>unset ANTHROPIC_API_KEY</code>。'},
+  ]},
+  { type:'content', ref:'auth-to-api', day:0, sec:'認証切り替え', title:'② サブスク → API（普段の運用に戻す）', body:[
+    {ol:['env に API キーがあることを確認（<code>export ANTHROPIC_API_KEY="sk-ant-..."</code>）','<code>claude</code> 起動','<code>/config</code> で「Use custom API key」を <strong>ON</strong>（rejected から外れ approved に）','<code>/status</code> で API キー利用になっていれば成功']},
+    {note:'ゴールはキーを rejected から外すこと。手動なら ~/.claude.json の rejected から末尾20文字のエントリを削除（new に戻る）。'},
+  ]},
+  { type:'content', ref:'auth-check', day:0, sec:'認証切り替え', title:'確認とトラブルシュート', body:[
+    {table:{head:['症状','原因','対処'],rows:[
+      ['サブスクにしたのに API のまま','キーが approved に残存','<code>/logout</code> または <code>/config</code> OFF'],
+      ['API にしたいのに使われない','approved に無い（new/rejected）','<code>/config</code> ON または起動時「使う」'],
+      ['ログインしても接続が切れる','ANTHROPIC_AUTH_TOKEN / CLAUDE_CODE_OAUTH_TOKEN が残存','該当変数を unset して再起動'],
+      ['/logout しても API が消えない','/login で保存したキー（keychain）は logout で消えない','/status で確認し /login でサブスクに入れ直す'],
+    ]}},
+    {warn:'秘密情報の扱い: API キーの値をチャットやコードに貼らない。git 管理下に書かない。恒久設定は各自の ~/.zshrc 等に。'},
+  ]},
+
+  { type:'divider', ref:'day1', day:1, label:'DAY 1', title:'つくる', sub:'環境確認 → [1] デザイン → [2] フロント → [3] フロントデプロイ' },
+  { type:'content', day:1, sec:'Day 1', title:'環境確認タイム', body:[
+    {ul:['<code>node -v</code>（24 LTS 推奨・最低20）/ <code>git --version</code> / <code>claude --version</code>','<strong>Claude Code がログイン済み</strong>で起動できるか','<strong>Claude Design</strong> に claude.ai でアクセスできるか（claude.ai/design）','GitHub で新規リポジトリ作成→clone できるか','Cloudflare にログインできるか（<code>wrangler login</code> は [3] で実行）']},
+  ]},
+  { type:'content', day:1, sec:'Day 1 セキュリティ対策', title:'Claude Code のセキュリティ対策（最初に1回）', body:[
+    {key:'大前提（3日間ずっと効く）: <strong>秘密情報（API キー・トークン）は Claude への指示にも会話にも貼らない</strong>。<code>.dev.vars</code> に入れて参照させる。AI が書いたコードも<strong>読まずに承認しない</strong>。'},
+    {p:'このあと3つの設定を置く：① 秘密を読ませない deny 設定　② security-guidance プラグイン　③ npm 取り込み制限。'},
+  ]},
+  { type:'content', day:1, sec:'Day 1 セキュリティ対策', title:'① 秘密を Claude に読ませない（deny 設定）', body:[
+    {note:'よくある勘違い: .claudeignore は無い。正しくは <code>.claude/settings.json</code> の <code>permissions.deny</code> で読み取り禁止を宣言する。'},
+    {code:`{
+  "permissions": {
+    "deny": [
+      "Read(./.dev.vars)",
+      "Read(./**/.dev.vars)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ]
+  }
+}`},
+    {ul:['<code>deny</code> は最優先。頼んでも <strong>Claude は読めない＝事故防止</strong>','秘密ファイルが登場するのは [4] から。<strong>設定だけ先に置く</strong>のがコツ']},
+    {img:'img/permissionDenied.png',cap:'deny の発動例: .dev.vars を「読んで」と頼んでも Claude が拒否する'},
+  ]},
+  { type:'content', day:1, sec:'Day 1 セキュリティ対策', title:'② security-guidance プラグイン', body:[
+    {p:'生成コードを<strong>バックグラウンドで自動セキュリティレビュー</strong>してくれるプラグイン。SQLi・XSS・SSRF・IDOR・認可バイパスなど<strong>25種以上</strong>を継続チェック。'},
+    {ol:['<code>/plugin</code> → Discover タブで「secu」検索 → <strong>security-guidance</strong> を選ぶ','インストール範囲（scope）を選ぶ（例 project scope）','<code>/reload-plugins</code> で有効化 → <code>/plugin list</code> で確認']},
+    {imgrow:[{img:'img/security-guidance1.png',cap:'① Discover で「secu」検索 → 選ぶ'},{img:'img/security-guidance2.png',cap:'② インストール範囲（scope）を選ぶ'}]},
+    {note:'前提: python3 が PATH に。見つからない/無ければスキップ可（本編に影響なし）。うるさければ <code>/plugin disable security-guidance</code>。'},
+  ]},
+  { type:'content', day:1, sec:'Day 1 セキュリティ対策', title:'③ npm パッケージの取り込み制限（.npmrc）', body:[
+    {p:'公開直後のパッケージは乗っ取りリスク。プロジェクト直下に <code>.npmrc</code> を置く:'},
+    {code:`min-release-age=7
+audit=true`},
+    {ul:['<code>min-release-age=7</code>: 公開7日未満のバージョンは install 対象外','⚠️ 有効なのは npm 11.10.0 以降。<code>npm -v</code> で確認し、古ければ <code>npm install -g npm</code>','<code>audit=true</code>: install 時に脆弱性チェックが走る']},
+  ]},
+
+  { type:'divider', ref:'day1', day:1, label:'BRIEFING', title:'Day 1 ブリーフィング', sub:'[1] → [2] → [3] を通しで説明。ここは聞くだけでよい（手はまだ動かさない）' },
+
+  { type:'divider', ref:'s1', day:1, kicker:'[1]', title:'Claude Design でサイトデザイン作成', sub:'LP のデザインシステムを確定し zip でエクスポート' },
+  { type:'content', day:1, sec:'Day 1（[1] 着手前）', title:'画面構成とナビゲーション', body:[
+    {key:'<strong>[1] を始める前に構成を固める。</strong> あいまいなまま渡すと「購入する」が問い合わせに飛んだり、マイページがダッシュボード型になる。'},
+    {table:{head:['ボタン/リンク','設置','遷移先'],rows:[
+      ['特徴 / 料金 / FAQ','グローバルナビ','<code>/</code> の各セクションへスクロール'],
+      ['お問い合わせ','グローバルナビ','<code>/contact</code>'],
+      ['マイページ','グローバルナビ','<code>/mypage</code>（メール入力→簡易ログイン）'],
+      ['購入する（CTA）','ナビ・ヒーロー','<code>/</code> 料金セクション→メール入力→(Day3 [8] で Stripe)'],
+    ]}},
+    {warn:'⚠️ <strong>CTA のテキストは「購入する」</strong>。「無料で試す」は使わない。クリック先は料金セクション（または購入画面）。'},
+  ]},
+  { type:'content', day:1, sec:'[1] Claude Design', title:'[1] ゴールとアクセス', body:[
+    {p:'<strong>ゴール:</strong> LP のデザインシステム（配色・トーン・雰囲気）を確定し zip でエクスポート。<strong>作るのは LP（<code>/</code>）のみ</strong> — 機能ページは [2] で Claude Code が実装。'},
+    {ul:['<strong>アクセス</strong>: claude.ai にログイン→「Explore Claude」→「Claude Design」、または claude.ai/design','<strong>なぜ LP だけか</strong>: Claude Design はトークン消費が多く、標準プランでは全ページ分の余裕がないため LP に絞る']},
+  ]},
+  { type:'content', day:1, sec:'[1] Claude Design', title:'[1] 事前確認：モデル・Effort・リセット', body:[
+    {ul:['「Make something new」で <strong>Product prototype</strong> を選ぶ（Slides/Document は使わない）','<strong>Design system が「None」か確認</strong>（過去の名前が残っていればリセット）','プロンプト画面の左上ドロップダウンにも古い名前が残ることがある→None 相当に戻す']},
+    {p:'<strong>モデルと Effort</strong>: Effort が高いほど品質↑・トークン消費↑。'},
+    {ul:['<strong>推奨は Effort: Medium</strong>（トークンに余裕がないプラン。一周体験には十分）','Team Premium / Max などは High 以上でよい','モデルはその時点の上位（執筆時 Opus 4.8）']},
+    {imgrow:[{img:'img/ClaudeDesignHomeReset.png',cap:'Product prototype を選び Design system: None を確認'},{img:'img/ClaudeDesignPromptModelBar.png',cap:'入力欄左上に古いデザインシステム名が残る例'}]},
+  ]},
+  { type:'content', day:1, sec:'[1] Claude Design', title:'[1] 流れ ①：サービス内容を伝えて生成', body:[
+    {p:'色・トーンは Claude Design が質問で返してくれる。最初から細かく指定せず、<strong>サービスの中身</strong>（何のサービスか・売りたいもの・載せたい機能）を伝える。'},
+    {code:`Slack AI サブスク SaaS『玄米茶』の LP を作りたい。
+月額／年額プランを売りたい。
+載せたいのは特徴・料金プラン・FAQ・お問い合わせへの導線。
+ターゲットはライトエンジニア層。`},
+    {ul:['質問された時に<strong>「デザイン案を3つ出して」と伝える</strong>（生成に数分。待ち時間に SCREEN_SPEC を書き始めてよい）','ページ構成を聞かれたら<strong>「LP 一枚」を選ぶ</strong>（他ページは [2] で実装）']},
+    {imgrow:[{img:'img/claude-design-prompt.png',cap:'プロンプト入力画面'},{img:'img/claude-design-questions.png',cap:'トーン・配色は質問に答えて決める'}]},
+  ]},
+  { type:'content', day:1, sec:'[1] Claude Design', title:'[1] 流れ ②：選ぶ・調整・書き出し', body:[
+    {ol:['<strong>3案を見比べて1つ選ぶ</strong>（最初の1案に飛びつかない。「なんとなく好き」でOK・後から詰められる）','<strong>Tweaks で調整</strong>（「+ Tweaks」→ Describe a tweak / Ideas。paper・layout・voice をプリセット切替）','<strong>不要セクションはチャットで削除</strong>（「このセクションは不要です」等）。<strong>Mark up</strong> なら画面に手描き注釈で指示できる','<strong>zip でエクスポート</strong>（右上 Share →「Project archive (.zip)」）→ [2] にそのまま渡す']},
+    {imgrow:[{img:'img/ClaudeDesign3p.png',cap:'3案が横並びに出る'},{img:'img/ClaudeDesignShareZip.png',cap:'Share → Project archive (.zip)'}]},
+    {note:'細部を数値で触るなら Edit タブ。色やフォントを別途テキスト化する必要はない（デザインごと渡す方が速く正確）。'},
+  ]},
+  { type:'content', day:1, sec:'[1] Claude Design', title:'[1] ポイントと完了の定義', body:[
+    {ul:['「それっぽく作れた」で十分。完璧より<strong>方向性の確定</strong>が目的','いきなり1案に飛びつかず<strong>3案を見比べる</strong>','言語化より<strong>デザイン Project（zip）を丸ごと渡す</strong>','料金プランは<strong>月額・年額の2プラン</strong>推奨（[2][3] がスムーズ）']},
+    {done:['LP の配色・トーン・セクション構成が決まっている','「購入する」ボタンが料金セクションへの導線になっている','デザインを zip でエクスポートでき、[2] にそのまま渡せる']},
+  ]},
+  { type:'content', day:1, sec:'S-1（[2] 着手前）', title:'SCREEN_SPEC.md を作る', body:[
+    {p:'Claude Code にプロンプトを渡す前に、リポジトリのルートに <code>SCREEN_SPEC.md</code> を作る。玄米茶の内容を<strong>自分のサービスに書き換える</strong>。'},
+    {code:`# SCREEN_SPEC.md
+
+## / (LP)
+- ヒーロー・特徴・料金プラン（月額/年額）・FAQ
+
+## /contact (問い合わせ)
+- 名前・メール・本文
+
+## /mypage (マイページ)
+- アカウント情報・ライセンスキー・サブスクリプション状況
+
+## /success (購入完了)
+- 購入完了メッセージ＋マイページへのリンク`},
+    {note:'ページを増減してもよい。書き換えたら [2] のプロンプトに「この SCREEN_SPEC.md を参考に実装して」と添える。具体的な記入例（玄米茶）は <a href="flow.html#s2-spec" target="flowdoc">flow.html#s2-spec</a> の details 参照。'},
+  ]},
+
+  { type:'divider', ref:'s2', day:1, kicker:'[2]', title:'Claude Code でフロント作成', sub:'デザイン通りの SPA 全画面をローカルで動かす（Day 1 到達点）' },
+  { type:'content', day:1, sec:'Day 1（[2] 着手前）', title:'リポジトリのディレクトリ構成', body:[
+    {p:'フロント・バックは1リポジトリ（モノレポ）に <code>frontend/</code>・<code>backend/</code> として並べる。最終的に <code>backend/</code> の Worker が両方配信する。'},
+    {code:`repo-root/
+├── .claude/settings.json    # deny 設定（Day1）
+├── .npmrc                    # npm 取り込み制限（Day1）
+├── SCREEN_SPEC.md            # 画面仕様（[2] 着手前に作る）
+├── frontend/                 # Vite+React+TS（[2]）
+│   ├── src/pages/            # /, /contact, /mypage, /success
+│   ├── .env                  # 公開可能な変数（[9] Clerk）
+│   └── wrangler.jsonc        # Day1 単独デプロイ用（[3]）
+└── backend/                  # Hono + Workers（[4]）
+    ├── src/index.ts, routes/
+    ├── migrations/           # D1 マイグレーション
+    ├── docs/TEST.md          # テスト戦略（[5]）
+    ├── wrangler.jsonc        # 最終的にフロント+APIを1 Workerで配信（[6]）
+    └── .dev.vars             # ローカル用シークレット（.gitignore済）`},
+  ]},
+  { type:'content', day:1, sec:'[2] フロント作成', title:'[2] ゴールと前提', body:[
+    {p:'<strong>ゴール:</strong> デザイン通りの SPA（1枚の index.html を JS が書き換えて全画面表示）が<strong>ローカル（<code>npm run dev</code> の URL）で動く</strong>。'},
+    {key:'<strong>フロントとバックは1リポジトリ（モノレポ）で管理。</strong> リポジトリを clone し、<strong>ルートで Claude Code を起動</strong>する（frontend/ と backend/ を跨ぐため）。各ディレクトリは Claude に作らせる（自分で mkdir しない）。'},
+  ]},
+  { type:'content', day:1, sec:'[2] フロント作成', title:'[2] 流れ：zip を渡して生成', body:[
+    {ol:['リポジトリのルートで Claude Code を起動','[1] の zip を直下に置き（例 <code>design.zip</code>）、次のプロンプトを<strong>自分の SaaS に合わせて</strong>送る','<code>npm run dev</code> で全画面を目視確認し、問題は具体的に伝えて修正依頼']},
+    {code:`frontend/ に Vite + React + TypeScript + Tailwind CSS v4 + shadcn/ui で SPA を作って。
+ルーティングは React Router を使って。
+wrangler.jsonc も作って（name は <自分で決めた名前> にして）。
+
+リポジトリ直下の design.zip を展開して参考にし、
+ルートの SCREEN_SPEC.md に書いた全画面を実装して。
+マイページはアクセス時にメール入力（簡易ログイン）を挟んでから表示。
+購入は料金セクションのメール入力から /success へ遷移。/success はメール入力を付けないで。
+
+この段階では API がないので、全画面モックデータで表示して。`},
+    {note:'wrangler.jsonc の name はデプロイ URL になる。使えるのは<strong>小文字英数字とハイフンのみ</strong>。'},
+  ]},
+  { type:'content', day:1, sec:'[2] フロント作成', title:'[2] ポイントと完了の定義（Day 1 到達点）', body:[
+    {ul:['API はまだ無い。この段階は<strong>モックデータで画面が動く</strong>と割り切る','表示崩れ・リンク切れ・押しても反応しないボタンは具体的に伝えて直す','npm run dev のポートは環境で変わる。<strong>出力に表示された URL</strong>を開く']},
+    {done:['dev URL で <strong>LP が崩れず表示</strong>（Tailwind が効いている）','<code>/</code> <code>/contact</code> <code>/mypage</code> <code>/success</code> 全画面が実装され React Router で遷移','デザイン [1] の方向性が反映されている']},
+    {code:'フロント実装の作業をコミットして dev ブランチに push して。'},
+  ]},
+
+  { type:'divider', ref:'s3', day:1, kicker:'[3]', title:'Day 1 フロントデプロイ（Cloudflare Workers）', sub:'フロントが完成したらすぐ公開 URL を手に入れる' },
+  { type:'content', day:1, sec:'[3] フロントデプロイ', title:'[3] ゴールと概要', body:[
+    {p:'<strong>ゴール:</strong> フロント完成後すぐに公開 URL を手に入れる（バックは Day 2 で繋ぐ）。'},
+    {p:'Cloudflare Workers は静的ファイルも配信できる。今日はフロントだけを Worker としてデプロイし、Day 2 で API を追加して同じ Worker に統合。<strong>デプロイ先は最初から <code>workers.dev</code> の1 URL に統一</strong>。'},
+    {note:'手順1〜2（install〜whoami）は自分のターミナルで。手順3〜4（build〜deploy）は Claude Code に「ビルドしてデプロイして」と任せてよい。'},
+  ]},
+  { type:'content', day:1, sec:'[3] フロントデプロイ', title:'[3] 流れ', body:[
+    {ol:['wrangler をグローバルインストール: <code>npm install -g wrangler</code>','<code>wrangler login</code>（ブラウザで許可）→ <code>wrangler whoami</code>（想定アカウントか確認）','フロントのルートで <code>npm run build</code>','<code>wrangler deploy</code>','発行 URL をブラウザで開き LP 表示を確認 🎉','URL をチャットに貼って共有']},
+    {ul:['複数アカウントを持つ人は <code>whoami</code> で<strong>取り違えを必ず確認</strong>','初回は workers.dev サブドメインの登録を求められることがある（画面の指示に従う）']},
+    {done:['dev URL で LP・全ページが表示','自分の <code>https://&lt;name&gt;.workers.dev</code> で LP 表示']},
+  ]},
+
+  { type:'divider', ref:'day1', day:1, label:'WORK', title:'ここから自由作業', sub:'[1] → [2] → [3] を自分のペースで。以降のスライドが作業カード（手順書）' },
+  { type:'content', ref:'day1', day:1, sec:'Day 1 自由作業', title:'自由作業の進め方（Day 1）', body:[
+    {key:'ここから先のスライドは<strong>作業カード</strong>。上から順に、自分のペースで進める。'},
+    {ul:['チェック項目はクリックで消し込める（自分用のメモ）','手順の意味を忘れたら o キーで一覧 → 該当タスクの説明スライドへ戻る','<strong>15分</strong>詰まったら講師に声をかける（自力で粘りすぎない）']},
+    {h:'[3] まで終わってしまったら'},
+    {ul:['Day 3 のオプション課題は<strong>バックエンドが前提なので Day 1 では着手できない</strong>','代わりに<strong>自分の題材の画面を増やす</strong>（SCREEN_SPEC.md に追記 → Claude Code に実装させる）','または<strong>SCREEN_SPEC.md を厚くする</strong>（Day 2 の [4] で API 設計がそのまま楽になる）','他の人の公開 URL を見に行くのも歓迎']},
+    {note:'Day 2 の [4] は全員そろってブリーフィングから始める。先に進みすぎるより、自分の題材を深くしておく方が Day 2 が速い。'},
+  ]},
+  { type:'break', day:1, step:'1-1', sec:'[1] Claude Design', title:'事前設定（Product prototype・Design system を None にリセット・モデル/Effort=Opus/High）', todo:['Product prototype を選ぶ','Design system が None かを確認（違えばリセット）','モデル/Effort を Opus/High に設定'], done:'新規デザインを作り始められる状態' },
+  { type:'break', day:1, step:'1-2', sec:'[1] Claude Design', title:'サービス内容を伝えて LP 生成（3案出させる）', todo:['サービス内容（何を・誰に・売るもの・欲しい機能）を伝える','「デザイン案を3つ出して」と伝える'], done:'3案の生成が始まる（数分。待ち時間に S-1 へ）' },
+  { type:'break', day:1, step:'1-3', sec:'[1] Claude Design', title:'3案から1つ選ぶ', todo:['3案を見比べて1つ選ぶ'], done:'ベースにするデザイン案が1つ決まった' },
+  { type:'break', day:1, step:'1-4', sec:'[1] Claude Design', title:'Tweaks／チャット／Mark up で調整・不要セクション削除', todo:['Tweaks／チャット／Mark up で調整','不要セクションを削除'], done:'LP の方向性が固まった' },
+  { type:'break', day:1, step:'1-5', sec:'[1] Claude Design', title:'zip でエクスポート', todo:['右上 Share →「Project archive (.zip)」をダウンロード'], done:'zip を [2] にそのまま渡せる状態' },
+  { type:'break', day:1, step:'S-1', sec:'S-1（[1] の生成待ち時間に並行）', title:'ルートに SCREEN_SPEC.md を作成し自分のサービス内容に書き換え', todo:['ルートに SCREEN_SPEC.md を作成','自分のサービス内容に書き換え'], warn:'[1] の3案生成は数分かかる。<strong>その待ち時間に並行</strong>して進めると効率的。', done:'自分のサービスの画面仕様が SCREEN_SPEC.md にまとまった' },
+  { type:'break', day:1, step:'2-1', sec:'[2] フロント作成', title:'リポジトリ作成・clone・ルートで Claude Code 起動（zip 配置）', todo:['GitHub で Private リポジトリを作成','ローカルに clone','[1] の zip をリポジトリ直下に配置（例 design.zip）','リポジトリのルートで Claude Code を起動'], done:'ルートで Claude Code が起動し zip が置いてある' },
+  { type:'break', day:1, step:'2-2', sec:'[2] フロント作成', title:'プロンプトで SPA 生成（Vite+React+TS+Tailwind+shadcn/ui・React Router・wrangler.jsonc・全画面モック）', todo:['Vite+React+TS+Tailwind v4+shadcn/ui で frontend/ を生成','React Router でルーティング','wrangler.jsonc（name は自分の名前・小文字英数字とハイフンのみ）','SCREEN_SPEC.md の全画面をモックデータで実装'], code:`frontend/ に Vite + React + TypeScript + Tailwind CSS v4 + shadcn/ui で SPA を作って。
+…（[2] 流れのプロンプトを使う）`, done:'全画面がモックで生成された' },
+  { type:'break', day:1, step:'2-3', sec:'[2] フロント作成', title:'npm run dev で全画面を目視確認・修正依頼', todo:['npm run dev を実行し、表示された URL を開く','LP・/contact・/mypage・/success を目視','崩れ・リンク切れ・無反応ボタンを具体的に伝えて修正依頼'], done:'全画面が崩れず表示され、4ページ遷移できる' },
+  { type:'break', day:1, step:'2-4', sec:'[2] フロント作成', title:'dev ブランチに push', todo:['作業をコミット','dev ブランチに push'], code:'フロント実装の作業をコミットして dev ブランチに push して。', done:'フロント実装が dev に push 済み' },
+  { type:'break', day:1, step:'3-1', sec:'[3] フロントデプロイ', title:'wrangler インストール', todo:['wrangler をグローバルインストール'], code:'npm install -g wrangler', done:'wrangler コマンドが使える' },
+  { type:'break', day:1, step:'3-2', sec:'[3] フロントデプロイ', title:'wrangler login / whoami でアカウント確認', todo:['wrangler login（ブラウザで許可）','wrangler whoami で想定アカウントか確認'], code:`wrangler login
+wrangler whoami`, warn:'複数アカウントを持つ人は取り違えに注意（別アカウントに資源を作る事故を防ぐ）。', done:'想定した Cloudflare アカウントにログインできている' },
+  { type:'break', day:1, step:'3-3', sec:'[3] フロントデプロイ', title:'npm run build', todo:['npm run build（フロントのルートで。Claude Code に任せてよい）'], code:'npm run build', done:'ビルドが成功する' },
+  { type:'break', day:1, step:'3-4', sec:'[3] フロントデプロイ', title:'wrangler deploy', todo:['Cloudflare Workers にデプロイ'], code:'wrangler deploy', done:'URL が発行される（初回は workers.dev サブドメイン登録を求められることも）' },
+  { type:'break', day:1, step:'3-5', sec:'[3] フロントデプロイ', title:'発行 URL で LP 表示確認', todo:['発行された URL をブラウザで開く','LP が表示されることを確認 🎉'], done:'https://&lt;name&gt;.workers.dev で LP が表示される' },
+  { type:'break', day:1, step:'U-1', sec:'Day 1 クロージング', title:'公開 URL をチャットに貼って共有', todo:['公開 URL をチャットに貼って共有'], code:'フロントデプロイの作業をコミットして dev ブランチに push して。', done:'公開 URL を共有し dev に push 済み' },
+
+  { type:'divider', ref:'day2', day:2, label:'DAY 2', title:'つなぐ・公開する', sub:'[4] バック → [5] 自動テスト → [6] デプロイ（ここまでが必達）' },
+
+  { type:'divider', ref:'day2', day:2, label:'BRIEFING', title:'Day 2 ブリーフィング', sub:'[4] → [5] → [6] ＋ Day 3 の入口を通しで説明。ここは聞くだけでよい' },
+
+  { type:'divider', ref:'s4', day:2, kicker:'[4]', title:'Claude Code でバック作成', sub:'フロントと API がつながりローカルで一通り動く' },
+  { type:'content', day:2, sec:'[4] バック作成', title:'[4] このステップでやること（全体像）', body:[
+    {p:'<strong>ゴール:</strong> フロントと API がつながり、ローカルで一通りの機能が動く。Day 1 の「見た目だけのフロント」に中身（API とデータ）をつなぐ。'},
+    {ol:['<strong>API を作る</strong> — backend/ に問い合わせ受付・ライセンス発行などを実装','<strong>データの入れ物</strong> — 保存用 DB（D1）を作る','<strong>フロントと API を1つに</strong> — Worker 一本に統合し、モック表示を本物の API 呼び出しに差し替え','<strong>ログインは簡易版</strong> — メールを信じるだけの「モック認証」（本物は Day 3 [9]）']},
+    {key:'<strong>バックはモノレポ内の <code>backend/</code> で作業。</strong> [2] と同じく<strong>ルートで Claude Code を起動</strong>し backend/ に実装させる。最終的に配信は Worker 一本にまとめる。'},
+    {img:'img/frontend_backend_integration.svg'},
+  ]},
+  { type:'content', day:2, sec:'[4] バック作成', title:'[4] 手順1：Hono の雛形を作らせる', body:[
+    {ul:['成果物: backend/ に <code>src/index.ts</code>・<code>wrangler.jsonc</code>・<code>package.json</code>','<code>npm run dev</code> で <code>GET /</code> が返れば OK（ポートは環境で変わる→出力の URL を使う）','<code>.gitignore</code> も作らせる（node_modules / dist / .dev.vars を除外）']},
+    {code:`backend/ に Hono + Cloudflare Workers の API プロジェクトを作って。
+- src/index.ts・wrangler.jsonc・package.json を揃える
+- まずは GET / が動作確認用のレスポンスを返す最小構成でよい
+- .gitignore も作って（node_modules / dist / .dev.vars を除外）`},
+  ]},
+  { type:'content', day:2, sec:'[4] バック作成', title:'[4] 手順2：D1 を作って登録', body:[
+    {ul:['<strong>D1</strong> = SQLite DB。問い合わせ・ライセンスなど<strong>ずっと残すデータ</strong>を保存する']},
+    {code:`Cloudflare の D1 を作成して、wrangler.jsonc に書き込んで。
+なお、wrangler.jsonc の name はフロントの wrangler.jsonc と同じにして。`},
+    {key:'<strong>name をフロントと同じに</strong>する理由: 同じ name の Worker を上書きする形になり、Day 1 の URL がそのまま引き継がれる。違うと別 URL に。'},
+    {note:'なぜ先に作る？ — wrangler.jsonc に実在の database_id が無いと [6] のリモートデプロイが失敗するから（ローカル開発はクラウドの D1 に触れない）。'},
+  ]},
+  { type:'content', day:2, sec:'[4] バック作成', title:'[4] 手順3：API をまとめて実装', body:[
+    {p:'必要な機能を日本語でまとめて伝え、いっぺんに実装させてよい。<strong>完了判定に使う <code>POST /api/contact</code> と <code>GET /api/me</code> の2本だけパス固定</strong>、他は AI に任せる。'},
+    {code:`Hono + Cloudflare Workers + TypeScript でバックエンドを実装して。
+D1（SQLite）を使うこと。マイグレーションは migrations/ 以下に。
+frontend/ のコードを見て、それに対応する API を backend/ に実装して。
+
+必要な機能:
+- 問い合わせを受け付けて D1 に保存
+- メールアドレスを受け取ってライセンスキーを発行（決済なしの簡易版）
+- x-user-email ヘッダのメールに紐づく情報を D1 から返す（検証せず信頼するモック認証。無ければ 401 か 404）
+- ライセンスキーを検証する
+
+API のパスは POST /api/contact と GET /api/me の2本だけ固定で、他は任せる。`},
+    {note:'<code>GET /api/me</code> の「ヘッダのメールを検証せず信じる」がDay 2 の簡易ログイン（モック認証）。本物の認証は Day 3 [9] Clerk で差し替える。'},
+  ]},
+  { type:'content', day:2, sec:'[4] バック作成', title:'[4] 手順4〜6：DB・統合・API 差し替え', body:[
+    {h:'手順4：ローカル DB（マイグレーション）'},
+    {code:'npm run db:migrate:local を実行してローカルの D1 にテーブルを作って。'},
+    {note:'ローカル（--local）とクラウド（--remote）の D1 はデータが別物。本番反映は [6] で。'},
+    {h:'手順5：フロントとバックを1 Worker に統合'},
+    {p:'今はフロント用・バック用の2サーバーが別々。<strong>Worker 一本にまとめる</strong>と同じ住所（URL）から出る＝<strong>CORS 不要</strong>・URL 1本。統合後は<strong>デプロイを backend/ から</strong>行う。'},
+    {code:`frontend/ をビルドして backend/ の Worker から配信できるようにして。
+SPA なので未知のパスは index.html にフォールバックさせて。`},
+    {h:'手順6：モック表示を実 API 呼び出しに差し替え'},
+    {code:'モックを実 API 呼び出しに変えて。フロントと API は同一オリジンなので /api/... の相対パスで呼ぶ。'},
+  ]},
+  { type:'content', ref:'s4-scripts', day:2, sec:'[4] バック作成', title:'[4] 必要な npm scripts', body:[
+    {p:'長い wrangler コマンドを毎回打つ代わりに <code>package.json</code> の script にまとめる（確認も追加も Claude Code に任せる）。'},
+    {table:{head:['script','中身','用途'],rows:[
+      ['dev','wrangler dev','ローカル起動'],
+      ['build:front','npm --prefix ../frontend run build','フロントを dist/ にビルド'],
+      ['db:migrate:local','wrangler d1 migrations apply DB --local','ローカル D1 マイグレーション'],
+      ['db:migrate:remote','wrangler d1 migrations apply DB --remote','本番 D1（[6]）'],
+      ['deploy','npm run build:front && wrangler deploy','ビルド→デプロイ（[6]）'],
+      ['test','vitest run','テスト（[5]）'],
+    ]}},
+    {note:'ローカル起動は Claude Code に「ローカルで起動して動作確認して」と依頼するのがデフォルト。手元なら cd backend && npm run build:front && npm run dev（フロント変更時は毎回 build:front）。'},
+  ]},
+  { type:'content', day:2, sec:'[4] バック作成', title:'[4] push 前レビューと完了の定義', body:[
+    {p:'push 前に <code>/code-review</code>・<code>/security-review</code> でローカル差分を点検（中身は [5] にまとめ）。指摘は直してから push。'},
+    {code:'バック実装の作業をコミットして dev ブランチに push して。'},
+    {p:'完了確認は<strong>ブラウザで目視</strong>（コマンド結果だけで満足しない。CORS・表示・状態管理はブラウザでしか確認できない）:'},
+    {done:['LP 表示（<code>/</code> が崩れない）','SPA ルーティング（<code>/mypage</code> が 404 にならない）','未認証 API が弾かれる（<code>fetch("/api/me")</code> が 401）','バリデーションが弾く（空入力で 400 / エラー表示）','正常系（正しい問い合わせが受付完了になる）']},
+  ]},
+
+  { type:'divider', ref:'s5', day:2, kicker:'[5]', title:'自動テストの実装', sub:'AI が書いたコードを検証してデプロイに備える（レビュー → 自動テスト）' },
+  { type:'content', day:2, sec:'[5] 自動テスト', title:'[5] ゴールと ① レビュー', body:[
+    {p:'<strong>2段構え</strong>: ① レビュー（コマンドで差分点検）→ ② 自動テスト（<code>npm test</code> で「正しい入力は通る・壊れた入力は弾く・未認証は保護 API に入れない」を毎回自動確認）。② は<strong>バックの API に加え、フロントの画面テストも1本</strong>足す。'},
+    {ul:['<code>/code-review</code> — 正しさ・簡潔さ・効率（バグ/冗長を指摘）','<code>/security-review</code> — SQLi 等・認証の抜け・シークレットの扱い','<strong>security-guidance</strong>（Day 1 導入）— 編集・コミットのたび<strong>自動</strong>点検']},
+    {imgrow:[{img:'img/CodeReviewSample.png',cap:'/code-review の実行例（IDOR/PII 漏洩などを検出）'},{img:'img/SecurityReviewSample.png',cap:'/security-review の実行例（Severity・修正案つき）'}]},
+    {note:'⚙️ レビューはコード全体を読むためトークン消費が大きい。既定 Medium 推奨（余裕あるプランは High 以上）。ローカル差分に効くので git push 不要。'},
+  ]},
+  { type:'content', day:2, sec:'[5] 自動テスト', title:'[5] ② 自動テスト：3ステップの壁打ち', body:[
+    {key:'テスト観点を人間が決め打ちすると「表に無い＝テストしない」になりがち。<strong>何をテストするかも AI に出させ、人間がレビューする</strong>のが抜けを防ぐコツ。'},
+    {ol:['<strong>AI にテスト戦略を書かせる</strong> — コードを読んで「何を・なぜ」を <code>docs/TEST.md</code> に','<strong>人間が TEST.md をレビュー</strong> — 観点の抜け・不要箇所を指摘','<strong>AI にテスト実装させる</strong> — レビュー済み TEST.md を元に実装 → <code>npm test</code>（バック・フロントそれぞれ）でグリーン']},
+    {note:'Resend・Stripe など外部サービスはテスト中に呼ばない（遅い・障害の影響）。fetch はモックに差し替える。'},
+  ]},
+  { type:'content', day:2, sec:'[5] 自動テスト', title:'[5] 流れ：戦略 → レビュー → 実装 → 画面テスト', body:[
+    {p:'① TEST.md（戦略書）だけを作らせる。<strong>対象はバックの API＋フロント主要画面1つ</strong>:'},
+    {code:`backend/ のコードと、frontend/ の主要画面（問い合わせフォーム）を対象に、
+テスト戦略を docs/TEST.md にまとめてください。
+「何を・なぜテストするか・しないか」の判断も含めること。
+画面テストはフロントの主要フロー1本でよい（全画面はやらない）。
+テストファイルの実装はまだしないでください。`},
+    {p:'② 人間が TEST.md をレビュー: 純粋関数 / 正常系 / 異常系 / 未認証（バック4観点）＋<strong>フロント主要画面（問い合わせフォーム）の画面テスト</strong>。抜けは追記させる。'},
+    {p:'③ TEST.md が固まったら実装させる（バック／フロントで環境が別）:'},
+    {code:`docs/TEST.md の方針に従ってテストを実装してください。
+・backend/: @cloudflare/vitest-pool-workers（cloudflareTest プラグイン方式）
+・frontend/ の画面テスト: 同じ Vitest を jsdom 環境で使い @testing-library/react で描画・操作
+  （frontend にはまだ Vitest が無いので vitest・@testing-library/react・jsdom を足し、
+   frontend/package.json に test スクリプト（vitest run）も追加する）
+外部サービスへの fetch はすべてモックしてください。`},
+    {p:'④ ランナーは<strong>バック・フロント共通の Vitest</strong>——新しいテストフレームワークは増えない。違うのは実行環境だけ（Workers／jsdom）。'},
+    {warn:'⚠️ <strong>別パッケージなので <code>npm test</code> 1回では両方走らない</strong>。<code>cd backend &amp;&amp; npm test</code>（API）と <code>cd ../frontend &amp;&amp; npm test</code>（画面）を<strong>それぞれ</strong>実行する。'},
+  ]},
+  { type:'content', day:2, sec:'[5] 自動テスト', title:'[5] ポイントと完了の定義', body:[
+    {ul:['<strong>AI が書いたコードこそテストが要る</strong>','<strong>TEST.md が先、実装が後</strong>（方針を固めてから書かせると精度↑）','Day 3 で機能追加するとき<strong>このテストが安全網</strong>になる','<strong>画面テストも1本だけ</strong>足す — Vitest は同じスタックでフロントでも使える（<code>@testing-library/react</code>＋jsdom・API はモック）']},
+    {done:['<code>npm test</code> が<strong>バック・フロントとも</strong> グリーン（それぞれのディレクトリで実行）','純粋関数（キー生成・マスク等）のテスト1つ以上','正しい入力で成功レスポンス','不正入力で適切にエラー','未認証で保護 API へのアクセスが拒否','フロントの主要画面1つに<strong>画面テスト1本</strong>（表示＋正常系操作）']},
+    {code:'自動テスト実装の作業をコミットして dev ブランチに push して。'},
+  ]},
+
+  { type:'divider', ref:'s6', day:2, kicker:'[6]', title:'Cloudflare にデプロイ', sub:'自分の workers.dev URL で世界に公開（Day 2 のフィナーレ）' },
+  { type:'content', day:2, sec:'[6] デプロイ', title:'[6] 流れ', body:[
+    {ol:['<code>wrangler.jsonc</code> を確認・修正（binding id・assets.directory・not_found_handling）','リモート DB にマイグレーション: <code>npm run db:migrate:remote</code>','デプロイは<strong>必ず backend/ から</strong>: <code>cd backend</code> → <code>npm run deploy</code>','発行 URL で動作確認 🎉','URL をチャットに貼って共有']},
+    {code:`wrangler.jsonc を確認して。
+・D1 の binding id が実際のリソースと一致しているか
+・assets.directory がフロントのビルド結果を正しく指しているか
+・assets.not_found_handling が "single-page-application" になっているか
+問題があれば修正して。`},
+    {warn:'⚠️ frontend/ で <code>wrangler deploy</code> すると Day 1 と同名 Worker を静的ファイルだけで上書きし API が消える。<strong>必ず backend/ から</strong>。'},
+  ]},
+  { type:'content', day:2, sec:'[6] デプロイ', title:'[6] ハマりどころと完了の定義', body:[
+    {warn:'⚠️ <code>npm run deploy</code> はフロントのビルド込み → <strong>ビルドが通らないとデプロイも止まる</strong>。事前に <code>npm run build:front</code> の成功を確認。リモート D1 マイグレ忘れは「テーブルが無い」で失敗。'},
+    {done:['自分の workers.dev で LP 表示','本番 URL で <code>/mypage</code> 等が 404 にならない','API を使う画面が本番でも動作']},
+    {code:'デプロイ完了の作業をコミットして dev ブランチに push して。必要なら dev を main にマージして。'},
+    {note:'Day 2 本編は Secrets 投入不要（Stripe/Clerk/Resend を使う [7][8][9] で初めて要る）。'},
+  ]},
+  { type:'content', ref:'day3', day:2, sec:'[6] のあとは', title:'[6] が終わったら Day 3 へ（先に案内しておく）', body:[
+    {key:'<strong>Day 3 を待たずに、[6] が終わった人からオプション課題に入ってよい</strong>。Day 3 当日に改めて課題の説明はしない。'},
+    {ul:['課題は <strong>[7] メール ／ [8] 決済 ／ [9] ID 連携 ／ [10] 運用保守 ／ [11] セキュリティ ／ [12] テスト設計</strong> の6つ','<strong>やらない／1つだけ、も可</strong>。数より「自分で判断した跡」が残る方が発表で効く','手順は Day 3 のスライドに全部ある。<strong>説明を待たずに読んで始めてよい</strong>（o キーで一覧 → DAY 3 へ）']},
+    {h:'選ぶときの目安'},
+    {ul:['<strong>迷ったら [7] メール（★☆☆）</strong> — 30分程度で「実際に自分宛に届く」ところまで行ける','<strong>[8] 決済（★★★）は重い</strong> — 5フェーズあるので、残り時間が1時間を切っていたら別の課題を選ぶ','[7][8][9] は外部サービスのアカウント登録から始まる（その時間も見込んでおく）']},
+    {note:'難易度と課題どうしの依存関係は、DAY 3 セクション先頭の「オプション課題の選び方」にまとめてある。ブリーフィングではそのスライドを開いて説明する。'},
+  ]},
+
+  { type:'divider', ref:'day2', day:2, label:'WORK', title:'ここから自由作業', sub:'[4] → [5] → [6]。終わった人はそのまま Day 3 のオプション課題へ' },
+  { type:'break', day:2, step:'4-1', sec:'[4] バック作成', title:'Hono 雛形作成（backend/）・GET / 確認', todo:['backend/ に Hono 雛形を作らせる','npm run dev で GET / が返ることを確認'], code:`backend/ に Hono + Cloudflare Workers の API プロジェクトを作って。
+まずは GET / が返る最小構成でよい。.gitignore も作って。`, done:'backend/ の雛形が動き GET / が返る' },
+  { type:'break', day:2, step:'4-2', sec:'[4] バック作成', title:'D1 作成し wrangler.jsonc に登録（name はフロントと同一）', todo:['Cloudflare の D1 を作成','wrangler.jsonc に database_id を書き込む','name はフロントの wrangler.jsonc と同一にする'], code:'Cloudflare の D1 を作成して wrangler.jsonc に書き込んで。name はフロントと同じにして。', done:'実在の binding id が wrangler.jsonc に入り name がフロントと一致' },
+  { type:'break', day:2, step:'4-3', sec:'[4] バック作成', title:'API 実装（contact/ライセンス発行/me/検証。POST /api/contact・GET /api/me 固定）', todo:['問い合わせ受付＋D1 保存','ライセンスキー発行（決済なし簡易版）','x-user-email のモック認証（無ければ 401/404）','ライセンス検証'], warn:'<strong>POST /api/contact・GET /api/me の2本だけパス固定</strong>。他のパス設計は AI に任せてよい。', done:'必要な API が実装され、2本の固定パスが存在する' },
+  { type:'break', day:2, step:'4-4', sec:'[4] バック作成', title:'ローカル DB マイグレーション（db:migrate:local）', todo:['ローカルの D1 にテーブルを作る'], code:'npm run db:migrate:local を実行してローカルの D1 にテーブルを作って。', done:'ローカル D1 にテーブルができた（--local と --remote は別物）' },
+  { type:'break', day:2, step:'4-5', sec:'[4] バック作成', title:'フロントとバックを 1 Worker に統合（SPA フォールバック）', todo:['frontend/ をビルドして backend/ の Worker から配信','未知パスは index.html にフォールバック（SPA）'], code:`frontend/ をビルドして backend/ の Worker から配信できるようにして。
+SPA なので未知のパスは index.html にフォールバックさせて。`, done:'フロントと API が同じ URL から出る（以降デプロイは backend/ から）' },
+  { type:'break', day:2, step:'4-6', sec:'[4] バック作成', title:'モック表示を実 API 呼び出しに差し替え', todo:['モック表示を実 API 呼び出しに差し替え（/api/... の相対パス）'], code:'モックを実 API 呼び出しに変えて。同一オリジンなので /api/... の相対パスで呼ぶ。', done:'画面が実 API のデータで動く' },
+  { type:'break', day:2, step:'4-7', sec:'[4] バック作成', title:'/code-review・/security-review → 修正 → push', todo:['/code-review でローカル差分を点検','/security-review でセキュリティ点検','指摘を修正','dev ブランチに push'], code:'バック実装の作業をコミットして dev ブランチに push して。', done:'レビュー指摘を直して dev に push 済み' },
+  { type:'break', day:2, step:'4-8', sec:'[4] バック作成', title:'ブラウザ目視確認（LP・SPA ルーティング・未認証401・バリデーション400・正常系）', todo:['LP 表示（/ が崩れない）','SPA ルーティング（/mypage が 404 にならない）','未認証 API が 401（fetch("/api/me")）','バリデーション 400（空入力で弾く）','正常系（正しい問い合わせが受付完了）'], warn:'コマンド結果だけで満足しない。CORS・表示・状態管理は<strong>ブラウザでしか確認できない</strong>。', done:'5点すべてブラウザで確認できた → [5] へ' },
+  { type:'break', day:2, step:'5-1', sec:'[5] 自動テスト', title:'docs/TEST.md（戦略）を書かせる（バック＋フロント主要画面）', todo:['バックの API＋フロント主要画面1つを対象に戦略を書かせる','画面テストは主要フロー1本でよい','実装はまださせない'], code:'backend/ と frontend/ の主要画面（問い合わせフォーム）を対象にテスト戦略を docs/TEST.md にまとめて。画面テストは1本でよい。実装はまだしないで。', done:'docs/TEST.md に戦略が書けた（画面テスト方針も含む）' },
+  { type:'break', day:2, step:'5-2', sec:'[5] 自動テスト', title:'人間が TEST.md をレビュー（4観点＋画面）', todo:['純粋関数のテストがあるか','正常系（正しい入力で成功）があるか','異常系（不正入力でエラー）があるか','未認証で保護 API が拒否されるテストがあるか','フロント主要画面（問い合わせフォーム）の画面テストがあるか'], done:'各観点が TEST.md に含まれている（自分の目で確認した）' },
+  { type:'break', day:2, step:'5-3', sec:'[5] 自動テスト', title:'テスト実装（vitest-pool-workers・fetch モック）', todo:['レビュー済み TEST.md の方針でテスト実装','@cloudflare/vitest-pool-workers を使う','外部サービスへの fetch はすべてモック'], code:`docs/TEST.md の方針に従ってテストを実装して。
+@cloudflare/vitest-pool-workers を使い、外部への fetch はモックして。`, done:'テストファイルが実装された' },
+  { type:'break', day:2, step:'5-4', sec:'[5] 自動テスト', title:'画面テストを実装（TEST.md で決めた1本・Vitest jsdom）', todo:['TEST.md の画面テスト方針どおり1本実装','frontend に vitest・@testing-library/react・jsdom＋test スクリプトを足す','送信で成功表示を確認・API はモック'], code:`docs/TEST.md の画面テスト方針どおり、frontend/ に画面テストを1本実装して。
+Vitest を jsdom 環境で使い @testing-library/react で描画・操作、問い合わせフォーム送信で成功表示を確認。API はモック。frontend に vitest・@testing-library/react・jsdom を足し、package.json に test スクリプトも追加して。`, done:'cd frontend && npm test で画面テスト1本が green' },
+  { type:'break', day:2, step:'5-5', sec:'[5] 自動テスト', title:'npm test グリーン（バック・フロント両方）→ push', todo:['cd backend && npm test がグリーン（API）','cd ../frontend && npm test がグリーン（画面）','dev ブランチに push'], warn:'<strong>1回では両方走らない</strong>——それぞれのディレクトリで実行する。', code:'自動テスト実装の作業をコミットして dev ブランチに push して。', done:'バック・フロントとも npm test がグリーン → [6] デプロイへ' },
+  { type:'break', day:2, step:'6-1', sec:'[6] デプロイ', title:'wrangler.jsonc 確認・修正（binding id・assets）', todo:['D1 の binding id が実リソースと一致しているか','assets.directory がフロントのビルド結果を指しているか','assets.not_found_handling が "single-page-application" か'], code:`wrangler.jsonc を確認して。binding id・assets.directory・
+assets.not_found_handling を点検し、問題があれば修正して。`, done:'wrangler.jsonc が本番デプロイに正しい状態' },
+  { type:'break', day:2, step:'6-2', sec:'[6] デプロイ', title:'リモート DB マイグレーション（db:migrate:remote）', todo:['本番の D1 にテーブルを作る'], code:'npm run db:migrate:remote を実行して本番の D1 にテーブルを作って。', done:'本番 D1 にテーブルができた（忘れると API がテーブル無しで失敗）' },
+  { type:'break', day:2, step:'6-3', sec:'[6] デプロイ', title:'backend/ から npm run deploy', todo:['必ず backend/ に移動','npm run deploy（フロントのビルド→wrangler deploy まで一発）'], code:`cd backend
+npm run deploy`, warn:'frontend/ からデプロイしない（API が消える）。事前に build:front の成功を確認。', done:'本番にデプロイされ URL が発行される 🎉' },
+  { type:'break', day:2, step:'6-4', sec:'[6] デプロイ', title:'本番 URL で動作確認（LP・/mypage・API 1つ）→ dev→main', todo:['本番 URL で LP 表示','/mypage 等のルーティング（404 にならない）','API を1つ動かして確認','dev に push し、必要なら dev を main にマージ'], code:'デプロイ完了の作業をコミットして dev に push して。必要なら dev を main にマージして。', done:'本番で動作確認でき Day 2 完了（必達ライン到達）' },
+
+  { type:'divider', ref:'day3', day:3, label:'DAY 3', title:'育てる（オプション課題＋発表会）', sub:'[7]〜[12] は任意（やらない／1つだけ、も可）・<b>Day 2 が終わった人から随時着手</b>・最後30分は発表会' },
+  { type:'content', day:3, sec:'Day 3', title:'オプション課題の選び方', body:[
+    {p:'難易度: ★☆☆ 易しい / ★★☆ ふつう / ★★★ 難しい（≈ 所要時間）。'},
+    {table:{head:['#','課題','追加すると何が変わるか','難易度'],rows:[
+      ['[7]','メール(Resend)','問い合わせが<strong>実際にメールで届く</strong>','★☆☆'],
+      ['[8]','決済(Stripe)','<strong>本物の決済で買える</strong>ように','★★★'],
+      ['[9]','ID連携(Clerk)','<strong>本物のログイン</strong>（未ログインはサインインへ）','★★☆'],
+      ['[10]','運用保守','監視・ログ・コストが見られる','★☆☆'],
+      ['[11]','セキュリティ','脆弱性を点検して1つ直す','★★★'],
+      ['[12]','テスト設計','<strong>何をテストすべきかを自分で決める</strong>','★★★'],
+    ]}},
+    {note:'依存: [11] は [9] まで終えていると効果大（偽造トークン検証はモック認証では試せない）。[12] は他課題の後だと対象コードが増えて効果大。1つだけなら軽い [7]・[10] から。'},
+  ]},
+  { type:'content', day:3, sec:'[7][8][9] 共通', title:'まず [7][8][9] に共通すること', body:[
+    {h:'秘密情報の置き場所（[4] のおさらい）'},
+    {table:{head:['','置き場所'],rows:[
+      ['ローカル','<code>backend/.dev.vars</code>（.gitignore 済。雛形は .dev.vars.sample）'],
+      ['本番','<code>wrangler secret put &lt;NAME&gt;</code>、または Cloudflare ダッシュボードの環境変数（必ず <strong>Secret タイプ</strong>）'],
+    ]}},
+    {ul:['必要な環境変数は<strong>まず AI に聞く</strong>（「.dev.vars.sample に追記して」）','<code>.dev.vars</code> を書き換えたら <code>npm run dev</code> を<strong>再起動</strong>','SDK（Resend/Stripe/@clerk/*）は<strong>AI が入れてくれる</strong>','ログインは基本 <strong>Google SSO</strong>']},
+    {imgrow:[{img:'img/CloudflareAddSecret1.png',cap:'① Settings → Variables and secrets →「+ Add」'},{img:'img/CloudflareAddSecret2.png',cap:'② Type は必ず Secret を選ぶ'}]},
+  ]},
+  { type:'content', day:3, sec:'[7][8][9] 共通', title:'共通の流れ（どの課題も同じ）', body:[
+    {ol:['外部サービスで API キー（必要なら ID）を取得','<code>.dev.vars</code> に入れて<strong>ローカルで動かす</strong>','ローカル OK なら本番にシークレット投入してデプロイ']},
+    {code:`wrangler secret put <NAME>   # 本番へシークレット投入（課題ごとに必要な分だけ）
+npm run deploy               # ビルド → デプロイ`},
+    {note:'オプションは必須ではない。興味のあるものから（やらない／1つだけ、も可）。Day 2 が未了ならその続きを優先しても可。'},
+  ]},
+
+  { type:'divider', ref:'s7', day:3, kicker:'[7] ★☆☆', title:'メール機能の実装（Resend）', sub:'問い合わせ通知／ライセンス送付メールを実装し自分宛に届く' },
+  { type:'content', day:3, sec:'[7] メール(Resend)', title:'[7] 準備と送信ドメイン', body:[
+    {p:'<strong>お題:</strong> 問い合わせ通知／ライセンスキー送付メール。<strong>学び:</strong> 外部 API 連携の基本形・Secrets 管理。'},
+    {ol:['resend.com/login で <strong>Google SSO ログイン</strong>','<strong>API keys → Create API Key</strong>（権限 Sending access・Sending domain は <strong>All domains</strong>）','発行した <strong>API キーを手元にコピー</strong>']},
+    {imgrow:[{img:'img/ResendCreateAPIKEY1.png',cap:'API keys →「Create API key」'},{img:'img/ResendCreateAPIKEY2.png',cap:'Name を入れて Add'}]},
+    {warn:'<strong>送信ドメイン:</strong> 動作確認は Resend のテスト用 From <code>onboarding@resend.dev</code> を使う。ただし<strong>宛先は Resend に登録したアカウントのアドレス1つだけ</strong>（それ以外はエラー）。独自ドメインは公開後 DNS 検証が要るので任意。'},
+  ]},
+  { type:'content', day:3, sec:'[7] メール(Resend)', title:'[7] 実装〜確認と完了の定義', body:[
+    {ul:['From/To も含め AI に相談して実装。「要る環境変数を <code>.dev.vars.sample</code> に追記して」と依頼','確定した変数名で <code>.dev.vars</code> にキーを入れ（例 <code>RESEND_API_KEY=...</code>）、<code>npm run dev</code> 再起動→<strong>ローカルで往復</strong>','Resend の <strong>Logs で Status 確認</strong>。<strong>200 以外はエラー本文をそのまま AI に渡して直す</strong>']},
+    {done:['自分宛にメールが届けば完了','（余裕）連投対策まで実装','ローカル OK 後、<code>wrangler secret put</code> で本番投入→<code>npm run deploy</code>']},
+    {code:'メール機能実装の作業をコミットして dev ブランチに push して。'},
+  ]},
+  { type:'break', day:3, step:'7-1', sec:'[7] メール(Resend)', title:'Resend ログイン・API キー作成・コピー', todo:['resend.com/login で Google SSO','API keys → Create API Key（Sending access・All domains）','発行された API キーを手元にコピー'], done:'Resend の API キーが手元にある' },
+  { type:'break', day:3, step:'7-2', sec:'[7] メール(Resend)', title:'実装＋.dev.vars.sample 追記、.dev.vars にキー投入、ローカル往復（onboarding@resend.dev）', todo:['From/To を AI に相談して実装','「要る環境変数を .dev.vars.sample に追記して」と依頼','.dev.vars にキー投入（例 RESEND_API_KEY=...）→ npm run dev 再起動','From は onboarding@resend.dev、宛先は Resend 登録アドレスでローカル送信'], done:'ローカルでメール送信の往復ができた' },
+  { type:'break', day:3, step:'7-3', sec:'[7] メール(Resend)', title:'Resend Logs で Status 確認（200以外はエラー本文を AI へ）', todo:['Resend ダッシュボードの Logs で Status を確認','200 以外なら<strong>エラー本文をそのまま AI に渡して</strong>直す'], done:'Status 200 で自分宛にメールが届く' },
+  { type:'break', day:3, step:'7-4', sec:'[7] メール(Resend)', title:'本番シークレット投入＋deploy → push', todo:['wrangler secret put RESEND_API_KEY（本番）','npm run deploy','dev ブランチに push'], code:'メール機能実装の作業をコミットして dev ブランチに push して。', done:'本番でもメール機能が動き push 済み' },
+
+  { type:'divider', ref:'s8', day:3, kicker:'[8] ★★★', title:'決済機能の実装（Stripe）', sub:'Checkout → Webhook でライセンス自動発行（5フェーズ）' },
+  { type:'content', day:3, sec:'[8] 決済(Stripe)', title:'[8] お題と5フェーズ', body:[
+    {p:'<strong>お題:</strong> プラン購入（Stripe Checkout）→ Webhook でライセンス自動発行。<strong>実装ファイル:</strong> <code>backend/src/stripe.ts</code> / <code>license.ts</code>。<strong>学び:</strong> 二重発行防止・署名検証。'},
+    {ol:['① アカウントとキー準備','② プラン（商品）2つ作成','③ ローカルで Webhook 検証','④ 本番 Webhook 設定','⑤ 戻り先とマイページ表示（つなぎ込み）']},
+    {img:'img/stripe_flow.svg'},
+    {note:'デモ（玄米茶）: https://testai-payment.ha-toge.workers.dev/ — 「購入する」→Checkout（テストカード 4242…）→マイページにライセンス表示（テストモード）。'},
+  ]},
+  { type:'content', day:3, sec:'[8] 決済(Stripe)', title:'[8] ① アカウント準備 ／ ② プラン作成', body:[
+    {h:'① アカウントとキー'},
+    {ul:['dashboard.stripe.com/login で <strong>Google SSO</strong>。<strong>サンドボックス（テストモード）</strong>で終始','「開発者 > API キー」→ <strong>シークレットキー（<code>sk_test_...</code>）</strong>を <code>.dev.vars</code> に','ターミナルで <code>stripe login</code>（Stripe CLI を認証）']},
+    {h:'② プラン（商品）'},
+    {ul:['商品カタログ → ＋商品を作成で<strong>月額・年額の2つの継続課金プラン</strong>','各プランの <strong>Price ID（<code>price_...</code>）を控え</strong> <code>.dev.vars</code> に（例 PRICE_MONTHLY / PRICE_YEARLY）','LP の料金プランと Stripe の商品は<strong>数・内容を一致</strong>させる']},
+    {code:'Checkout セッションを作成する API（stripe.ts）とライセンス発行ロジック（license.ts）を実装して。'},
+    {imgrow:[{img:'img/StripeCreateItem2.png',cap:'商品を追加（継続・金額・請求期間）'},{img:'img/StripePrice2.png',cap:'ワークベンチで Price ID（price_...）を確認'}]},
+  ]},
+  { type:'content', day:3, sec:'[8] 決済(Stripe)', title:'[8] ③ ローカル Webhook ／ ④ 本番 Webhook', body:[
+    {h:'③ ローカルで Webhook 検証'},
+    {p:'ローカルには Stripe から直接届かない。ターミナル2つ：<strong>バック（npm run dev）を起動したまま</strong>別で <code>stripe listen</code>。'},
+    {code:'stripe listen --forward-to localhost:<バックのポート>/webhook/stripe'},
+    {ul:['listen 開始時の <strong>署名シークレット（<code>whsec_...</code>）</strong>を <code>.dev.vars</code> に→バック再起動','<strong>テストカード <code>4242 4242 4242 4242</code></strong>（期限=未来の任意日／CVC=任意3桁）で購入']},
+    {h:'④ 本番（デプロイ後）Webhook'},
+    {ul:['デプロイ前に Secret key・Price ID を本番にも設定 → [6] でデプロイ','Stripe で「Webhook を作成」→ <code>checkout.session.completed</code> は必須','エンドポイント URL に <code>https://&lt;name&gt;.workers.dev/webhook/stripe</code>','表示された<strong>本番用署名シークレット</strong>を Cloudflare に（Secret タイプ）→本番決済確認']},
+    {imgrow:[{img:'img/StripeWebhookCreating1.png',cap:'イベント選択（checkout.session.completed 必須）'},{img:'img/StripeWebhookCreating2.png',cap:'エンドポイント URL を入力'}]},
+  ]},
+  { type:'content', day:3, sec:'[8] 決済(Stripe)', title:'[8] ⑤ つなぎ込み・ハマりどころ・完了', body:[
+    {ul:['成功時は <code>success_url</code> を Day 2 の <code>/success</code> に（「購入後 /success に戻して」）','<strong>紐付け:</strong> ライセンスは購入者の email に紐づく。[9] をやらない場合、モック認証の email（<code>x-user-email</code>）と<strong>購入時 email を一致</strong>させる']},
+    {warn:'⚠️ 署名シークレットは<strong>ローカル(③)と本番(④)で別物</strong>。署名検証は<strong>生のリクエストボディ</strong>で（AI に点検させる）。<strong>二重発行防止</strong>（処理済みイベント ID を記録）。email 不一致で「マイページに出ない」に注意。'},
+    {done:['テストカードで購入 → <strong>マイページにライセンス表示</strong>','（余裕）二重発行防止まで確認','ローカル OK 後 <code>wrangler secret put</code>→<code>npm run deploy</code>']},
+    {code:'決済機能実装の作業をコミットして dev ブランチに push して。'},
+  ]},
+  { type:'break', day:3, step:'8-1', sec:'[8] 決済(Stripe)', title:'①アカウント/キー準備（SSO・sk_test_・stripe login）', todo:['Stripe に Google SSO ログイン（サンドボックス/テストモード）','「開発者 > API キー」→ シークレットキー sk_test_... を .dev.vars に','ターミナルで stripe login（Stripe CLI 認証）'], done:'sk_test_ が .dev.vars にあり stripe login 済み' },
+  { type:'break', day:3, step:'8-2', sec:'[8] 決済(Stripe)', title:'②プラン2つ作成・Price ID 控え→.dev.vars、stripe.ts/license.ts 実装', todo:['月額・年額の継続課金プランを2つ作成','各プランの Price ID（price_...）を控えて .dev.vars に','stripe.ts / license.ts を実装させる'], warn:'LP の料金プランと Stripe の商品は<strong>数・内容を一致</strong>させる。', done:'2つの Price ID が .dev.vars にあり実装が始まった' },
+  { type:'break', day:3, step:'8-3', sec:'[8] 決済(Stripe)', title:'③ローカル Webhook 検証（stripe listen・whsec_・テストカード4242）', todo:['stripe listen（バックは起動したまま・別ターミナル）','whsec_... を .dev.vars に→バック再起動','テストカード 4242 4242 4242 4242 で購入'], code:'stripe listen --forward-to localhost:<バックのポート>/webhook/stripe', done:'ローカルで購入→Webhook→ライセンス発行が通る' },
+  { type:'break', day:3, step:'8-4', sec:'[8] 決済(Stripe)', title:'④デプロイ→本番 Webhook 作成（checkout.session.completed・エンドポイント URL・本番 whsec 投入）→本番決済確認', todo:['Secret key・Price ID を本番にも設定→デプロイ','Stripe で「Webhook を作成」・checkout.session.completed は必須','エンドポイント URL に https://&lt;name&gt;.workers.dev/webhook/stripe','本番用 whsec を Cloudflare に（Secret）→本番で決済確認'], warn:'署名シークレットは<strong>ローカル(③)と本番(④)で別物</strong>。混同しない。', done:'本番でテスト決済が通る' },
+  { type:'break', day:3, step:'8-5', sec:'[8] 決済(Stripe)', title:'⑤success_url・マイページ紐付け（email 一致）', todo:['購入後 /success に戻す','[9] をやらない場合、モック認証の email（x-user-email）と購入時 email を一致させる'], warn:'email がズレると「購入したのにマイページに出ない（別人扱い）」。', done:'購入 → マイページにライセンスが表示される' },
+  { type:'break', day:3, step:'8-6', sec:'[8] 決済(Stripe)', title:'二重発行防止/署名検証を確認 → push', todo:['署名検証が生のリクエストボディで実装されているか AI に点検させる','二重発行防止（処理済みイベント ID を記録）を確認','dev ブランチに push'], code:'決済機能実装の作業をコミットして dev ブランチに push して。', done:'二重発行防止・署名検証を確認し push 済み' },
+
+  { type:'divider', ref:'s9', day:3, kicker:'[9] ★★☆', title:'ID 連携機能の実装（Clerk）', sub:'ログイン必須のマイページ（未ログイン→サインインへ）' },
+  { type:'content', day:3, sec:'[9] ID連携(Clerk)', title:'[9] お題とサービス側の準備', body:[
+    {p:'<strong>お題:</strong> ログイン必須のマイページ。<strong>使うもの:</strong> <code>@clerk/clerk-react</code>（フロント）＋ Hono で Clerk トークン検証。<strong>学び:</strong> JWT 検証を<strong>バックでやる理由</strong>（フロントの見た目だけの保護は無意味）。'},
+    {ol:['dashboard.clerk.com で <strong>Google SSO</strong>','<strong>アプリケーション作成</strong>: Email・Phone・Username をオフ、<strong>Google をオン</strong>（プレビューが「Continue with Google」だけに）','<strong>Configure → API keys</strong> から2つのキーを手元にコピー']},
+    {img:'img/clerk_auth_flow.svg'},
+    {note:'デモ（玄米茶）: https://testai-login.ha-toge.workers.dev/ — 未ログインで /mypage はサインインへ→Google ログイン→表示。'},
+  ]},
+  { type:'content', day:3, sec:'[9] ID連携(Clerk)', title:'[9] キーの置き場所（間違えやすい）と実装', body:[
+    {table:{head:['キー','置き場所','性質'],rows:[
+      ['Publishable key','<strong>フロント</strong> frontend/.env（<code>VITE_CLERK_PUBLISHABLE_KEY</code>）＋<strong>バック</strong> .dev.vars（<code>CLERK_PUBLISHABLE_KEY</code>）','公開可'],
+      ['Secret key','<strong>バック</strong> .dev.vars ／本番は Cloudflare（Secret）or <code>wrangler secret put CLERK_SECRET_KEY</code>','秘密'],
+    ]}},
+    {ul:['パッケージ（フロント <code>@clerk/clerk-react</code>／バック <code>@hono/clerk-auth</code>）は AI が導入','フロントは <code>&lt;ClerkProvider&gt;</code> で包み <strong>未ログインは /mypage に入れない</strong>','<strong>JWT 検証は <code>@hono/clerk-auth</code> 推奨</strong>。バックで<strong>必ず検証</strong>してから保護 API を返す','Day 2 のモック認証（<code>x-user-email</code>）を Clerk トークン検証に差し替えるのがゴール']},
+  ]},
+  { type:'content', day:3, sec:'[9] ID連携(Clerk)', title:'[9] ハマりどころと完了の定義', body:[
+    {warn:'⚠️ 本番でサインインが弾かれる時は、Clerk ダッシュボードに<strong>公開ドメイン（<code>https://&lt;name&gt;.workers.dev</code>）を許可オリジン登録</strong>。'},
+    {done:['ローカル: 未ログインで /mypage → サインイン画面に誘導','ローカル: 未ログインで <code>GET /api/me</code> が <strong>401</strong>／サインイン後は表示','本番: シークレット投入（Publishable は frontend/.env からビルド時埋め込み）→ <code>npm run deploy</code>','本番: サインイン → /mypage 表示']},
+    {code:'Clerk 認証実装の作業をコミットして dev ブランチに push して。'},
+  ]},
+  { type:'break', day:3, step:'9-1', sec:'[9] ID連携(Clerk)', title:'Clerk アプリ作成（Google SSO のみ）・2キーをコピー', todo:['dashboard.clerk.com で Google SSO','アプリ作成: Email/Phone/Username オフ・Google オン','Configure → API keys の2つのキーを手元にコピー'], done:'Publishable / Secret の2キーが手元にある' },
+  { type:'break', day:3, step:'9-2', sec:'[9] ID連携(Clerk)', title:'パッケージ導入＋キーを env にセット（置き場所を分ける）', todo:['@clerk/clerk-react（フロント）・@hono/clerk-auth（バック）を導入','Publishable → frontend/.env ＋ backend/.dev.vars の両方','Secret → backend/.dev.vars のみ','npm run dev 再起動'], warn:'置き場所の取り違えが一番のハマりどころ。', done:'キーが正しい場所にセットされた' },
+  { type:'break', day:3, step:'9-3', sec:'[9] ID連携(Clerk)', title:'フロント：ClerkProvider で包む・/mypage ガード', todo:['アプリを &lt;ClerkProvider&gt; で包む','サインイン UI を置く','未ログインは /mypage に入れないようガード'], done:'フロントでログイン UI とガードが動く' },
+  { type:'break', day:3, step:'9-4', sec:'[9] ID連携(Clerk)', title:'バック：モック認証を Clerk トークン検証に差し替え（@hono/clerk-auth）', todo:['@hono/clerk-auth で JWT を検証','必ず検証してから保護 API を返す','Day 2 の x-user-email モック認証を置き換える'], code:'Day 2 のモック認証を Clerk トークン検証に差し替えて。', done:'バックが Clerk トークンを検証している' },
+  { type:'break', day:3, step:'9-5', sec:'[9] ID連携(Clerk)', title:'ローカル確認（未ログイン /mypage 誘導・/api/me 401）', todo:['未ログインで /mypage → サインインに誘導されるか','未ログインで GET /api/me が 401 になるか'], done:'ローカルで認証境界が効いている' },
+  { type:'break', day:3, step:'9-6', sec:'[9] ID連携(Clerk)', title:'本番シークレット投入・deploy・本番確認（許可オリジン登録）→ push', todo:['Secret key を wrangler secret put で本番投入','npm run deploy','本番でサインイン→/mypage 表示（弾かれたら許可オリジン登録）','dev に push'], code:'Clerk 認証実装の作業をコミットして dev ブランチに push して。', done:'本番でログインが動き push 済み' },
+
+  { type:'divider', ref:'s10', day:3, kicker:'[10] ★☆☆', title:'運用保守', sub:'公開後の運用を Claude Code のスキルで仕組み化する' },
+  { type:'content', day:3, sec:'[10] 運用保守', title:'[10] Cloudflare API トークンを用意', body:[
+    {p:'<strong>お題:</strong> 監視・ログ・障害特定・対策・コスト。ログ集計やコスト試算には <strong>API トークン</strong>が要る（<code>wrangler</code> だけだと制限あり）。'},
+    {ol:['ダッシュボード右上アイコン → <strong>Profile</strong>','<strong>API Tokens → Create Token</strong> → 「Create Custom Token」','Permissions を <strong>Account / Account Analytics / Read</strong> にして作成','トークンを <strong><code>backend/.cf-ops.token</code></strong> に保存（例 <code>CLOUDFLARE_API_TOKEN=...</code>）。<code>.gitignore</code> に追加']},
+    {imgrow:[{img:'img/CloudflareGetAPIKEY2.png',cap:'API Tokens →「Create Token」'},{img:'img/CloudflareGetAPIKEY4.png',cap:'Permissions は Account Analytics / Read'}]},
+    {warn:'⚠️ <code>.dev.vars</code> は Day 1 の deny で Read 拒否 → スキルが読めない。運用トークンだけ<strong>別ファイル <code>.cf-ops.token</code></strong>に分離（Analytics 読み取り専用の低権限）。本番 secret 不要。トークン無しでも <code>wrangler tail</code> は見られる。'},
+  ]},
+  { type:'content', day:3, sec:'[10] 運用保守', title:'[10] 運用チェックをスキルにする', body:[
+    {p:'<code>.claude/skills/&lt;名前&gt;/</code> に置くと「運用チェックして」で呼べる。作るスキルは5つ＋統合 <code>ops-check</code>。'},
+    {table:{head:['#','スキル','やること'],rows:[
+      ['1','infra-status','依存サービスの公開ステータス確認'],
+      ['2','cf-log-check','Cloudflare のログ/エラー取得'],
+      ['3','fault-localize','ログ・直近デプロイをソースと突き合わせ原因を絞る'],
+      ['4','remediate','恒久対策・暫定ワークアラウンドを出す'],
+      ['5','cost-monitor','requests / CPU 時間からコスト試算'],
+    ]}},
+    {code:`.claude/skills/ 以下に本番運用チェック用のスキルを5つ作って。
+1. infra-status  2. cf-log-check  3. fault-localize  4. remediate  5. cost-monitor
+共通: Cloudflare API トークンは backend/.cf-ops.token に置いてある（.dev.vars は読まない）。
+使っていないサービスは対象から外して。5つを順に実行する統合スキル ops-check も作って。
+「運用チェックして」で ops-check が動くようにして。`},
+    {done:['5つのうち<strong>最低1つ</strong>が動作する（「運用チェックして」で応答）']},
+  ]},
+  { type:'break', day:3, step:'10-1', sec:'[10] 運用保守', title:'Cloudflare API トークン作成（Analytics/Read）→ .cf-ops.token 保存', todo:['Profile → API Tokens → Create Custom Token','Permissions: Account / Account Analytics / Read','backend/.cf-ops.token に保存（CLOUDFLARE_API_TOKEN=...）'], warn:'.dev.vars は deny で読めないので<strong>別ファイル</strong>に分ける（.gitignore に .cf-ops.token を追加しておく）。', done:'低権限トークンが .cf-ops.token にある' },
+  { type:'break', day:3, step:'10-2', sec:'[10] 運用保守', title:'運用スキルを作らせる（infra-status/cf-log-check/fault-localize/remediate/cost-monitor＋ops-check）', todo:['infra-status / cf-log-check / fault-localize / remediate / cost-monitor を作らせる','統合スキル ops-check も作る'], done:'.claude/skills/ に運用スキルができた' },
+  { type:'break', day:3, step:'10-3', sec:'[10] 運用保守', title:'「運用チェックして」で最低1つ動作確認 → push', todo:['「運用チェックして」で ops-check を動かす','最低1つのスキルが応答することを確認','dev に push'], code:'運用保守実装の作業をコミットして dev ブランチに push して。', done:'最低1つの運用スキルが動作し push 済み' },
+
+  { type:'divider', ref:'s11', day:3, kicker:'[11] ★★★', title:'セキュリティ', sub:'自分のアプリを点検し最低1つ直す（Claude Code ＋ SonarCloud）' },
+  { type:'content', day:3, sec:'[11] セキュリティ', title:'[11] 見る観点', body:[
+    {ul:['<strong>認証境界</strong>: 未認証／偽造 JWT で <strong>401</strong> になるか','<strong>IDOR</strong>: 他人の email を body に入れても無視されるか（他人のデータを引けないか）','<strong>機密のマスク</strong>: レスポンスにフルのライセンスキーが含まれていないか']},
+    {note:'参考: [5] の TEST.md の認証境界テストを回帰テストの土台にする。学び=「AI が書いたコード」を自分で点検できるようになる。'},
+  ]},
+  { type:'content', day:3, sec:'[11] セキュリティ', title:'[11] 2通りの点検を併用', body:[
+    {ul:['<strong>Claude Code</strong>: <code>/security-review</code> で差分点検・<code>security-guidance</code> は自動点検','<strong>SonarCloud</strong>（静的解析 SaaS）: push のたび脆弱性・バグ・品質を自動検出']},
+    {warn:'⚠️ GitHub App 連携は必ず <strong>「Only select repositories」</strong>を選ぶ。「All repositories」だとプライベートリポジトリのコードが外部送信される恐れ。'},
+    {ol:['点検対象を <strong><code>main</code> ブランチに push</strong>（無料版は main / PR を解析）','sonarcloud.io で <strong>GitHub SSO</strong>','右上 ＋ → <strong>Analyze new project</strong>','対象リポジトリを指定（Only select repositories で絞る）','解析完了を待ち、出た指摘を <strong>AI と一緒にレビュー</strong>']},
+    {imgrow:[{img:'img/SonarQubeCreteNewProject2.png',cap:'対象リポジトリだけにチェックして Set Up'},{img:'img/SonarCloudResult.png',cap:'解析結果（Quality Gate / Security など）'}]},
+  ]},
+  { type:'content', day:3, sec:'[11] セキュリティ', title:'[11] ハマりどころと完了の定義', body:[
+    {ul:['指摘には<strong>誤検知</strong>もある。鵜呑みにせず AI と判断','解析単位を分けるため<strong>専用リポジトリ</strong>推奨','All repositories＋自動取り込みが有効だと<strong>意図しないリポジトリまで解析</strong>される（GitHub の Installed App で Only select に絞る）']},
+    {done:['見つけた問題を <strong>1つ以上修正</strong>できれば完了']},
+    {code:'セキュリティ修正の作業をコミットして main ブランチに push して。'},
+  ]},
+  { type:'break', day:3, step:'11-1', sec:'[11] セキュリティ', title:'観点確認（認証境界・IDOR・機密マスク）', todo:['認証境界: 未認証/偽造 JWT で 401 か','IDOR: 他人の email を body に入れても無視されるか','機密マスク: レスポンスにフルのライセンスキーが無いか'], done:'3観点で自分のアプリを見る準備ができた' },
+  { type:'break', day:3, step:'11-2', sec:'[11] セキュリティ', title:'/security-review で点検', todo:['/security-review で差分・コードを点検'], code:'/security-review', done:'Claude Code 側の点検結果が出た' },
+  { type:'break', day:3, step:'11-3', sec:'[11] セキュリティ', title:'SonarCloud 設定（main push・Only select repositories・解析）', todo:['対象を main ブランチに push','sonarcloud.io に GitHub SSO','＋ → Analyze new project','GitHub App は <strong>Only select repositories</strong> で対象を絞る','解析完了を待つ'], warn:'All repositories は選ばない（プライベートコード外部送信の恐れ）。', done:'SonarCloud の解析結果が出た' },
+  { type:'break', day:3, step:'11-4', sec:'[11] セキュリティ', title:'指摘を AI とレビュー→最低1つ修正（余裕あれば回帰テスト）→ push', todo:['指摘の意味・直し方を AI に説明させる（誤検知は判断）','最低1つ修正','（余裕）回帰テストを追加','main ブランチに push'], code:'セキュリティ修正の作業をコミットして main ブランチに push して。', done:'問題を1つ以上修正し push 済み' },
+
+  { type:'divider', ref:'s12', day:3, kicker:'[12] ★★★', title:'テスト設計（自分で決める）', sub:'何をテストすべきかを自分の判断で設計する' },
+  { type:'content', day:3, sec:'[12] テスト設計', title:'[12] お題と一番の罠', body:[
+    {p:'<strong>お題:</strong>「間違うと一番痛い」機能を1つ選び、正しい振る舞いを<strong>自分で仕様化</strong>して、要るテストを<strong>自分で決めて</strong>実装する。'},
+    {key:'[5] は「与えられた4観点」を通す最低ライン。[12] は観点を渡さない — <strong>何をテストすべきかを自分で決める</strong>のがゴール（本数ではなく判断の練習）。'},
+    {warn:'⚠️ 一番の罠: AI に丸投げすると AI は<strong>実装を読んで「今のコードがやっていること」をテスト化</strong>＝<strong>バグごと正解として固定</strong>。だから機能テストは、まず<strong>意図した仕様</strong>（自分の言葉／SCREEN_SPEC.md）から導き、実装と突き合わせる。'},
+  ]},
+  { type:'content', day:3, sec:'[12] テスト設計', title:'[12] 2つのレンズと人間／AI の分担', body:[
+    {ul:['<strong>機能レンズ</strong>（仕様起点・体系的）= 何を保証すべきかを仕様から積み上げ、入力・状態ごとに期待結果を決める','<strong>リスクレンズ</strong>（被害起点）=「壊れたら困る」でどれを書くか優先順位']},
+    {table:{head:['作業','人間','AI'],rows:[
+      ['意図した仕様を言葉にする','◎ 人間のみ','✕ 実装から推測させない'],
+      ['期待動作表の行出し','○ 取捨','◎ 大量列挙'],
+      ['各行の期待結果を確定','◎ 意図に照らす','△ 提案のみ'],
+      ['どのケースを書くか絞る','◎「壊れたら困る」','△ 影響度の観点'],
+      ['実装・検証・カバレッジ','○ 指示とレビュー','◎ 実装・実行・破壊'],
+    ]}},
+    {key:'背骨: <strong>人間＝意図と判断</strong>／<strong>AI＝量・機構・批判</strong>。'},
+  ]},
+  { type:'content', day:3, sec:'[12] テスト設計', title:'[12] 流れ ①②③（仕様 → 表）', body:[
+    {ol:['<strong>（5分）対象を1機能に絞り名前をつける</strong>（例「マイページのライセンス表示」）。全機能はやらない','<strong>（15分）あるべき動作を自分の言葉で書く</strong>（3問: 誰の何のため／使い終わって何が真であるべき／絶対起きてはいけないこと）','<strong>あるべき動作を AI に期待動作表へ展開させ docs/TEST.md へ</strong>']},
+    {code:`次は私が書いた「<機能名> のあるべき動作」です:
+（↑で書いた3〜5行を貼る）
+
+これを期待動作表に展開して docs/TEST.md に追記して。
+表は「入力・状態 | 期待結果 | 書く」の3列。
+入力の同値クラス（正常・不正・境界・空・重複）と状態・遷移で行を増やして。
+ただし「期待結果」と「書く」は空欄のまま——そこは私が埋める。
+実装コードは読まず、上の仕様だけを根拠にすること。`},
+    {warn:'⚠️ ここを AI に丸投げしない。頼むなら「backend のコードは読まず SCREEN_SPEC.md と私の説明だけを根拠に」と縛る。'},
+  ]},
+  { type:'content', day:3, sec:'[12] テスト設計', title:'[12] 流れ ④⑤⑥（絞る → 実装 → 破壊）', body:[
+    {ol:['<strong>（10分）書くケースを絞る</strong> — TEST.md の「書く」列に、今回書く行だけ ◎（リスクレンズ）','<strong>（15分）AI にテスト実装させる</strong>（期待値は自分の表の値を使わせる）','<strong>（10分）わざと壊して赤を確認＋敵対的レビュー1往復</strong>']},
+    {code:`① 追加したテストが効いているか、対象の関数のしきい値/条件を1つだけ一時的に壊して
+   該当テストが赤くなることを見せて。確認できたら元に戻して。
+② 私の期待動作表から漏れている振る舞いはある? 書いたテストで不要なものがあれば根拠つきで指摘して。`},
+    {ul:['期待結果は「エラーが出ない」で済ませず<strong>「この値が返る」</strong>まで書く（でないと壊しても赤にならない）','②の指摘は<strong>採否と理由を人間が1行残す</strong>（AI が正しいとは限らない）']},
+  ]},
+  { type:'content', day:3, sec:'[12] テスト設計', title:'[12] 完了の定義（判断の跡で確認）', body:[
+    {done:['1機能の「あるべき動作」を<strong>自分の言葉で書いた</strong>','期待動作表を起こし<strong>各行の期待結果を自分で埋めた</strong>','「書く／書かない」を判断した（◎ がついている）','各テストが表のどの行を守るか言える','「壊すと赤」を確認／<code>npm test</code> が最終的にグリーン']},
+    {code:'テスト設計の作業をコミットして push して。'},
+    {note:'⚠️ これでも「本番の品質担保」には未達。実務では別途 (1) CI で強制実行し赤ならマージ／デプロイを止める、(2) カバレッジ下限をゲートにする（[11] SonarCloud 品質ゲート）が要る。本ワークショップではスコープ外。'},
+  ]},
+  { type:'break', day:3, step:'12-1', sec:'[12] テスト設計', title:'対象を1機能に絞り機能名をつける', todo:['「間違うと一番痛い」機能を1つ選ぶ','短い機能名をつける（例: マイページのライセンス表示）'], done:'テスト対象の1機能と機能名が決まった' },
+  { type:'break', day:3, step:'12-2', sec:'[12] テスト設計', title:'「あるべき動作」を自分の言葉で書く（3問）', todo:['この機能は誰の・何のためか','正常に使い終わったとき何が「真」であるべきか','絶対に起きてはいけないことは何か'], warn:'実装が今どう動くかではなく<strong>作りたかった正しい動き</strong>を書く。AI に丸投げしない。', done:'あるべき動作を3〜5行で自分の言葉で書いた' },
+  { type:'break', day:3, step:'12-3', sec:'[12] テスト設計', title:'AI に期待動作表へ展開→docs/TEST.md、期待結果を自分で埋める', todo:['AI に期待動作表へ展開させ docs/TEST.md へ','「期待結果」列を自分で埋める'], code:`これを期待動作表に展開して docs/TEST.md に追記して。
+実装コードは読まず、上の仕様だけを根拠にすること。`, done:'期待動作表ができ、各行の期待結果を自分で埋めた' },
+  { type:'break', day:3, step:'12-4', sec:'[12] テスト設計', title:'「書く」列に ◎（リスクで絞る）', todo:['「書く」列に、今回書く行だけ ◎ を入れる（リスクで絞る）'], done:'書くケースを ◎ で絞った（リスクレンズ）' },
+  { type:'break', day:3, step:'12-5', sec:'[12] テスト設計', title:'◎の行を AI 実装→npm test グリーン', todo:['◎ の行だけ AI にテスト実装させる','npm test でグリーンを確認'], code:`docs/TEST.md の「書く」列が ◎ の行だけテストを実装して。
+期待値は表の値をそのまま使い、実装コードから推測しないで。`, done:'◎ の行のテストが実装され npm test がグリーン' },
+  { type:'break', day:3, step:'12-6', sec:'[12] テスト設計', title:'わざと壊して赤を確認＋敵対レビュー → push', todo:['わざと壊して該当テストが赤になるのを確認→戻す','敵対レビュー（漏れ・不要を指摘させる）','push'], code:'テスト設計の作業をコミットして push して。', done:'「壊すと赤」を確認し push 済み' },
+
+  { type:'divider', ref:'wrap', day:3, label:'Day 3 最後の30分', title:'ラップアップ・発表会', sub:'1人3分のデモ＋振り返り' },
+  { type:'content', day:3, sec:'ラップアップ', title:'最終発表会と振り返り', body:[
+    {h:'最終発表会（1人3分）'},
+    {ul:['自分の公開 URL のデモ','Day 3 で追加した機能の紹介','「AI への頼み方で一番効いた工夫」を1つ共有']},
+    {h:'振り返り: 効いたコツ'},
+    {ul:['1発で完璧を狙わず会話で直す','やりたいこと・受け入れ条件を先に .md 化してから渡す','秘密情報は AI に渡さない','テストがあるから大胆に拡張できる']},
+    {p:'持ち帰り: 自分の URL で公開された自分の SaaS 🍵'},
+  ]},
+  { type:'content', day:3, sec:'後片付け', title:'後片付け（使わないものは無効化）', body:[
+    {p:'使い続けるものは残し、使わないものは片付ける/無効化する。放置は無料枠圧迫・鍵漏洩リスク。'},
+    {table:{head:['リソース','残す','片付ける'],rows:[
+      ['Worker / D1','公開したままで可（無料枠内）','ダッシュボードで削除'],
+      ['CF API トークン','[10] を続けるなら残す','Revoke＋.cf-ops.token 削除'],
+      ['Stripe(テスト)','放置で害なし','Webhook 削除'],
+      ['Clerk','残すならそのまま','アプリ削除＋frontend/.env の鍵削除'],
+      ['Resend キー','使い続けるなら残す','キーを Revoke'],
+      ['SonarCloud/App','継続解析なら残す','プロジェクト削除＋App 権限解除'],
+    ]}},
+    {note:'原則: 鍵は「消す」より先に「無効化（Revoke）」（消しても発行済みの鍵は生きている）。'},
+  ]},
+
+  { type:'cover', badge:'FIN', title:'おつかれさまでした 🍵', sub:'自分の URL で公開された、自分の SaaS を持ち帰ろう', meta:'資料本編: <b>flow.html</b>　／　このスライド: <b>slides-v2.html</b>' },
+
+];
+
+/* ---------- flow.html との共通キー（章キー） ----------
+   flow.html の見出し id をそのまま章キーとして使う。番号ではなく意味のIDで結ぶので、
+   スライドを増減してもリンクが腐らない。
+   基本は sec から下表で引き、それで決まらないスライドだけ ref:'...' を直接持たせている。 */
+const SEC2REF = {
+  'はじめに'                        : 's0',
+  '認証切り替え'                    : 'auth',
+  'Day 1'                           : 's-env',
+  'Day 1 セキュリティ対策'          : 's06',
+  'Day 1（[1] 着手前）'             : 's0-nav',
+  'Day 1（[2] 着手前）'             : 's0-repo',
+  '[1] Claude Design'               : 's1',
+  'S-1（[1] の生成待ち時間に並行）' : 's2-spec',
+  'S-1（[2] 着手前）'               : 's2-spec',
+  '[2] フロント作成'                : 's2',
+  '[3] フロントデプロイ'            : 's3',
+  'Day 1 クロージング'              : 's3',
+  '[4] バック作成'                  : 's4',
+  '[5] 自動テスト'                  : 's5',
+  '[6] デプロイ'                    : 's6',
+  'Day 3'                           : 'day3',
+  '[7][8][9] 共通'                  : 'common',
+  '[7] メール(Resend)'              : 's7',
+  '[8] 決済(Stripe)'                : 's8',
+  '[9] ID連携(Clerk)'               : 's9',
+  '[10] 運用保守'                   : 's10',
+  '[11] セキュリティ'               : 's11',
+  '[12] テスト設計'                 : 's12',
+  'ラップアップ'                    : 'wrap',
+  '後片付け'                        : 'cleanup',
+};
+function refFor(s){ return s.ref || (s.sec && SEC2REF[s.sec]) || null; }
+// 章キー → そのキーを持つ最初のスライド番号（slides.html#s4 でのジャンプ用）
+const REF_FIRST = {};
+SLIDES.forEach((s,i)=>{ const r=refFor(s); if(r && REF_FIRST[r]===undefined) REF_FIRST[r]=i; });
+
+/* ---------- render helpers ---------- */
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function block(b){
+  if(b.h!=null) return `<h3 class="s-h">${b.h}</h3>`;
+  if(b.p!=null) return `<p class="s-p">${b.p}</p>`;
+  if(b.ul!=null) return `<ul class="s-ul">${b.ul.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+  if(b.ol!=null) return `<ol class="s-ol">${b.ol.map(x=>`<li>${x}</li>`).join('')}</ol>`;
+  if(b.code!=null) return `<pre class="s-code"><code>${esc(b.code)}</code></pre>`;
+  if(b.key!=null) return `<div class="s-key">${b.key}</div>`;
+  if(b.warn!=null) return `<div class="s-warn">${b.warn}</div>`;
+  if(b.note!=null) return `<div class="s-note">${b.note}</div>`;
+  if(b.done!=null) return `<div class="s-done">✅ 完了の定義</div><ul class="s-donelist">${b.done.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+  if(b.img!=null) return `<figure class="s-fig"><img src="${b.img}" alt="">${b.cap?`<figcaption>${b.cap}</figcaption>`:''}</figure>`;
+  if(b.imgrow!=null) return `<div class="s-figrow">${b.imgrow.map(f=>`<figure class="s-fig"><img src="${f.img}" alt="">${f.cap?`<figcaption>${f.cap}</figcaption>`:''}</figure>`).join('')}</div>`;
+  if(b.table!=null){
+    const t=b.table;
+    return `<div class="s-tablewrap"><table class="s-table"><thead><tr>${t.head.map(h=>`<th>${h}</th>`).join('')}</tr></thead>`+
+      `<tbody>${t.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  }
+  return '';
+}
+function dayClass(s){ return 'day'+(s.day!=null?s.day:0); }
+
+function renderSlide(s){
+  if(s.type==='cover'){
+    return `<div class="inner">
+      <span class="badge">${s.badge||'3Days ワークショップ'}</span>
+      <h1>${s.title}</h1>
+      ${s.sub?`<p class="csub">${s.sub}</p>`:''}
+      ${s.meta?`<div class="cmeta">${s.meta}</div>`:''}
+    </div>`;
+  }
+  if(s.type==='divider'){
+    return `<div class="inner">
+      ${s.label?`<div class="dlabel">${s.label}</div>`:''}
+      ${s.kicker?`<div class="dkicker">${s.kicker}</div>`:''}
+      <h1>${s.title}</h1>
+      <div class="drule"></div>
+      ${s.sub?`<div class="dsub">${s.sub}</div>`:''}
+    </div>`;
+  }
+  if(s.type==='break'){
+    return `<div class="inner">
+      <div class="bhero">
+      <div class="bhead"><span class="bicon">✋</span><span class="btag">作業タイム</span>
+        <span class="bstep">${s.step}</span></div>
+      ${s.sec?`<div class="bsec">${s.sec}</div>`:''}
+      <h1>${s.title}</h1>
+      </div>
+      <div class="card">
+        <ul class="todo">${(s.todo||[]).map(t=>`<li><span class="chk"></span><span class="txt">${t}</span></li>`).join('')}</ul>
+        ${s.code?`<pre class="bcode"><code>${esc(s.code)}</code></pre>`:''}
+        ${s.warn?`<div class="bwarn">${s.warn}</div>`:''}
+        ${s.done?`<div class="bdone">✅ ${s.done}</div>`:''}
+      </div>
+      <div class="bnext">できたら次へ　→</div>
+    </div>`;
+  }
+  // content
+  return `<div class="inner">
+    ${s.sec?`<div class="kicker">${s.sec}</div>`:''}
+    <h2 class="s-title">${s.title}</h2>
+    <div class="sbody">${(s.body||[]).map(block).join('')}</div>
+  </div>`;
+}
+
+/* ---------- deck engine ---------- */
+const deck=document.getElementById('deck');
+let els=[];
+SLIDES.forEach((s,i)=>{
+  const d=document.createElement('section');
+  d.className='slide '+s.type+' '+dayClass(s);
+  d.innerHTML=renderSlide(s);
+  deck.appendChild(d);
+  els.push(d);
+});
+// clickable checklist on break slides
+const lightbox=document.getElementById('lightbox'), lbImg=lightbox.querySelector('img');
+lightbox.addEventListener('click',()=>lightbox.classList.remove('show'));
+deck.addEventListener('click',e=>{
+  const li=e.target.closest('.break .todo li');
+  if(li){ li.classList.toggle('done'); return; }
+  const im=e.target.closest('.s-fig img');
+  if(im){ lbImg.src=im.getAttribute('src'); lightbox.classList.add('show'); }
+});
+// 画像は遅れて高さが決まるので、読み込み完了時に表示中スライドを再フィット
+deck.querySelectorAll('img').forEach(im=>im.addEventListener('load',()=>{
+  if(els[cur]&&els[cur].contains(im)) fitSlide(els[cur],SLIDES[cur]);
+}));
+
+// マウスホイールでスライド送り。
+// スクロール余地のあるスライドは端まで見てから送る／慣性で連続送りしないようクールダウン
+let wheelAcc=0, wheelLock=0, wheelLast=0;
+window.addEventListener('wheel',e=>{
+  if(grid.classList.contains('show')||lightbox.classList.contains('show')) return;
+  const el=els[cur];
+  if(el.scrollHeight>el.clientHeight+1){
+    const atTop=el.scrollTop<=0;
+    const atBottom=el.scrollTop+el.clientHeight>=el.scrollHeight-1;
+    if((e.deltaY>0&&!atBottom)||(e.deltaY<0&&!atTop)) return; // スライド内スクロールに任せる
+  }
+  e.preventDefault();
+  const now=Date.now();
+  if(now<wheelLock) return;
+  if(now-wheelLast>300) wheelAcc=0; // 間が空いたら新しいジェスチャとして数え直す
+  wheelLast=now;
+  wheelAcc+=e.deltaY*(e.deltaMode===1?33:e.deltaMode===2?300:1);
+  if(Math.abs(wheelAcc)>=15){
+    wheelLock=now+500;
+    wheelAcc>0?next():prev();
+    wheelAcc=0;
+  }
+},{passive:false});
+
+let cur=0;
+const bar=document.getElementById('bar');
+const hlabel=document.getElementById('hlabel');
+const hcount=document.getElementById('hcount');
+const hflow=document.getElementById('hflow');
+function labelFor(s){
+  if(s.type==='cover') return 'はじめに';
+  if(s.type==='divider') return (s.label||'')+(s.kicker?' '+s.kicker:'');
+  return s.sec||'';
+}
+// 縦に収まらないとき: ①2カラム化 → ②文字を段階縮小（最後の保険はスクロール）
+function fitSlide(el,s){
+  const inner=el.querySelector('.inner');
+  if(!inner) return;
+  inner.classList.remove('cols2'); inner.style.fontSize='';
+  const fits=()=>el.scrollHeight<=el.clientHeight+1;
+  if(fits()) return;
+  if(s.type==='content'||s.type==='break'){ inner.classList.add('cols2'); if(fits()) return; }
+  for(let z=95;z>=60;z-=5){ inner.style.fontSize=z+'%'; if(fits()) return; }
+}
+window.addEventListener('resize',()=>fitSlide(els[cur],SLIDES[cur]));
+
+function show(i,push){
+  i=Math.max(0,Math.min(SLIDES.length-1,i));
+  els[cur].classList.remove('current');
+  cur=i;
+  els[cur].classList.add('current');
+  els[cur].scrollTop=0;
+  fitSlide(els[cur],SLIDES[cur]);
+  bar.style.width=((i+1)/SLIDES.length*100)+'%';
+  const s=SLIDES[i];
+  bar.style.background='var(--d'+(s.day!=null?s.day:0)+', var(--accent))';
+  hlabel.textContent=labelFor(s);
+  hlabel.style.color='var(--d'+(s.day!=null?s.day:0)+'-ink, var(--muted))';
+  hcount.textContent=(i+1)+' / '+SLIDES.length;
+  const ref=refFor(s);
+  hflow.classList.toggle('hide',!ref);
+  if(ref) hflow.href='flow.html#'+ref;
+  if(push!==false) history.replaceState(null,'','#'+(i+1));
+  updateGridCur();
+}
+function next(){ show(cur+1); }
+function prev(){ show(cur-1); }
+
+/* overview grid */
+const grid=document.getElementById('grid'), gwrap=document.getElementById('gwrap');
+SLIDES.forEach((s,i)=>{
+  const c=document.createElement('div');
+  c.className='gcard'; c.dataset.i=i;
+  const ttl = s.title || (s.type==='cover'?'表紙':'');
+  const badge = s.type==='break'?('作業 '+s.step): (s.sec||s.label||s.type);
+  c.innerHTML=`<span class="gnum">#${i+1}</span><span class="gtype ${s.type}">${s.type==='break'?'BREAK':s.type.toUpperCase()}</span><span class="gttl">${badge?`<b>${esc(badge)}</b><br>`:''}${esc(ttl)}</span>`;
+  c.addEventListener('click',()=>{ show(i); closeGrid(); });
+  gwrap.appendChild(c);
+});
+function updateGridCur(){ [...gwrap.children].forEach((c,i)=>c.classList.toggle('cur',i===cur)); }
+function openGrid(){ grid.classList.add('show'); const cc=gwrap.children[cur]; if(cc) cc.scrollIntoView({block:'center'}); }
+function closeGrid(){ grid.classList.remove('show'); }
+function toggleGrid(){ grid.classList.contains('show')?closeGrid():openGrid(); }
+
+document.getElementById('nx').onclick=next;
+document.getElementById('pv').onclick=prev;
+document.getElementById('ov').onclick=toggleGrid;
+
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  if(lightbox.classList.contains('show')){
+    if(['Escape','ArrowRight','ArrowLeft',' ','PageDown','PageUp'].includes(e.key)){
+      e.preventDefault(); lightbox.classList.remove('show');
+    }
+    return;
+  }
+  switch(e.key){
+    case 'ArrowRight': case 'PageDown': case ' ': e.preventDefault(); grid.classList.contains('show')||next(); break;
+    case 'ArrowLeft': case 'PageUp': e.preventDefault(); grid.classList.contains('show')||prev(); break;
+    case 'Home': e.preventDefault(); show(0); break;
+    case 'End': e.preventDefault(); show(SLIDES.length-1); break;
+    case 'o': case 'O': toggleGrid(); break;
+    case 'Escape': closeGrid(); break;
+    case 'f': case 'F': if(!document.fullscreenElement) document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen(); else document.exitFullscreen&&document.exitFullscreen(); break;
+  }
+});
+// ハッシュは2形式を受け付ける: 通し番号 #42（従来）と章キー #s4（flow.html の見出し id）。
+// 章キーはスライドを増減しても指す先が変わらないので、flow.html からのリンクはこちらを使う。
+function indexFromHash(){
+  const h=decodeURIComponent(location.hash.slice(1));
+  if(!h) return -1;
+  const n=parseInt(h,10);
+  if(String(n)===h) return (n>=1&&n<=SLIDES.length)?n-1:-1;
+  return REF_FIRST[h]!==undefined?REF_FIRST[h]:-1;
+}
+window.addEventListener('hashchange',()=>{ const i=indexFromHash(); if(i>=0&&i!==cur) show(i,false); });
+
+// init from hash
+const startIdx=indexFromHash();
+show(startIdx>=0?startIdx:0,false);
+</script>
+</body></html>
