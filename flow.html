@@ -326,7 +326,7 @@ details.spec pre{margin:.5em 0 0;}
 <tr><td><strong>[2]</strong></td><td>フロント</td><td>Day 1</td><td></td><td><code>npm run dev</code> の表示 URL で表示崩れなし／React Router で4ページ遷移できる</td></tr>
 <tr><td><strong>[3]</strong></td><td>フロントデプロイ</td><td>Day 1</td><td></td><td><code>https://&lt;name&gt;.workers.dev</code> で LP が表示され、URL を他の参加者と共有できる</td></tr>
 <tr><td><strong>[4]</strong></td><td>バック</td><td>Day 2</td><td></td><td>フロントと API がつながりローカルで一通りの機能が動く。<code>/api/me</code> は未認証で弾かれ、<code>/api/contact</code> は不正入力で弾かれる</td></tr>
-<tr><td><strong>[5]</strong></td><td>自動テスト</td><td>Day 2</td><td></td><td><code>npm test</code> がグリーン（全テスト成功）。純粋関数・正常系・異常系・未認証テスト各1本以上</td></tr>
+<tr><td><strong>[5]</strong></td><td>自動テスト</td><td>Day 2</td><td></td><td><code>npm test</code> がバック・フロントとも グリーン（それぞれで実行）。純粋関数・正常系・異常系・未認証テスト各1本以上＋フロントの画面テスト1本</td></tr>
 <tr><td><strong>[6]</strong></td><td>デプロイ</td><td>Day 2</td><td></td><td>自分の <code>https://&lt;name&gt;.workers.dev</code> で LP が表示され <code>/mypage</code> も 404 にならない</td></tr>
 <tr><td><strong>[7]</strong></td><td>メール（Resend）</td><td>Day 3</td><td>★☆☆</td><td>問い合わせ受付やライセンス送付などのメールを実装し、自分宛に届くことを確認できる</td></tr>
 <tr><td><strong>[8]</strong></td><td>決済（Stripe）</td><td>Day 3</td><td>★★★</td><td>Stripe Checkout → Webhook でライセンスキー自動発行。テスト用カードでマイページにライセンスキーが表示されること</td></tr>
@@ -1069,7 +1069,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <ol>
 <li><strong>AI にテスト戦略を書かせる</strong> — コードを読んで「何を・なぜテストするか」を <code>docs/TEST.md</code> にまとめさせる</li>
 <li><strong>人間が TEST.md をレビューする</strong> — 観点の抜けや「これはテストしなくていい」という箇所をチャットで指摘する</li>
-<li><strong>AI にテストを実装させる</strong> — レビュー済みの TEST.md を元に実装させ、<code>npm test</code> でグリーンを確認する</li>
+<li><strong>AI にテストを実装させる</strong> — レビュー済みの TEST.md を元に実装させ、<code>npm test</code>（バック・フロントそれぞれ）でグリーンを確認する</li>
 </ol>
 <p class="note">Resend・Stripe などの外部サービスはテスト中に呼ばない。実際の API を叩くとテストが遅くなり外部障害の影響も受けるため、<code>fetch</code> はモックに差し替える。</p>
 
@@ -1099,12 +1099,16 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 
 ・バックエンド（backend/）: @cloudflare/vitest-pool-workers を使い、設定は cloudflareTest プラグイン方式で書く
 ・フロントの画面テスト（frontend/）: 同じ Vitest を jsdom 環境で使い、@testing-library/react で画面を描画・操作する
-  （frontend にはまだ Vitest が無いので、vitest 本体・@testing-library/react・jsdom を dev 依存に足す）
+  （frontend にはまだ Vitest が無いので、vitest 本体・@testing-library/react・jsdom を dev 依存に足し、
+   frontend/package.json に test スクリプト（vitest run）も追加する）
 
 外部サービスへの fetch はすべてモックしてください。</code></pre>
   <ul><li><code>@cloudflare/vitest-pool-workers</code>＝バックのテストを Workers と同じ実行環境で動かす公式アダプタ。<strong>新しいテストフレームワークは増えない</strong>——ランナーは Vitest で共通、違うのは実行環境（Workers／jsdom）だけ</li></ul>
 </li>
-<li><code>npm test</code> でグリーンを確認（バックの API テスト＋フロントの画面テスト）</li>
+<li><code>npm test</code> でグリーンを確認する。<strong>バックとフロントは別パッケージなので、それぞれのディレクトリで実行する</strong>（1回で両方は走らない）:
+<pre><code>cd backend  &amp;&amp; npm test   # API のテスト
+cd ../frontend &amp;&amp; npm test   # 画面テスト</code></pre>
+</li>
 </ol>
 
 <h3>ポイント</h3>
@@ -1119,7 +1123,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 
 <h3 class="done">✅ 完了の定義（Day 2 の到達点・前半）</h3>
 <ul>
-<li><code>npm test</code> が<strong>グリーン</strong>（全ケース pass）</li>
+<li><code>npm test</code> が<strong>バック・フロントとも グリーン</strong>（全ケース pass。<code>backend/</code> と <code>frontend/</code> それぞれで実行する）</li>
 <li>最低限カバーできている：
   <ul>
   <li>外部サービスに依存しない純粋な関数（ライセンスキー生成・文字列マスク等）のテストが1つ以上</li>

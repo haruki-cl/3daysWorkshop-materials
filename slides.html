@@ -241,7 +241,7 @@ const SLIDES = [
       ['[2]','フロント','1','dev URL で崩れず表示／React Router で4ページ遷移'],
       ['[3]','フロントデプロイ','1','workers.dev で LP 表示・URL 共有できる'],
       ['[4]','バック','2','フロントと API がつながる／/api/me 未認証で弾く・/api/contact 不正入力で弾く'],
-      ['[5]','自動テスト','2','npm test グリーン。純粋関数・正常系・異常系・未認証 各1本以上'],
+      ['[5]','自動テスト','2','バック・フロントそれぞれで npm test グリーン。純粋関数・正常系・異常系・未認証 各1本＋画面テスト1本'],
       ['[6]','デプロイ','2','自分の workers.dev で LP 表示・/mypage が404にならない'],
     ]}},
     {note:'ここまでが<strong>全員必達</strong>（Day 1〜2）。'},
@@ -590,7 +590,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。`
   ]},
   { type:'content', day:2, sec:'[5] 自動テスト', title:'[5] ② 自動テスト：3ステップの壁打ち', body:[
     {key:'テスト観点を人間が決め打ちすると「表に無い＝テストしない」になりがち。<strong>何をテストするかも AI に出させ、人間がレビューする</strong>のが抜けを防ぐコツ。'},
-    {ol:['<strong>AI にテスト戦略を書かせる</strong> — コードを読んで「何を・なぜ」を <code>docs/TEST.md</code> に','<strong>人間が TEST.md をレビュー</strong> — 観点の抜け・不要箇所を指摘','<strong>AI にテスト実装させる</strong> — レビュー済み TEST.md を元に実装 → <code>npm test</code> グリーン']},
+    {ol:['<strong>AI にテスト戦略を書かせる</strong> — コードを読んで「何を・なぜ」を <code>docs/TEST.md</code> に','<strong>人間が TEST.md をレビュー</strong> — 観点の抜け・不要箇所を指摘','<strong>AI にテスト実装させる</strong> — レビュー済み TEST.md を元に実装 → <code>npm test</code>（バック・フロントそれぞれ）でグリーン']},
     {note:'Resend・Stripe など外部サービスはテスト中に呼ばない（遅い・障害の影響）。fetch はモックに差し替える。'},
   ]},
   { type:'content', day:2, sec:'[5] 自動テスト', title:'[5] 流れ：戦略 → レビュー → 実装 → 画面テスト', body:[
@@ -605,22 +605,24 @@ SPA なので未知のパスは index.html にフォールバックさせて。`
     {code:`docs/TEST.md の方針に従ってテストを実装してください。
 ・backend/: @cloudflare/vitest-pool-workers（cloudflareTest プラグイン方式）
 ・frontend/ の画面テスト: 同じ Vitest を jsdom 環境で使い @testing-library/react で描画・操作
-  （frontend にはまだ Vitest が無いので vitest・@testing-library/react・jsdom を足す）
+  （frontend にはまだ Vitest が無いので vitest・@testing-library/react・jsdom を足し、
+   frontend/package.json に test スクリプト（vitest run）も追加する）
 外部サービスへの fetch はすべてモックしてください。`},
     {p:'④ ランナーは<strong>バック・フロント共通の Vitest</strong>——新しいテストフレームワークは増えない。違うのは実行環境だけ（Workers／jsdom）。'},
+    {warn:'⚠️ <strong>別パッケージなので <code>npm test</code> 1回では両方走らない</strong>。<code>cd backend &amp;&amp; npm test</code>（API）と <code>cd ../frontend &amp;&amp; npm test</code>（画面）を<strong>それぞれ</strong>実行する。'},
   ]},
   { type:'content', day:2, sec:'[5] 自動テスト', title:'[5] ポイントと完了の定義', body:[
     {ul:['<strong>AI が書いたコードこそテストが要る</strong>','<strong>TEST.md が先、実装が後</strong>（方針を固めてから書かせると精度↑）','Day 3 で機能追加するとき<strong>このテストが安全網</strong>になる','<strong>画面テストも1本だけ</strong>足す — Vitest は同じスタックでフロントでも使える（<code>@testing-library/react</code>＋jsdom・API はモック）']},
-    {done:['<code>npm test</code> がグリーン（全ケース pass）','純粋関数（キー生成・マスク等）のテスト1つ以上','正しい入力で成功レスポンス','不正入力で適切にエラー','未認証で保護 API へのアクセスが拒否','フロントの主要画面1つに<strong>画面テスト1本</strong>（表示＋正常系操作）']},
+    {done:['<code>npm test</code> が<strong>バック・フロントとも</strong> グリーン（それぞれのディレクトリで実行）','純粋関数（キー生成・マスク等）のテスト1つ以上','正しい入力で成功レスポンス','不正入力で適切にエラー','未認証で保護 API へのアクセスが拒否','フロントの主要画面1つに<strong>画面テスト1本</strong>（表示＋正常系操作）']},
     {code:'自動テスト実装の作業をコミットして dev ブランチに push して。'},
   ]},
   { type:'break', day:2, step:'5-1', sec:'[5] 自動テスト', title:'docs/TEST.md（戦略）を書かせる（バック＋フロント主要画面）', todo:['バックの API＋フロント主要画面1つを対象に戦略を書かせる','画面テストは主要フロー1本でよい','実装はまださせない'], code:'backend/ と frontend/ の主要画面（問い合わせフォーム）を対象にテスト戦略を docs/TEST.md にまとめて。画面テストは1本でよい。実装はまだしないで。', done:'docs/TEST.md に戦略が書けた（画面テスト方針も含む）' },
   { type:'break', day:2, step:'5-2', sec:'[5] 自動テスト', title:'人間が TEST.md をレビュー（4観点＋画面）', todo:['純粋関数のテストがあるか','正常系（正しい入力で成功）があるか','異常系（不正入力でエラー）があるか','未認証で保護 API が拒否されるテストがあるか','フロント主要画面（問い合わせフォーム）の画面テストがあるか'], done:'各観点が TEST.md に含まれている（自分の目で確認した）' },
   { type:'break', day:2, step:'5-3', sec:'[5] 自動テスト', title:'テスト実装（vitest-pool-workers・fetch モック）', todo:['レビュー済み TEST.md の方針でテスト実装','@cloudflare/vitest-pool-workers を使う','外部サービスへの fetch はすべてモック'], code:`docs/TEST.md の方針に従ってテストを実装して。
 @cloudflare/vitest-pool-workers を使い、外部への fetch はモックして。`, done:'テストファイルが実装された' },
-  { type:'break', day:2, step:'5-4', sec:'[5] 自動テスト', title:'画面テストを実装（TEST.md で決めた1本・Vitest jsdom）', todo:['TEST.md の画面テスト方針どおり1本実装','frontend に vitest・@testing-library/react・jsdom を足す','送信で成功表示を確認・API はモック'], code:`docs/TEST.md の画面テスト方針どおり、frontend/ に画面テストを1本実装して。
-Vitest を jsdom 環境で使い @testing-library/react で描画・操作、問い合わせフォーム送信で成功表示を確認。API はモック。frontend に vitest・@testing-library/react・jsdom を足して。`, done:'画面テスト1本が green' },
-  { type:'break', day:2, step:'5-5', sec:'[5] 自動テスト', title:'npm test グリーン → push', todo:['npm test がグリーン（全ケース pass）','dev ブランチに push'], code:'自動テスト実装の作業をコミットして dev ブランチに push して。', done:'npm test がグリーン → [6] デプロイへ' },
+  { type:'break', day:2, step:'5-4', sec:'[5] 自動テスト', title:'画面テストを実装（TEST.md で決めた1本・Vitest jsdom）', todo:['TEST.md の画面テスト方針どおり1本実装','frontend に vitest・@testing-library/react・jsdom＋test スクリプトを足す','送信で成功表示を確認・API はモック'], code:`docs/TEST.md の画面テスト方針どおり、frontend/ に画面テストを1本実装して。
+Vitest を jsdom 環境で使い @testing-library/react で描画・操作、問い合わせフォーム送信で成功表示を確認。API はモック。frontend に vitest・@testing-library/react・jsdom を足し、package.json に test スクリプトも追加して。`, done:'cd frontend && npm test で画面テスト1本が green' },
+  { type:'break', day:2, step:'5-5', sec:'[5] 自動テスト', title:'npm test グリーン（バック・フロント両方）→ push', todo:['cd backend && npm test がグリーン（API）','cd ../frontend && npm test がグリーン（画面）','dev ブランチに push'], warn:'<strong>1回では両方走らない</strong>——それぞれのディレクトリで実行する。', code:'自動テスト実装の作業をコミットして dev ブランチに push して。', done:'バック・フロントとも npm test がグリーン → [6] デプロイへ' },
 
   { type:'divider', day:2, kicker:'[6]', title:'Cloudflare にデプロイ', sub:'自分の workers.dev URL で世界に公開（Day 2 のフィナーレ）' },
   { type:'content', day:2, sec:'[6] デプロイ', title:'[6] 流れ', body:[

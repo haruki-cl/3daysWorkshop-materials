@@ -71,6 +71,27 @@ haruki-cl/3daysWorkshop-materials の Issue #1〜#9 を1件ずつ深掘りし、
   3. slides.html の [5]・[12] 対応スライドに同内容を反映
   4. grep で整合確認（画面テスト/testing-library/ゲート注記が両ファイルに存在）
 - 完了条件: flow.html と slides.html の [5] に画面テスト1本の記述、[12] にゲート注記があり、[5] が過度に重くなっていない。
+
+---
+
+## 別タスク: [5] revised フローの実地検証（DEMO/testAi-run） ✅ 完了（画面テスト1本 green・壊すと赤・本番ビルド通過）
+- 検証結果（資料への反映候補）:
+  1. **`npm test` 1回では両方走らない** — ルートに package.json が無く、backend / frontend で別々に実行が必要。flow.html の「npm test でグリーンを確認（バックの API テスト＋フロントの画面テスト）」は要修正。
+  2. 既存 TEST.md に「フロントの見た目は本テストの対象外」と書かれていた → [5] を一度終えた後に足す場合は既存記述の更新が必要（今回は書き換えた）。
+  3. 実装側の具体的手当て: vite.config.ts の defineConfig を `vite` → `vitest/config` に変更＋`test.environment='jsdom'`。資料はプロンプト任せで明示なし（AI がやる想定なので許容範囲）。
+  4. 未確認: globals:false のため @testing-library/react の自動 cleanup が効かない可能性（1本なら無害、2本目以降で干渉の恐れ）。
+  5. npm audit の high 3件は既存依存（postcss / react-router）由来。今回追加した3依存とは無関係。
+- 目的: 統合した [5]（戦略→レビュー→実装に画面テストを内包）が実際に回るか、資料のプロンプトの過不足を検証する。
+- 場所: /Users/ha-toge/workshop/workshop1/DEMO/testAi-run（元 DEMO/testAi は触らない）。
+- 着手前に判明した検証ポイント:
+  - 既存 backend/docs/TEST.md は backend 専用で「フロントの見た目は本テストの対象外」と明記 → 戦略段階で更新が必要（資料は新規作成前提の書き方）。
+  - frontend には vitest 本体も testing-library も jsdom も無い（資料の記述は是正済み）。vite.config.ts に @ エイリアスあり・.npmrc に min-release-age=7。
+- ステップ:
+  1. TEST.md に画面テスト方針を追記（資料 STEP①戦略）
+  2. presence レビュー（資料 STEP②）
+  3. frontend に vitest/@testing-library/react/jsdom を追加＋設定＋画面テスト1本（資料 STEP③）
+  4. npm test green 確認、資料の過不足を洗い出して報告
+- 完了条件: フロント画面テスト1本が green になり、資料手順に足りない指示（追加依存・設定）が特定できている。
 - ゴール: flow.html と slides.html から「レート制限」機能と「Workers KV」への言及を完全削除（代替注記は残さない）。関連 SVG も整合。
 - 前提: KV の唯一用途はレート制限のため機能ごと削除。完了判定（POST /api/contact・GET /api/me）はレート制限非依存で影響なし。flow.html 1054行 CodeReviewSample.png（/code-review デモ alt の「レート制限なし」）は別文脈スクショで対象外。
 - ステップ:
