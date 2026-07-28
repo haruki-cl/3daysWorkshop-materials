@@ -141,6 +141,12 @@ details.spec pre{margin:.5em 0 0;}
   font-size:.9rem; font-weight:600; text-decoration:none;
 }
 #toc-panel a#slides-link:hover{background:var(--accent-deep); color:#fff;}
+/* 見出しに自動付与される「スライド版の該当箇所へ」リンク（JS で挿入） */
+a.slide-link{float:right; margin-left:1em; font-size:.72rem; font-weight:400; font-family:system-ui,sans-serif;
+  color:var(--muted); text-decoration:none; border:1px solid var(--line); border-radius:6px;
+  padding:.15em .5em; margin-top:.15em; white-space:nowrap; background:#fff;}
+a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
+@media print{ a.slide-link{display:none;} }
 #toc-panel ul{list-style:none; padding:0; margin:0; columns:1;}
 #toc-panel li{margin:.2em 0; font-size:.88rem; font-weight:400; color:var(--ink);}
 #toc-panel a{
@@ -726,7 +732,7 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 <h2 id="s2">[2] Claude Code でフロント作成</h2>
 <p><strong>ゴール:</strong> デザイン通りの SPA（Single Page Application＝1枚の <code>index.html</code> を JavaScript が書き換えて全ページを表示する作り）の全画面がローカル（<code>npm run dev</code> で起動する URL）で動く（Day 1 終了時の到達点）</p>
 
-<h3>まず: SCREEN_SPEC.md を作る</h3>
+<h3 id="s2-spec">まず: SCREEN_SPEC.md を作る</h3>
 <p>Claude Code にプロンプトを渡す前に、リポジトリのルートに <code>SCREEN_SPEC.md</code> を作る。以下は玄米茶の内容をそのまま書いたもの。これをコピーして、<strong>自分のサービスの内容に適宜書き換える</strong>：</p>
 <pre><code># SCREEN_SPEC.md
 
@@ -1932,7 +1938,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <div id="toc-overlay"></div>
 <nav id="toc-panel">
   <p id="toc-panel-head">目次</p>
-  <a id="slides-link" href="slides.html" target="_blank" rel="noopener">🎞 スライド版を開く</a>
+  <a id="slides-link" href="slides.html" target="slidesdeck">🎞 スライド版を開く</a>
   <a class="toc-group-label" href="#top">前提・準備</a>
   <ul>
     <li><a href="#s0">目的・ゴール</a></li>
@@ -2087,19 +2093,28 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-// 初期化（URL に #アンカー があればそのページを開いてスクロール）
-(function(){
-  const hashId=location.hash.slice(1);
+// URL の #アンカーへ移動（対象ページを開いてからスクロール）
+function gotoHash(){
+  const hashId=decodeURIComponent(location.hash.slice(1));
   const hashPage=PAGE_MAP[hashId];
-  if(hashPage){
-    showPage(hashPage);
-    requestAnimationFrame(()=>{
-      const el=document.getElementById(hashId);
-      if(el) el.scrollIntoView({behavior:'instant',block:'start'});
-      updateTocHighlight();
-    });
-    return;
-  }
+  if(!hashPage) return false;
+  showPage(hashPage);
+  requestAnimationFrame(()=>{
+    const el=document.getElementById(hashId);
+    if(el) el.scrollIntoView({behavior:'instant',block:'start'});
+    updateTocHighlight();
+  });
+  return true;
+}
+
+// ページ切り替えは SPA 方式でセクションを display 制御しているため、
+// ハッシュだけ変わっても（＝スライド版から同じタブを開き直しても）ブラウザ標準のジャンプは効かない。
+// hashchange を自前で拾って対象ページを開く。
+window.addEventListener('hashchange',gotoHash);
+
+// 初期化
+(function(){
+  if(gotoHash()) return;
   const saved=sessionStorage.getItem('activePage');
   showPage(PAGE_IDS.includes(saved)?saved:'ps-overview');
   requestAnimationFrame(updateTocHighlight);
@@ -2146,6 +2161,33 @@ document.querySelectorAll('pre').forEach(pre => {
   });
   wrap.appendChild(btn);
 });
+</script>
+<script>
+// 見出し → スライド版の該当箇所へのリンクを自動挿入。
+// 見出しの id をそのまま章キーとして slides.html#<id> に渡す（slides 側は ref で同じキーを持つ）。
+// SLIDE_KEYS はスライドが実在する章だけを列挙する＝リンク先が無い見出しにはリンクを出さない。
+(function(){
+  const SLIDE_KEYS = new Set([
+    's0','s-map','s-time','s05','s07',
+    'auth','auth-to-sub','auth-to-api','auth-check',
+    'day1','s-env','s06','s0-nav','s0-repo','s1','s2-spec','s2','s3',
+    'day2','s4','s4-scripts','s5','s6',
+    'day3','common','s7','s8','s9','s10','s11','s12','wrap','cleanup',
+  ]);
+  document.querySelectorAll('article h1[id], article h2[id], article h3[id]').forEach(h=>{
+    if(!SLIDE_KEYS.has(h.id)) return;
+    const a=document.createElement('a');
+    a.className='slide-link';
+    a.href='slides.html#'+h.id;
+    // 名前付きターゲット＝クリックのたびに新しいタブを増やさず同じタブを開き直す。
+    // rel="noopener" を付けるとターゲット名が無視され毎回新規タブになるため、あえて付けない（同一オリジンの自資料）。
+    a.target='slidesdeck';
+    a.title='スライド版の該当箇所を開く';
+    a.textContent='🎞 スライド';
+    // float:right は出現位置の行に置かれるため、先頭に入れて右上に固定する
+    h.insertBefore(a,h.firstChild);
+  });
+})();
 </script>
 <script>
 // ディレクトリ構成のフローティング表示（全ページ共通で参照できるよう body 直下に複製）
