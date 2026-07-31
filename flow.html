@@ -312,7 +312,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <h2 id="s-map">全体マップ</h2>
 
 <figure class="diagram keep-light">
-<img src="img/workshop_flow_diagram.svg" alt="ワークショップフロー図: Core（[1]デザイン→[2]フロント→[3]フロントデプロイ→[4]バック→[5]自動テスト→[6]デプロイ）と Option（[7]メール/[8]決済/[9]ID連携/[10]運用保守/[11]セキュリティ/[12]テスト設計）">
+<img src="img/workshop_flow_diagram.svg" alt="ワークショップフロー図: Core（[1]デザイン→[2]フロント→[3]フロントデプロイ→[4]バック→[5]自動テスト→[6]デプロイ）と Option（[7]メール/[8]決済/[9]ID連携/[10]運用保守/[11]セキュリティ/[12]テスト設計/[13]自動デプロイ）">
 </figure>
 
 <table>
@@ -320,7 +320,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <tbody>
 <tr><td><strong>Day 1</strong></td><td>つくる</td><td>目的・技術紹介 / 環境確認 / [1] デザイン / [2] フロント / [3] フロントデプロイ</td></tr>
 <tr><td><strong>Day 2</strong></td><td>つなぐ・公開する</td><td>[4] バック / [5] 自動テスト / [6] 再デプロイ（Day 1 と同じ URL に API を統合）</td></tr>
-<tr><td><strong>Day 3</strong></td><td>育てる</td><td>オプション課題 [7]〜[12] / ラップアップ・発表会</td></tr>
+<tr><td><strong>Day 3</strong></td><td>育てる</td><td>オプション課題 [7]〜[13] / ラップアップ・発表会</td></tr>
 </tbody>
 </table>
 
@@ -340,10 +340,11 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <tr><td><strong>[10]</strong></td><td>運用保守（Cloudflare ログ確認・スキル化）</td><td>Day 3</td><td>★☆☆</td><td><code>wrangler tail</code> でログ確認できる・運用スキルが1つ動作する</td></tr>
 <tr><td><strong>[11]</strong></td><td>セキュリティ（SonarCloud 静的解析・脆弱性レビュー）</td><td>Day 3</td><td>★★★</td><td>認証境界・IDOR・機密マスクを点検し、問題を最低1つ修正（余裕があれば回帰テストを追加）</td></tr>
 <tr><td><strong>[12]</strong></td><td>テスト設計（何をテストすべきか自分で決める）</td><td>Day 3</td><td>★★★</td><td>主要機能を1つ選び「こう動くべき」を自分で仕様化→期待動作表→テストまで設計。AI に丸投げせず、壊すとテストが赤くなることまで確認できる</td></tr>
+<tr><td><strong>[13]</strong></td><td>自動デプロイ（Cloudflare Workers Builds）</td><td>Day 3</td><td>★★☆</td><td>git push だけで自動デプロイされる設定を完了し、軽微な変更の push で Cloudflare ダッシュボードに新しいビルドが自動で現れることを確認できる</td></tr>
 </tbody>
 </table>
 <blockquote class="key">
-<p><strong>必達は [1]〜[6]（Day 1〜2 全員）</strong>。<br><strong>Day 3 の [7]〜[12] は任意</strong>(やらない／1つだけ、も可)。</p>
+<p><strong>必達は [1]〜[6]（Day 1〜2 全員）</strong>。<br><strong>Day 3 の [7]〜[13] は任意</strong>(やらない／1つだけ、も可)。</p>
 </blockquote>
 
 <hr>
@@ -379,12 +380,12 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <thead><tr><th>経過</th><th>内容</th></tr></thead>
 <tbody>
 <tr><td>0:00–0:10</td><td>オプション課題のガイダンス（必須ではない・やらない・1つだけ、も可）</td></tr>
-<tr><td>0:10–1:30</td><td>自由作業: Day 1〜2 の残タスクを続ける、またはオプション課題（[7]〜[11] から1つ）——どちらでも可</td></tr>
+<tr><td>0:10–1:30</td><td>自由作業: Day 1〜2 の残タスクを続ける、またはオプション課題（[7]〜[13] から1つ）——どちらでも可</td></tr>
 <tr><td>1:30–2:00</td><td><strong>最終発表会（1人3分）＋ ラップアップ・アンケート</strong></td></tr>
 </tbody>
 </table>
 <p class="note">各日、固定の休憩枠は設けない。<strong>AI の生成待ち（[1] の3案生成・[4] の実装生成など数分かかる場面）を小休止・雑談に充てる</strong>。長い生成中は席を立ってよい。</p>
-<p class="note">進み方は各自のペースでよく、予定より早く終わった人はそのまま次の実装に進んでよい。また <strong>Day 3 の [7]〜[11] はオプション課題</strong>で、この時間は各自が資料を読みながら選んで進める形になる。わからないことがあれば、講師にチャット等で質問してほしい。</p>
+<p class="note">進み方は各自のペースでよく、予定より早く終わった人はそのまま次の実装に進んでよい。また <strong>Day 3 の [7]〜[13] はオプション課題</strong>で、この時間は各自が資料を読みながら選んで進める形になる。わからないことがあれば、講師にチャット等で質問してほしい。</p>
 <hr>
 
 <h2 id="s05">使う技術の紹介</h2>
@@ -462,6 +463,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <li>区切りのいいところで<strong>こまめに commit / push</strong>（環境が壊れても作業を失わないための保険）</li>
 <li><strong>各日のクロージングで「dev に push 済みか」を必ず確認</strong>（翌日のキャッチアップが楽になる）</li>
 <li><code>dev</code> → <code>main</code> への<strong>マージは、セキュリティ課題（SonarCloud 解析）に着手する前に行う</strong>（SonarCloud 無料版は <code>main</code> ブランチしか解析しないため）。<code>main</code> ＝ 公開・解析対象の安定版。セキュリティ課題をやらない場合は、最後に一度マージして締めればよい（任意）</li>
+<li>⚠️ <a href="#s13">[13]</a> の自動デプロイ（Workers Builds）で Production branch を <code>main</code> に設定している場合、この <code>dev</code> → <code>main</code> マージはそのまま本番デプロイになる。SonarCloud の解析結果（直すべき点）が出るのはマージ後なので、未修正の脆弱性が一時的に公開されることになる。気になる場合は、セキュリティ課題 <a href="#s11">[11]</a> の対応が終わってから main にマージ・pushする運用に変えるとよい</li>
 </ul>
 <figure class="diagram">
 <img src="img/git_flow.svg" alt="Git フロー図: dev ブランチで作業しこまめに commit/push、完成後に main へマージ">
@@ -1177,6 +1179,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <li>ローカル（<code>--local</code> の D1）と本番（リモート D1）はデータが別物</li>
 <li>Cloudflare の<strong>無料枠の範囲で完結</strong>する</li>
 <li><strong>Day 2 本編では Secrets 投入は不要</strong>（Stripe/Clerk/Resend を使う [7][8][9] で初めて要る。手順は <a href="#common">Day 3 の共通セクション</a>参照）</li>
+<li>ここまでは手元で <code>wrangler deploy</code> を叩く<strong>手動デプロイ</strong>。<code>git push</code> するだけで自動デプロイしたい場合は、Day 3 オプション <a href="#s13">[13] 自動デプロイ</a> で扱う</li>
 </ul>
 
 <h3 class="warn">⚠️ ハマりどころ: Workers デプロイ</h3>
@@ -1222,9 +1225,10 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <tr><td><strong>[10]</strong></td><td>運用保守</td><td>「運用チェックして」で<strong>監視・ログ・コストが見られる</strong>ように</td><td>★☆☆</td><td><a href="#s10">→ [10] 運用保守</a></td></tr>
 <tr><td><strong>[11]</strong></td><td>セキュリティ</td><td>自分のアプリの<strong>脆弱性を点検して1つ直す</strong>（＋回帰テスト）</td><td>★★★</td><td><a href="#s11">→ [11] セキュリティ</a></td></tr>
 <tr><td><strong>[12]</strong></td><td>テスト設計（自分で決める）</td><td>[5] の与えられた観点を卒業し、<strong>何をテストすべきかを自分で判断して設計</strong>する（仕様起点の機能テスト＋リスクで優先順位）</td><td>★★★</td><td><a href="#s12">→ [12] テスト設計</a></td></tr>
+<tr><td><strong>[13]</strong></td><td>自動デプロイ（Workers Builds）</td><td><code>git push</code> するだけで<strong>Cloudflare へ自動的にビルド・デプロイ</strong>されるようになる（手動の <code>wrangler deploy</code> から卒業）</td><td>★★☆</td><td><a href="#s13">→ [13] 自動デプロイ</a></td></tr>
 </tbody>
 </table>
-<p class="note">選び方: <strong>作りたい変化で選ぶ</strong>（上表）。<strong>依存</strong>: [11] は [9]（本物の認証）まで終えていると効果が高い（偽造トークンの検証はモック認証では試せない）。[12] は他の課題（特に [7][8][9]）まで実装したあとにやると、増えたコードをテスト対象にできて効果が高い。<strong>目安</strong>: ★＝重さ＝所要時間の目安（★☆☆ ≈ 30〜45分 / ★★☆ ≈ 45〜60分 / ★★★ ≈ 60分〜）。1つだけなら軽い [7]・[10] から。</p>
+<p class="note">選び方: <strong>作りたい変化で選ぶ</strong>（上表）。<strong>依存</strong>: [11] は [9]（本物の認証）まで終えていると効果が高い（偽造トークンの検証はモック認証では試せない）。[12] は他の課題（特に [7][8][9]）まで実装したあとにやると、増えたコードをテスト対象にできて効果が高い。[13] は [6] の手動デプロイが完了していることが前提（Cloudflare ダッシュボードでの連携設定が中心で、コードの追加はほぼ無い）。<strong>目安</strong>: ★＝重さ＝所要時間の目安（★☆☆ ≈ 30〜45分 / ★★☆ ≈ 45〜60分 / ★★★ ≈ 60分〜）。1つだけなら軽い [7]・[10] から。</p>
 
 <h2 id="common">まず [7][8][9] に共通すること</h2>
 <ul>
@@ -1870,6 +1874,43 @@ END;
 
 <hr>
 
+<h2 id="s13">[13] 自動デプロイ（Workers Builds）<span class="diff">★★☆</span></h2>
+<p><strong>お題</strong>: <code>git push</code> するだけで Cloudflare へ自動的にビルド・デプロイされる状態にする（[6] の手動デプロイを卒業する）<br>
+<strong>ツール</strong>: Cloudflare ダッシュボード（Workers Builds＝Git 連携による CI/CD 機能）<br>
+<strong>前提</strong>: <a href="#s6">[6]</a> で <code>wrangler deploy</code> による手動デプロイまで完了していること<br>
+<strong>学び</strong>: CI/CD（コードを push するだけで自動的にビルド・デプロイされる仕組み）の初歩と、モノレポ構成でのビルド設定の考え方</p>
+
+<blockquote>
+<p>ここまでは手元で <code>wrangler deploy</code> を叩く<strong>手動デプロイ</strong>だったが、Cloudflare の
+<strong>Workers Builds</strong> という Git 連携機能を使うと、<code>git push</code> するだけで
+自動的にビルド・デプロイされる状態にできる。</p>
+</blockquote>
+
+<h3>連携手順</h3>
+<ol>
+<li>Cloudflare ダッシュボード → 対象の Worker → <strong>Settings → Build</strong> から GitHub リポジトリを連携する</li>
+<li><strong>Path（Root directory）を <code>backend</code> に設定する</strong>（モノレポ構成のため。空のままにすると
+Cloudflare が自動生成した誤った設定でデプロイされてしまうので注意。詳細は下記ハマりどころ）</li>
+<li><strong>Build command に <code>npm install --prefix ../frontend && npm run build:front</code> を設定する</strong>
+（フロントのビルドをここで行う。空のままだとフロントがビルドされない）</li>
+<li><strong>Production branch を <code>main</code> に設定する</strong>（<code>dev</code> への push はプレビューのみになる。
+<a href="#s07">Git ブランチ</a> の運用（<code>dev</code>→<code>main</code> マージ後に SonarCloud 解析）と組み合わせる場合は、
+マージがそのまま本番公開になる点に注意——詳細は <a href="#s07">Git ブランチ</a> 参照）</li>
+</ol>
+
+<h3 class="warn">⚠️ ハマりどころ</h3>
+<ul>
+<li><strong>Path（Root directory）を設定し忘れると、API が全滅する</strong>: このリポジトリは <code>frontend/</code>・<code>backend/</code> に分かれたモノレポ構成。Path を空のままにすると、Cloudflare は「ルートに設定ファイルが無い」と判断し、<code>cloudflare-workers-and-pages[bot]</code> がリポジトリのルートに簡易的な <code>wrangler.jsonc</code> を自動生成して PR を送ってくることがある。この自動生成ファイルは静的配信専用で API のルーティングも D1/KV のバインディングも含まないため、誤ってデプロイされると <strong><code>/api/*</code> が全滅（404）</strong>し、フロントも未ビルドの生ファイルが配信されてしまう。<strong>Path 設定を先に済ませ</strong>、もし該当 PR が来ていたらマージせずクローズする</li>
+<li><strong>Build command を設定し忘れると、フロントがビルドされない</strong>: 既定の Deploy command は <code>npx wrangler deploy</code> だけで、これは <code>vite build</code>（フロントのビルド）を含まない。必ず上記手順3の Build command を設定する</li>
+<li>デプロイ直後は数秒〜十数秒、変更が全世界のエッジサーバーに伝播しきっていないことがある。すぐにアクセスして 404 が出ても、少し待ってから再確認する</li>
+</ul>
+
+<h3 class="done">✅ 完了の定義</h3>
+<p>上記4つの設定を終えたら、<strong>何か軽微な変更（コメント追加など）をコミットして <code>dev</code> に push するだけ</strong>で、Cloudflare ダッシュボードの Deployments に新しいビルドが自動的に現れることを確認する。これが確認できれば完了。余裕があれば、<code>dev</code> → <code>main</code> にマージ・push し、本番 URL（<code>workers.dev</code>）にその変更が反映されるところまで確認する。</p>
+<pre><code>Workers Builds の動作確認用に、軽微な変更（コメント追加など）をコミットして dev ブランチに push して。</code></pre>
+
+<hr>
+
 <h2 id="wrap">ラップアップ・発表会（Day 3 の最後 30 分）</h2>
 
 <h3>最終発表会（<strong>1人3分</strong>）</h3>
@@ -1911,6 +1952,7 @@ END;
 <tr><td>Clerk アプリ</td><td>残すならそのまま</td><td>不要ならアプリを削除。<code>frontend/.env</code> の鍵も消す</td></tr>
 <tr><td>Resend API キー</td><td>公開アプリでメール送信（[7]）を使い続けるなら残す</td><td><strong>ダッシュボードで API キーを Revoke（無効化）</strong></td></tr>
 <tr><td>SonarCloud / GitHub App</td><td>継続解析するなら残す</td><td>不要なら SonarCloud のプロジェクトを削除し、GitHub の Installed App から権限を解除</td></tr>
+<tr><td>Cloudflare Workers Builds（Git 連携。<a href="#s13">[13]</a> を試した場合）</td><td>継続して自動デプロイを使うなら残す</td><td>不要なら Cloudflare の Worker → Settings → Build で「Disconnect」し、GitHub の Settings → Applications → Installed GitHub Apps から <strong>Cloudflare Workers and Pages</strong> のリポジトリアクセス権も解除</td></tr>
 </tbody>
 </table></div>
 <p class="note">原則: <strong>鍵（API キー・トークン）は「消す」より先に「無効化（Revoke）」</strong>する（消しても発行済みの鍵は生きているため）。手元の <code>.dev.vars</code> / <code>.cf-ops.token</code> はローカルファイルなので削除でよい（Git には元々入れていない）。</p>
@@ -2070,6 +2112,7 @@ END;
     <li><a href="#s10">[10] 運用保守</a></li>
     <li><a href="#s11">[11] セキュリティ</a></li>
     <li><a href="#s12">[12] テスト設計</a></li>
+    <li><a href="#s13">[13] 自動デプロイ</a></li>
     <li><a href="#wrap">ラップアップ</a></li>
     <li><a href="#cleanup">後片付け</a></li>
   </ul>
