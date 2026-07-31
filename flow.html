@@ -1952,7 +1952,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 <tr><td>Clerk アプリ</td><td>残すならそのまま</td><td>不要ならアプリを削除。<code>frontend/.env</code> の鍵も消す</td></tr>
 <tr><td>Resend API キー</td><td>公開アプリでメール送信（[7]）を使い続けるなら残す</td><td><strong>ダッシュボードで API キーを Revoke（無効化）</strong></td></tr>
 <tr><td>SonarCloud / GitHub App</td><td>継続解析するなら残す</td><td>不要なら SonarCloud のプロジェクトを削除し、GitHub の Installed App から権限を解除</td></tr>
-<tr><td>Cloudflare Workers Builds（Git 連携。<a href="#s13">[13]</a> を試した場合）</td><td>継続して自動デプロイを使うなら残す</td><td>不要なら Cloudflare の Worker → Settings → Build で「Disconnect」し、GitHub の Settings → Applications → Installed GitHub Apps から <strong>Cloudflare Workers and Pages</strong> のリポジトリアクセス権も解除</td></tr>
+<tr><td>Cloudflare Workers Builds（Git 連携。<a href="#s13">[13]</a> を試した場合）</td><td>継続して自動デプロイを使うなら残す</td><td>不要なら Cloudflare の Worker → Settings → Build で「Disconnect」する。GitHub 側は<strong>2箇所</strong>の解除が必要（片方だけでは不十分）: <strong>①</strong>GitHub右上のアイコン → Settings（<strong>リポジトリ側の Settings ではなくアカウント側から入る</strong>。入口を間違えると同じ設定でも違う画面に見える）→ Applications → <strong>Installed GitHub Apps</strong> → Cloudflare Workers and Pages を<strong>Uninstall</strong>（リポジトリへのアクセスを削除）。<strong>②</strong>同じ Applications 内の<strong>Authorized GitHub Apps</strong> タブ → Cloudflare Workers and Pages を<strong>Revoke</strong>（①のUninstallだけでは自動的に消えない、別のユーザー認可を取り消す）。画面に出てくる<code>Suspend</code>は一時停止用の別ボタンで、完全に片付ける場合は不要</td></tr>
 </tbody>
 </table></div>
 <p class="note">原則: <strong>鍵（API キー・トークン）は「消す」より先に「無効化（Revoke）」</strong>する（消しても発行済みの鍵は生きているため）。手元の <code>.dev.vars</code> / <code>.cf-ops.token</code> はローカルファイルなので削除でよい（Git には元々入れていない）。</p>
