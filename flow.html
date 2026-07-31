@@ -1612,34 +1612,132 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
   </ul>
 </li>
 <li><strong>SonarCloud（静的解析）</strong>
-  <blockquote><p>SonarCloud とは GitHub と連携する静的解析 SaaS。コードを push するたびにセキュリティ脆弱性・バグ・コード品質の問題を自動検出し、Claude Code の差分レビューでは気づきにくいパターンを補完する。</p></blockquote>
-  <blockquote class="warn"><p><strong>⚠️ GitHub App のアクセス範囲について</strong>: SonarCloud の GitHub App 連携時は、必ず <strong>「Only select repositories」</strong> を選び、点検したいリポジトリだけを許可してください。「All repositories」を選ぶとプライベートリポジトリのコードが外部に送信される恐れがあります（詳細は下記ハマりどころ参照）。</p></blockquote>
+  <blockquote><p>静的解析（コードを実際に動かさずに、書かれた内容を読むだけで問題を見つける手法）を GitHub と連携して行ってくれる SaaS が SonarCloud。コードを push するたびにセキュリティ脆弱性・バグ・コード品質の問題を自動検出し、Claude Code の差分レビューでは気づきにくいパターンを補完する。<strong>初回のアカウント作成〜組織作成は手順が多い</strong>ので、以下は実際の画面ひとつずつに沿って説明する。</p></blockquote>
   <ol>
   <li>点検対象を <strong><code>main</code> ブランチに push</strong>（SonarCloud は <code>main</code> / PR を解析）
     <figure class="diagram">
     <img src="img/SonarQubeAnalyzingGitHubSetting.png" alt="GitHub のリポジトリ画面 — main ブランチが選択されていることを確認">
     </figure>
   </li>
-  <li><a target="_blank" rel="noopener" href="https://sonarcloud.io">https://sonarcloud.io</a> で <strong>GitHub SSO ログイン</strong></li>
-  <li>右上の <strong>＋ → Analyze new project</strong>
+  <li><a target="_blank" rel="noopener" href="https://sonarcloud.io">https://sonarcloud.io</a> にアクセスし、ログイン画面で <strong>「GitHub」</strong> を選ぶ
+    <figure class="diagram">
+    <img src="img/SonarCloudLogin.png" alt="SonarQube Cloud のログイン画面 — GitHub / Bitbucket / Gitlab / Azure DevOps の選択肢から GitHub を選ぶ">
+    </figure>
+  </li>
+  <li>GitHub 側の確認画面で <strong>「Authorize」</strong> をクリックし、SonarQubeCloud に GitHub アカウントの参照を許可する（ここはまだ本人確認だけで、リポジトリへのアクセス許可は次の手順）
+    <figure class="diagram">
+    <img src="img/SonarCloudGitHubAuthorize.png" alt="GitHub の Authorize SonarQubeCloud 画面 — Authorize ボタンをクリック">
+    </figure>
+  </li>
+  <li>初回は SonarCloud の <strong>「Welcome」画面</strong>が表示されるので <strong>「Get started with GitHub」</strong> をクリック
+    <figure class="diagram">
+    <img src="img/SonarCloudWelcomeGetStarted.png" alt="SonarQube Cloud の Welcome 画面 — Get started with GitHub ボタンをクリック">
+    </figure>
+  </li>
+  <li>再び GitHub 側の画面に移り <strong>「Install &amp; Authorize SonarQubeCloud」</strong>が表示される。<strong>ここが一番の要注意ポイント</strong>: 必ず <strong>「Only select repositories」</strong> を選び、点検したいリポジトリ（例では <code>genmaichaLP</code>）だけにチェックを入れてから <strong>「Install &amp; Authorize」</strong> をクリックする
+    <blockquote class="warn"><p><strong>⚠️ GitHub App のアクセス範囲について</strong>: ここで「All repositories」を選ぶと、（将来作るものも含めて）GitHub 上のプライベートリポジトリすべてのコードが SonarCloud に見えるようになってしまう。必ず「Only select repositories」を選び、点検したいリポジトリだけを許可すること（詳細は下記ハマりどころ参照）。</p></blockquote>
+    <figure class="diagram">
+    <img src="img/SonarCloudInstallAuthorizeApp.png" alt="GitHub の Install & Authorize SonarQubeCloud 画面 — Only select repositories を選び、対象リポジトリ（genmaichaLP）にチェックを入れて Install & Authorize をクリック">
+    </figure>
+  </li>
+  <li>SonarCloud に戻ると <strong>「Create an organization」画面</strong>が表示される。<strong>Name・Key</strong>（どちらも秘密情報ではない。GitHub のアカウント名をそのまま使ってよい）を入力する。<strong>「Automatically import new GitHub repositories」はチェックしない</strong>（チェックすると新規リポジトリが自動で解析対象に追加されてしまう。下記ハマりどころ参照）
+    <figure class="diagram">
+    <img src="img/SonarCloudCreateOrgNameKey.png" alt="SonarCloud の Create an organization 画面 — Name と Key を入力し、Automatically import new GitHub repositories はチェックしないでおく">
+    </figure>
+  </li>
+  <li>下にスクロールすると <strong>「Enter payment details」</strong>でプランを選ぶ画面が続く。個人の小さな MVP なら容量的に十分なので <strong>「Free」（$0）を選ぶ</strong>（カード情報の入力は不要）
+    <figure class="diagram">
+    <img src="img/SonarCloudSelectPlan.png" alt="SonarCloud のプラン選択画面 — Free / Team / Enterprise の3択。個人開発者・学生向けの Free（$0）を選ぶ">
+    </figure>
+    <figure class="diagram">
+    <img src="img/SonarCloudSelectPlanFree.png" alt="Free プランを選んだ状態でさらにスクロールした画面 — 下部の Create organization ボタンをクリック">
+    </figure>
+  </li>
+  <li><strong>「Create organization」</strong>をクリックすると組織が作成され、Projects 画面に移る（最初は「No projects here yet」と表示される）
+    <figure class="diagram">
+    <img src="img/SonarCloudOrgCreatedProjects.png" alt="組織作成後の Projects 画面 — kamei-cl（Free plan）、No projects here yet、Analyze a new project ボタンが表示されている">
+    </figure>
+  </li>
+  <li>右上の <strong>＋ → Analyze new project</strong>（前の画面の「Analyze a new project」ボタンからでも同じ画面に進める）
     <figure class="diagram compact">
-    <img src="img/SonarQubeCreateNewProject1.png" alt="SonarCloud 右上の「＋」ボタン → 「Analyze new project」を選択">
+    <img src="img/SonarCloudAnalyzeNewProjectMenu.png" alt="SonarCloud 右上の「＋」ボタン → 「Analyze new project」を選択">
     </figure>
   </li>
-  <li><strong>対象の GitHub プロジェクトを指定</strong>（初回は SonarCloud に<strong>リポジトリへのアクセス許可</strong>を求められる）。
-    <ul><li>ここで GitHub App（SonarCloud）のアクセス範囲を聞かれたら、<strong><code>All repositories</code> ではなく <code>Only select repositories</code> を選び、点検したいリポジトリだけ許可する</strong>（下のハマりどころ参照）</li></ul>
+  <li><strong>「Analyze projects」画面</strong>で Organization を確認し、<strong>点検したいリポジトリにチェックを入れて「Set Up」</strong>をクリック
     <figure class="diagram">
-    <img src="img/SonarQubeCreteNewProject2.png" alt="SonarCloud の Analyze projects 画面 — Organization を選択してリポジトリにチェックを入れ「Set Up」をクリック">
+    <img src="img/SonarCloudSelectRepository.png" alt="SonarCloud の Analyze projects 画面 — Organization を選択してリポジトリにチェックを入れ「Set Up」をクリック">
     </figure>
   </li>
-  <li>解析完了を待ち、出た指摘を <strong>AI と一緒にレビュー</strong>（意味・直し方を AI に説明させる）
+  <li><strong>「Project onboarding」画面</strong>に切り替わり解析が自動で始まる。「We are analyzing your project」と表示されている間はそのまま少し待つ（数十秒〜数分程度）
     <figure class="diagram">
-    <img src="img/SonarCloudResult.png" alt="SonarCloud の解析結果画面 — Quality Gate Passed、Security A・Reliability A・Maintainability A などが表示される">
+    <img src="img/SonarCloudAnalyzing.png" alt="Project onboarding 画面 — We are analyzing your project. と表示され、解析完了を待っている状態">
+    </figure>
+  </li>
+  <li>解析が完了すると <strong>「Summary」画面</strong>に切り替わり、<strong>Quality Gate</strong>（あらかじめ決めた品質基準を満たしているかを合否判定する仕組み）や項目ごとの指摘件数が表示される。表示される項目の意味は次のとおり（下図はあくまで一例の件数）:
+    <ul>
+    <li><strong>Security</strong>（脆弱性）: 0 Open issues／評価 A（A が最良〜E が要改善の5段階）</li>
+    <li><strong>Reliability</strong>（バグの可能性がある箇所）: 16 Open issues／評価 E</li>
+    <li><strong>Maintainability</strong>（保守性・コードの読みやすさに関する指摘＝コードスメル）: 23 Open issues／評価 A</li>
+    <li><strong>Coverage</strong>（テストカバレッジ）: 0.0%（別途設定しないと計測されない項目のため、今は未計測というだけ）</li>
+    <li><strong>Duplications</strong>（重複コードの割合）: 0.0%</li>
+    </ul>
+    ここに出た指摘を <strong>AI と一緒にレビュー</strong>する（意味・直し方を AI に説明させる。具体的なやり方は次項）
+    <figure class="diagram">
+    <img src="img/SonarCloudSummaryResult.png" alt="SonarCloud の Summary 画面 — Quality Gate、Security・Reliability・Maintainability ごとの Open issues 件数が表示される">
     </figure>
   </li>
   </ol>
 </li>
 </ul>
+
+<h3>指摘の中身を見て、AI と一緒にレビューする</h3>
+<p>「Summary」画面の数字（例: Reliability 16 Open issues）はあくまで件数の集計。<strong>個別の指摘を開いて中身を見る</strong>のがレビューの本番。</p>
+<ol>
+<li>左サイドバーの <strong>「Issues」</strong>をクリックするか、<code>Summary</code> 画面の指摘件数（例: 「16 Open issues」）を直接クリックすると、個別の指摘一覧に移る。左側の「Filters」で Software quality（Security/Reliability/Maintainability）や <strong>Severity</strong>（Blocker〜Info。5段階の緊急度で、Blocker が最も重大・Info が参考程度）ごとの内訳も確認できる
+  <figure class="diagram">
+  <img src="img/SonarCloudIssuesList.png" alt="SonarCloud の Issues 画面 — 左に Software quality・Severity ごとの件数フィルタ、右に指摘一覧（例: UPDATE 文に WHERE 句がない・未使用 import など）が並ぶ">
+  </figure>
+</li>
+<li>一覧から1件クリックすると、右側に <strong>該当コードと SonarCloud による説明</strong>が表示される。上部に指摘内容・影響する Software quality・重大度（Blocker など）、下部のタブに切り替えると「Where is the issue?」（該当コード）・「Why is this an issue?」（理由の説明）が見られる
+  <figure class="diagram">
+  <img src="img/SonarCloudIssueDetail.png" alt="個別 Issue の詳細画面 — タイトル・説明・Software qualities impacted・Open in IDE ボタン、下部に Where is the issue? タブで該当コード（SQL の UPDATE 文）が表示されている">
+  </figure>
+</li>
+<li>その内容を <strong>Claude Code に見せる</strong>。下図のように詳細画面の5箇所（①〜⑤）に印を付けたので、そこをコピーして<strong>プロンプトのひな形</strong>に埋めるだけでよい:
+  <figure class="diagram">
+  <img src="img/SonarCloudIssueDetailAnnotated.png" alt="Issue詳細画面 — ①ルール名 ②ルールID ③Software quality/重大度 ④行番号 ⑤ファイルパス ⑥Why is this an issue?タブの6箇所を赤枠と番号で示した画面">
+  </figure>
+  <p>①〜⑤をそのままコピーして埋めて送る:</p>
+  <pre><code>SonarCloudで以下の指摘が出ました。意味と直し方を教えてください。
+
+ルール名: ①をここに
+ルールID: ②をここに
+Software quality / 重大度: ③をここに
+行番号: ④をここに
+ファイルパス: ⑤をここに</code></pre>
+  <p class="note">Claude Code はリポジトリのコードを直接読めるので、この5項目さえ伝われば該当箇所を実際に開いて「なぜ指摘されたか」「どう直すべきか」を具体的に説明できる。</p>
+  <p>もう少し文脈を足したいときは、上図<strong>⑥の「Why is this an issue?」タブ</strong>（「Where is the issue?」の右隣のタブ）を開き、その説明文もあわせて伝えるとよい（SonarCloud独自の解説と、Noncompliant/Compliantのコード例が載っている）。ただしこのタブは長くなりがちで1回のスクショに収まらないことがあるので、<strong>範囲選択してそのままコピー&amp;ペースト</strong>する方が確実（見切れる心配がない）。多くのルールはだいたい同じ構成（説明文 → Noncompliant code example → Compliant solution）で、今回の指摘なら:</p>
+  <pre><code>UPDATE and DELETE statements should contain WHERE clauses to keep the modification of records under control. Otherwise unexpected data loss could result.
+
+Noncompliant code example
+DECLARE
+  maxAge PLS_INTEGER := 60;
+BEGIN
+  UPDATE employee SET status = 'retired'; -- Noncompliant - the WHERE was forgotten
+END;
+/
+
+Compliant solution
+DECLARE
+  maxAge PLS_INTEGER := 60;
+BEGIN
+  UPDATE employee SET status = 'retired' WHERE age &gt; maxAge;
+END;
+/</code></pre>
+</li>
+<li>説明を踏まえて<strong>直すか・誤検知として無視するかを判断</strong>する（鵜呑みにしない。下記ハマりどころ参照）</li>
+</ol>
+<p class="note">Security の指摘が 0 件でも異常ではない。認証境界・IDOR・機密マスクなどの典型的な穴が既に塞がれていれば Security 分類の指摘は出ない。[11]の完了条件（1つ以上修正）は、Reliability・Maintainability の指摘から選んでも構わない。</p>
 
 <h3 class="warn">⚠️ ハマりどころ</h3>
 <ul>
