@@ -1881,9 +1881,9 @@ END;
 <strong>学び</strong>: CI/CD（コードを push するだけで自動的にビルド・デプロイされる仕組み）の初歩と、モノレポ構成でのビルド設定の考え方</p>
 
 <blockquote>
-<p>ここまでは手元で <code>wrangler deploy</code> を叩く<strong>手動デプロイ</strong>だったが、Cloudflare の
-<strong>Workers Builds</strong> という Git 連携機能を使うと、<code>git push</code> するだけで
-自動的にビルド・デプロイされる状態にできる。</p>
+<p>他のDay 3オプションと違い、<strong>ここでの作業はすべて Cloudflare ダッシュボード側の設定</strong>で完結する。
+リポジトリのコードに変更を加える必要は無く、Claude Code に実装を依頼する場面も無い。
+設定が一度終われば、あとは普段通り <code>git push</code> するだけで、Cloudflare 側が自動でビルド・デプロイを行ってくれる。</p>
 </blockquote>
 
 <h3>連携手順</h3>
