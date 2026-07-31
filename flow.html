@@ -1888,14 +1888,36 @@ END;
 
 <h3>連携手順</h3>
 <ol>
-<li>Cloudflare ダッシュボード → 対象の Worker → <strong>Settings → Build</strong> から GitHub リポジトリを連携する</li>
+<li>Cloudflare ダッシュボード → 対象の Worker → <strong>Settings → Build</strong> から GitHub リポジトリを連携する
+  <ol>
+  <li>サイドバー最上部の <strong>「Account home」</strong> を選択する</li>
+  <li>画面中央（検索バーの下あたり）に並ぶ一覧から、対象の Worker を選択する</li>
+  <li>画面上部のタブを <strong>「Settings」</strong> に切り替える</li>
+  <li>下にスクロールし、<strong>「Build」セクション内の GitHub ボタン</strong>を選択する
+    <figure class="diagram">
+    <img src="img/CloudflareWorkerBuildSection.png" alt="Worker の Settings タブを下にスクロールした Build セクション — GitHub / GitLab ボタンが並んでいる">
+    </figure>
+  </li>
+  </ol>
+  <blockquote class="warn"><p><strong>⚠️ リポジトリのアクセス範囲について</strong>: GitHub ボタンを押すと GitHub 側で「Install &amp; Authorize Cloudflare Workers and Pages」という許可画面が出る。ここでも SonarCloud のときと同様に、必ず <strong>「Only select repositories」</strong> を選び、連携したいリポジトリだけを許可すること。「All repositories」を選ぶとプライベートリポジトリのコードすべてに Cloudflare がアクセスできる状態になってしまう。</p></blockquote>
+  <figure class="diagram">
+  <img src="img/CloudflareGitHubInstallAuthorize.png" alt="GitHub の Install & Authorize Cloudflare Workers and Pages 画面 — Only select repositories を選び、対象リポジトリにチェックを入れて Install & Authorize をクリック">
+  </figure>
+</li>
 <li><strong>Path（Root directory）を <code>backend</code> に設定する</strong>（モノレポ構成のため。空のままにすると
 Cloudflare が自動生成した誤った設定でデプロイされてしまうので注意。詳細は下記ハマりどころ）</li>
 <li><strong>Build command に <code>npm install --prefix ../frontend && npm run build:front</code> を設定する</strong>
 （フロントのビルドをここで行う。空のままだとフロントがビルドされない）</li>
 <li><strong>Production branch を <code>main</code> に設定する</strong>（<code>dev</code> への push はプレビューのみになる。
 <a href="#s07">Git ブランチ</a> の運用（<code>dev</code>→<code>main</code> マージ後に SonarCloud 解析）と組み合わせる場合は、
-マージがそのまま本番公開になる点に注意——詳細は <a href="#s07">Git ブランチ</a> 参照）</li>
+マージがそのまま本番公開になる点に注意——詳細は <a href="#s07">Git ブランチ</a> 参照）
+  <figure class="diagram">
+  <img src="img/CloudflareConnectRepoSettings.png" alt="Connect to a repository 画面 — Git account・Repository・Production branch・Build command・Deploy command を設定する">
+  </figure>
+  <figure class="diagram">
+  <img src="img/CloudflareConnectRepoRootDirectory.png" alt="同画面の Advanced settings を開いた状態 — Root directory の Path 欄に backend を入力する">
+  </figure>
+</li>
 </ol>
 
 <h3 class="warn">⚠️ ハマりどころ</h3>
