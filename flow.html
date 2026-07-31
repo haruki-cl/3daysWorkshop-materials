@@ -1904,6 +1904,7 @@ END;
   <img src="img/CloudflareGitHubInstallAuthorize.png" alt="GitHub の Install & Authorize Cloudflare Workers and Pages 画面 — Only select repositories を選び、対象リポジトリにチェックを入れて Install & Authorize をクリック">
   </figure>
 </li>
+<li>Cloudflare に戻ると<strong>「Connect to a repository」画面</strong>が開く。上部の <strong>Git account</strong> で自分のアカウント（複数の GitHub 組織に所属している場合は連携したいアカウント）を指定する。Repository は直前に許可したリポジトリが自動で選ばれる</li>
 <li><strong>Path（Root directory）を <code>backend</code> に設定する</strong>（モノレポ構成のため。空のままにすると
 Cloudflare が自動生成した誤った設定でデプロイされてしまうので注意。詳細は下記ハマりどころ）</li>
 <li><strong>Build command に <code>npm install --prefix ../frontend && npm run build:front</code> を設定する</strong>
