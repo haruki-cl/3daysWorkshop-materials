@@ -1,16 +1,16 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>3Days ワークショップ — AIとつくる自分の SaaS の MVP</title>
+<title>ワークショップ — AIとつくる自分の SaaS の MVP</title>
 <style>
 :root{
   --bg:#d6d3ca; --paper:#fffdf8; --ink:#2d2a24; --muted:#6b6453;
   --accent:#0d9488; --accent-deep:#0f766e; --gold:#c8a96a; --line:#e7e1d3;
   --code-bg:#f3efe4; --warn-bg:#fcf3e6; --warn-bd:#e3b873;
-  /* Day カラー */
-  --d1-bg:#eaf3fb; --d1-bd:#3a7bd5; --d1-text:#1a4a80;
-  --d2-bg:#fff3e2; --d2-bd:#d97706; --d2-text:#7a3d00;
-  --d3-bg:#f0ebf8; --d3-bd:#7c5cbf; --d3-text:#42207a;
+  /* Section カラー */
+  --sec1-bg:#eaf3fb; --sec1-bd:#3a7bd5; --sec1-text:#1a4a80;
+  --sec2-bg:#fff3e2; --sec2-bd:#d97706; --sec2-text:#7a3d00;
+  --sec3-bg:#f0ebf8; --sec3-bd:#7c5cbf; --sec3-text:#42207a;
   /* 警告 */
   --danger-bg:#fef0ec; --danger-bd:#dc6931; --danger-text:#8a3010;
 }
@@ -30,14 +30,14 @@ article{
 h1,h2,h3,h4{font-family:"Hiragino Mincho ProN","Yu Mincho",serif; line-height:1.4; color:var(--ink); scroll-margin-top:1em;}
 /* ページタイトル */
 h1{font-size:2rem; margin:0 0 .6em; padding-bottom:.5em; border-bottom:3px solid var(--gold);}
-/* Day バナー（article の横幅いっぱいに広げる） */
-h1[id^="day"]{
+/* Section バナー（article の横幅いっぱいに広げる） */
+h1[id^="section"]{
   font-size:1.55rem; margin:3em -56px 1.4em; padding:.7em 56px;
   border-bottom:none; border-radius:0;
 }
-h1#day1{background:var(--d1-bg); border-top:4px solid var(--d1-bd); border-bottom:1px solid #c0d8f0; color:var(--d1-text);}
-h1#day2{background:var(--d2-bg); border-top:4px solid var(--d2-bd); border-bottom:1px solid #f0d8a0; color:var(--d2-text);}
-h1#day3{background:var(--d3-bg); border-top:4px solid var(--d3-bd); border-bottom:1px solid #d8c8f0; color:var(--d3-text);}
+h1#section1{background:var(--sec1-bg); border-top:4px solid var(--sec1-bd); border-bottom:1px solid #c0d8f0; color:var(--sec1-text);}
+h1#section2{background:var(--sec2-bg); border-top:4px solid var(--sec2-bd); border-bottom:1px solid #f0d8a0; color:var(--sec2-text);}
+h1#section3{background:var(--sec3-bg); border-top:4px solid var(--sec3-bd); border-bottom:1px solid #d8c8f0; color:var(--sec3-text);}
 h2{font-size:1.5rem; margin:3.6em 0 .9em; padding:.35em .8em;
   border-left:6px solid var(--accent); border-radius:0 6px 6px 0; background:#f0fafa;}
 h3{font-size:1.15rem; margin:1.8em 0 .6em; color:var(--ink); letter-spacing:.02em;
@@ -161,19 +161,19 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
   font-size:.75rem; font-weight:700; letter-spacing:.05em;
   border-radius:4px; background:var(--line); color:var(--muted);
 }
-.toc-d1{background:var(--d1-bg); color:var(--d1-text);}
-.toc-d2{background:var(--d2-bg); color:var(--d2-text);}
-.toc-d3{background:var(--d3-bg); color:var(--d3-text);}
+.toc-sec1{background:var(--sec1-bg); color:var(--sec1-text);}
+.toc-sec2{background:var(--sec2-bg); color:var(--sec2-text);}
+.toc-sec3{background:var(--sec3-bg); color:var(--sec3-text);}
 #toc-panel a.toc-group-label{
   margin:1.1em 0 .3em; padding:.2em .5em;
   font-size:.75rem; font-weight:700; letter-spacing:.05em;
   border-radius:4px; color:var(--muted); cursor:pointer;
 }
-#toc-panel a.toc-group-label:not(.toc-d1):not(.toc-d2):not(.toc-d3){background:var(--line);}
+#toc-panel a.toc-group-label:not(.toc-sec1):not(.toc-sec2):not(.toc-sec3){background:var(--line);}
 #toc-panel a.toc-group-label:hover{opacity:.8;}
-#toc-panel a.toc-group-label.toc-d1{color:var(--d1-text); background:var(--d1-bg);}
-#toc-panel a.toc-group-label.toc-d2{color:var(--d2-text); background:var(--d2-bg);}
-#toc-panel a.toc-group-label.toc-d3{color:var(--d3-text); background:var(--d3-bg);}
+#toc-panel a.toc-group-label.toc-sec1{color:var(--sec1-text); background:var(--sec1-bg);}
+#toc-panel a.toc-group-label.toc-sec2{color:var(--sec2-text); background:var(--sec2-bg);}
+#toc-panel a.toc-group-label.toc-sec3{color:var(--sec3-text); background:var(--sec3-bg);}
 #totop{
   position:fixed; bottom:28px; right:28px;
   width:44px; height:44px; border-radius:50%;
@@ -240,7 +240,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
   box-shadow:0 8px 60px rgba(0,0,0,.6);object-fit:contain;}
 @media(max-width:640px){
   article{padding:30px 20px}
-  h1[id^="day"]{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px;}
+  h1[id^="section"]{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px;}
   .toc ul{columns:1}
   .wrap{padding:28px 12px 80px;}
 }
@@ -250,12 +250,12 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 
 
 <section class="page-section" id="ps-overview">
-<h1 id="top">3Days ワークショップフロー: AI とつくる「自分の SaaS の MVP」</h1>
-<p class="note">完成形の動くデモ（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://genmaicha-back-demo.y-arai-a8a.workers.dev/">https://genmaicha-back-demo.y-arai-a8a.workers.dev/</a> — この3日間で、このような「LP（ランディングページ＝サービス紹介の1枚ページ）＋購入＋マイページ」の SaaS を<strong>自分の題材で</strong>作る。</p>
+<h1 id="top">ワークショップフロー: AI とつくる「自分の SaaS の MVP」</h1>
+<p class="note">完成形の動くデモ（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://genmaicha-back-demo.y-arai-a8a.workers.dev/">https://genmaicha-back-demo.y-arai-a8a.workers.dev/</a> — このワークショップで、このような「LP（ランディングページ＝サービス紹介の1枚ページ）＋購入＋マイページ」の SaaS を<strong>自分の題材で</strong>作る。</p>
 
 <h2 id="s0">ワークショップの目的・ゴール</h2>
 
-<h3>前提知識（この3日間で前提とすること）</h3>
+<h3>前提知識（このワークショップで前提とすること）</h3>
 <ul>
 <li><strong>Claude Code を使ったことがある</strong>（起動・依頼・承認/拒否の基本操作が分かる）</li>
 <li><strong>Git を用いた開発経験</strong>がある（ブランチ・commit・push が一通りできる）</li>
@@ -264,7 +264,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 
 <h3>目的</h3>
 <ul>
-<li><strong>Claude（Design / Code）を使った開発フローを3日間で一周する</strong>
+<li><strong>Claude（Design / Code）を使った開発フローを全3セクションで一周する</strong>
   <ul><li>「AI にどう頼むと良いものが出てくるか」の肌感をつかむ</li></ul>
 </li>
 <li>デザイン → フロント → バック → テスト → デプロイ → 機能拡張 という<strong>実務に近い開発サイクル</strong>を、AI を駆動しながら一通り体験する</li>
@@ -273,7 +273,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <h3>題材: 各自が作りたい SaaS の MVP（<strong>事前に考えてきてもらう</strong>）</h3>
 <ul>
 <li>題材は各自が作りたい SaaS を持ち寄る。「流れを体験するのが目的」なので題材は自由だが、<strong>サブスクリプション（月額/年額課金）を必須</strong>とする</li>
-<li>ただし3日間で一周できるよう、<strong>MVP</strong>（Minimum Viable Product＝必要最小限の機能に絞った最初の製品版）に落とし込んでおく</li>
+<li>ただし全3セクションで一周できるよう、<strong>MVP</strong>（Minimum Viable Product＝必要最小限の機能に絞った最初の製品版）に落とし込んでおく</li>
 <li>資料中の例「玄米茶」は<strong>説明用の共通サンプル</strong>: 「チャットの中に、ちいさな相棒を」という会話アシスタントを、ライセンスキーの月額/年額サブスクで売る小さな SaaS
   <ul>
   <li>自分の題材では、このページ構成・機能を<strong>自分のサービスに読み替える</strong></li>
@@ -286,25 +286,25 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
     <figure class="diagram" style="margin:0;flex:1 1 220px;"><img src="img/sample_success.png" alt="玄米茶サンプル: 購入完了（/success）"><figcaption style="text-align:center;font-size:12px;">/success</figcaption></figure>
   </div>
 </li>
-<li>注意喚起: 3日間で一周するため、<strong>Day 2 までは構成を盛りすぎない</strong>（拡張は Day 3 のオプションで）</li>
+<li>注意喚起: 全3セクションで一周するため、<strong>Section 2 までは構成を盛りすぎない</strong>（拡張は Section 3 のオプションで）</li>
 </ul>
 
-<h3>必須機能（Day 2 までに作るものの最低ライン）</h3>
+<h3>必須機能（Section 2 までに作るものの最低ライン）</h3>
 <p><strong>ライセンスキー（購入の証として発行する一意の文字列）の配布は、題材によらず全員共通の実装要件</strong>。「ライセンスキー」は玄米茶サンプルでの呼び方なので、自分の SaaS では呼び名と意味づけ（アクセス権の証・ダウンロードコード等）だけを自分のサービスに合わせる。</p>
-<p class="note">Day 2 到達時点の見本（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://testai-genmaicha.ha-toge.workers.dev/">https://testai-genmaicha.ha-toge.workers.dev/</a> — 下の5機能が動く状態がゴール。</p>
-<p class="note">各リンクの遷移先・購入導線は <a href="#s0-nav">画面構成とナビゲーション</a> で、各画面の中身は [2] の <code>SCREEN_SPEC.md</code> で定義する。ここでは「Day 2 までに動くべき機能」だけを挙げる。</p>
+<p class="note">Section 2 到達時点の見本（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://testai-genmaicha.ha-toge.workers.dev/">https://testai-genmaicha.ha-toge.workers.dev/</a> — 下の5機能が動く状態がゴール。</p>
+<p class="note">各リンクの遷移先・購入導線は <a href="#s0-nav">画面構成とナビゲーション</a> で、各画面の中身は [2] の <code>SCREEN_SPEC.md</code> で定義する。ここでは「Section 2 までに動くべき機能」だけを挙げる。</p>
 <table>
-<thead><tr><th>#</th><th>機能</th><th>Day 2 までの完成ライン</th></tr></thead>
+<thead><tr><th>#</th><th>機能</th><th>Section 2 までの完成ライン</th></tr></thead>
 <tbody>
 <tr><td>1</td><td><strong>LP</strong></td><td>サービス紹介と料金を掲載し、公開 URL で表示できる</td></tr>
 <tr><td>2</td><td><strong>価格表示</strong></td><td>料金プラン（月額／年額など）を見せ、行動を促すボタン（CTA）から購入フロー（メールアドレス入力）に進める</td></tr>
 <tr><td>3</td><td><strong>お問い合わせフォーム</strong></td><td>入力 → 送信 → 受付（<code>POST /api/contact</code>）が通る</td></tr>
-<tr><td>4</td><td><strong>マイページ</strong></td><td>メールアドレス入力の簡易ログインで購入情報・ライセンスを表示（本物のログインは Day 3 Clerk [9]）</td></tr>
+<tr><td>4</td><td><strong>マイページ</strong></td><td>メールアドレス入力の簡易ログインで購入情報・ライセンスを表示（本物のログインは Section 3 Clerk [9]）</td></tr>
 <tr><td>5</td><td><strong>ライセンスキーの配布</strong></td><td>メールアドレスのみ入力 → ライセンスキーを発行 → 完了画面で表示（決済なしの簡易版）</td></tr>
 </tbody>
 </table>
 <ul>
-<li>5 は Day 2 では<strong>決済なし・メールアドレス入力のみ</strong>でキーを発行する流れまでを実装する。「Stripe 購入 → Webhook（決済完了などのイベントを、外部サービスが自分の API の URL に通知してくる仕組み）で自動発行」への差し替えは Day 3 オプション [8]。</li>
+<li>5 は Section 2 では<strong>決済なし・メールアドレス入力のみ</strong>でキーを発行する流れまでを実装する。「Stripe 購入 → Webhook（決済完了などのイベントを、外部サービスが自分の API の URL に通知してくる仕組み）で自動発行」への差し替えは Section 3 オプション [8]。</li>
 </ul>
 
 <hr>
@@ -316,41 +316,41 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 </figure>
 
 <table>
-<thead><tr><th>Day</th><th>テーマ</th><th>内容</th></tr></thead>
+<thead><tr><th>Section</th><th>テーマ</th><th>内容</th></tr></thead>
 <tbody>
-<tr><td><strong>Day 1</strong></td><td>つくる</td><td>目的・技術紹介 / 環境確認 / [1] デザイン / [2] フロント / [3] フロントデプロイ</td></tr>
-<tr><td><strong>Day 2</strong></td><td>つなぐ・公開する</td><td>[4] バック / [5] 自動テスト / [6] 再デプロイ（Day 1 と同じ URL に API を統合）</td></tr>
-<tr><td><strong>Day 3</strong></td><td>育てる</td><td>オプション課題 [7]〜[13] / ラップアップ・発表会</td></tr>
+<tr><td><strong>Section 1</strong></td><td>つくる</td><td>目的・技術紹介 / 環境確認 / [1] デザイン / [2] フロント / [3] フロントデプロイ</td></tr>
+<tr><td><strong>Section 2</strong></td><td>つなぐ・公開する</td><td>[4] バック / [5] 自動テスト / [6] 再デプロイ（Section 1 と同じ URL に API を統合）</td></tr>
+<tr><td><strong>Section 3</strong></td><td>育てる</td><td>オプション課題 [7]〜[13] / ラップアップ・発表会</td></tr>
 </tbody>
 </table>
 
 <h3>ゴール（完了条件）</h3>
 <table>
-<thead><tr><th>#</th><th>タスク</th><th>Day</th><th>難易度</th><th>完了条件</th></tr></thead>
+<thead><tr><th>#</th><th>タスク</th><th>Section</th><th>難易度</th><th>完了条件</th></tr></thead>
 <tbody>
-<tr><td><strong>[1]</strong></td><td>デザイン</td><td>Day 1</td><td></td><td>LP の配色・トーン・セクション構成が決まり、デザインを zip で書き出せる</td></tr>
-<tr><td><strong>[2]</strong></td><td>フロント</td><td>Day 1</td><td></td><td><code>npm run dev</code> の表示 URL で表示崩れなし／React Router で4ページ遷移できる</td></tr>
-<tr><td><strong>[3]</strong></td><td>フロントデプロイ</td><td>Day 1</td><td></td><td><code>https://&lt;name&gt;.workers.dev</code> で LP が表示され、URL を他の参加者と共有できる</td></tr>
-<tr><td><strong>[4]</strong></td><td>バック</td><td>Day 2</td><td></td><td>フロントと API がつながりローカルで一通りの機能が動く。<code>/api/me</code> は未認証で弾かれ、<code>/api/contact</code> は不正入力で弾かれる</td></tr>
-<tr><td><strong>[5]</strong></td><td>自動テスト</td><td>Day 2</td><td></td><td><code>npm test</code> がバック・フロントとも グリーン（それぞれで実行）。純粋関数・正常系・異常系・未認証テスト各1本以上＋フロントの画面テスト1本</td></tr>
-<tr><td><strong>[6]</strong></td><td>デプロイ</td><td>Day 2</td><td></td><td>自分の <code>https://&lt;name&gt;.workers.dev</code> で LP が表示され <code>/mypage</code> も 404 にならない</td></tr>
-<tr><td><strong>[7]</strong></td><td>メール（Resend）</td><td>Day 3</td><td>★☆☆</td><td>問い合わせ受付やライセンス送付などのメールを実装し、自分宛に届くことを確認できる</td></tr>
-<tr><td><strong>[8]</strong></td><td>決済（Stripe）</td><td>Day 3</td><td>★★★</td><td>Stripe Checkout → Webhook でライセンスキー自動発行。テスト用カードでマイページにライセンスキーが表示されること</td></tr>
-<tr><td><strong>[9]</strong></td><td>ID 連携（Clerk）</td><td>Day 3</td><td>★★☆</td><td>未ログインで <code>/mypage</code> に入れない・<code>/api/me</code> がログイン必須になっている</td></tr>
-<tr><td><strong>[10]</strong></td><td>運用保守（Cloudflare ログ確認・スキル化）</td><td>Day 3</td><td>★☆☆</td><td><code>wrangler tail</code> でログ確認できる・運用スキルが1つ動作する</td></tr>
-<tr><td><strong>[11]</strong></td><td>セキュリティ（SonarCloud 静的解析・脆弱性レビュー）</td><td>Day 3</td><td>★★★</td><td>認証境界・IDOR・機密マスクを点検し、問題を最低1つ修正（余裕があれば回帰テストを追加）</td></tr>
-<tr><td><strong>[12]</strong></td><td>テスト設計（何をテストすべきか自分で決める）</td><td>Day 3</td><td>★★★</td><td>主要機能を1つ選び「こう動くべき」を自分で仕様化→期待動作表→テストまで設計。AI に丸投げせず、壊すとテストが赤くなることまで確認できる</td></tr>
-<tr><td><strong>[13]</strong></td><td>自動デプロイ（Cloudflare Workers Builds）</td><td>Day 3</td><td>★★☆</td><td>git push だけで自動デプロイされる設定を完了し、軽微な変更の push で Cloudflare ダッシュボードに新しいビルドが自動で現れることを確認できる</td></tr>
+<tr><td><strong>[1]</strong></td><td>デザイン</td><td>Section 1</td><td></td><td>LP の配色・トーン・ページ構成が決まり、デザインを zip で書き出せる</td></tr>
+<tr><td><strong>[2]</strong></td><td>フロント</td><td>Section 1</td><td></td><td><code>npm run dev</code> の表示 URL で表示崩れなし／React Router で4ページ遷移できる</td></tr>
+<tr><td><strong>[3]</strong></td><td>フロントデプロイ</td><td>Section 1</td><td></td><td><code>https://&lt;name&gt;.workers.dev</code> で LP が表示され、URL を他の参加者と共有できる</td></tr>
+<tr><td><strong>[4]</strong></td><td>バック</td><td>Section 2</td><td></td><td>フロントと API がつながりローカルで一通りの機能が動く。<code>/api/me</code> は未認証で弾かれ、<code>/api/contact</code> は不正入力で弾かれる</td></tr>
+<tr><td><strong>[5]</strong></td><td>自動テスト</td><td>Section 2</td><td></td><td><code>npm test</code> がバック・フロントとも グリーン（それぞれで実行）。純粋関数・正常系・異常系・未認証テスト各1本以上＋フロントの画面テスト1本</td></tr>
+<tr><td><strong>[6]</strong></td><td>デプロイ</td><td>Section 2</td><td></td><td>自分の <code>https://&lt;name&gt;.workers.dev</code> で LP が表示され <code>/mypage</code> も 404 にならない</td></tr>
+<tr><td><strong>[7]</strong></td><td>メール（Resend）</td><td>Section 3</td><td>★☆☆</td><td>問い合わせ受付やライセンス送付などのメールを実装し、自分宛に届くことを確認できる</td></tr>
+<tr><td><strong>[8]</strong></td><td>決済（Stripe）</td><td>Section 3</td><td>★★★</td><td>Stripe Checkout → Webhook でライセンスキー自動発行。テスト用カードでマイページにライセンスキーが表示されること</td></tr>
+<tr><td><strong>[9]</strong></td><td>ID 連携（Clerk）</td><td>Section 3</td><td>★★☆</td><td>未ログインで <code>/mypage</code> に入れない・<code>/api/me</code> がログイン必須になっている</td></tr>
+<tr><td><strong>[10]</strong></td><td>運用保守（Cloudflare ログ確認・スキル化）</td><td>Section 3</td><td>★☆☆</td><td><code>wrangler tail</code> でログ確認できる・運用スキルが1つ動作する</td></tr>
+<tr><td><strong>[11]</strong></td><td>セキュリティ（SonarCloud 静的解析・脆弱性レビュー）</td><td>Section 3</td><td>★★★</td><td>認証境界・IDOR・機密マスクを点検し、問題を最低1つ修正（余裕があれば回帰テストを追加）</td></tr>
+<tr><td><strong>[12]</strong></td><td>テスト設計（何をテストすべきか自分で決める）</td><td>Section 3</td><td>★★★</td><td>主要機能を1つ選び「こう動くべき」を自分で仕様化→期待動作表→テストまで設計。AI に丸投げせず、壊すとテストが赤くなることまで確認できる</td></tr>
+<tr><td><strong>[13]</strong></td><td>自動デプロイ（Cloudflare Workers Builds）</td><td>Section 3</td><td>★★☆</td><td>git push だけで自動デプロイされる設定を完了し、軽微な変更の push で Cloudflare ダッシュボードに新しいビルドが自動で現れることを確認できる</td></tr>
 </tbody>
 </table>
 <blockquote class="key">
-<p><strong>必達は [1]〜[6]（Day 1〜2 全員）</strong>。<br><strong>Day 3 の [7]〜[13] は任意</strong>(やらない／1つだけ、も可)。</p>
+<p><strong>必達は [1]〜[6]（Section 1〜2 全員）</strong>。<br><strong>Section 3 の [7]〜[13] は任意</strong>(やらない／1つだけ、も可)。</p>
 </blockquote>
 
 <hr>
 
-<h2 id="s-time">タイムテーブル目安（各日 2 時間 × 3 日 ＝ 計 6 時間）</h2>
-<h3>Day 1: つくる — 環境確認 + デザイン + フロント + デプロイ</h3>
+<h2 id="s-time">タイムテーブル目安（各セクション 2 時間 × 3 ＝ 計 6 時間）</h2>
+<h3>Section 1: つくる — 環境確認 + デザイン + フロント + デプロイ</h3>
 <table>
 <thead><tr><th>経過</th><th>内容</th></tr></thead>
 <tbody>
@@ -363,7 +363,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 </tbody>
 </table>
 
-<h3>Day 2: つなぐ・公開する — バック＋テスト＋デプロイ（<strong>ここまでが必達</strong>）</h3>
+<h3>Section 2: つなぐ・公開する — バック＋テスト＋デプロイ（<strong>ここまでが必達</strong>）</h3>
 <table>
 <thead><tr><th>経過</th><th>内容</th></tr></thead>
 <tbody>
@@ -371,26 +371,26 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <tr><td>0:10–1:05</td><td>[4] バック作成（API 実装 → フロント結合 → 配信一本化＝フロントと API を Worker 一本にまとめる）</td></tr>
 <tr><td>1:05–1:35</td><td>[5] 自動テスト（正常系・異常系・未認証テストを最低1本ずつ）</td></tr>
 <tr><td>1:35–1:55</td><td>[6] デプロイ（wrangler deploy + D1 マイグレーション → workers.dev URL で動作確認・再デプロイ） 🎉</td></tr>
-<tr><td>1:55–2:00</td><td>クロージング: 到達確認・Day 3 課題選択（やる人だけ）</td></tr>
+<tr><td>1:55–2:00</td><td>クロージング: 到達確認・Section 3 課題選択（やる人だけ）</td></tr>
 </tbody>
 </table>
 
-<h3>Day 3: 育てる（オプション課題 ＋ 発表会）</h3>
+<h3>Section 3: 育てる（オプション課題 ＋ 発表会）</h3>
 <table>
 <thead><tr><th>経過</th><th>内容</th></tr></thead>
 <tbody>
 <tr><td>0:00–0:10</td><td>オプション課題のガイダンス（必須ではない・やらない・1つだけ、も可）</td></tr>
-<tr><td>0:10–1:30</td><td>自由作業: Day 1〜2 の残タスクを続ける、またはオプション課題（[7]〜[13] から1つ）——どちらでも可</td></tr>
+<tr><td>0:10–1:30</td><td>自由作業: Section 1〜2 の残タスクを続ける、またはオプション課題（[7]〜[13] から1つ）——どちらでも可</td></tr>
 <tr><td>1:30–2:00</td><td><strong>最終発表会（1人3分）＋ ラップアップ・アンケート</strong></td></tr>
 </tbody>
 </table>
-<p class="note">各日、固定の休憩枠は設けない。<strong>AI の生成待ち（[1] の3案生成・[4] の実装生成など数分かかる場面）を小休止・雑談に充てる</strong>。長い生成中は席を立ってよい。</p>
-<p class="note">進み方は各自のペースでよく、予定より早く終わった人はそのまま次の実装に進んでよい。また <strong>Day 3 の [7]〜[13] はオプション課題</strong>で、この時間は各自が資料を読みながら選んで進める形になる。わからないことがあれば、講師にチャット等で質問してほしい。</p>
+<p class="note">各セクションとも、固定の休憩枠は設けない。<strong>AI の生成待ち（[1] の3案生成・[4] の実装生成など数分かかる場面）を小休止・雑談に充てる</strong>。長い生成中は席を立ってよい。</p>
+<p class="note">進み方は各自のペースでよく、予定より早く終わった人はそのまま次の実装に進んでよい。また <strong>Section 3 の [7]〜[13] はオプション課題</strong>で、この時間は各自が資料を読みながら選んで進める形になる。わからないことがあれば、講師にチャット等で質問してほしい。</p>
 <hr>
 
 <h2 id="s05">使う技術の紹介</h2>
 <figure class="diagram">
-<img src="img/tech_stack.svg" alt="技術スタック一覧: Claude Design, Claude Code, Vite+React+TS, Tailwind CSS v4+shadcn/ui, Hono, Cloudflare Workers, Cloudflare D1, Vitest と Day3オプション">
+<img src="img/tech_stack.svg" alt="技術スタック一覧: Claude Design, Claude Code, Vite+React+TS, Tailwind CSS v4+shadcn/ui, Hono, Cloudflare Workers, Cloudflare D1, Vitest と Section 3 オプション">
 </figure>
 <table>
 <thead><tr><th>カテゴリ</th><th>技術</th><th>選定理由（一言）</th></tr></thead>
@@ -403,7 +403,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <tr><td>実行基盤</td><td>Cloudflare Workers</td><td>無料枠で本番公開まで行ける</td></tr>
 <tr><td>DB</td><td>Cloudflare D1</td><td>SQLite データベース。Workers にビルトインでセットアップ最小</td></tr>
 <tr><td>テスト</td><td>Vitest（+ vitest-pool-workers）</td><td>フロント・バックで統一できる</td></tr>
-<tr><td>（Day 3）</td><td>Resend / Stripe / Clerk / SonarCloud</td><td>Day 3 のオプション課題で登場</td></tr>
+<tr><td>（Section 3）</td><td>Resend / Stripe / Clerk / SonarCloud</td><td>Section 3 のオプション課題で登場</td></tr>
 </tbody>
 </table>
 
@@ -451,7 +451,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 </ul>
 <h4>④ 当日インストールするツール</h4>
 <ul>
-<li><strong>Stripe CLI</strong>（<strong>Day 3 [8] 決済課題をやる人のみ必要</strong>）:<ul><li>macOS は <code>brew install stripe/stripe-cli/stripe</code></li><li>Windows は <code>winget install Stripe.StripeCLI</code></li></ul></li>
+<li><strong>Stripe CLI</strong>（<strong>Section 3 [8] 決済課題をやる人のみ必要</strong>）:<ul><li>macOS は <code>brew install stripe/stripe-cli/stripe</code></li><li>Windows は <code>winget install Stripe.StripeCLI</code></li></ul></li>
 </ul>
 
 <hr>
@@ -461,7 +461,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <ul>
 <li>最初に <strong><code>dev</code> ブランチを切り、作業はすべて <code>dev</code></strong> で進める</li>
 <li>区切りのいいところで<strong>こまめに commit / push</strong>（環境が壊れても作業を失わないための保険）</li>
-<li><strong>各日のクロージングで「dev に push 済みか」を必ず確認</strong>（翌日のキャッチアップが楽になる）</li>
+<li><strong>各セクションのクロージングで「dev に push 済みか」を必ず確認</strong>（次のセクションのキャッチアップが楽になる）</li>
 <li><code>dev</code> → <code>main</code> への<strong>マージは、セキュリティ課題（SonarCloud 解析）に着手する前に行う</strong>（SonarCloud 無料版は <code>main</code> ブランチしか解析しないため）。<code>main</code> ＝ 公開・解析対象の安定版。セキュリティ課題をやらない場合は、最後に一度マージして締めればよい（任意）</li>
 <li>⚠️ <a href="#s13">[13]</a> の自動デプロイ（Workers Builds）で Production branch を <code>main</code> に設定している場合、この <code>dev</code> → <code>main</code> マージはそのまま本番デプロイになる。SonarCloud の解析結果（直すべき点）が出るのはマージ後なので、未修正の脆弱性が一時的に公開されることになる。気になる場合は、セキュリティ課題 <a href="#s11">[11]</a> の対応が終わってから main にマージ・pushする運用に変えるとよい</li>
 </ul>
@@ -473,14 +473,14 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <p><code>main</code> へのマージ（セキュリティ課題の前、またはやらない場合は最後に）:</p>
 <pre><code>dev ブランチを main にマージして、main をリモートに push して。</code></pre>
 <ul>
-<li><strong>秘密ファイル（<code>.dev.vars</code>＝ローカル開発用のシークレット置き場。Day 2 [4] で作る——等）は <code>.gitignore</code> で必ず除外</strong>してコミットしない</li>
+<li><strong>秘密ファイル（<code>.dev.vars</code>＝ローカル開発用のシークレット置き場。Section 2 [4] で作る——等）は <code>.gitignore</code> で必ず除外</strong>してコミットしない</li>
 </ul>
 
 <hr>
 
 </section><!-- /ps-overview -->
-<section class="page-section" id="ps-day1">
-<h1 id="day1">Day 1: つくる</h1>
+<section class="page-section" id="ps-section1">
+<h1 id="section1">Section 1: つくる</h1>
 
 <h2 id="s-env">環境確認タイム</h2>
 <ul>
@@ -488,14 +488,14 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <li><strong>Claude Code がログイン済み</strong>で起動できるか（<code>claude</code> を叩いて会話できる状態か）</li>
 <li><strong>Claude Design</strong> に claude.ai でアクセスできるか（<a target="_blank" rel="noopener" href="https://claude.ai/design">https://claude.ai/design</a> にブラウザでログイン確認）</li>
 <li>GitHub で自分のアカウントに新規リポジトリを作成し、ローカルに clone できるか（[2] で使うリポジトリは当日作成する）</li>
-<li>Cloudflare アカウントにログインできるか（<a target="_blank" rel="noopener" href="https://dash.cloudflare.com/">https://dash.cloudflare.com/</a>／<code>wrangler login</code> は Day 1 の [3] フロントデプロイで実行します）</li>
+<li>Cloudflare アカウントにログインできるか（<a target="_blank" rel="noopener" href="https://dash.cloudflare.com/">https://dash.cloudflare.com/</a>／<code>wrangler login</code> は Section 1 の [3] フロントデプロイで実行します）</li>
 </ul>
 
 <hr>
 
 <h2 id="s06">Claude Code のセキュリティ対策（最初に1回）</h2>
 <blockquote class="key">
-<p>大前提（3日間ずっと効く）: <strong>秘密情報（API キー・トークン）は Claude への指示にも会話にも貼らない</strong>。<code>.dev.vars</code> に入れて参照させる。AI が書いたコードも<strong>読まずに承認しない</strong>。</p>
+<p>大前提（全セクションを通じて効く）: <strong>秘密情報（API キー・トークン）は Claude への指示にも会話にも貼らない</strong>。<code>.dev.vars</code> に入れて参照させる。AI が書いたコードも<strong>読まずに承認しない</strong>。</p>
 </blockquote>
 
 <h3>秘密を Claude に読ませない設定</h3>
@@ -522,7 +522,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 </ul>
 <figure class="diagram">
 <img src="img/permissionDenied.png" alt="deny の発動例: .dev.vars の読み取りを Claude に頼んでも拒否される画面">
-<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">deny の発動例: 秘密ファイル（<code>.dev.vars</code>）を「読んで」と頼んでも Claude が読み取りを拒否する様子。※ 実際に自分で試せるのは <code>.dev.vars</code> ができる Day 2 [4] 以降。</figcaption>
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">deny の発動例: 秘密ファイル（<code>.dev.vars</code>）を「読んで」と頼んでも Claude が読み取りを拒否する様子。※ 実際に自分で試せるのは <code>.dev.vars</code> ができる Section 2 [4] 以降。</figcaption>
 </figure>
 
 <h3>security-guidance プラグインを入れておく</h3>
@@ -541,7 +541,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 </figure>
 <p>選択したら、有効化のため次を実行:</p>
 <pre><code>/reload-plugins</code></pre>
-<p class="note">※ 見つからない場合はスキップ可。Day 1〜2 の本編には影響しません。</p>
+<p class="note">※ 見つからない場合はスキップ可。Section 1〜2 の本編には影響しません。</p>
 <ul>
 <li>インストール後、リストに <code>security-guidance</code> が出るか確認する:
 <pre><code>/plugin list</code></pre></li>
@@ -580,7 +580,7 @@ audit=true</code></pre>
 <tr><td>FAQ</td><td>グローバルナビ</td><td><code>/</code>（FAQ セクションへスクロール）</td></tr>
 <tr><td>お問い合わせ</td><td>グローバルナビ</td><td><code>/contact</code></td></tr>
 <tr><td>マイページ</td><td>グローバルナビ</td><td><code>/mypage</code>（メールアドレス入力 → 簡易ログイン後に表示）</td></tr>
-<tr><td><strong>購入する</strong></td><td>グローバルナビ・ヒーローの行動を促すボタン（CTA）</td><td><code>/</code>（料金セクション）→ メールアドレス入力フォーム → Day 3 [8] 後は Stripe Checkout（Stripe がホストする決済ページ）に差し替え</td></tr>
+<tr><td><strong>購入する</strong></td><td>グローバルナビ・ヒーローの行動を促すボタン（CTA）</td><td><code>/</code>（料金セクション）→ メールアドレス入力フォーム → Section 3 [8] 後は Stripe Checkout（Stripe がホストする決済ページ）に差し替え</td></tr>
 </tbody>
 </table>
 <p class="warn">⚠️ <strong>行動を促すボタン（CTA）のテキストは「購入する」</strong>。「無料で試す」は使わない。クリック先はコンタクトページではなく料金セクション（または購入画面）。</p>
@@ -591,14 +591,14 @@ audit=true</code></pre>
 <p>フロント・バックは1つのリポジトリ（モノレポ）に <code>frontend/</code>・<code>backend/</code> として並べる。最終的には <code>backend/</code> の Worker が両方まとめて配信する（<a href="#s4-step5">[4] 手順5</a>）。</p>
 <pre id="repo-tree"><code>repo-root/
 ├── .claude/
-│   └── settings.json        # Claude Code の deny 設定（Day 1 セキュリティ対策）
-├── .npmrc                   # npm パッケージの取り込み制限（Day 1 セキュリティ対策）
+│   └── settings.json        # Claude Code の deny 設定（Section 1 セキュリティ対策）
+├── .npmrc                   # npm パッケージの取り込み制限（Section 1 セキュリティ対策）
 ├── SCREEN_SPEC.md           # 画面仕様（[2] 着手前に作る）
 ├── frontend/                # Vite + React + TypeScript（[2]）
 │   ├── src/
 │   │   └── pages/           # /, /contact, /mypage, /success
 │   ├── .env                 # フロント用の公開可能な変数（[9] Clerk の Publishable key）
-│   ├── wrangler.jsonc       # Day 1 単独デプロイ用（[3]）。[6]で統合後は使わない
+│   ├── wrangler.jsonc       # Section 1 単独デプロイ用（[3]）。[6]で統合後は使わない
 │   └── package.json
 ├── backend/                 # Hono + Cloudflare Workers（[4]）
 │   ├── src/
@@ -732,7 +732,7 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 <hr>
 
 <h2 id="s2">[2] Claude Code でフロント作成</h2>
-<p><strong>ゴール:</strong> デザイン通りの SPA（Single Page Application＝1枚の <code>index.html</code> を JavaScript が書き換えて全ページを表示する作り）の全画面がローカル（<code>npm run dev</code> で起動する URL）で動く（Day 1 終了時の到達点）</p>
+<p><strong>ゴール:</strong> デザイン通りの SPA（Single Page Application＝1枚の <code>index.html</code> を JavaScript が書き換えて全ページを表示する作り）の全画面がローカル（<code>npm run dev</code> で起動する URL）で動く（Section 1 終了時の到達点）</p>
 
 <h3 id="s2-spec">まず: SCREEN_SPEC.md を作る</h3>
 <p>Claude Code にプロンプトを渡す前に、リポジトリのルートに <code>SCREEN_SPEC.md</code> を作る。以下は玄米茶の内容をそのまま書いたもの。これをコピーして、<strong>自分のサービスの内容に適宜書き換える</strong>：</p>
@@ -784,8 +784,8 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 ## /success (購入完了)
 - メールアドレス入力後の購入完了メッセージ ＋ 発行されたライセンスキー表示 ＋ マイページへのリンク
 
-## 購入フロー（Day 2・決済なし簡易版）
-- 「購入する」→ メールアドレス入力 → `POST` でライセンスキー発行 → `/success` で表示（Day 3 [8] で Stripe に差し替え）</code></pre>
+## 購入フロー（Section 2・決済なし簡易版）
+- 「購入する」→ メールアドレス入力 → `POST` でライセンスキー発行 → `/success` で表示（Section 3 [8] で Stripe に差し替え）</code></pre>
 </details>
 <p class="note">ページ自体を増減してもよい（例: マイページの代わりにダッシュボードにする、等）。書き換えたら、下の Claude Code へのプロンプトに「この <code>SCREEN_SPEC.md</code> を参考に実装して」と一言添えて渡す。</p>
 
@@ -819,7 +819,7 @@ wrangler.jsonc も作って（name は &lt;自分で決めた名前&gt; にし�
 <li>API はまだ無い。この段階では<strong>モックデータで画面が動く</strong>状態を作る、と割り切る</li>
 </ul>
 
-<h3 class="done">✅ 完了の定義（Day 1 の到達点）</h3>
+<h3 class="done">✅ 完了の定義（Section 1 の到達点）</h3>
 <p class="note"><code>npm run dev</code> が使うポートは環境によって変わる（使用中のポートがあれば自動で別のポートが割り当てられる）。<strong>ターミナルの出力に表示された URL</strong>を開くこと。</p>
 <ul>
 <li><code>npm run dev</code> を実行し、表示された URL を開くと <strong>LP が崩れずに表示される</strong>（Tailwind が効いている）</li>
@@ -828,10 +828,10 @@ wrangler.jsonc も作って（name は &lt;自分で決めた名前&gt; にし�
 <li>完了したら Claude Code に依頼する:<pre><code>フロント実装の作業をコミットして dev ブランチに push して。</code></pre></li>
 </ul>
 
-<h2 id="s3">[3] Day 1 フロントデプロイ（Cloudflare Workers）</h2>
-<p><strong>ゴール:</strong> フロントが完成したらすぐに公開 URL を手に入れる（バックは Day 2 で繋ぐ）</p>
+<h2 id="s3">[3] Section 1 フロントデプロイ（Cloudflare Workers）</h2>
+<p><strong>ゴール:</strong> フロントが完成したらすぐに公開 URL を手に入れる（バックは Section 2 で繋ぐ）</p>
 <blockquote>
-<p>Cloudflare Workers は静的ファイル（HTML・CSS・JS・画像など、ビルド済みでそのまま返す配信物）も配信できる。今日はフロントだけを Worker としてデプロイし、Day 2 で API を追加して同じ Worker に統合する。デプロイ先は最初から <code>workers.dev</code> の 1 URL に統一する。</p>
+<p>Cloudflare Workers は静的ファイル（HTML・CSS・JS・画像など、ビルド済みでそのまま返す配信物）も配信できる。ここではフロントだけを Worker としてデプロイし、Section 2 で API を追加して同じ Worker に統合する。デプロイ先は最初から <code>workers.dev</code> の 1 URL に統一する。</p>
 </blockquote>
 <h3>流れ</h3>
 <p class="note">手順1〜2（インストール〜 <code>whoami</code>）はブラウザ連携とアカウント確認があるため自分のターミナルで打つ。手順3〜4（ビルド〜デプロイ）は <strong>Claude Code に「ビルドしてデプロイして」と任せてよい</strong>（下のコマンドは自分で打つ場合の参考）。</p>
@@ -854,38 +854,38 @@ wrangler whoami    # ログインできたか／想定アカウントかを確�
 <li>発行された URL をブラウザで開いて LP が表示されることを確認 🎉（実際の URL は <code>https://&lt;name&gt;.&lt;アカウントのサブドメイン&gt;.workers.dev</code> の形。本資料では以降、短く <code>https://&lt;name&gt;.workers.dev</code> と表記する）</li>
 <li>URL をチャットに貼って共有する</li>
 </ol>
-<p class="note">Day 1 のデプロイは API が無いのでデータはモック表示のまま。Day 2 で API を追加して同じ URL のまま再デプロイする。</p>
+<p class="note">Section 1 のデプロイは API が無いのでデータはモック表示のまま。Section 2 で API を追加して同じ URL のまま再デプロイする。</p>
 
-<h3 class="done">✅ Day 1 の到達点</h3>
+<h3 class="done">✅ Section 1 の到達点</h3>
 <ul>
 <li><code>npm run dev</code> の出力に表示された URL で LP・全ページが表示できる</li>
 <li>自分の <code>https://&lt;name&gt;.workers.dev</code>（公開 URL）で LP が表示できる</li>
 <li>完了したら Claude Code に依頼する:<pre><code>フロントデプロイの作業をコミットして dev ブランチに push して。</code></pre></li>
 </ul>
 
-<h3>Day 1 クロージング</h3>
+<h3>Section 1 クロージング</h3>
 <ul>
 <li>希望者数名が自分の公開 URL を画面共有で紹介（5分）</li>
-<li>Day 2 は API を追加して、同じ Worker URL のまま再デプロイする</li>
+<li>Section 2 は API を追加して、同じ Worker URL のまま再デプロイする</li>
 <li><code>.gitignore</code> に <code>node_modules</code> と <code>dist</code> が含まれているか確認する</li>
 <li>フロントのリポジトリを dev ブランチで push する（詳細は <a href="#s07">Git ブランチ</a> 参照）</li>
 </ul>
 
 <hr>
 
-</section><!-- /ps-day1 -->
-<section class="page-section" id="ps-day2">
-<h1 id="day2">Day 2: つなぐ・公開する</h1>
+</section><!-- /ps-section1 -->
+<section class="page-section" id="ps-section2">
+<h1 id="section2">Section 2: つなぐ・公開する</h1>
 
 <h2 id="s4">[4] Claude Code でバック作成</h2>
 <p><strong>ゴール:</strong> フロントと API がつながり、ローカルで一通りの機能が動く</p>
 
-<p><strong>このステップでやること（全体像）</strong> — Day 1 で作った「見た目だけ動くフロント」に、中身（API とデータ）をつなぐ。やることは大きく4つ:</p>
+<p><strong>このステップでやること（全体像）</strong> — Section 1 で作った「見た目だけ動くフロント」に、中身（API とデータ）をつなぐ。やることは大きく4つ:</p>
 <ol>
 <li><strong>API を作る</strong> — <code>backend/</code> に問い合わせ受付・ライセンス発行などの API を実装する</li>
 <li><strong>データの入れ物を用意</strong> — 保存用の DB（D1）を作る</li>
 <li><strong>フロントと API を1つにまとめる</strong> — 別々に動いていた2つを Worker 一本に統合し、フロントのモック表示を本物の API 呼び出しに差し替える</li>
-<li><strong>ログインは今は簡易版</strong> — メールアドレスを信じるだけの「モック認証」で進める（本物のログインは Day 3 [9] で差し替え）</li>
+<li><strong>ログインは今は簡易版</strong> — メールアドレスを信じるだけの「モック認証」で進める（本物のログインは Section 3 [9] で差し替え）</li>
 </ol>
 
 <blockquote class="key">
@@ -920,7 +920,7 @@ wrangler whoami    # ログインできたか／想定アカウントかを確�
 <pre><code>Cloudflare の D1 を作成して、wrangler.jsonc に書き込んで。
 なお、wrangler.jsonc の name はフロントの wrangler.jsonc と同じにして。</code></pre>
     <blockquote>
-    <p>name をフロントと同じにする理由: Day 2 でバックをデプロイすると<strong>同じ name の Worker を上書き</strong>する形になり、Day 1 で手に入れた URL（<code>https://&lt;name&gt;.workers.dev</code>）がそのまま引き継がれる。name が違うと別 URL になってしまう。</p>
+    <p>name をフロントと同じにする理由: Section 2 でバックをデプロイすると<strong>同じ name の Worker を上書き</strong>する形になり、Section 1 で手に入れた URL（<code>https://&lt;name&gt;.workers.dev</code>）がそのまま引き継がれる。name が違うと別 URL になってしまう。</p>
     </blockquote>
   </li>
   </ul>
@@ -934,8 +934,8 @@ wrangler whoami    # ログインできたか／想定アカウントかを確�
   <li>この題材で要る機能の例:
     <ul>
     <li>問い合わせを受け付けて D1 に保存する</li>
-    <li>メールアドレスを受け取ってライセンスキーを発行する（決済なし・Day 2 の簡易版。Day 3 [8] で Stripe 購入 → Webhook 発行に差し替え）</li>
-    <li>メールアドレスに紐づく情報を D1 から返す（フロントは <code>x-user-email</code> ヘッダでメールを送る）。<strong>これが Day 2 の「簡易ログイン（モック認証）」</strong>——ヘッダのメールを<strong>検証せずそのまま信じて</strong>本人として扱う（該当が無ければ 401／404）。本物の認証は Day 3 [9] Clerk で差し替える</li>
+    <li>メールアドレスを受け取ってライセンスキーを発行する（決済なし・Section 2 の簡易版。Section 3 [8] で Stripe 購入 → Webhook 発行に差し替え）</li>
+    <li>メールアドレスに紐づく情報を D1 から返す（フロントは <code>x-user-email</code> ヘッダでメールを送る）。<strong>これが Section 2 の「簡易ログイン（モック認証）」</strong>——ヘッダのメールを<strong>検証せずそのまま信じて</strong>本人として扱う（該当が無ければ 401／404）。本物の認証は Section 3 [9] Clerk で差し替える</li>
     <li>ライセンスキーを検証する</li>
     </ul>
   </li>
@@ -975,7 +975,7 @@ Claude Code に依頼する:
   <ul>
   <li>本番では同じ Worker から静的ファイル（フロント）と API の両方を配信する形にする</li>
   <li>フロントと API が同じ住所になるので、<strong>別オリジン間通信の許可設定（CORS）が不要</strong>になり、URL も1本に統一される</li>
-  <li>統合後は<strong>デプロイを <code>backend/</code> から</strong>行う（Day 1 に使った <code>frontend/</code> の単独デプロイはここで役目を終える）。実際のデプロイ手順は <a href="#s6">[6]</a></li>
+  <li>統合後は<strong>デプロイを <code>backend/</code> から</strong>行う（Section 1 に使った <code>frontend/</code> の単独デプロイはここで役目を終える）。実際のデプロイ手順は <a href="#s6">[6]</a></li>
   </ul>
   Claude Code に依頼する:
 <pre><code>frontend/ をビルドして backend/ の Worker から配信できるようにして。
@@ -1020,10 +1020,10 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 
 <h3>ポイント</h3>
 <ul>
-<li>認証（Clerk）・決済（Stripe）・メール（Resend）は Day 2 では深追いしない → Day 3 のオプション課題 [7][8][9] で扱う</li>
-<li>Day 2 のログイン周りはモック認証でよい（<a href="#s4-step3">手順3</a>）。後から Clerk に差し替えやすい作りにしておくと教材としても良い</li>
+<li>認証（Clerk）・決済（Stripe）・メール（Resend）は Section 2 では深追いしない → Section 3 のオプション課題 [7][8][9] で扱う</li>
+<li>Section 2 のログイン周りはモック認証でよい（<a href="#s4-step3">手順3</a>）。後から Clerk に差し替えやすい作りにしておくと教材としても良い</li>
 <li>秘密情報は <code>.dev.vars</code>（ローカル）/ <code>wrangler secret put</code>（本番）で管理する。コードへのハードコードや AI への指示文への貼り付けは禁止</li>
-<li>Day 2 本編は<strong>環境変数・シークレット無しで動く</strong>（Stripe / Clerk / Resend のキーが要るのは Day 3 のオプションから）</li>
+<li>Section 2 本編は<strong>環境変数・シークレット無しで動く</strong>（Stripe / Clerk / Resend のキーが要るのは Section 3 のオプションから）</li>
 </ul>
 
 <h3>push 前にレビューをかける</h3>
@@ -1052,12 +1052,12 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <p><strong>ゴール:</strong> AI が書いたコードを<strong>検証</strong>してデプロイに備える。<strong>2段構え</strong>で進める：<strong>① レビュー</strong>（Claude Code のコマンドで差分を点検）→ <strong>② 自動テスト</strong>（<code>npm test</code> で「正しいリクエストは通る・壊れたリクエストは弾く・ログインなしで保護 API に入れない」を毎回自動確認）。② はバックの API に加え<strong>フロントの主要画面も1本</strong>テストする（どちらも同じ「戦略 → レビュー → 実装」に乗せる）。デプロイ前にここまで通す。</p>
 
 <h3>① レビュー: Claude Code のコマンドで点検する</h3>
-<p>ローカルの差分を、Claude Code の組み込みコマンド（最初から使える <code>/名前</code> のコマンド。スキルの自作は Day 3 [10] で扱う）で点検する。ローカルの差分に対して動くので <strong>git push は不要</strong>。</p>
+<p>ローカルの差分を、Claude Code の組み込みコマンド（最初から使える <code>/名前</code> のコマンド。スキルの自作は Section 3 [10] で扱う）で点検する。ローカルの差分に対して動くので <strong>git push は不要</strong>。</p>
 <p class="note">⚙️ <strong>Claude Code の Effort（どれだけ深く考えるか）はトークン消費に直結する。</strong>レビューはコード全体を読むため特に消費が大きい。<strong>既定の Medium で実行するのを推奨</strong>（Team standard などトークンに余裕がないプランで途中枯渇を防ぐため）。<strong>Team Premium / Max などトークンに余裕があるプランの人は High 以上に上げてよい。</strong></p>
 <ul>
 <li><code>/code-review</code> — コードの正しさ・簡潔さ・効率のレビュー。バグや冗長な実装を指摘してくれる</li>
 <li><code>/security-review</code> — セキュリティ観点のレビュー。SQL インジェクション等・認証の抜け・シークレットの扱いなどを確認してくれる</li>
-<li><strong>security-guidance</strong>（Day 1 で導入したプラグイン）— 編集・コミットのたびに<strong>自動で</strong>セキュリティ点検が走っている（自分で実行する必要はない。<a href="#s06">Day 1 のセキュリティ対策参照</a>）</li>
+<li><strong>security-guidance</strong>（Section 1 で導入したプラグイン）— 編集・コミットのたびに<strong>自動で</strong>セキュリティ点検が走っている（自分で実行する必要はない。<a href="#s06">Section 1 のセキュリティ対策参照</a>）</li>
 </ul>
 <figure class="diagram">
 <img src="img/CodeReviewSample.png" alt="/code-review の実行例 — 新設の未認証エンドポイント backend/src/routes/contacts.ts に対し、他人の連絡先 PII を誰でも取得できる IDOR / PII 漏洩・レート制限なし・SELECT に LIMIT なし・認証設計の誤り（モック認証の流儀を無視）の4点を、それぞれ失敗シナリオ付きで検出している">
@@ -1067,7 +1067,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <img src="img/SecurityReviewSample.png" alt="/security-review の実行例 — 新設の GET /api/contacts エンドポイントに認証チェックがない Broken Access Control / IDOR（Severity: High）を検出し、Exploit Scenario と修正の推奨（認証済み identity でゲートし結果を本人分に絞る）まで提示している">
 <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">/security-review の実行例: 認証チェックのないエンドポイント（IDOR）を Severity・攻撃シナリオ・修正案つきで検出している</figcaption>
 </figure>
-<p class="note">指摘があれば修正してから進む。大きな問題がなければそのまま push してよい。この3つは Day 3 <a href="#s11">[11] セキュリティ</a>の点検でもそのまま使う。</p>
+<p class="note">指摘があれば修正してから進む。大きな問題がなければそのまま push してよい。この3つは Section 3 <a href="#s11">[11] セキュリティ</a>の点検でもそのまま使う。</p>
 
 <h3>② 自動テスト — 考え方（AI との壁打ち）</h3>
 <blockquote class="key">
@@ -1123,13 +1123,13 @@ cd ../frontend &amp;&amp; npm test   # 画面テスト</code></pre>
 <ul>
 <li><strong>AI が書いたコードこそテストが要る</strong>（出力を鵜呑みにせず、テストで裏付ける）</li>
 <li><strong>TEST.md が先、実装が後</strong>（方針を固めてから書かせると精度が上がる）</li>
-<li>Day 3 でオプション機能を追加するとき、<strong>このテストが安全網になる</strong></li>
+<li>Section 3 でオプション機能を追加するとき、<strong>このテストが安全網になる</strong></li>
 </ul>
 
 <h3>完了したら push する</h3>
 <pre><code>自動テスト実装の作業をコミットして dev ブランチに push して。</code></pre>
 
-<h3 class="done">✅ 完了の定義（Day 2 の到達点・前半）</h3>
+<h3 class="done">✅ 完了の定義（Section 2 の到達点・前半）</h3>
 <ul>
 <li><code>npm test</code> が<strong>バック・フロントとも グリーン</strong>（全ケース pass。<code>backend/</code> と <code>frontend/</code> それぞれで実行する）</li>
 <li>最低限カバーできている：
@@ -1147,7 +1147,7 @@ cd ../frontend &amp;&amp; npm test   # 画面テスト</code></pre>
 <hr>
 
 <h2 id="s6">[6] Cloudflare にデプロイ</h2>
-<p><strong>ゴール:</strong> 自分の URL（<code>https://&lt;name&gt;.workers.dev</code>）で世界に公開（Day 2 のフィナーレ）</p>
+<p><strong>ゴール:</strong> 自分の URL（<code>https://&lt;name&gt;.workers.dev</code>）で世界に公開（Section 2 のフィナーレ）</p>
 
 <h3>流れ</h3>
 <ol>
@@ -1165,7 +1165,7 @@ cd ../frontend &amp;&amp; npm test   # 画面テスト</code></pre>
 <li>リモート DB にマイグレーションを適用する
 <pre><code>npm run db:migrate:remote を実行して本番の D1 にテーブルを作って。</code></pre>
 </li>
-<li>デプロイは<strong>必ず <code>backend/</code> から</strong>行う。<code>frontend/</code> で <code>wrangler deploy</code> すると Day 1 と同名の Worker を静的ファイルだけで上書きして API が消える（Day 1 に使った <code>frontend/wrangler.jsonc</code> は役目を終えている）:
+<li>デプロイは<strong>必ず <code>backend/</code> から</strong>行う。<code>frontend/</code> で <code>wrangler deploy</code> すると Section 1 と同名の Worker を静的ファイルだけで上書きして API が消える（Section 1 に使った <code>frontend/wrangler.jsonc</code> は役目を終えている）:
 <pre><code>cd backend
 npm run deploy   # フロントのビルド → wrangler deploy まで一発</code></pre>
 </li>
@@ -1178,8 +1178,8 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <li><strong>[5] のテストが緑なのを確認してから公開する</strong>（テスト → デプロイ の順）</li>
 <li>ローカル（<code>--local</code> の D1）と本番（リモート D1）はデータが別物</li>
 <li>Cloudflare の<strong>無料枠の範囲で完結</strong>する</li>
-<li><strong>Day 2 本編では Secrets 投入は不要</strong>（Stripe/Clerk/Resend を使う [7][8][9] で初めて要る。手順は <a href="#common">Day 3 の共通セクション</a>参照）</li>
-<li>ここまでは手元で <code>wrangler deploy</code> を叩く<strong>手動デプロイ</strong>。<code>git push</code> するだけで自動デプロイしたい場合は、Day 3 オプション <a href="#s13">[13] 自動デプロイ</a> で扱う</li>
+<li><strong>Section 2 本編では Secrets 投入は不要</strong>（Stripe/Clerk/Resend を使う [7][8][9] で初めて要る。手順は <a href="#common">Section 3 の共通手順</a>参照）</li>
+<li>ここまでは手元で <code>wrangler deploy</code> を叩く<strong>手動デプロイ</strong>。<code>git push</code> するだけで自動デプロイしたい場合は、Section 3 オプション <a href="#s13">[13] 自動デプロイ</a> で扱う</li>
 </ul>
 
 <h3 class="warn">⚠️ ハマりどころ: Workers デプロイ</h3>
@@ -1191,7 +1191,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <h3>完了したら push する</h3>
 <pre><code>デプロイ完了の作業をコミットして dev ブランチに push して。必要なら dev を main にマージして。</code></pre>
 
-<h3 class="done">✅ 完了の定義（Day 2 の到達点・後半）</h3>
+<h3 class="done">✅ 完了の定義（Section 2 の到達点・後半）</h3>
 <ul>
 <li>自分の <strong><code>https://&lt;name&gt;.workers.dev</code> にブラウザでアクセスして LP が表示</strong>される</li>
 <li>本番 URL で <code>/mypage</code> 等のルーティングも 404 にならず動く（404 になる場合は wrangler.jsonc の <code>assets.not_found_handling</code> に <code>"single-page-application"</code> を追記してから再デプロイ）</li>
@@ -1199,21 +1199,21 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <li>（余裕があれば）公開した本番 URL で<strong>トップページ・<code>/mypage</code>・API を1つ</strong>ブラウザで開き、ローカルと同じ挙動か目視確認する</li>
 </ul>
 
-<h3>Day 2 クロージング</h3>
+<h3>Section 2 クロージング</h3>
 <ul>
 <li>全員が「<code>npm test</code> グリーン + <code>workers.dev</code> 公開 URL」に到達しているか確認</li>
-<li>Day 1 と同じ <code>workers.dev</code> URL への<strong>再デプロイ完了</strong>を確認（バック API が繋がっていること）</li>
+<li>Section 1 と同じ <code>workers.dev</code> URL への<strong>再デプロイ完了</strong>を確認（バック API が繋がっていること）</li>
 <li><strong>dev に push 済みかを確認</strong>（必要なら <code>dev</code> → <code>main</code> にマージして安定版を残す）</li>
-<li>Day 3 のオプション課題から興味のあるものを選ぶ（Stripe / Clerk / Resend のアカウントを事前に作っておくとスムーズ）</li>
+<li>Section 3 のオプション課題から興味のあるものを選ぶ（Stripe / Clerk / Resend のアカウントを事前に作っておくとスムーズ）</li>
 </ul>
 
 <hr>
 
-</section><!-- /ps-day2 -->
-<section class="page-section" id="ps-day3">
-<h1 id="day3">Day 3: 育てる（オプション課題 + 発表会）</h1>
+</section><!-- /ps-section2 -->
+<section class="page-section" id="ps-section3">
+<h1 id="section3">Section 3: 育てる（オプション課題 + 発表会）</h1>
 
-<p>Day 3 最後の 30 分（1:30〜2:00）は最終発表会です。自分の公開 URL のデモを 1 人 3 分で発表します。詳細はページ末尾の「ラップアップ・発表会」を参照してください。</p>
+<p>Section 3 最後の 30 分（1:30〜2:00）は最終発表会です。自分の公開 URL のデモを 1 人 3 分で発表します。詳細はページ末尾の「ラップアップ・発表会」を参照してください。</p>
 
 <p>（難易度の目安: ★☆☆＝易しい / ★★☆＝ふつう / ★★★＝難しい）</p>
 <table>
@@ -1265,7 +1265,7 @@ npm run deploy               # ビルド → デプロイ</code></pre>
   </li>
   </ol>
 </li>
-<li><strong>オプションは必須ではない</strong>。興味のあるものから着手してよい（やらない／1つだけ、も可）。Day 2 が未了なら、その続きを優先しても構わない</li>
+<li><strong>オプションは必須ではない</strong>。興味のあるものから着手してよい（やらない／1つだけ、も可）。Section 2 が未了なら、その続きを優先しても構わない</li>
 </ul>
 
 <hr>
@@ -1327,7 +1327,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <img src="img/stripe_flow.svg" alt="Stripe 決済フロー: ブラウザ→Hono API→Stripe Checkout→Webhook→D1保存→/success→マイページ表示">
 </figure>
 <blockquote>
-<p>Day 2 で「自前発行」していたライセンスを、<strong>決済イベント起点の自動発行</strong>に置き換える課題。手順が多いので <strong>5 フェーズ</strong>に分けて進める（①アカウント準備 / ②プラン作成 / ③ローカルWebhook検証 / ④本番Webhook設定 / ⑤つなぎ込み）。</p>
+<p>Section 2 で「自前発行」していたライセンスを、<strong>決済イベント起点の自動発行</strong>に置き換える課題。手順が多いので <strong>5 フェーズ</strong>に分けて進める（①アカウント準備 / ②プラン作成 / ③ローカルWebhook検証 / ④本番Webhook設定 / ⑤つなぎ込み）。</p>
 </blockquote>
 
 <h3>① アカウントとキーの準備</h3>
@@ -1430,11 +1430,11 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 
 <h3>⑤ 購入後の戻り先とマイページ表示（つなぎ込み）</h3>
 <ul>
-<li>Checkout には決済後の戻り先 URL（<code>success_url</code> / <code>cancel_url</code>）が要る。成功時は Day 2 で作った <code>/success</code> ページにつなぐ（AI に「購入後 <code>/success</code> に戻して」と頼めばよい）</li>
+<li>Checkout には決済後の戻り先 URL（<code>success_url</code> / <code>cancel_url</code>）が要る。成功時は Section 2 で作った <code>/success</code> ページにつなぐ（AI に「購入後 <code>/success</code> に戻して」と頼めばよい）</li>
 <li>「マイページにライセンスが出る」ための<strong>紐付け</strong>に注意:
   <ul>
   <li>Webhook で発行したライセンスは<strong>購入者の email</strong>に紐づく。マイページはログイン中ユーザーの email でライセンスを引く</li>
-  <li>[9] Clerk をやらない場合は、Day 2 の<strong>モック認証の email</strong>（ヘッダ <code>x-user-email</code>）と<strong>購入時の email を一致させる</strong>こと。ここがズレると「購入したのにマイページに出ない（別人扱い）」になる（フロントのリクエストヘッダ <code>X-User-Email</code> に固定値（例: test@example.com）をセットし、Stripe Checkout の <code>customer_email</code> にも同じ値を渡すことで一致させる）</li>
+  <li>[9] Clerk をやらない場合は、Section 2 の<strong>モック認証の email</strong>（ヘッダ <code>x-user-email</code>）と<strong>購入時の email を一致させる</strong>こと。ここがズレると「購入したのにマイページに出ない（別人扱い）」になる（フロントのリクエストヘッダ <code>X-User-Email</code> に固定値（例: test@example.com）をセットし、Stripe Checkout の <code>customer_email</code> にも同じ値を渡すことで一致させる）</li>
   </ul>
 </li>
 </ul>
@@ -1459,11 +1459,11 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <strong>学び</strong>: JWT（JSON Web Token＝ログイン済みであることを証明するトークン）の検証——リクエストが本当にログイン済み本人からのものかの確認——を<strong>バックでやる理由</strong>（フロントの見た目だけの保護は無意味）</p>
 <p class="note">ログイン（Clerk）まで組み込んだ動くデモ（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://testai-login.ha-toge.workers.dev/">https://testai-login.ha-toge.workers.dev/</a> — 未ログインで <code>/mypage</code> はサインイン画面へリダイレクト → Google でログイン → マイページ表示、までが動く（Clerk 開発モード）。</p>
 <blockquote>
-<p>Day 2 で<strong>モック認証</strong>にしておいた <code>GET /api/me</code>（ハンドラ＝リクエストを受けて処理する関数。<code>backend/src/routes/me.ts</code> など）を、<strong>本物の Clerk 認証に差し替える</strong>課題。Claude Code に『Day 2 のモック認証を Clerk トークン検証に差し替えて』と指示するだけで進められる。</p>
+<p>Section 2 で<strong>モック認証</strong>にしておいた <code>GET /api/me</code>（ハンドラ＝リクエストを受けて処理する関数。<code>backend/src/routes/me.ts</code> など）を、<strong>本物の Clerk 認証に差し替える</strong>課題。Claude Code に『Section 2 のモック認証を Clerk トークン検証に差し替えて』と指示するだけで進められる。</p>
 </blockquote>
 
 <figure class="diagram">
-<img src="img/clerk_auth_flow.svg" alt="ID 連携（Clerk）のしくみ: 未ログインで /mypage → Clerk サインイン画面（Google SSO）→ トークン（JWT）発行 → API 呼び出しにトークン添付 → Hono バックで @hono/clerk-auth がトークン検証 → OK ならユーザー情報・NG なら 401 を返す6ステップ。Day 2 のモック認証をトークン検証に差し替えるのがゴール">
+<img src="img/clerk_auth_flow.svg" alt="ID 連携（Clerk）のしくみ: 未ログインで /mypage → Clerk サインイン画面（Google SSO）→ トークン（JWT）発行 → API 呼び出しにトークン添付 → Hono バックで @hono/clerk-auth がトークン検証 → OK ならユーザー情報・NG なら 401 を返す6ステップ。Section 2 のモック認証をトークン検証に差し替えるのがゴール">
 </figure>
 
 <h3>サービス側の準備</h3>
@@ -1494,7 +1494,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <li>フロントはアプリを <strong><code>&lt;ClerkProvider&gt;</code></strong> で包み、サインイン UI を置く。<strong>未ログインなら <code>/mypage</code> に入れない</strong>ようガード</li>
 <li><strong>JWT 検証は <code>@hono/clerk-auth</code> が推奨</strong>（バックでのトークン検証が一気に楽になる）</li>
 <li>バックは<strong>必ずトークンを検証</strong>してから保護 API を返す（フロントの出し分けだけでは保護にならない）</li>
-<li>Day 2 のモック認証（ヘッダ <code>x-user-email</code> を信頼）を、<strong>この Clerk トークン検証に差し替える</strong>のがゴール</li>
+<li>Section 2 のモック認証（ヘッダ <code>x-user-email</code> を信頼）を、<strong>この Clerk トークン検証に差し替える</strong>のがゴール</li>
 <li><strong>余裕があれば</strong>: マイページだけでなく<strong>購入（ライセンス発行）系の API も認証必須</strong>にし、購入者の email をクライアント入力ではなく<strong>検証済みトークンから取得</strong>する（認証なしだと他人の email を名乗ってライセンスを発行できてしまう——[11] セキュリティで指摘される穴になる）</li>
 </ul>
 
@@ -1550,11 +1550,11 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <li>取得したトークンを <strong><code>backend/.cf-ops.token</code> に保存</strong>（例 <code>CLOUDFLARE_API_TOKEN=...</code> の1行）。<code>.dev.vars</code> とは<strong>別ファイル</strong>にする（理由は下記）。<code>.gitignore</code> に <code>.cf-ops.token</code> を追加しておく</li>
 </ol>
 <blockquote>
-<p><strong>このトークンは Worker が使うのではなく、運用スキルが shell からファイルを読んで使う</strong>（Cloudflare の集計 API（GraphQL）を叩くため）。ここで注意: <strong><code>.dev.vars</code> は Day 1 の設定で Read を拒否している</strong>ので、スキルが <code>cat</code> 等で読もうとすると<strong>ブロックされる</strong>。そこで運用トークンだけは deny 対象外の<strong>別ファイル（<code>.cf-ops.token</code>）</strong>に分離する。ここに入れるのは <strong>Analytics 読み取り専用</strong>の低権限トークンで、Stripe/Clerk 等の高価値シークレット（<code>.dev.vars</code>）とは分けて扱う。<strong>本番 secret に入れる必要はない</strong>（ローカルにあれば十分）。トークンが無くても <strong><code>wrangler tail</code> のライブログ</strong>は見られる。集計・コスト試算だけがトークン必須。</p>
+<p><strong>このトークンは Worker が使うのではなく、運用スキルが shell からファイルを読んで使う</strong>（Cloudflare の集計 API（GraphQL）を叩くため）。ここで注意: <strong><code>.dev.vars</code> は Section 1 の設定で Read を拒否している</strong>ので、スキルが <code>cat</code> 等で読もうとすると<strong>ブロックされる</strong>。そこで運用トークンだけは deny 対象外の<strong>別ファイル（<code>.cf-ops.token</code>）</strong>に分離する。ここに入れるのは <strong>Analytics 読み取り専用</strong>の低権限トークンで、Stripe/Clerk 等の高価値シークレット（<code>.dev.vars</code>）とは分けて扱う。<strong>本番 secret に入れる必要はない</strong>（ローカルにあれば十分）。トークンが無くても <strong><code>wrangler tail</code> のライブログ</strong>は見られる。集計・コスト試算だけがトークン必須。</p>
 </blockquote>
 
 <h3>運用チェックを「スキル」にする</h3>
-<p>Claude Code のスキルとは、<code>.claude/skills/&lt;名前&gt;/</code> ディレクトリに必要なファイルを置くことで「運用チェックして」のような自然言語で呼び出せる専用コマンドを登録できる機能。[5] で使った <code>/code-review</code> などの「組み込みスキル」は最初から入っているスキル、Day 1 で入れた security-guidance のような「プラグイン」はスキル等をまとめて配布するパッケージ、という関係。毎回同じ確認を <strong>Claude Code のスキル（<code>.claude/skills/</code>）</strong>にしておけば、「<strong>運用チェックして</strong>」の一言で再利用できる。作ってもらうスキルは5つ：</p>
+<p>Claude Code のスキルとは、<code>.claude/skills/&lt;名前&gt;/</code> ディレクトリに必要なファイルを置くことで「運用チェックして」のような自然言語で呼び出せる専用コマンドを登録できる機能。[5] で使った <code>/code-review</code> などの「組み込みスキル」は最初から入っているスキル、Section 1 で入れた security-guidance のような「プラグイン」はスキル等をまとめて配布するパッケージ、という関係。毎回同じ確認を <strong>Claude Code のスキル（<code>.claude/skills/</code>）</strong>にしておけば、「<strong>運用チェックして</strong>」の一言で再利用できる。作ってもらうスキルは5つ：</p>
 <table>
 <thead><tr><th>#</th><th>スキル</th><th>やること</th><th>置き場所</th></tr></thead>
 <tbody>
@@ -1881,7 +1881,7 @@ END;
 <strong>学び</strong>: CI/CD（コードを push するだけで自動的にビルド・デプロイされる仕組み）の初歩と、モノレポ構成でのビルド設定の考え方</p>
 
 <blockquote>
-<p>他のDay 3オプションと違い、<strong>ここでの作業はすべて Cloudflare ダッシュボード側の設定</strong>で完結する。
+<p>他の Section 3 オプションと違い、<strong>ここでの作業はすべて Cloudflare ダッシュボード側の設定</strong>で完結する。
 リポジトリのコードに変更を加える必要は無く、Claude Code に実装を依頼する場面も無い。
 設定が一度終われば、あとは普段通り <code>git push</code> するだけで、Cloudflare 側が自動でビルド・デプロイを行ってくれる。</p>
 </blockquote>
@@ -1934,21 +1934,21 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 
 <hr>
 
-<h2 id="wrap">ラップアップ・発表会（Day 3 の最後 30 分）</h2>
+<h2 id="wrap">ラップアップ・発表会（Section 3 の最後 30 分）</h2>
 
 <h3>最終発表会（<strong>1人3分</strong>）</h3>
 <blockquote>
-<p>Day 3 の<strong>最後の 30 分</strong>を発表会にあてる。1人3分で手短に。</p>
+<p>Section 3 の<strong>最後の 30 分</strong>を発表会にあてる。1人3分で手短に。</p>
 </blockquote>
 <ul>
 <li>自分の公開 URL のデモ</li>
-<li>Day 3 で追加した機能の紹介</li>
+<li>Section 3 で追加した機能の紹介</li>
 <li>「AI への頼み方で一番効いた工夫」を1つ共有</li>
 </ul>
 
 <h3>振り返り</h3>
 <ul>
-<li>3日間で体験した開発サイクル: <strong>デザイン生成 → 実装 → テスト → 公開 → 機能拡張 → 点検</strong></li>
+<li>このワークショップで体験した開発サイクル: <strong>デザイン生成 → 実装 → テスト → 公開 → 機能拡張 → 点検</strong></li>
 <li>AI 開発で効いたコツの総まとめ
   <ul>
   <li>1発で完璧を狙わず、会話で直す</li>
@@ -1962,7 +1962,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 </ul>
 
 <h2 id="cleanup">後片付け</h2>
-<p>3日間で外部サービスに実リソースを作った。<strong>使い続けるものは残し、使わないものは片付ける/無効化する</strong>。放置は無料枠の圧迫や不要な鍵の漏洩リスクになる。</p>
+<p>ワークショップを通じて外部サービスに実リソースを作った。<strong>使い続けるものは残し、使わないものは片付ける/無効化する</strong>。放置は無料枠の圧迫や不要な鍵の漏洩リスクになる。</p>
 <p class="note">迷ったら: <strong>公開 URL（Cloudflare Worker）は残し、今後使わない鍵（Stripe / Clerk / Resend など）は無効化する</strong>。下表で自分の使い続けたい機能だけ「残す」、それ以外は「片付ける」を選ぶ。</p>
 
 <h3>作ったリソースの退場手順</h3>
@@ -1980,8 +1980,8 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 </table></div>
 <p class="note">原則: <strong>鍵（API キー・トークン）は「消す」より先に「無効化（Revoke）」</strong>する（消しても発行済みの鍵は生きているため）。手元の <code>.dev.vars</code> / <code>.cf-ops.token</code> はローカルファイルなので削除でよい（Git には元々入れていない）。</p>
 
-<p class="foot">3Days ワークショップフロー — AI とつくる「自分の SaaS の MVP」</p>
-</section><!-- /ps-day3 -->
+<p class="foot">ワークショップフロー — AI とつくる「自分の SaaS の MVP」</p>
+</section><!-- /ps-section3 -->
 
 <section class="page-section" id="ps-auth">
 <h1 id="auth">付録: Claude Code 認証切り替えガイド</h1>
@@ -2110,7 +2110,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
     <li><a href="#s05">使う技術</a></li>
     <li><a href="#s07">Git ブランチ</a></li>
   </ul>
-  <a class="toc-group-label toc-d1" href="#day1">Day 1 ― つくる</a>
+  <a class="toc-group-label toc-sec1" href="#section1">Section 1 ― つくる</a>
   <ul>
     <li><a href="#s-env">環境確認</a></li>
     <li><a href="#s06">セキュリティ対策</a></li>
@@ -2120,13 +2120,13 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
     <li><a href="#s2">[2] フロント作成</a></li>
     <li><a href="#s3">[3] フロントデプロイ</a></li>
   </ul>
-  <a class="toc-group-label toc-d2" href="#day2">Day 2 ― つなぐ・公開する</a>
+  <a class="toc-group-label toc-sec2" href="#section2">Section 2 ― つなぐ・公開する</a>
   <ul>
     <li><a href="#s4">[4] バック作成</a></li>
     <li><a href="#s5">[5] 自動テスト</a></li>
     <li><a href="#s6">[6] デプロイ</a></li>
   </ul>
-  <a class="toc-group-label toc-d3" href="#day3">Day 3 ― 育てる（オプション）</a>
+  <a class="toc-group-label toc-sec3" href="#section3">Section 3 ― 育てる（オプション）</a>
   <ul>
     <li><a href="#common">[7][8][9] 共通</a></li>
     <li><a href="#s7">[7] メール</a></li>
@@ -2171,8 +2171,8 @@ panel.addEventListener('click',e=>{if(e.target.tagName==='A')closeToc();});
 // 上下キーでセクション間を移動。手動スクロール時のみ navIdx をリセットする。
 // タイマーリセット方式だとスムーススクロール中にタイマーが切れて
 // 再初期化が狂うため、scroll イベントで管理する。
-// h1#day1/2/3 はページ切り替えで自動表示済みのため矢印キー対象から除外
-const getHeadings=()=>[...(document.querySelector('.page-section.active')||document).querySelectorAll('h1, h2')].filter(h=>!/^day\d$/.test(h.id));
+// h1#section1/2/3 はページ切り替えで自動表示済みのため矢印キー対象から除外
+const getHeadings=()=>[...(document.querySelector('.page-section.active')||document).querySelectorAll('h1, h2')].filter(h=>!/^section\d$/.test(h.id));
 let navIdx=null, keyNavActive=false, keyNavTimer;
 window.addEventListener('scroll',()=>{ if(!keyNavActive) navIdx=null; },{passive:true});
 document.addEventListener('keydown',e=>{
@@ -2196,7 +2196,7 @@ document.addEventListener('keydown',e=>{
 });
 
 // ページ切り替え
-const PAGE_IDS = ['ps-overview','ps-day1','ps-day2','ps-day3','ps-auth'];
+const PAGE_IDS = ['ps-overview','ps-section1','ps-section2','ps-section3','ps-auth'];
 const PAGE_MAP = {};
 PAGE_IDS.forEach(pid=>{
   const sec = document.getElementById(pid);
@@ -2225,7 +2225,7 @@ function showPage(pid){
   });
   navIdx=null;
   sessionStorage.setItem('activePage',pid);
-  const anchorMap={'ps-day1':'day1','ps-day2':'day2','ps-day3':'day3'};
+  const anchorMap={'ps-section1':'section1','ps-section2':'section2','ps-section3':'section3'};
   const anchor=anchorMap[pid]?document.getElementById(anchorMap[pid]):null;
   if(anchor){
     window.scrollTo({top:0,behavior:'instant'});
@@ -2334,15 +2334,18 @@ document.querySelectorAll('pre').forEach(pre => {
   const SLIDE_KEYS = new Set([
     's0','s-map','s-time','s05','s07',
     'auth','auth-to-sub','auth-to-api','auth-check',
-    'day1','s-env','s06','s0-nav','s0-repo','s1','s2-spec','s2','s3',
-    'day2','s4','s4-scripts','s5','s6',
-    'day3','common','s7','s8','s9','s10','s11','s12','wrap','cleanup',
+    'section1','s-env','s06','s0-nav','s0-repo','s1','s2-spec','s2','s3',
+    'section2','s4','s4-scripts','s5','s6',
+    'section3','common','s7','s8','s9','s10','s11','s12','wrap','cleanup',
   ]);
+  // 暫定: slides.html 側の章キーがまだ day1/2/3 のため、この3章だけ旧キーに読み替えて渡す。
+  // slides.html を Section 表記に揃えたらこの LEGACY_SLIDE_KEYS ごと削除する。
+  const LEGACY_SLIDE_KEYS={section1:'day1',section2:'day2',section3:'day3'};
   document.querySelectorAll('article h1[id], article h2[id], article h3[id]').forEach(h=>{
     if(!SLIDE_KEYS.has(h.id)) return;
     const a=document.createElement('a');
     a.className='slide-link';
-    a.href='slides.html#'+h.id;
+    a.href='slides.html#'+(LEGACY_SLIDE_KEYS[h.id]||h.id);
     // 名前付きターゲット＝クリックのたびに新しいタブを増やさず同じタブを開き直す。
     // rel="noopener" を付けるとターゲット名が無視され毎回新規タブになるため、あえて付けない（同一オリジンの自資料）。
     a.target='slidesdeck';
