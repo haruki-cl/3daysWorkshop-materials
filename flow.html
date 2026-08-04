@@ -2097,7 +2097,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 <div id="toc-overlay"></div>
 <nav id="toc-panel">
   <p id="toc-panel-head">目次</p>
-  <a id="slides-link" href="slides.html" target="slidesdeck">🎞 スライド版を開く</a>
+  <a id="slides-link" href="slides-v2.html" target="slidesdeck">🎞 スライド版を開く</a>
   <a class="toc-group-label" href="#top">前提・準備</a>
   <ul>
     <li><a href="#s0">目的・ゴール</a></li>
@@ -2324,7 +2324,7 @@ document.querySelectorAll('pre').forEach(pre => {
 </script>
 <script>
 // 見出し → スライド版の該当箇所へのリンクを自動挿入。
-// 見出しの id をそのまま章キーとして slides.html#<id> に渡す（slides 側は ref で同じキーを持つ）。
+// 見出しの id をそのまま章キーとして slides-v2.html#<id> に渡す（slides 側は ref で同じキーを持つ）。
 // SLIDE_KEYS はスライドが実在する章だけを列挙する＝リンク先が無い見出しにはリンクを出さない。
 (function(){
   const SLIDE_KEYS = new Set([
@@ -2332,16 +2332,16 @@ document.querySelectorAll('pre').forEach(pre => {
     'auth','auth-to-sub','auth-to-api','auth-check',
     'section1','s-env','s06','s0-nav','s0-repo','s1','s2-spec','s2','s3',
     'section2','s4','s4-scripts','s5','s6',
-    'section3','common','s7','s8','s9','s10','s11','s12','wrap','cleanup',
+    'section3','common','s7','s8','s9','s10','s11','s12','s13','wrap','cleanup',
   ]);
-  // 暫定: slides.html 側の章キーがまだ day1/2/3 のため、この3章だけ旧キーに読み替えて渡す。
-  // slides.html を Section 表記に揃えたらこの LEGACY_SLIDE_KEYS ごと削除する。
+  // 暫定: slides-v2.html 側の章キーがまだ day1/2/3 のため、この3章だけ旧キーに読み替えて渡す。
+  // slides-v2.html を Section 表記に揃えたらこの LEGACY_SLIDE_KEYS ごと削除する。
   const LEGACY_SLIDE_KEYS={section1:'day1',section2:'day2',section3:'day3'};
   document.querySelectorAll('article h1[id], article h2[id], article h3[id]').forEach(h=>{
     if(!SLIDE_KEYS.has(h.id)) return;
     const a=document.createElement('a');
     a.className='slide-link';
-    a.href='slides.html#'+(LEGACY_SLIDE_KEYS[h.id]||h.id);
+    a.href='slides-v2.html#'+(LEGACY_SLIDE_KEYS[h.id]||h.id);
     // 名前付きターゲット＝クリックのたびに新しいタブを増やさず同じタブを開き直す。
     // rel="noopener" を付けるとターゲット名が無視され毎回新規タブになるため、あえて付けない（同一オリジンの自資料）。
     a.target='slidesdeck';
