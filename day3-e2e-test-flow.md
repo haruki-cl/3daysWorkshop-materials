@@ -130,8 +130,10 @@ backend/docs/TEST.md の「[12] お金を返せと言われる事態」に私が
 
 | 状態 | やること |
 |---|---|
-| `E2E` が ✕ | **落として理由を1行書く**（画面から確認できないもの: 実際のメール送信、内部のリトライ回数など） |
-| `E2E` が ⭕ | `前提条件` と `期待結果` を書いて、◎ を付ける |
+| **外部サービスの内部**で起きること | **落として理由を1行書く**（メールが実際に届く／Stripe の決済が完了する。画面に現れないので確認できません） |
+| それ以外 | `前提条件` と `期待結果` を書いて ◎ を付ける |
+
+> **ここで「E2E で書けるか」を厳密に判定しないでください。** 書けるかどうかは③④で実際に書けば分かります。判定に悩んだ時間はそのまま持ち出しになるので、迷ったら ◎ を付けて先に進み、詰まったら理由を `結果` 列に書いてください。**書けなかったこと自体が記録になります。**
 
 **◎ は2〜3個までにしてください。** ◎ 1個がテスト1本で、録画1回ぶんの時間（5〜7分）がかかります。
 
@@ -166,9 +168,11 @@ npx playwright codegen http://localhost:8787/ -o tests/01-other-user.spec.ts
 
 | | 理由 |
 |---|---|
-| 実名・実メールを入れない | テストコードは Git に残ります。`テスト太郎` `test@example.com` を使ってください |
+| **フォームに実名・実メールを入れない** | 入力値はテストコードに残り Git に入ります。`テスト太郎` `test@example.com` を使ってください |
 | Enter キーを使わない | フォームが意図せず送信され、余計な行が2〜3行増えます |
 | 迷ってクリックしない | 押した操作すべてがコードになります |
+
+> 1つ目は**フォームに入力する場面**の注意です。[9] Clerk を実施していて `storageState` でログインする場合は、テストコードにメールアドレスが残らない代わりに**認証情報がファイルに入る**ので、注意の対象が変わります（→ §C）。
 
 ---
 
@@ -363,6 +367,7 @@ await page.getByRole('button', { name: '購入する' }).first().click();
 |---|---|
 | **逆Gherkin化・差分表の工程を置かない** | 「実装がどうなっているか」は**④でテストを実行すれば分かる**。AI に実装を読ませて列挙させるのは推測を挟む二度手間で、記事自身が「AI は内部仕様と観測可能な結果を混同する」と警告している。加えて逆Gherkin化はレガシー理解の手法であり、3日前に自分が作った4画面には不要 |
 | **落ちたテストの実装を直させない** | 80分に実装修正は入らない。「作ったつもりが作られていなかった」の発見を成果として表の `結果` 列に残す。全部緑にすることを目標にしない |
+| **②で「E2E で書けるか」を厳密に判定させない** | conv-demo での実地検証で、判定の議論に最も時間を食った（「他人のデータが見える」を2アカウントで書くか → Google SSO で作れない → 未ログインに変えるか → 別項目と重複 → 断念）。これは③で書き始めれば即座に分かることで、事前議論は持ち出しにしかならない。落とすのは「外部サービスの内部で起きること」だけにする |
 | `.feature`（Gherkin）を使わない | Cucumber を使わない方式では `.feature` は実行されない = 生成の入力として1回読まれるだけの死んだファイルになる。テストコードと乖離しても誰も気づかない。表に「前提条件」列を足せば Given の役割は果たせる |
 | Gherkin ガイドの標準プロンプト6要件は借用する | トレーサビリティの相手を `.feature` から表に変えるだけでそのまま使える（④のプロンプトに反映済み） |
 | Codegen を ② の後に置く | 何を検証するか決める前に録画すると実装追認テストになる。順序がこの工程の全部 |
@@ -375,40 +380,65 @@ await page.getByRole('button', { name: '購入する' }).first().click();
 
 ## C. Clerk / Stripe を実施した参加者向け（[9] / [8]）
 
-`clerk.signIn()` は UI 操作だけを飛ばし、**認証の実体は本物を通る**（Clerk API を叩いて本物のセッショントークンを発行する）。環境変数が違えば失敗し、バックエンドが検証できなければ 401 になる。
+### 推奨: `storageState` を使う（依存追加なし）
 
-ただし `signIn()` では検証できないものがある（`<SignIn />` の配置、ログイン後のリダイレクト、未ログイン時の遷移）。これは自分のコードの責任なので、**1本だけフォームを操作するテストを残す**。
+**`@clerk/testing` は不要。** Codegen の `--save-storage` で一度ログイン状態を保存すれば、以降のテストはログイン済みで始まる。
+
+```bash
+# アカウントごとに1回だけ。ブラウザで手動ログインして閉じる
+npx playwright codegen http://localhost:8787/ --save-storage=auth-a.json
+npx playwright codegen http://localhost:8787/ --save-storage=auth-b.json   # 他人役が必要な場合
+```
+
+```typescript
+// playwright.config.ts
+use: {
+  baseURL: 'http://localhost:8787',
+  storageState: 'auth-a.json',
+},
+```
+
+テスト側でファイル単位に切り替えられる。
+
+```typescript
+test.use({ storageState: 'auth-b.json' });                    // 他人役
+test.use({ storageState: { cookies: [], origins: [] } });     // 未ログイン状態にする
+```
+
+**ログイン操作をしないので Clerk のボット検知（Testing Token）に当たらない**——これが `@clerk/testing` を入れずに済む理由。
+
+### ⚠️ `auth-*.json` は絶対にコミットしない
+
+Clerk のセッショントークンが入る。**Clerk 認証では実アカウントを使うので、実データの行き先がテストコードからこのファイルに移る。**
+
+```
+# .gitignore
+auth-*.json
+```
+
+| 認証方式 | 実データの行き先 | 注意すべきこと |
+|---|---|---|
+| モック認証（Day2 状態） | テストコード（フォーム入力値） | 実名・実メールを書かない |
+| **Clerk** | **`auth-*.json`**（セッション） | **コミットしない**。テストコードには残らない |
+
+### `@clerk/testing` が要る場合
+
+「ログインフォーム自体が壊れていないか」を検証したいときだけ。`storageState` はログイン操作を飛ばすので、`<SignIn />` の配置ミスやリダイレクト設定の誤りは検出できない。
 
 ```bash
 npm i -D @clerk/testing
 ```
 
 ```typescript
-// 1本目: フォームを実際に操作（Clerk の組み込み検証）
 test('ログインしてマイページに入れる', async ({ page }) => {
   await setupClerkTestingToken({ page });     // ボット検知の回避。無いと "Bot traffic detected"
   await page.goto('/mypage');
-  await expect(page).toHaveURL(/sign-in/);    // 未ログインで弾かれる
+  await expect(page).toHaveURL(/sign-in/);
   // …フォーム操作…
-  await expect(page).toHaveURL('/mypage');
-});
-
-// 2本目以降: プログラムからログイン
-test('本人の購入だけが表示される', async ({ page }) => {
-  await page.goto('/');
-  await clerk.signIn({ page, emailAddress: process.env.E2E_CLERK_USER_EMAIL! });
-  await page.goto('/mypage');
 });
 ```
 
-Global Setup に `clerkSetup()` が必要。
-
-```typescript
-setup.describe.configure({ mode: 'serial' })
-setup('global setup', async ({}) => { await clerkSetup() })
-```
-
-この設定で15分ほど増えるため、80分に収めるなら **[9] は [12] の後にやるよう案内する**のが現実的。
+Global Setup に `clerkSetup()` が必要。この設定で15分ほど増えるため、**80分の中では `storageState` だけで済ませる**のが現実的。
 
 Stripe（[8]）を実施した場合、購入フローが Stripe Checkout（外部ホストの DOM）に飛ぶ。Checkout 画面は E2E で操作させない（先方の UI 変更で壊れる）。購入フローの E2E は Checkout の手前までにする。
 
