@@ -239,9 +239,9 @@ const SLIDES = [
     {table:{head:['Day','テーマ','内容'],rows:[
       ['Day 1','つくる','目的・技術紹介 / 環境確認 / [1] デザイン / [2] フロント / [3] フロントデプロイ'],
       ['Day 2','つなぐ・公開する','[4] バック / [5] 自動テスト / [6] 再デプロイ（同じ URL に API 統合）'],
-      ['Day 3','育てる','オプション課題 [7]〜[12] / ラップアップ・発表会'],
+      ['Day 3','育てる','オプション課題 [7]〜[13] / ラップアップ・発表会'],
     ]}},
-    {key:'<strong>必達は [1]〜[6]（Day 1〜2・全員）</strong>。Day 3 の [7]〜[12] は任意（やらない／1つだけ、も可）。'},
+    {key:'<strong>必達は [1]〜[6]（Day 1〜2・全員）</strong>。Day 3 の [7]〜[13] は任意（やらない／1つだけ、も可）。'},
   ]},
   { type:'content', day:0, sec:'はじめに', title:'ゴール（完了条件）①: Day 1〜2（必達）', body:[
     {table:{head:['#','タスク','Day','完了条件'],rows:[
@@ -262,6 +262,7 @@ const SLIDES = [
       ['[10]','運用保守','★☆☆','wrangler tail でログ確認・運用スキルが1つ動く'],
       ['[11]','セキュリティ','★★★','認証境界・IDOR・機密マスクを点検し最低1つ修正'],
       ['[12]','テスト設計','★★★','主要機能を1つ選び仕様化→期待動作表→テスト設計'],
+      ['[13]','自動デプロイ(Workers Builds)','★★☆','git push だけで自動デプロイされる設定を完了し、push で新しいビルドが自動で現れる'],
     ]}},
     {note:'Day 3 は<strong>任意</strong>（やらない／1つだけ、も可）。'},
   ]},
@@ -290,7 +291,7 @@ const SLIDES = [
     {h:'Day 3 育てる（オプション＋発表会）'},
     {table:{head:['経過','内容'],rows:[
       ['0:00–0:05','今日の進め方（課題の説明は Day 2 で済ませている）'],
-      ['0:05–1:30','自由作業（Day 2 の残り or オプション [7]〜[12]）'],
+      ['0:05–1:30','自由作業（Day 2 の残り or オプション [7]〜[13]）'],
       ['1:30–2:00','最終発表会（1人3分）＋ラップアップ'],
     ]}},
     {note:'固定休憩は設けず、AI の生成待ち（[1] 3案・[4] 実装など）を小休止に充てる。<strong>Day 3 の課題は Day 2 が終わった人から随時着手</strong>してよい。'},
@@ -319,7 +320,7 @@ const SLIDES = [
   ]},
   { type:'content', ref:'s07', day:0, sec:'はじめに', title:'Git ブランチ（dev → main）', body:[
     {p:'GitHub で <strong>Private</strong> リポジトリ（例 <code>3days-workshop</code>）を作成→clone。フロント・バックは同一リポジトリ（モノレポ）。'},
-    {ul:['最初に <strong><code>dev</code> ブランチ</strong>を切り、作業はすべて dev で進める','区切りで<strong>こまめに commit / push</strong>（環境が壊れても失わない保険）','<code>dev</code>→<code>main</code> マージは<strong>セキュリティ課題（SonarCloud）の前</strong>に（無料版は main のみ解析）','秘密ファイル（<code>.dev.vars</code> 等）は <code>.gitignore</code> で必ず除外']},
+    {ul:['最初に <strong><code>dev</code> ブランチ</strong>を切り、作業はすべて dev で進める','区切りで<strong>こまめに commit / push</strong>（環境が壊れても失わない保険）','<code>dev</code>→<code>main</code> マージは<strong>セキュリティ課題（SonarCloud）の前</strong>に（無料版は main のみ解析）','⚠️ [13] の自動デプロイ設定後は <code>dev</code>→<code>main</code> マージが<strong>そのまま本番デプロイ</strong>になる（気になる場合は [11] の修正後に main へ）','秘密ファイル（<code>.dev.vars</code> 等）は <code>.gitignore</code> で必ず除外']},
     {img:'img/git_flow.svg'},
     {code:'dev ブランチを切って、リモートに push して。'},
   ]},
@@ -648,11 +649,11 @@ SPA なので未知のパスは index.html にフォールバックさせて。`
     {warn:'⚠️ <code>npm run deploy</code> はフロントのビルド込み → <strong>ビルドが通らないとデプロイも止まる</strong>。事前に <code>npm run build:front</code> の成功を確認。リモート D1 マイグレ忘れは「テーブルが無い」で失敗。'},
     {done:['自分の workers.dev で LP 表示','本番 URL で <code>/mypage</code> 等が 404 にならない','API を使う画面が本番でも動作']},
     {code:'デプロイ完了の作業をコミットして dev ブランチに push して。必要なら dev を main にマージして。'},
-    {note:'Day 2 本編は Secrets 投入不要（Stripe/Clerk/Resend を使う [7][8][9] で初めて要る）。'},
+    {note:'Day 2 本編は Secrets 投入不要（Stripe/Clerk/Resend を使う [7][8][9] で初めて要る）。ここまでは手元で叩く<strong>手動デプロイ</strong>——git push だけで自動デプロイしたい場合は Day 3 の [13] で扱う。'},
   ]},
   { type:'content', ref:'day3', day:2, sec:'[6] のあとは', title:'[6] が終わったら Day 3 へ（先に案内しておく）', body:[
     {key:'<strong>Day 3 を待たずに、[6] が終わった人からオプション課題に入ってよい</strong>。Day 3 当日に改めて課題の説明はしない。'},
-    {ul:['課題は <strong>[7] メール ／ [8] 決済 ／ [9] ID 連携 ／ [10] 運用保守 ／ [11] セキュリティ ／ [12] テスト設計</strong> の6つ','<strong>やらない／1つだけ、も可</strong>。数より「自分で判断した跡」が残る方が発表で効く','手順は Day 3 のスライドに全部ある。<strong>説明を待たずに読んで始めてよい</strong>（o キーで一覧 → DAY 3 へ）']},
+    {ul:['課題は <strong>[7] メール ／ [8] 決済 ／ [9] ID 連携 ／ [10] 運用保守 ／ [11] セキュリティ ／ [12] テスト設計 ／ [13] 自動デプロイ</strong> の7つ','<strong>やらない／1つだけ、も可</strong>。数より「自分で判断した跡」が残る方が発表で効く','手順は Day 3 のスライドに全部ある。<strong>説明を待たずに読んで始めてよい</strong>（o キーで一覧 → DAY 3 へ）']},
     {h:'選ぶときの目安'},
     {ul:['<strong>迷ったら [7] メール（★☆☆）</strong> — 30分程度で「実際に自分宛に届く」ところまで行ける','<strong>[8] 決済（★★★）は重い</strong> — 5フェーズあるので、残り時間が1時間を切っていたら別の課題を選ぶ','[7][8][9] は外部サービスのアカウント登録から始まる（その時間も見込んでおく）']},
     {note:'難易度と課題どうしの依存関係は、DAY 3 セクション先頭の「オプション課題の選び方」にまとめてある。ブリーフィングではそのスライドを開いて説明する。'},
@@ -683,7 +684,7 @@ assets.not_found_handling を点検し、問題があれば修正して。`, don
 npm run deploy`, warn:'frontend/ からデプロイしない（API が消える）。事前に build:front の成功を確認。', done:'本番にデプロイされ URL が発行される 🎉' },
   { type:'break', day:2, step:'6-4', sec:'[6] デプロイ', title:'本番 URL で動作確認（LP・/mypage・API 1つ）→ dev→main', todo:['本番 URL で LP 表示','/mypage 等のルーティング（404 にならない）','API を1つ動かして確認','dev に push し、必要なら dev を main にマージ'], code:'デプロイ完了の作業をコミットして dev に push して。必要なら dev を main にマージして。', done:'本番で動作確認でき Day 2 完了（必達ライン到達）' },
 
-  { type:'divider', ref:'day3', day:3, label:'DAY 3', title:'育てる（オプション課題＋発表会）', sub:'[7]〜[12] は任意（やらない／1つだけ、も可）・<b>Day 2 が終わった人から随時着手</b>・最後30分は発表会' },
+  { type:'divider', ref:'day3', day:3, label:'DAY 3', title:'育てる（オプション課題＋発表会）', sub:'[7]〜[13] は任意（やらない／1つだけ、も可）・<b>Day 2 が終わった人から随時着手</b>・最後30分は発表会' },
   { type:'content', day:3, sec:'Day 3', title:'オプション課題の選び方', body:[
     {p:'難易度: ★☆☆ 易しい / ★★☆ ふつう / ★★★ 難しい（≈ 所要時間）。'},
     {table:{head:['#','課題','追加すると何が変わるか','難易度'],rows:[
@@ -693,8 +694,9 @@ npm run deploy`, warn:'frontend/ からデプロイしない（API が消える�
       ['[10]','運用保守','監視・ログ・コストが見られる','★☆☆'],
       ['[11]','セキュリティ','脆弱性を点検して1つ直す','★★★'],
       ['[12]','テスト設計','<strong>何をテストすべきかを自分で決める</strong>','★★★'],
+      ['[13]','自動デプロイ(Workers Builds)','<strong>git push するだけで自動デプロイ</strong>（手動 wrangler deploy から卒業）','★★☆'],
     ]}},
-    {note:'依存: [11] は [9] まで終えていると効果大（偽造トークン検証はモック認証では試せない）。[12] は他課題の後だと対象コードが増えて効果大。1つだけなら軽い [7]・[10] から。'},
+    {note:'依存: [11] は [9] まで終えていると効果大（偽造トークン検証はモック認証では試せない）。[12] は他課題の後だと対象コードが増えて効果大。[13] は [6] の手動デプロイ完了が前提（設定中心でコード追加はほぼ無し）。1つだけなら軽い [7]・[10] から。'},
   ]},
   { type:'content', day:3, sec:'[7][8][9] 共通', title:'まず [7][8][9] に共通すること', body:[
     {h:'秘密情報の置き場所（[4] のおさらい）'},
@@ -825,20 +827,34 @@ npm run deploy               # ビルド → デプロイ`},
     {note:'参考: [5] の TEST.md の認証境界テストを回帰テストの土台にする。学び=「AI が書いたコード」を自分で点検できるようになる。'},
   ]},
   { type:'content', day:3, sec:'[11] セキュリティ', title:'[11] 2通りの点検を併用', body:[
-    {ul:['<strong>Claude Code</strong>: <code>/security-review</code> で差分点検・<code>security-guidance</code> は自動点検','<strong>SonarCloud</strong>（静的解析 SaaS）: push のたび脆弱性・バグ・品質を自動検出']},
-    {warn:'⚠️ GitHub App 連携は必ず <strong>「Only select repositories」</strong>を選ぶ。「All repositories」だとプライベートリポジトリのコードが外部送信される恐れ。'},
-    {ol:['点検対象を <strong><code>main</code> ブランチに push</strong>（無料版は main / PR を解析）','sonarcloud.io で <strong>GitHub SSO</strong>','右上 ＋ → <strong>Analyze new project</strong>','対象リポジトリを指定（Only select repositories で絞る）','解析完了を待ち、出た指摘を <strong>AI と一緒にレビュー</strong>']},
-    {imgrow:[{img:'img/SonarQubeCreteNewProject2.png',cap:'対象リポジトリだけにチェックして Set Up'},{img:'img/SonarCloudResult.png',cap:'解析結果（Quality Gate / Security など）'}]},
+    {ul:['<strong>Claude Code</strong>: <code>/security-review</code> で差分点検・<code>security-guidance</code> は自動点検','<strong>SonarCloud</strong>（静的解析＝コードを動かさず読むだけで問題を見つける SaaS）: push のたび脆弱性・バグ・品質を自動検出']},
+    {warn:'⚠️ GitHub App 連携は必ず <strong>「Only select repositories」</strong>を選ぶ。「All repositories」だと（将来作るものも含め）プライベートリポジトリのコードが外部に見える状態になる。'},
+    {ol:['点検対象を <strong><code>main</code> ブランチに push</strong>（無料版は main / PR を解析）','sonarcloud.io → <strong>「GitHub」でログイン → Authorize</strong>（ここはまだ本人確認だけ）','<strong>Install &amp; Authorize</strong> 画面（一番の要注意）: <strong>Only select repositories</strong> で対象だけ許可','<strong>Create an organization</strong>: Name・Key を入力（自動インポートはチェックしない）→ <strong>Free プラン（$0・カード不要）</strong>で作成','右上 ＋ → <strong>Analyze new project</strong> → リポジトリにチェックし <strong>Set Up</strong>','解析完了を待つと <strong>Summary</strong> に項目別の指摘件数が出る']},
+    {imgrow:[{img:'img/SonarCloudInstallAuthorizeApp.png',cap:'Only select repositories で対象だけ許可'},{img:'img/SonarCloudSummaryResult.png',cap:'解析結果（Summary — 項目別 Open issues）'}]},
+    {note:'初回はアカウント作成〜組織作成の手順が多い。実際の画面ひとつずつのスクショは flow.html 側にある。'},
+  ]},
+  { type:'content', day:3, sec:'[11] セキュリティ', title:'[11] 指摘を AI とレビュー（プロンプトのひな形）', body:[
+    {p:'Summary の数字は集計にすぎない。<strong>Issues 画面で個別の指摘を開いて中身を見る</strong>のがレビューの本番。'},
+    {ol:['左サイドバーの <strong>Issues</strong>（または Summary の件数クリック）で指摘一覧へ','1件開くと該当コードと説明が出る。<strong>①ルール名 ②ルールID ③Software quality/重大度 ④行番号 ⑤ファイルパス</strong>をコピー','ひな形に埋めて Claude Code に送る（コードは AI が直接読める）','説明を踏まえ<strong>直すか・誤検知として無視するかを判断</strong>']},
+    {code:`SonarCloudで以下の指摘が出ました。意味と直し方を教えてください。
+
+ルール名: ①をここに
+ルールID: ②をここに
+Software quality / 重大度: ③をここに
+行番号: ④をここに
+ファイルパス: ⑤をここに`},
+    {imgrow:[{img:'img/SonarCloudIssuesList.png',cap:'Issues 一覧（Severity 別フィルタ）'},{img:'img/SonarCloudIssueDetailAnnotated.png',cap:'詳細画面の①〜⑤をコピーして埋める'}]},
+    {note:'文脈を足したいときは「Why is this an issue?」タブの説明文を範囲選択してコピペで添える（スクショは見切れやすい）。'},
   ]},
   { type:'content', day:3, sec:'[11] セキュリティ', title:'[11] ハマりどころと完了の定義', body:[
-    {ul:['指摘には<strong>誤検知</strong>もある。鵜呑みにせず AI と判断','解析単位を分けるため<strong>専用リポジトリ</strong>推奨','All repositories＋自動取り込みが有効だと<strong>意図しないリポジトリまで解析</strong>される（GitHub の Installed App で Only select に絞る）']},
+    {ul:['指摘には<strong>誤検知</strong>もある。鵜呑みにせず AI と判断','<strong>Security 0 件でも異常ではない</strong>（典型的な穴が塞がれていれば出ない）。修正は Reliability・Maintainability の指摘から選んでも可','解析単位を分けるため<strong>専用リポジトリ</strong>推奨','All repositories＋自動取り込みが有効だと<strong>意図しないリポジトリまで解析</strong>される（GitHub の Installed App で Only select に絞る）']},
     {done:['見つけた問題を <strong>1つ以上修正</strong>できれば完了']},
     {code:'セキュリティ修正の作業をコミットして main ブランチに push して。'},
   ]},
   { type:'break', day:3, step:'11-1', sec:'[11] セキュリティ', title:'観点確認（認証境界・IDOR・機密マスク）', todo:['認証境界: 未認証/偽造 JWT で 401 か','IDOR: 他人の email を body に入れても無視されるか','機密マスク: レスポンスにフルのライセンスキーが無いか'], done:'3観点で自分のアプリを見る準備ができた' },
   { type:'break', day:3, step:'11-2', sec:'[11] セキュリティ', title:'/security-review で点検', todo:['/security-review で差分・コードを点検'], code:'/security-review', done:'Claude Code 側の点検結果が出た' },
-  { type:'break', day:3, step:'11-3', sec:'[11] セキュリティ', title:'SonarCloud 設定（main push・Only select repositories・解析）', todo:['対象を main ブランチに push','sonarcloud.io に GitHub SSO','＋ → Analyze new project','GitHub App は <strong>Only select repositories</strong> で対象を絞る','解析完了を待つ'], warn:'All repositories は選ばない（プライベートコード外部送信の恐れ）。', done:'SonarCloud の解析結果が出た' },
-  { type:'break', day:3, step:'11-4', sec:'[11] セキュリティ', title:'指摘を AI とレビュー→最低1つ修正（余裕あれば回帰テスト）→ push', todo:['指摘の意味・直し方を AI に説明させる（誤検知は判断）','最低1つ修正','（余裕）回帰テストを追加','main ブランチに push'], code:'セキュリティ修正の作業をコミットして main ブランチに push して。', done:'問題を1つ以上修正し push 済み' },
+  { type:'break', day:3, step:'11-3', sec:'[11] セキュリティ', title:'SonarCloud 設定（main push・Only select repositories・組織作成・解析）', todo:['対象を main ブランチに push','sonarcloud.io → GitHub でログイン（Authorize）','Install &amp; Authorize は <strong>Only select repositories</strong> で対象を絞る','組織作成（Name・Key 入力／自動インポートはチェックしない）→ Free プラン','＋ → Analyze new project → リポジトリを選び Set Up','解析完了を待つ（Summary が出る）'], warn:'All repositories は選ばない（プライベートコード外部送信の恐れ）。', done:'SonarCloud の解析結果（Summary）が出た' },
+  { type:'break', day:3, step:'11-4', sec:'[11] セキュリティ', title:'指摘を AI とレビュー→最低1つ修正（余裕あれば回帰テスト）→ push', todo:['Issues 画面で個別指摘を開き、①ルール名〜⑤ファイルパスをひな形にコピーして AI に説明させる（誤検知は判断）','最低1つ修正（Security 0 件なら Reliability・Maintainability から選んでも可）','（余裕）回帰テストを追加','main ブランチに push'], code:'セキュリティ修正の作業をコミットして main ブランチに push して。', done:'問題を1つ以上修正し push 済み' },
 
   { type:'divider', ref:'s12', day:3, kicker:'[12] ★★★', title:'テスト設計（自分で決める）', sub:'何をテストすべきかを自分の判断で設計する' },
   { type:'content', day:3, sec:'[12] テスト設計', title:'[12] お題と一番の罠', body:[
@@ -890,6 +906,27 @@ npm run deploy               # ビルド → デプロイ`},
 期待値は表の値をそのまま使い、実装コードから推測しないで。`, done:'◎ の行のテストが実装され npm test がグリーン' },
   { type:'break', day:3, step:'12-6', sec:'[12] テスト設計', title:'わざと壊して赤を確認＋敵対レビュー → push', todo:['わざと壊して該当テストが赤になるのを確認→戻す','敵対レビュー（漏れ・不要を指摘させる）','push'], code:'テスト設計の作業をコミットして push して。', done:'「壊すと赤」を確認し push 済み' },
 
+  { type:'divider', ref:'s13', day:3, kicker:'[13] ★★☆', title:'自動デプロイ（Workers Builds）', sub:'git push するだけで Cloudflare へ自動ビルド・デプロイ（手動 wrangler deploy を卒業）' },
+  { type:'content', day:3, sec:'[13] 自動デプロイ', title:'[13] お題と特徴', body:[
+    {p:'<strong>お題:</strong> <code>git push</code> するだけで Cloudflare へ自動的にビルド・デプロイされる状態にする（[6] の手動デプロイを卒業）。'},
+    {ul:['<strong>ツール</strong>: Cloudflare ダッシュボード（Workers Builds＝Git 連携による CI/CD 機能）','<strong>前提</strong>: [6] で <code>wrangler deploy</code> による手動デプロイまで完了していること','<strong>学び</strong>: CI/CD（push するだけで自動ビルド・デプロイされる仕組み）の初歩と、モノレポ構成でのビルド設定']},
+    {key:'他の Day 3 課題と違い、<strong>作業はすべて Cloudflare ダッシュボード側の設定で完結</strong>。コードの変更も Claude Code への依頼も無い。一度設定すれば、あとは普段どおり push するだけ。'},
+  ]},
+  { type:'content', day:3, sec:'[13] 自動デプロイ', title:'[13] 連携手順（4つの設定）', body:[
+    {ol:['Cloudflare ダッシュボード: <strong>Account home → 対象の Worker → Settings → Build</strong> の GitHub ボタン','GitHub 側の <strong>Install &amp; Authorize</strong> で <strong>Only select repositories</strong> を選び対象のみ許可','<strong>Connect to a repository</strong> 画面で4つを設定: <strong>Git account</strong>（自分のアカウント）／<strong>Path（Root directory）を <code>backend</code></strong>／<strong>Build command に <code>npm install --prefix ../frontend &amp;&amp; npm run build:front</code></strong>／<strong>Production branch を <code>main</code></strong>']},
+    {warn:'⚠️ ここでも「All repositories」は選ばない（プライベートリポジトリすべてに Cloudflare がアクセスできてしまう）。'},
+    {imgrow:[{img:'img/CloudflareWorkerBuildSection.png',cap:'Settings → Build セクションの GitHub ボタン'},{img:'img/CloudflareConnectRepoSettings.png',cap:'Connect to a repository — 4つの設定'}]},
+    {note:'Production branch が main のため、dev への push はプレビューのみ・<strong>dev→main マージがそのまま本番公開</strong>になる（Git ブランチ運用の注意参照）。'},
+  ]},
+  { type:'content', day:3, sec:'[13] 自動デプロイ', title:'[13] ハマりどころと完了の定義', body:[
+    {ul:['<strong>Path（Root directory）設定忘れ → API が全滅（404）</strong>: bot（<code>cloudflare-workers-and-pages</code>）がルートに静的配信専用の <code>wrangler.jsonc</code> を自動生成して PR を送ってくることがある——<strong>マージせずクローズ</strong>','<strong>Build command 設定忘れ → フロントがビルドされない</strong>（既定の <code>npx wrangler deploy</code> は vite build を含まない）','デプロイ直後は伝播に数秒〜十数秒かかる。404 でも少し待って再確認']},
+    {done:['軽微な変更を dev に push → Cloudflare の <strong>Deployments に新しいビルドが自動で現れる</strong>ことを確認','（余裕）dev→main マージで本番 URL への反映まで確認']},
+    {code:'Workers Builds の動作確認用に、軽微な変更（コメント追加など）をコミットして dev ブランチに push して。'},
+  ]},
+  { type:'break', day:3, step:'13-1', sec:'[13] 自動デプロイ', title:'GitHub 連携（Settings → Build → GitHub・Only select repositories）', todo:['Account home → 対象の Worker → Settings → Build','GitHub ボタン → Install &amp; Authorize','<strong>Only select repositories</strong> で対象のみ許可'], warn:'All repositories は選ばない。', done:'Connect to a repository 画面が開いた' },
+  { type:'break', day:3, step:'13-2', sec:'[13] 自動デプロイ', title:'接続設定4点（Git account・Path=backend・Build command・Production branch=main）', todo:['Git account を自分のアカウントに','Path（Root directory）を <code>backend</code> に','Build command: <code>npm install --prefix ../frontend &amp;&amp; npm run build:front</code>','Production branch: <code>main</code>'], warn:'Path が空のままだと bot の自動 PR（静的配信専用）が来ることがある——マージせずクローズ。', done:'4つの設定を保存できた' },
+  { type:'break', day:3, step:'13-3', sec:'[13] 自動デプロイ', title:'動作確認（軽微な変更を dev に push → 自動ビルド）', todo:['軽微な変更をコミットし dev に push','Cloudflare の Deployments に新しいビルドが現れるのを確認','（余裕）dev→main マージで本番 URL 反映を確認'], code:'Workers Builds の動作確認用に、軽微な変更（コメント追加など）をコミットして dev ブランチに push して。', done:'push だけで自動ビルドが走った——[13] 完了' },
+
   { type:'divider', ref:'wrap', day:3, label:'Day 3 最後の30分', title:'ラップアップ・発表会', sub:'1人3分のデモ＋振り返り' },
   { type:'content', day:3, sec:'ラップアップ', title:'最終発表会と振り返り', body:[
     {h:'最終発表会（1人3分）'},
@@ -907,8 +944,9 @@ npm run deploy               # ビルド → デプロイ`},
       ['Clerk','残すならそのまま','アプリ削除＋frontend/.env の鍵削除'],
       ['Resend キー','使い続けるなら残す','キーを Revoke'],
       ['SonarCloud/App','継続解析なら残す','プロジェクト削除＋App 権限解除'],
+      ['Workers Builds（[13]）','自動デプロイを続けるなら残す','Worker → Settings → Build で Disconnect。GitHub 側は<strong>2箇所</strong>: Installed Apps の <strong>Uninstall</strong> ＋ Authorized Apps の <strong>Revoke</strong>（片方だけでは不十分）'],
     ]}},
-    {note:'原則: 鍵は「消す」より先に「無効化（Revoke）」（消しても発行済みの鍵は生きている）。'},
+    {note:'原則: 鍵は「消す」より先に「無効化（Revoke）」（消しても発行済みの鍵は生きている）。GitHub の App 解除はアカウント側 Settings → Applications から（リポジトリ側の Settings ではない）。'},
   ]},
 
   { type:'cover', badge:'FIN', title:'おつかれさまでした 🍵', sub:'自分の URL で公開された、自分の SaaS を持ち帰ろう', meta:'資料本編: <b>flow.html</b>　／　このスライド: <b>slides-v2.html</b>' },
@@ -943,6 +981,7 @@ const SEC2REF = {
   '[10] 運用保守'                   : 's10',
   '[11] セキュリティ'               : 's11',
   '[12] テスト設計'                 : 's12',
+  '[13] 自動デプロイ'               : 's13',
   'ラップアップ'                    : 'wrap',
   '後片付け'                        : 'cleanup',
 };
