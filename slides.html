@@ -507,7 +507,7 @@ wrangler.jsonc も作って（name は <自分で決めた名前> にして）�
   { type:'break', day:1, step:'3-2', sec:'[3] フロントデプロイ', title:'wrangler login / whoami でアカウント確認', todo:['wrangler login（ブラウザで許可）','wrangler whoami で想定アカウントか確認'], code:`wrangler login
 wrangler whoami`, warn:'複数アカウントを持つ人は取り違えに注意（別アカウントに資源を作る事故を防ぐ）。', done:'想定した Cloudflare アカウントにログインできている' },
   { type:'break', day:1, step:'3-3', sec:'[3] フロントデプロイ', title:'npm run build', todo:['npm run build（フロントのルートで。Claude Code に任せてよい）'], code:'npm run build', done:'ビルドが成功する' },
-  { type:'break', day:1, step:'3-4', sec:'[3] フロントデプロイ', title:'wrangler deploy', todo:['Cloudflare Workers にデプロイ'], code:'wrangler deploy', done:'URL が発行される（初回は workers.dev サブドメイン登録を求められることも）' },
+  { type:'break', day:1, step:'3-4', sec:'[3] フロントデプロイ', title:'wrangler deploy', todo:['Cloudflare Workers にデプロイ'], code:'wrangler deploy', done:'URL が発行される（アカウント初回はターミナルで workers.dev サブドメインの入力を求められる）' },
   { type:'break', day:1, step:'3-5', sec:'[3] フロントデプロイ', title:'発行 URL で LP 表示確認', todo:['発行された URL をブラウザで開く','LP が表示されることを確認 🎉'], done:'https://&lt;name&gt;.workers.dev で LP が表示される' },
   { type:'break', day:1, step:'U-1', sec:'Day 1 クロージング', title:'公開 URL をチャットに貼って共有', todo:['公開 URL をチャットに貼って共有'], code:'フロントデプロイの作業をコミットして dev ブランチに push して。', done:'公開 URL を共有し dev に push 済み' },
 
