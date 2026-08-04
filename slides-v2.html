@@ -266,20 +266,22 @@ const SLIDES = [
     {note:'Day 3 は<strong>任意</strong>（やらない／1つだけ、も可）。'},
   ]},
   { type:'content', ref:'s-time', day:0, sec:'はじめに', title:'このワークショップの進め方', body:[
-    {key:'各日の<strong>冒頭でその日の説明をまとめて行い</strong>、残りの時間は各自のペースで作業する。'},
-    {ol:['<strong>ブリーフィング</strong>（冒頭20〜25分）— その日のタスクを通しで説明＋デモ','<strong>自由作業</strong>（残りの時間）— 作業カード（STEP つきスライド）を見ながら自分のペースで進める','<strong>クロージング</strong>（最後5〜10分）— 到達確認と push']},
-    {ul:['ブリーフィング中に<strong>すでに先へ進んでいる人は聞かなくてよい</strong>（手を止めなくてよい）','<strong>Day 2（[6]）まで終わった人は、その時点で Day 3 のオプション課題に進んでよい</strong>（Day 3 を待たない）','<strong>15分</strong>自力で解決できなければ講師に声をかける（沼を防ぐ）']},
-    {note:'説明スライドと作業カードは分かれている。作業中に手順を忘れたら o キーで一覧を開き、該当タスクの説明スライドに戻る。'},
+    {key:'<strong>Day 1 と Day 2 で進め方が変わる。</strong> Day 1 はセクションごとに全員そろって、Day 2 は冒頭にまとめて説明してから各自のペースで進める。'},
+    {ol:['<strong>Day 1（同期）</strong>— [1][2][3] をセクションごとに「説明 → 作業」で全員そろって進む','<strong>Day 2（ブリーフィング先出し）</strong>— 冒頭25〜30分で [4][5][6] を通しで説明＋デモ → 残りは自由作業','<strong>Day 3（自由作業）</strong>— 課題の説明は Day 2 で済ませてある。最後30分は発表会']},
+    {ul:['<strong>Day 2（[6]）まで終わった人は、その時点で Day 3 のオプション課題に進んでよい</strong>（Day 3 を待たない）','Day 2 のブリーフィング中に<strong>すでに先へ進んでいる人は聞かなくてよい</strong>（手を止めなくてよい）','<strong>15分</strong>自力で解決できなければ講師に声をかける（沼を防ぐ）']},
+    {note:'Day 2 は説明スライドと作業カードが分かれている。作業中に手順を忘れたら o キーで一覧を開き、該当タスクの説明スライドに戻る。'},
   ]},
   { type:'content', ref:'s-time', day:0, sec:'はじめに', title:'タイムテーブル目安（各日 2 時間）', body:[
     {h:'Day 1 つくる'},
     {table:{head:['経過','内容'],rows:[
       ['0:00–0:10','オープニング（目的・ゴール・技術・全体像・進め方）'],
-      ['0:10–0:25','環境確認（node/git/claude）＋セキュリティ対策'],
-      ['0:25–0:50','<strong>ブリーフィング</strong>：[1][2][3] を通しで説明＋デモ'],
-      ['0:50–1:50','<strong>自由作業</strong>：[1]→[2]→[3]（wrangler は [3] で導入）'],
-      ['1:50–2:00','クロージング（公開 URL 共有・dev push 確認）'],
+      ['0:10–0:20','環境確認（node/git/claude。wrangler は [3] で）'],
+      ['0:20–0:50','[1] Claude Design（3案→1つ→zip）'],
+      ['0:50–1:35','[2] フロント作成（zip を渡してモックで全画面）'],
+      ['1:35–1:50','[3] フロントデプロイ（URL 共有）🎉'],
+      ['1:50–2:00','クロージング（dev push 確認）'],
     ]}},
+    {note:'Day 1 は<strong>セクションごとに全員そろって</strong>「説明 → 作業」で進む（ビジュアルの確認を全員で共有するため）。'},
     {h:'Day 2 つなぐ・公開する（ここまで必達）'},
     {table:{head:['経過','内容'],rows:[
       ['0:00–0:05','前回の振り返り'],
@@ -387,10 +389,6 @@ const SLIDES = [
 audit=true`},
     {ul:['<code>min-release-age=7</code>: 公開7日未満のバージョンは install 対象外','⚠️ 有効なのは npm 11.10.0 以降。<code>npm -v</code> で確認し、古ければ <code>npm install -g npm</code>','<code>audit=true</code>: install 時に脆弱性チェックが走る']},
   ]},
-
-  { type:'divider', ref:'day1', day:1, label:'BRIEFING', title:'Day 1 ブリーフィング', sub:'[1] → [2] → [3] を通しで説明。ここは聞くだけでよい（手はまだ動かさない）' },
-
-  { type:'divider', ref:'s1', day:1, kicker:'[1]', title:'Claude Design でサイトデザイン作成', sub:'LP のデザインシステムを確定し zip でエクスポート' },
   { type:'content', day:1, sec:'Day 1（[1] 着手前）', title:'画面構成とナビゲーション', body:[
     {key:'<strong>[1] を始める前に構成を固める。</strong> あいまいなまま渡すと「購入する」が問い合わせに飛んだり、マイページがダッシュボード型になる。'},
     {table:{head:['ボタン/リンク','設置','遷移先'],rows:[
@@ -401,6 +399,25 @@ audit=true`},
     ]}},
     {warn:'⚠️ <strong>CTA のテキストは「購入する」</strong>。「無料で試す」は使わない。クリック先は料金セクション（または購入画面）。'},
   ]},
+  { type:'content', day:1, sec:'Day 1（[2] 着手前）', title:'リポジトリのディレクトリ構成', body:[
+    {p:'フロント・バックは1リポジトリ（モノレポ）に <code>frontend/</code>・<code>backend/</code> として並べる。最終的に <code>backend/</code> の Worker が両方配信する。'},
+    {code:`repo-root/
+├── .claude/settings.json    # deny 設定（Day1）
+├── .npmrc                    # npm 取り込み制限（Day1）
+├── SCREEN_SPEC.md            # 画面仕様（[2] 着手前に作る）
+├── frontend/                 # Vite+React+TS（[2]）
+│   ├── src/pages/            # /, /contact, /mypage, /success
+│   ├── .env                  # 公開可能な変数（[9] Clerk）
+│   └── wrangler.jsonc        # Day1 単独デプロイ用（[3]）
+└── backend/                  # Hono + Workers（[4]）
+    ├── src/index.ts, routes/
+    ├── migrations/           # D1 マイグレーション
+    ├── docs/TEST.md          # テスト戦略（[5]）
+    ├── wrangler.jsonc        # 最終的にフロント+APIを1 Workerで配信（[6]）
+    └── .dev.vars             # ローカル用シークレット（.gitignore済）`},
+  ]},
+
+  { type:'divider', ref:'s1', day:1, kicker:'[1]', title:'Claude Design でサイトデザイン作成', sub:'LP のデザインシステムを確定し zip でエクスポート' },
   { type:'content', day:1, sec:'[1] Claude Design', title:'[1] ゴールとアクセス', body:[
     {p:'<strong>ゴール:</strong> LP のデザインシステム（配色・トーン・雰囲気）を確定し zip でエクスポート。<strong>作るのは LP（<code>/</code>）のみ</strong> — 機能ページは [2] で Claude Code が実装。'},
     {ul:['<strong>アクセス</strong>: claude.ai にログイン→「Explore Claude」→「Claude Design」、または claude.ai/design','<strong>なぜ LP だけか</strong>: Claude Design はトークン消費が多く、標準プランでは全ページ分の余裕がないため LP に絞る']},
@@ -429,6 +446,12 @@ audit=true`},
     {ul:['「それっぽく作れた」で十分。完璧より<strong>方向性の確定</strong>が目的','いきなり1案に飛びつかず<strong>3案を見比べる</strong>','言語化より<strong>デザイン Project（zip）を丸ごと渡す</strong>','料金プランは<strong>月額・年額の2プラン</strong>推奨（[2][3] がスムーズ）']},
     {done:['LP の配色・トーン・セクション構成が決まっている','「購入する」ボタンが料金セクションへの導線になっている','デザインを zip でエクスポートでき、[2] にそのまま渡せる']},
   ]},
+  { type:'break', day:1, step:'1-1', sec:'[1] Claude Design', title:'事前設定（Product prototype・Design system を None にリセット・モデル/Effort=Opus/High）', todo:['Product prototype を選ぶ','Design system が None かを確認（違えばリセット）','モデル/Effort を Opus/High に設定'], done:'新規デザインを作り始められる状態' },
+  { type:'break', day:1, step:'1-2', sec:'[1] Claude Design', title:'サービス内容を伝えて LP 生成（3案出させる）', todo:['サービス内容（何を・誰に・売るもの・欲しい機能）を伝える','「デザイン案を3つ出して」と伝える'], done:'3案の生成が始まる（数分。待ち時間に S-1 へ）' },
+  { type:'break', day:1, step:'1-3', sec:'[1] Claude Design', title:'3案から1つ選ぶ', todo:['3案を見比べて1つ選ぶ'], done:'ベースにするデザイン案が1つ決まった' },
+  { type:'break', day:1, step:'1-4', sec:'[1] Claude Design', title:'Tweaks／チャット／Mark up で調整・不要セクション削除', todo:['Tweaks／チャット／Mark up で調整','不要セクションを削除'], done:'LP の方向性が固まった' },
+  { type:'break', day:1, step:'1-5', sec:'[1] Claude Design', title:'zip でエクスポート', todo:['右上 Share →「Project archive (.zip)」をダウンロード'], done:'zip を [2] にそのまま渡せる状態' },
+
   { type:'content', day:1, sec:'S-1（[2] 着手前）', title:'SCREEN_SPEC.md を作る', body:[
     {p:'Claude Code にプロンプトを渡す前に、リポジトリのルートに <code>SCREEN_SPEC.md</code> を作る。玄米茶の内容を<strong>自分のサービスに書き換える</strong>。'},
     {code:`# SCREEN_SPEC.md
@@ -446,25 +469,9 @@ audit=true`},
 - 購入完了メッセージ＋マイページへのリンク`},
     {note:'ページを増減してもよい。書き換えたら [2] のプロンプトに「この SCREEN_SPEC.md を参考に実装して」と添える。具体的な記入例（玄米茶）は <a href="flow.html#s2-spec" target="flowdoc">flow.html#s2-spec</a> の details 参照。'},
   ]},
+  { type:'break', day:1, step:'S-1', sec:'S-1（[1] の生成待ち時間に並行）', title:'ルートに SCREEN_SPEC.md を作成し自分のサービス内容に書き換え', todo:['ルートに SCREEN_SPEC.md を作成','自分のサービス内容に書き換え'], warn:'[1] の3案生成は数分かかる。<strong>その待ち時間に並行</strong>して進めると効率的。', done:'自分のサービスの画面仕様が SCREEN_SPEC.md にまとまった' },
 
   { type:'divider', ref:'s2', day:1, kicker:'[2]', title:'Claude Code でフロント作成', sub:'デザイン通りの SPA 全画面をローカルで動かす（Day 1 到達点）' },
-  { type:'content', day:1, sec:'Day 1（[2] 着手前）', title:'リポジトリのディレクトリ構成', body:[
-    {p:'フロント・バックは1リポジトリ（モノレポ）に <code>frontend/</code>・<code>backend/</code> として並べる。最終的に <code>backend/</code> の Worker が両方配信する。'},
-    {code:`repo-root/
-├── .claude/settings.json    # deny 設定（Day1）
-├── .npmrc                    # npm 取り込み制限（Day1）
-├── SCREEN_SPEC.md            # 画面仕様（[2] 着手前に作る）
-├── frontend/                 # Vite+React+TS（[2]）
-│   ├── src/pages/            # /, /contact, /mypage, /success
-│   ├── .env                  # 公開可能な変数（[9] Clerk）
-│   └── wrangler.jsonc        # Day1 単独デプロイ用（[3]）
-└── backend/                  # Hono + Workers（[4]）
-    ├── src/index.ts, routes/
-    ├── migrations/           # D1 マイグレーション
-    ├── docs/TEST.md          # テスト戦略（[5]）
-    ├── wrangler.jsonc        # 最終的にフロント+APIを1 Workerで配信（[6]）
-    └── .dev.vars             # ローカル用シークレット（.gitignore済）`},
-  ]},
   { type:'content', day:1, sec:'[2] フロント作成', title:'[2] ゴールと前提', body:[
     {p:'<strong>ゴール:</strong> デザイン通りの SPA（1枚の index.html を JS が書き換えて全画面表示）が<strong>ローカル（<code>npm run dev</code> の URL）で動く</strong>。'},
     {key:'<strong>フロントとバックは1リポジトリ（モノレポ）で管理。</strong> リポジトリを clone し、<strong>ルートで Claude Code を起動</strong>する（frontend/ と backend/ を跨ぐため）。各ディレクトリは Claude に作らせる（自分で mkdir しない）。'},
@@ -488,6 +495,11 @@ wrangler.jsonc も作って（name は <自分で決めた名前> にして）�
     {done:['dev URL で <strong>LP が崩れず表示</strong>（Tailwind が効いている）','<code>/</code> <code>/contact</code> <code>/mypage</code> <code>/success</code> 全画面が実装され React Router で遷移','デザイン [1] の方向性が反映されている']},
     {code:'フロント実装の作業をコミットして dev ブランチに push して。'},
   ]},
+  { type:'break', day:1, step:'2-1', sec:'[2] フロント作成', title:'リポジトリ作成・clone・ルートで Claude Code 起動（zip 配置）', todo:['GitHub で Private リポジトリを作成','ローカルに clone','[1] の zip をリポジトリ直下に配置（例 design.zip）','リポジトリのルートで Claude Code を起動'], done:'ルートで Claude Code が起動し zip が置いてある' },
+  { type:'break', day:1, step:'2-2', sec:'[2] フロント作成', title:'プロンプトで SPA 生成（Vite+React+TS+Tailwind+shadcn/ui・React Router・wrangler.jsonc・全画面モック）', todo:['Vite+React+TS+Tailwind v4+shadcn/ui で frontend/ を生成','React Router でルーティング','wrangler.jsonc（name は自分の名前・小文字英数字とハイフンのみ）','SCREEN_SPEC.md の全画面をモックデータで実装'], code:`frontend/ に Vite + React + TypeScript + Tailwind CSS v4 + shadcn/ui で SPA を作って。
+…（[2] 流れのプロンプトを使う）`, done:'全画面がモックで生成された' },
+  { type:'break', day:1, step:'2-3', sec:'[2] フロント作成', title:'npm run dev で全画面を目視確認・修正依頼', todo:['npm run dev を実行し、表示された URL を開く','LP・/contact・/mypage・/success を目視','崩れ・リンク切れ・無反応ボタンを具体的に伝えて修正依頼'], done:'全画面が崩れず表示され、4ページ遷移できる' },
+  { type:'break', day:1, step:'2-4', sec:'[2] フロント作成', title:'dev ブランチに push', todo:['作業をコミット','dev ブランチに push'], code:'フロント実装の作業をコミットして dev ブランチに push して。', done:'フロント実装が dev に push 済み' },
 
   { type:'divider', ref:'s3', day:1, kicker:'[3]', title:'Day 1 フロントデプロイ（Cloudflare Workers）', sub:'フロントが完成したらすぐ公開 URL を手に入れる' },
   { type:'content', day:1, sec:'[3] フロントデプロイ', title:'[3] ゴールと概要', body:[
@@ -500,31 +512,11 @@ wrangler.jsonc も作って（name は <自分で決めた名前> にして）�
     {ul:['複数アカウントを持つ人は <code>whoami</code> で<strong>取り違えを必ず確認</strong>','初回は workers.dev サブドメインの登録を求められることがある（画面の指示に従う）']},
     {done:['dev URL で LP・全ページが表示','自分の <code>https://&lt;name&gt;.workers.dev</code> で LP 表示']},
   ]},
-
-  { type:'divider', ref:'day1', day:1, label:'WORK', title:'ここから自由作業', sub:'[1] → [2] → [3] を自分のペースで。以降のスライドが作業カード（手順書）' },
-  { type:'content', ref:'day1', day:1, sec:'Day 1 自由作業', title:'自由作業の進め方（Day 1）', body:[
-    {key:'ここから先のスライドは<strong>作業カード</strong>。上から順に、自分のペースで進める。'},
-    {ul:['チェック項目はクリックで消し込める（自分用のメモ）','手順の意味を忘れたら o キーで一覧 → 該当タスクの説明スライドへ戻る','<strong>15分</strong>詰まったら講師に声をかける（自力で粘りすぎない）']},
-    {h:'[3] まで終わってしまったら'},
-    {ul:['Day 3 のオプション課題は<strong>バックエンドが前提なので Day 1 では着手できない</strong>','代わりに<strong>自分の題材の画面を増やす</strong>（SCREEN_SPEC.md に追記 → Claude Code に実装させる）','または<strong>SCREEN_SPEC.md を厚くする</strong>（Day 2 の [4] で API 設計がそのまま楽になる）','他の人の公開 URL を見に行くのも歓迎']},
-    {note:'Day 2 の [4] は全員そろってブリーフィングから始める。先に進みすぎるより、自分の題材を深くしておく方が Day 2 が速い。'},
-  ]},
-  { type:'break', day:1, step:'1-1', sec:'[1] Claude Design', title:'事前設定（Product prototype・Design system を None にリセット・モデル/Effort=Opus/High）', todo:['Product prototype を選ぶ','Design system が None かを確認（違えばリセット）','モデル/Effort を Opus/High に設定'], done:'新規デザインを作り始められる状態' },
-  { type:'break', day:1, step:'1-2', sec:'[1] Claude Design', title:'サービス内容を伝えて LP 生成（3案出させる）', todo:['サービス内容（何を・誰に・売るもの・欲しい機能）を伝える','「デザイン案を3つ出して」と伝える'], done:'3案の生成が始まる（数分。待ち時間に S-1 へ）' },
-  { type:'break', day:1, step:'1-3', sec:'[1] Claude Design', title:'3案から1つ選ぶ', todo:['3案を見比べて1つ選ぶ'], done:'ベースにするデザイン案が1つ決まった' },
-  { type:'break', day:1, step:'1-4', sec:'[1] Claude Design', title:'Tweaks／チャット／Mark up で調整・不要セクション削除', todo:['Tweaks／チャット／Mark up で調整','不要セクションを削除'], done:'LP の方向性が固まった' },
-  { type:'break', day:1, step:'1-5', sec:'[1] Claude Design', title:'zip でエクスポート', todo:['右上 Share →「Project archive (.zip)」をダウンロード'], done:'zip を [2] にそのまま渡せる状態' },
-  { type:'break', day:1, step:'S-1', sec:'S-1（[1] の生成待ち時間に並行）', title:'ルートに SCREEN_SPEC.md を作成し自分のサービス内容に書き換え', todo:['ルートに SCREEN_SPEC.md を作成','自分のサービス内容に書き換え'], warn:'[1] の3案生成は数分かかる。<strong>その待ち時間に並行</strong>して進めると効率的。', done:'自分のサービスの画面仕様が SCREEN_SPEC.md にまとまった' },
-  { type:'break', day:1, step:'2-1', sec:'[2] フロント作成', title:'リポジトリ作成・clone・ルートで Claude Code 起動（zip 配置）', todo:['GitHub で Private リポジトリを作成','ローカルに clone','[1] の zip をリポジトリ直下に配置（例 design.zip）','リポジトリのルートで Claude Code を起動'], done:'ルートで Claude Code が起動し zip が置いてある' },
-  { type:'break', day:1, step:'2-2', sec:'[2] フロント作成', title:'プロンプトで SPA 生成（Vite+React+TS+Tailwind+shadcn/ui・React Router・wrangler.jsonc・全画面モック）', todo:['Vite+React+TS+Tailwind v4+shadcn/ui で frontend/ を生成','React Router でルーティング','wrangler.jsonc（name は自分の名前・小文字英数字とハイフンのみ）','SCREEN_SPEC.md の全画面をモックデータで実装'], code:`frontend/ に Vite + React + TypeScript + Tailwind CSS v4 + shadcn/ui で SPA を作って。
-…（[2] 流れのプロンプトを使う）`, done:'全画面がモックで生成された' },
-  { type:'break', day:1, step:'2-3', sec:'[2] フロント作成', title:'npm run dev で全画面を目視確認・修正依頼', todo:['npm run dev を実行し、表示された URL を開く','LP・/contact・/mypage・/success を目視','崩れ・リンク切れ・無反応ボタンを具体的に伝えて修正依頼'], done:'全画面が崩れず表示され、4ページ遷移できる' },
-  { type:'break', day:1, step:'2-4', sec:'[2] フロント作成', title:'dev ブランチに push', todo:['作業をコミット','dev ブランチに push'], code:'フロント実装の作業をコミットして dev ブランチに push して。', done:'フロント実装が dev に push 済み' },
   { type:'break', day:1, step:'3-1', sec:'[3] フロントデプロイ', title:'wrangler インストール', todo:['wrangler をグローバルインストール'], code:'npm install -g wrangler', done:'wrangler コマンドが使える' },
   { type:'break', day:1, step:'3-2', sec:'[3] フロントデプロイ', title:'wrangler login / whoami でアカウント確認', todo:['wrangler login（ブラウザで許可）','wrangler whoami で想定アカウントか確認'], code:`wrangler login
 wrangler whoami`, warn:'複数アカウントを持つ人は取り違えに注意（別アカウントに資源を作る事故を防ぐ）。', done:'想定した Cloudflare アカウントにログインできている' },
   { type:'break', day:1, step:'3-3', sec:'[3] フロントデプロイ', title:'npm run build', todo:['npm run build（フロントのルートで。Claude Code に任せてよい）'], code:'npm run build', done:'ビルドが成功する' },
-  { type:'break', day:1, step:'3-4', sec:'[3] フロントデプロイ', title:'wrangler deploy', todo:['Cloudflare Workers にデプロイ'], code:'wrangler deploy', done:'URL が発行される（初回は workers.dev サブドメイン登録を求められることも）' },
+  { type:'break', day:1, step:'3-4', sec:'[3] フロントデプロイ', title:'wrangler deploy', todo:['Cloudflare Workers にデプロイ'], code:'wrangler deploy', done:'URL が発行される（アカウント初回はターミナルで workers.dev サブドメインの入力を求められる）' },
   { type:'break', day:1, step:'3-5', sec:'[3] フロントデプロイ', title:'発行 URL で LP 表示確認', todo:['発行された URL をブラウザで開く','LP が表示されることを確認 🎉'], done:'https://&lt;name&gt;.workers.dev で LP が表示される' },
   { type:'break', day:1, step:'U-1', sec:'Day 1 クロージング', title:'公開 URL をチャットに貼って共有', todo:['公開 URL をチャットに貼って共有'], code:'フロントデプロイの作業をコミットして dev ブランチに push して。', done:'公開 URL を共有し dev に push 済み' },
 
