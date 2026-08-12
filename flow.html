@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ワークショップ — AIとつくる自分の SaaS の MVP</title>
+<title>「高速Webサービス開発」ワークショップ</title>
 <style>
 :root{
   --bg:#d6d3ca; --paper:#fffdf8; --ink:#2d2a24; --muted:#6b6453;
@@ -250,7 +250,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 
 
 <section class="page-section" id="ps-overview">
-<h1 id="top">ワークショップフロー: AI とつくる「自分の SaaS の MVP」</h1>
+<h1 id="top">「高速Webサービス開発」ワークショップ</h1>
 <p class="note">完成形の動くデモ（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://genmaicha-back-demo.y-arai-a8a.workers.dev/">https://genmaicha-back-demo.y-arai-a8a.workers.dev/</a> — このワークショップで、このような「LP（ランディングページ＝サービス紹介の1枚ページ）＋購入＋マイページ」の SaaS を<strong>自分の題材で</strong>作る。</p>
 
 <h2 id="s0">ワークショップの目的・ゴール</h2>
@@ -312,7 +312,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <h2 id="s-map">全体マップ</h2>
 
 <figure class="diagram keep-light">
-<img src="img/workshop_flow_diagram.svg" alt="ワークショップフロー図: Core（[1]デザイン→[2]フロント→[3]フロントデプロイ→[4]バック→[5]自動テスト→[6]デプロイ）と Option（[7]メール/[8]決済/[9]ID連携/[10]運用保守/[11]セキュリティ/[12]テスト設計/[13]自動デプロイ）">
+<img src="img/workshop_flow_diagram.svg" alt="ワークショップフロー図: Core（[1]デザイン→[2]フロント→[3]フロントデプロイ→[4]バック→[5]自動テスト→[6]デプロイ）と Option（[7]メール/[8]決済/[9]ID連携/[10]運用保守/[11]セキュリティ/[12]E2Eテスト/[13]自動デプロイ）">
 </figure>
 
 <table>
@@ -339,7 +339,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <tr><td><strong>[9]</strong></td><td>ID 連携（Clerk）</td><td>Section 3</td><td>★★☆</td><td>未ログインで <code>/mypage</code> に入れない・<code>/api/me</code> がログイン必須になっている</td></tr>
 <tr><td><strong>[10]</strong></td><td>運用保守（Cloudflare ログ確認・スキル化）</td><td>Section 3</td><td>★☆☆</td><td><code>wrangler tail</code> でログ確認できる・運用スキルが1つ動作する</td></tr>
 <tr><td><strong>[11]</strong></td><td>セキュリティ（SonarCloud 静的解析・脆弱性レビュー）</td><td>Section 3</td><td>★★★</td><td>認証境界・IDOR・機密マスクを点検し、問題を最低1つ修正（余裕があれば回帰テストを追加）</td></tr>
-<tr><td><strong>[12]</strong></td><td>テスト設計（何をテストすべきか自分で決める）</td><td>Section 3</td><td>★★★</td><td>主要機能を1つ選び「こう動くべき」を自分で仕様化→期待動作表→テストまで設計。AI に丸投げせず、壊すとテストが赤くなることまで確認できる</td></tr>
+<tr><td><strong>[12]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>Section 3</td><td>★★☆</td><td>「お金を返せと言われる事態」を自分で書き、ブラウザ操作のテストにする。AI が作った MVP について「自分が決めていなかったこと」を見つけて決められる</td></tr>
 <tr><td><strong>[13]</strong></td><td>自動デプロイ（Cloudflare Workers Builds）</td><td>Section 3</td><td>★★☆</td><td>git push だけで自動デプロイされる設定を完了し、軽微な変更の push で Cloudflare ダッシュボードに新しいビルドが自動で現れることを確認できる</td></tr>
 </tbody>
 </table>
@@ -1072,7 +1072,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <h3>② 自動テスト — 考え方（AI との壁打ち）</h3>
 <p>このワークショップでは<strong>3ステップの壁打ち</strong>でテストを作る:</p>
 <ol>
-<li><strong>AI にテスト戦略を書かせる</strong> — コードを読んで「何を・なぜテストするか」を <code>docs/TEST.md</code> にまとめさせる</li>
+<li><strong>AI にテスト要件を書かせる</strong> — コードを読んで「何を・なぜテストするか」を <code>docs/TEST.md</code> にまとめさせる</li>
 <li><strong>人間が TEST.md をレビューする</strong> — 観点の抜けや「これはテストしなくていい」という箇所をチャットで指摘する</li>
 <li><strong>AI にテストを実装させる</strong> — レビュー済みの TEST.md を元に実装させ、<code>npm test</code>（バック・フロントそれぞれ）でグリーンを確認する</li>
 </ol>
@@ -1220,11 +1220,11 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <tr><td><strong>[9]</strong></td><td>ID 連携（Clerk）</td><td>「メール入力の簡易ログイン」→ <strong>本物のログイン</strong>（未ログインはサインインへ）</td><td>★★☆</td><td><a href="#s9">→ [9] ID 連携</a></td></tr>
 <tr><td><strong>[10]</strong></td><td>運用保守</td><td>「運用チェックして」で<strong>監視・ログ・コストが見られる</strong>ように</td><td>★☆☆</td><td><a href="#s10">→ [10] 運用保守</a></td></tr>
 <tr><td><strong>[11]</strong></td><td>セキュリティ</td><td>自分のアプリの<strong>脆弱性を点検して1つ直す</strong>（＋回帰テスト）</td><td>★★★</td><td><a href="#s11">→ [11] セキュリティ</a></td></tr>
-<tr><td><strong>[12]</strong></td><td>テスト設計（自分で決める）</td><td>[5] の与えられた観点を卒業し、<strong>何をテストすべきかを自分で判断して設計</strong>する（仕様起点の機能テスト＋リスクで優先順位）</td><td>★★★</td><td><a href="#s12">→ [12] テスト設計</a></td></tr>
+<tr><td><strong>[12]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>[5] の与えられた観点を卒業し、<strong>何を保証すべきかを自分で決める</strong>。画面を通したテストで<strong>「決めていなかったこと」</strong>が見つかる</td><td>★★☆</td><td><a href="#s12">→ [12] E2E テスト</a></td></tr>
 <tr><td><strong>[13]</strong></td><td>自動デプロイ（Workers Builds）</td><td><code>git push</code> するだけで<strong>Cloudflare へ自動的にビルド・デプロイ</strong>されるようになる（手動の <code>wrangler deploy</code> から卒業）</td><td>★★☆</td><td><a href="#s13">→ [13] 自動デプロイ</a></td></tr>
 </tbody>
 </table>
-<p class="note">選び方: <strong>作りたい変化で選ぶ</strong>（上表）。<strong>依存</strong>: [11] は [9]（本物の認証）まで終えていると効果が高い（偽造トークンの検証はモック認証では試せない）。[12] は他の課題（特に [7][8][9]）まで実装したあとにやると、増えたコードをテスト対象にできて効果が高い。[13] は [6] の手動デプロイが完了していることが前提（Cloudflare ダッシュボードでの連携設定が中心で、コードの追加はほぼ無い）。<strong>目安</strong>: ★＝重さ＝所要時間の目安（★☆☆ ≈ 30〜45分 / ★★☆ ≈ 45〜60分 / ★★★ ≈ 60分〜）。1つだけなら軽い [7]・[10] から。</p>
+<p class="note">選び方: <strong>作りたい変化で選ぶ</strong>（上表）。<strong>依存</strong>: [11] は [9]（本物の認証）まで終えていると効果が高い（偽造トークンの検証はモック認証では試せない）。[12] は逆に <strong>[8][9] より先にやる</strong>（決済とログインを外部サービスに置き換えると、購入フローも他人のアカウントも画面から追えなくなり、E2E で書ける項目が激減する）。[13] は [6] の手動デプロイが完了していることが前提（Cloudflare ダッシュボードでの連携設定が中心で、コードの追加はほぼ無い）。<strong>目安</strong>: ★＝重さ＝所要時間の目安（★☆☆ ≈ 30〜45分 / ★★☆ ≈ 45〜60分 / ★★★ ≈ 60分〜）。1つだけなら軽い [7]・[10] から。</p>
 
 <h2 id="common">まず [7][8][9] に共通すること</h2>
 <ul>
@@ -1762,112 +1762,355 @@ END;
 
 <hr>
 
-<h2 id="s12">[12] テスト設計（自分で決める）<span class="diff">★★★</span></h2>
-<p><strong>お題</strong>: 自分のアプリで<strong>「間違うと一番痛い」機能を1つ</strong>選び、その正しい振る舞いを<strong>自分で仕様化</strong>して、そこから要るテストを<strong>自分で決めて</strong>実装する<br>
-<strong>ツール</strong>: Vitest ＋ Claude Code<br>
-<strong>前提</strong>: [5] の <code>backend/docs/TEST.md</code> とテスト一式（まだなら先に [5]）／[2] の <code>SCREEN_SPEC.md</code>（意図した仕様）<br>
-<strong>学び</strong>: 「AI が書いたコードのテスト」を AI 任せにせず、<strong>何をテストすべきかを自分の判断で設計</strong>できるようになる</p>
+<h2 id="s12">[12] E2E テスト（画面を通して確かめる）<span class="diff">★★☆</span></h2>
+<p><strong>お題</strong>: 「これが起きたら困る」ことを3〜5個書き、そのうち<strong>2個</strong>をブラウザ操作のテストにする<br>
+<strong>ツール</strong>: Playwright（Codegen）＋ Claude Code<br>
+<strong>前提</strong>: <a href="#s6">[6]</a> まで完了していること／<strong>[8] 決済・[9] ID 連携は未実施であること</strong>（実施済みの人は末尾の補足へ）／<strong>Node.js 22 以上</strong>（<code>node -v</code> で確認）<br>
+<strong>学び</strong>: AI が作った MVP について、<strong>自分が決めていなかったことを見つけて決められる</strong>ようになる</p>
 
 <blockquote class="key">
-<p><strong>[5] は「与えられた4観点」を通す最低ライン</strong>だった。[12] はその観点を渡さない——<strong>何をテストすべきかを自分で決める</strong>のがゴール。テストの本数ではなく、判断の練習。<br>
-<strong>⚠️ 一番の罠</strong>: AI に「テスト書いて」と丸投げすると、AI は<strong>実装を読んで「今のコードがやっていること」をテスト</strong>にする＝<strong>AI のバグごと正解として固定</strong>してしまう。だから機能テストは、まず<strong>意図した仕様</strong>（自分の言葉／<code>SCREEN_SPEC.md</code>）から導き、実装と突き合わせる。この順序が逆になった瞬間、テストは実装追認装置になる。</p>
+<p><strong>この課題でコードは1行も書かない。</strong>書くのは録画と AI。</p>
+<p>人間がやるのは<strong>決めること</strong>だけ。①②で「何を保証するか」を決め、④⑤で「その確認で足りているか・赤をどう扱うか」を決める。</p>
+<p>テストが赤くなったとき、その原因は「AI が作ったバグ」よりも<strong>「自分が決めていなかったこと」</strong>であることが多い。それを決めるのがこの課題。決まったあとの実装は AI に直させればよい。</p>
 </blockquote>
 
-<h3>2つのレンズと、人間／AI の分担</h3>
-<ul>
-<li><strong>機能レンズ（仕様起点・体系的）</strong>＝機能テストの土台。「この機能は何を保証すべきか」を仕様から積み上げ、入力・状態ごとに<strong>期待する結果</strong>を決める</li>
-<li><strong>リスクレンズ（被害起点）</strong>＝「壊れたら困る」で<strong>どれを実際に書くか優先順位</strong>をつける。仕様に落ちない穴探し（探索的・モンキー的）も緩くここで</li>
-</ul>
+<h3>流れ（60分）</h3>
 <table>
-<thead><tr><th>作業</th><th>人間</th><th>AI</th></tr></thead>
+<thead><tr><th>経過</th><th>工程</th><th>やるのは</th><th>できるもの</th></tr></thead>
 <tbody>
-<tr><td>意図した仕様を言葉にする</td><td>◎ 人間のみ</td><td>✕ 実装から推測させない</td></tr>
-<tr><td>期待動作表の行出し（入力クラス・状態遷移）</td><td>○ 抜けと過剰を取捨</td><td>◎ 候補を機械的に大量列挙</td></tr>
-<tr><td>各行の期待結果（具体値）を確定</td><td>◎ 意図に照らして決める</td><td>△ 提案のみ・実装を根拠にさせない</td></tr>
-<tr><td>どのケースを書くか絞る</td><td>◎「壊れたら困る」で判断</td><td>△ 影響度の観点出し</td></tr>
-<tr><td>テスト実装・効き目検証・カバレッジ</td><td>○ 指示とレビュー</td><td>◎ 実装・実行・破壊・計測</td></tr>
+<tr><td>事前</td><td>⓪ 準備</td><td>コマンド</td><td><code>playwright.config.ts</code></td></tr>
+<tr><td>0–15</td><td>① 起きたら困ることを書く</td><td><strong>自分</strong></td><td><code>docs/TEST.md</code> に3〜5行</td></tr>
+<tr><td>15–25</td><td>② E2E で書くものを2つ選ぶ</td><td><strong>自分</strong></td><td>同ファイルに表</td></tr>
+<tr><td>25–35</td><td>③ 操作を録画する</td><td>Codegen</td><td><code>tests/*.spec.ts</code> 2本</td></tr>
+<tr><td>35–45</td><td>④ 検証を足して実行する</td><td>AI＋<strong>自分</strong></td><td>緑／赤の判定</td></tr>
+<tr><td>（赤なら）</td><td>⑤ 赤の原因を決める</td><td><strong>自分</strong>＋AI</td><td>+10分</td></tr>
+<tr><td>45–55</td><td>⑥ 壊して赤になるか確かめる</td><td>AI</td><td>—</td></tr>
+<tr><td>55–60</td><td>⑦ コミットする</td><td>AI</td><td>—</td></tr>
 </tbody>
 </table>
-<blockquote class="key"><p>背骨: <strong>人間＝意図と判断</strong>（何が正しいか／何を書くか／なぜ）、<strong>AI＝量・機構・批判</strong>（候補列挙／コード／実行／反例）。</p></blockquote>
 
-<h3>流れ（1機能・約60分）</h3>
+<h3>⓪ 準備</h3>
+<p><strong>やること</strong>: リポジトリのルートで Playwright を入れる。</p>
+<pre><code>npm init playwright@latest -- --browser=chromium</code></pre>
+<p>実行するといくつか質問が出る（言語・テストの置き場所・GitHub Actions を作るか）。<strong>すべてそのまま Enter でよい。</strong></p>
+<blockquote class="warn">
+<p><strong>⚠️ <code>-- --browser=chromium</code> を省略しないこと。</strong></p>
+<p>省略すると Chrome 以外に Firefox と Safari のエンジンもダウンロードされる。数分待たされたうえ、以降のテストの実行時間も3倍になる。</p>
+</blockquote>
+
+<p>生成された <code>playwright.config.ts</code> の <code>use:</code> に1行足す。</p>
+<pre><code>use: { baseURL: 'http://localhost:8787' },</code></pre>
+<p class="note"><code>8787</code> は <code>wrangler dev</code> のポート。<code>5173</code> ではない。</p>
+
+<p>別のターミナルでアプリを起動しておく。作業中はずっと立ち上げたままにする。</p>
+<pre><code>cd backend &amp;&amp; npm run build:front &amp;&amp; npm run dev</code></pre>
+
+<p class="note"><strong>完了</strong>: ブラウザで <code>http://localhost:8787</code> が開き、購入もマイページも動く。</p>
+
+<h3>① 起きたら困ることを3〜5個書く</h3>
+
+<p><strong>やること</strong>:</p>
 <ol>
-<li><strong>（5分）対象を1機能に絞り、名前をつける</strong> — 自分のアプリで「間違うと一番痛い」機能を1つ選び、短い<strong>機能名</strong>をつける（例:「マイページのライセンス表示」「問い合わせ受付」／[8] をやった人は「決済 Webhook でのライセンス発行」）。この機能名を、以降のプロンプトの <code>&lt;機能名&gt;</code> に入れる。<strong>全機能はやらない</strong>。ここがリスクレンズの入口</li>
-<li><strong>（15分）その機能の「あるべき動作」（＝どう動くのが正しいか）を自分の言葉で書く</strong>
-  <p>ここが [12] の心臓部。<strong>実装が今どう動いているか</strong>ではなく、<strong>自分が作りたかった正しい動き</strong>を書く。白紙が難しければ、コードは見ずに<strong>次の3問に答える</strong>だけでよい:</p>
-  <ol>
-  <li>この機能は<strong>誰の・何のため</strong>か</li>
-  <li>正常に使い終わったとき、<strong>何が「真」であるべき</strong>か（例: 本人の購入だけが見える）</li>
-  <li><strong>絶対に起きてはいけないこと</strong>は何か（例: 他人の購入が見える／未ログインで中身が返る）</li>
-  </ol>
-  <p class="note">記入例: 機能名を「マイページのライセンス表示」とした場合、上の3問への答え（＝あるべき動作）はこう書ける:</p>
-<pre><code>- ログイン中の本人の購入・ライセンスだけが見える
-- 他人のメールを指定しても、他人のデータは絶対に見えない
-- 未ログインでは中身を返さず弾く
-- ライセンスキーは全部見せず末尾数桁だけにする（漏洩対策）
-- 購入がない人にはエラーではなく「購入なし」を返す</code></pre>
-  <blockquote class="warn"><p><strong>⚠️ ここを AI に丸投げしない。</strong> 「この機能の仕様をまとめて」のように AI に書かせると、AI は <strong>backend の実装を読んで書く</strong>ので、出てくるのは"仕様"ではなく<strong>"今のコードがやっていることの説明"</strong>。それを土台にすると実装追認に逆戻りする。どうしても手伝わせるなら <strong>「backend のコードは読まず、<code>SCREEN_SPEC.md</code> と私の説明だけを根拠に」</strong>と縛り、<strong>出てきた各行を自分で取捨</strong>して、自分で理由を説明できる状態にしてから次へ進む。</p></blockquote>
-</li>
-<li><strong>（この続き）書いた「あるべき動作」を AI に期待動作表へ展開させ、<code>docs/TEST.md</code> に書き出す</strong>
-<pre><code>次は私が書いた「&lt;機能名&gt; のあるべき動作（正しくはこう動く）」です:
-（↑で書いた3〜5行を貼る）
-
-これを期待動作表に展開して、docs/TEST.md に「[12] &lt;機能名&gt; 期待動作表」として追記して。
-表は「入力・状態 | 期待結果 | 書く」の3列にする。
-入力の同値クラス（正常・不正・境界・空・重複）と、状態・遷移
-（例: 購入→マイページ表示、二重実行、未ログイン→ログイン後）で行を増やして。
-ただし「期待結果」と「書く」の2列は空欄のままにして——そこは私が埋める。
-実装コードは読まず、上の仕様だけを根拠にすること。</code></pre>
-  <ul><li><code>docs/TEST.md</code> を自分で開き、<strong>各行の「期待結果」列を埋める</strong>（AI が埋めた場合も、意図に照らして検算する）。「エラーが出ない」ではなく<strong>「この値が返る」</strong>まで書く</li></ul>
-</li>
-<li><strong>（10分）書くケースを絞る</strong> — 行は多すぎるので全部は書かない。<code>docs/TEST.md</code> の表の<strong>「書く」列に、今回テストする行だけ ◎ を入れる</strong>（「壊れたら困る」順に選ぶ。全部には付けない＝これがリスクレンズ）</li>
-<li><strong>（15分）AI にテスト実装させる</strong>（期待値は自分の表の値を使わせる）
-<pre><code>docs/TEST.md の期待動作表で「書く」列が ◎ の行だけ、テストを実装して。
-各テストの期待値は表の「期待結果」列の値をそのまま使い、
-あなたが実装コードから推測しないこと。外部サービスへの fetch はモックのままで。</code></pre>
-  <ul><li><code>npm test</code> でグリーンを確認</li></ul>
-</li>
-<li><strong>（10分）わざとコードを壊して効き目を検証 ＋ 敵対的レビュー1往復</strong>
-<pre><code>① いま追加したテストが「効いている」か確認したい。対象の関数のしきい値／条件を
-   1つだけ一時的に壊して、該当テストが赤くなることを見せて。確認できたら元に戻して。
-② 私の期待動作表から漏れている振る舞いはある? また、書いたテストの中で
-   不要と思うものがあれば根拠つきで指摘して。</code></pre>
-  <ul><li>赤くならないテストは<strong>結果を検証できていない</strong>（例: レスポンスの中身を見ていない）→ 直す</li><li>②の指摘は<strong>採否と理由を人間が1行残す</strong>（AI が正しいとは限らない）</li></ul>
-</li>
-<li><strong>（5分）コミットする</strong>
-<pre><code>テスト設計の作業をコミットして push して。</code></pre>
-</li>
+<li><code>http://localhost:8787</code> を開き、<strong>自分のサービスに月300円払った人のつもりで</strong>、購入 → マイページ → 問い合わせを一通り操作する</li>
+<li><code>backend/docs/TEST.md</code> の末尾に、<strong>自分のアプリについて</strong>3〜5行書く</li>
 </ol>
 
-<h3>さらに余裕があれば（任意）</h3>
-<ul>
-<li>2機能目に同じループを回す</li>
-<li>カバレッジで<strong>表から漏れた挙動</strong>を発見する（数字を目標にしない・発見ツールとして使う）:
-<pre><code>テストをカバレッジ付きで実行して、一度も通っていない分岐を教えて。
-それが期待動作表に無い挙動なら、表に足すか私が判断する。</code></pre>
-</li>
-</ul>
+<p><strong>書き方</strong>: <strong>「〜すると、〜してしまう」</strong>の形で、<strong>困る人の言葉</strong>で書く。機能名や技術用語は使わない。</p>
 
-<h3 class="warn">⚠️ ハマりどころ</h3>
-<ul>
-<li><strong>丸投げ厳禁</strong>: 「いい感じにテスト書いて」だと AI は実装の“現状”をテストにする＝<strong>バグごと固定</strong>。意図した仕様を先に自分で書くのが唯一の防ぎ方</li>
-<li>期待結果を「エラーが出ない」で済ませない。<strong>「この値が返る」</strong>まで書かないと、壊しても赤にならない</li>
-<li><strong>全機能を網羅しようとしない</strong>。1機能で時間切れなら深掘りは切ってよい</li>
-</ul>
+<p class="note">下は玄米茶サンプルの場合の例。<strong>写し取らず、自分のアプリで考えて書くこと。</strong></p>
+<pre><code>## [12] 起きたら困ること
 
-<h3 class="done">✅ 完了の定義（判断の跡で確認）</h3>
+- 他人のメールを指定すると、他人のライセンスキーが見えてしまう
+- 購入したのに、ライセンスキーが保存されていない
+- ライセンスキーが末尾4桁以外も表示されてしまう
+- 問い合わせを送ったのに、届いていない</code></pre>
+
+<p><strong>判定</strong>: 書いたら1行ずつ、この質問に答える。</p>
+<blockquote class="key"><p>この行が NG のとき、<strong>画面のどこを見れば分かるか？</strong></p></blockquote>
+<table>
+<thead><tr><th>答え</th><th>例</th><th>どうするか</th></tr></thead>
+<tbody>
+<tr><td>具体的な場所が言える</td><td>「マイページに A のキー文字列が出ているか」</td><td><strong>そのまま残す</strong>（②で使う）</td></tr>
+<tr><td>場所が言えない</td><td>「エラーが出ない」「ちゃんと表示される」</td><td><strong>書き直す。</strong>直せなければ消す</td></tr>
+</tbody>
+</table>
+<p class="note">「エラーが出ない」が使えないのは、<strong>何も起きていない状態と区別がつかない</strong>から。</p>
+
+<blockquote class="warn">
+<p><strong>⚠️ <code>backend/</code> <code>frontend/</code> のコードは開かないこと。</strong></p>
+<p>開くと「今こうなっている」に引きずられる。ここで書くのは<strong>「どうあるべきか」</strong>であって、「今どうなっているか」ではない。</p>
+</blockquote>
+
+<p class="note"><strong>完了</strong>: 3〜5行あり、<strong>全部について「画面のどこを見るか」が言える</strong>。</p>
+
+<h3>② E2E で書くものを2つ選ぶ</h3>
+
+<p><strong>やること</strong>: ①の各行を3つの問いにかけ、表にする。</p>
+
+<table>
+<thead><tr><th>#</th><th>問い</th><th>No なら</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>画面のどこを見れば分かるか言えるか</td><td>E2E では書けない</td></tr>
+<tr><td>2</td><td>部品1つのテストでは言えないことか</td><td><a href="#s5">[5]</a> の領分</td></tr>
+<tr><td>3</td><td>壊れるのは自分のアプリの中か</td><td>外部サービスの中なら無理</td></tr>
+</tbody>
+</table>
+<p><strong>3問すべて Yes のものだけが E2E。</strong> 表は Claude Code に作らせる。</p>
+<pre><code>backend/docs/TEST.md の「[12] 起きたら困ること」に私が書いた項目を、
+同じファイルに表として書き直して。
+列は「保証項目 | E2E | 前提条件 | 期待結果 | 書く | 備考」。
+中身は全部空欄にしておくこと。そこは私が埋める。
+実装コードは読まないこと。</code></pre>
+
+<p><strong>埋め方</strong>: 空欄になった各列を、自分で埋める。</p>
+<table>
+<thead><tr><th>列</th><th>何を書くか</th></tr></thead>
+<tbody>
+<tr><td>E2E</td><td>3問すべて Yes なら ⭕、1つでも No なら ✕</td></tr>
+<tr><td>前提条件</td><td><strong>テストを始めるときの状態</strong>（例: A は購入済み・B は未購入）</td></tr>
+<tr><td>期待結果</td><td><strong>画面のどこがどうなっていれば OK か</strong>（①で答えた「見る場所」をそのまま書く）</td></tr>
+<tr><td>書く</td><td>今日テストする<strong>2行だけ</strong>に ◎</td></tr>
+<tr><td>備考</td><td>✕ を付けた行に、<strong>代わりに誰が守るか</strong></td></tr>
+</tbody>
+</table>
+
+<p class="note">埋め終わると <code>TEST.md</code> の表はこうなる（玄米茶サンプルの場合）。</p>
+<table>
+<thead><tr><th>保証項目</th><th>E2E</th><th>前提条件</th><th>期待結果</th><th>書く</th><th>備考</th></tr></thead>
+<tbody>
+<tr><td>他人のキーが見えない</td><td>⭕</td><td>A購入済み<br>B未購入</td><td>Bの画面にAのキーが出ない</td><td><strong>◎</strong></td><td></td></tr>
+<tr><td>購入するとキーが保存される</td><td>⭕</td><td>新しいメール</td><td>開き直しても出ている</td><td><strong>◎</strong></td><td></td></tr>
+<tr><td>キーは末尾4桁のみ表示</td><td>⭕</td><td>購入済み</td><td>全桁が出ない</td><td></td><td>余ったら</td></tr>
+<tr><td>問い合わせメールが届く</td><td>✕</td><td>—</td><td>—</td><td></td><td>外部の内側。画面で確認できない</td></tr>
+</tbody>
+</table>
+
+<blockquote class="key">
+<p><strong>◎ は2つまで。</strong></p>
+<p>1つだと全部緑で終わって⑤に進めない。3つ以上は時間内に終わらない。</p>
+</blockquote>
+<blockquote class="warn">
+<p><strong>⚠️ ✕ の行の「備考」を空にしないこと。</strong></p>
+<p>空欄のまま置くと、その保証は<strong>誰も守らなくなる</strong>。</p>
+</blockquote>
+
+<p class="note"><strong>完了</strong>: ◎ が2つあり、✕ の行すべてに行き先が書いてある。</p>
+
+<h3>③ 操作を録画する</h3>
+
+<p><strong>やること</strong>: ◎ の2行それぞれについて、1回ずつ録画する。<strong>必ずリポジトリのルートで実行する。</strong></p>
+<pre><code>cd &lt;リポジトリのルート&gt;
+npx playwright codegen http://localhost:8787/ -o tests/01-other-user.spec.ts</code></pre>
+
+<p><strong>末尾のファイル名は自分で決める。</strong> <code>-o</code> は「録画した結果をどこに書き出すか」の指定。②の表で ◎ を2つ付けたので、名前も2つ要る。</p>
+
+<p><strong>名前の付け方</strong>: <code>tests/&lt;番号&gt;-&lt;何を守るか分かる短い名前&gt;.spec.ts</code></p>
+<table>
+<thead><tr><th>②の表で ◎ を付けた行</th><th>ファイル名</th></tr></thead>
+<tbody>
+<tr><td>他人のキーが見えない</td><td><code>tests/01-other-user.spec.ts</code></td></tr>
+<tr><td>購入するとキーが保存される</td><td><code>tests/02-purchase-saved.spec.ts</code></td></tr>
+</tbody>
+</table>
 <ul>
-<li>1機能について「あるべき動作（正しくはどう動くか）」を<strong>自分の言葉で書いた</strong></li>
-<li>期待動作表を起こし、<strong>各行の期待結果を自分で埋めた</strong></li>
-<li>リスクレンズで「書く／書かない」を判断した（<code>docs/TEST.md</code> の「書く」列に ◎ がついている）</li>
-<li>追加した各テストが<strong>表のどの行（どの保証）を守るか言える</strong></li>
-<li>1つ以上のテストで<strong>「壊すと赤」</strong>を確認した／<code>npm test</code> が最終的にグリーン</li>
+<li><code>tests/</code> — <code>playwright.config.ts</code> の <code>testDir</code> がここを見ている。別の場所に置くと<strong>実行されない</strong></li>
+<li>番号 — ②の表の上から順に振る。テストが落ちたとき<strong>表のどの行のことか</strong>すぐ分かる</li>
+<li><code>.spec.ts</code> — <strong>この拡張子で終わるファイルだけがテストとして拾われる</strong>（<code>.test.ts</code> も可。<code>.ts</code> だけだと無視される）</li>
 </ul>
 
 <blockquote class="warn">
-<p><strong>⚠️ ここまでやっても「本番の品質担保」には届かない。</strong> テストは<strong>あるだけでは安全網にならない</strong>——実務では別途 (1) <strong>CI で強制実行</strong>し、テストが赤ならマージ／デプロイを止める（人の裁量に任せない）、(2) <strong>カバレッジに下限</strong>を設けてゲートにする（[11] の SonarCloud 品質ゲートで縛れる）、の2つが要る。<strong>本ワークショップではスコープ外</strong>だが、顧客に出す規模では前提になる。</p>
+<p><strong>⚠️ <code>-o</code> は実行した場所からの相対パス。</strong></p>
+<p><code>tests/</code> の中で実行すると保存先が見つからずに落ちる。<strong>録画した内容はそのまま消える。</strong></p>
 </blockquote>
 
+<p><strong>録画中にやること</strong>: 表の「前提条件」の状態を作りながら、画面を操作する。「他人のキーが見えない」なら、<strong>1回の録画で A の購入と B のマイページ確認を続けて行う</strong>。</p>
+<p>終わったらブラウザを閉じる。それでファイルができる。</p>
+
+<p><strong>検証（目玉マーク）は押さなくてよい。</strong> 検証は次の工程で AI に書かせる。</p>
+
+<table>
+<thead><tr><th>録画中の注意</th><th>理由</th></tr></thead>
+<tbody>
+<tr><td><strong>実名・実メールを入れない</strong></td><td>入力値がテストコードに残り Git に入る。<code>test@example.com</code> を使う</td></tr>
+<tr><td>Enter キーを使わない</td><td>フォームが意図せず送信され、余計な行が増える</td></tr>
+<tr><td>迷ってクリックしない</td><td>押した操作がすべてコードになる</td></tr>
+</tbody>
+</table>
+
+<p class="note"><strong>完了</strong>: <code>tests/</code> に <code>.spec.ts</code> が2本できている（中身は操作だけで <code>expect</code> はゼロ）。</p>
+
+<h3>④ 検証を足して実行する</h3>
+
+<p><strong>やること</strong>: 録画したファイル1本ずつ、AI に検証を足させる。<strong>表のどの行に対応するかを指定するのがポイント。</strong></p>
+<pre><code>tests/01-other-user.spec.ts を backend/docs/TEST.md の表の行
+「他人のキーが見えない」に合わせて仕上げて。
+
+- メールアドレスは毎回ユニークにする（Date.now() を使う）
+- A の購入後に、発行されたライセンスキーを変数に捕捉する
+- B のマイページで、捕捉したキーが表示されないことを確認する（toHaveCount(0)）
+- 表の「期待結果」列の値をそのまま使い、実装コードから推測しないこと
+- 固定待ち（waitForTimeout）は入れないこと</code></pre>
+
+<blockquote class="warn">
+<p><strong>⚠️ 「このアプリのテストを書いて」と頼まないこと。</strong></p>
+<p>そう頼むと AI は<strong>実装を読んで「今の動き」を正解として固定</strong>する。今あるバグごと正解になってしまう。</p>
+<p>表だけを根拠にさせるため、プロンプトの最後の2行を必ず入れる。</p>
+</blockquote>
+
+<p><strong>自分でやること</strong>: AI が書いたテストを開き、確認として足りているかを見る。</p>
+<p>「保存されている」を確認する行なら、次の3つが要る。1つでも欠けると確認になっていない。</p>
+<table>
+<thead><tr><th>要素</th><th>欠けると</th></tr></thead>
+<tbody>
+<tr><td>毎回ユニークなメールを使う</td><td>前回のデータを見て緑になる</td></tr>
+<tr><td>購入前に「購入なし」を確認する</td><td>何が増えたのか分からない</td></tr>
+<tr><td><strong>マイページを開き直して確認する</strong></td><td>購入完了画面は<strong>サーバーの返事を表示しているだけ</strong>で、保存の証明にならない</td></tr>
+</tbody>
+</table>
+
+<p><strong>実行する</strong>:</p>
+<pre><code>npx playwright test
+npx playwright test --ui        # 落ちたらこれ。ステップごとの画面が見える</code></pre>
+
+<p class="note"><strong>完了</strong>: 2本とも実行し、それぞれ緑か赤かが分かっている。</p>
+<p class="note"><strong>赤でも問題ない。</strong>原因は次の工程で判定する。</p>
+
+<h3>⑤ 赤の原因を決める（赤が出たときだけ）</h3>
+
+<p><strong>やること</strong>: まず AI に原因を切り分けさせる。</p>
+<pre><code>tests/01-other-user.spec.ts が落ちた。
+テストの書き方が悪いのか、実装が保証を満たしていないのか判定して。
+実装が原因なら実装のほうを直して。テストの期待値は変えないこと。</code></pre>
+
+<p><strong>判定</strong>: 返ってきた答えで対応が変わる。</p>
+<table>
+<thead><tr><th>原因</th><th>どうするか</th></tr></thead>
+<tbody>
+<tr><td>テストの書き方が悪い（要素の指定が曖昧など）</td><td>AI にテストを直させる</td></tr>
+<tr><td>実装が保証を満たしていない</td><td>AI に<strong>実装</strong>を直させる。再実行して緑を確認する</td></tr>
+<tr><td><strong>どちらとも言えない</strong>（仕様が決まっていない）</td><td><strong>自分で決める</strong>（下記）</td></tr>
+</tbody>
+</table>
+
+<p><strong>3つ目が出たときが、この課題の山場。</strong> AI に決めさせず、自分で決める。</p>
+<table>
+<thead><tr><th>自分の判断</th><th>やること</th></tr></thead>
+<tbody>
+<tr><td>今の動きで正しい</td><td>①②に戻って<strong>書いた内容のほうを直す</strong></td></tr>
+<tr><td>今の動きは直すべき</td><td>AI に<strong>実装を直させる</strong></td></tr>
+</tbody>
+</table>
+
+<blockquote class="warn">
+<p><strong>⚠️ 期待値を書き換えて緑にするのは禁じ手。</strong></p>
+<p>テストは AI への発注書にあたる。発注書のほうを書き換えたら、検収したことにならない。</p>
+</blockquote>
+
+<p class="note"><strong>完了</strong>: 赤だった行について、直したか・仕様として認めたかが決まっている。</p>
+
+<h3>⑥ 壊して赤になるか確かめる</h3>
+
+<p><strong>やること</strong>: <strong>緑になっているテスト</strong>について、AI にわざと壊させる。</p>
+<pre><code>このテストが効いているか確認したい。
+該当箇所を1箇所だけ一時的に壊して、テストが赤くなることを見せて。
+確認できたら必ず元に戻して。</code></pre>
+
+<table>
+<thead><tr><th>結果</th><th>意味</th><th>どうするか</th></tr></thead>
+<tbody>
+<tr><td>赤くなった</td><td>そのテストは機能している</td><td>次へ</td></tr>
+<tr><td><strong>緑のまま</strong></td><td><strong>そのテストは何も確認していない</strong></td><td>④に戻って <code>expect</code> を書き直す</td></tr>
+</tbody>
+</table>
+
+<p class="note"><strong>完了</strong>: 1本以上で「壊すと赤・戻すと緑」を確認した。</p>
+
+<h3>⑦ コミットする</h3>
+
+<p><strong>やること</strong>: <code>.gitignore</code> に次の4行があるか確認する。無ければ足す。</p>
+<pre><code>/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/</code></pre>
+<p>確認できたらコミットさせる。</p>
+<pre><code>E2E テストの追加をコミットして push して。</code></pre>
+<p class="note"><strong>完了</strong>: <code>test-results/</code> <code>playwright-report/</code> が入っていない状態で push できている。</p>
+
+<h3 class="warn">⚠️ ハマりどころ</h3>
+<ul>
+<li><strong><code>frontend</code> の <code>npm run dev</code>（:5173）で録画してしまう</strong> — API が動かないので購入も送信も失敗する。<code>backend</code> の <code>wrangler dev</code>（:8787）を使う</li>
+<li><strong><code>tests/</code> の中で <code>codegen -o tests/...</code> を実行する</strong> — 落ちて録画が消える</li>
+<li><strong><code>npm run build:front</code> を忘れる</strong> — 画面が古いまま。[5] のテストは全部緑なので、E2E 以外では気づけない</li>
+<li><strong>同じメールアドレスを使い回す</strong> — テストは並列で走るので互いのデータを踏む</li>
+<li><strong><code>expect</code> が弱い</strong> — 「見出しが見える」だけだと壊しても赤にならない。⑥で必ず露見する</li>
+</ul>
+
+<h3 class="done">✅ 完了の定義</h3>
+<ul>
+<li>①を自分の言葉で3〜5行書き、<strong>全部について「画面のどこを見るか」を言える</strong></li>
+<li>②の表に ◎ が2つあり、<strong>✕ の行には行き先が書いてある</strong></li>
+<li>テストを2本実行し、<strong>それぞれ緑か赤かが表に記録されている</strong></li>
+<li>赤が出た行について、<strong>直したか・仕様として認めたかを自分で決めた</strong></li>
+<li>1本以上で<strong>「壊すと赤」</strong>を確認した</li>
+</ul>
+<blockquote class="key">
+<p>全部を緑にすることは目標ではない。</p>
+<p><strong>決めていなかったことを1つ見つけて決めたら、それが成果。</strong></p>
+</blockquote>
+
+<details class="spec">
+<summary>なぜ [5] の自動テストとは別にやるのか — 部品検査と試乗</summary>
+<p>[5] のテストは<strong>部品を1つずつ台の上で検査する</strong>。E2E は<strong>組み上がったものに実際に乗ってみる</strong>。守っている場所が違う。</p>
+<pre><code>         画面(React) ─── HTTP ─── Worker(Hono) ── D1
+[5]      ├────┤                   ├────────┤
+[12]     ├───────────────────────────────────┤
+                        ↑
+              [5] はここを見ていない</code></pre>
+<p>[5] は経路の<strong>左半分と右半分を別々に固める</strong>（画面テストは HTTP をモック、API テストは外部 API をモック）。</p>
+<p>ところが<strong>その2つが噛み合っているかは誰も見ていない</strong>。バックが <code>licenseMasked</code> を返しフロントが <code>license_masked</code> を読んでいても、両方とも緑になる。</p>
+<table>
+<thead><tr><th>実際に起きうるバグ</th><th>[5] のテスト</th><th>[12] の E2E</th></tr></thead>
+<tbody>
+<tr><td>フロントが項目名を綴り間違えて画面が空欄</td><td><strong>見逃す</strong></td><td>気づける</td></tr>
+<tr><td><code>npm run build:front</code> を忘れて古い画面が配信されている</td><td><strong>見逃す</strong></td><td>気づける</td></tr>
+<tr><td>他人のメールで開いたとき前の人のキーが画面に残る</td><td><strong>見逃す</strong></td><td>気づける</td></tr>
+<tr><td>画面に導線が無い API を誰でも叩ける</td><td>気づける</td><td><strong>見逃す</strong></td></tr>
+<tr><td>連投時のレート制限が効かない</td><td>気づける</td><td><strong>見逃す</strong></td></tr>
+</tbody>
+</table>
+<p>E2E は [5] の置き換えではなく<strong>補完</strong>。だから②で ✕ を付けた行は [5] のテストが引き取る。</p>
+</details>
+
+<details class="spec">
+<summary>[8] 決済・[9] ID 連携を先に実施してしまった人へ</summary>
+<p>外部サービスに置き換えるほど、<strong>境界が自分のアプリの外へ移動し、E2E で書ける項目が減る</strong>。痩せた分は <a href="#s5">[5]</a> のテストが引き取る。</p>
+<table>
+<thead><tr><th>保証項目</th><th>[8][9] 実施前</th><th>実施後</th></tr></thead>
+<tbody>
+<tr><td>他人のデータが見えない</td><td>⭕ 別のメールを打つだけ</td><td><strong>✕</strong> Google SSO のみで2人目のアカウントを作れない</td></tr>
+<tr><td>購入するとキーが保存される</td><td>⭕ 画面内で完結</td><td><strong>✕</strong> Stripe Checkout（外部ホスト）を通る</td></tr>
+<tr><td>未ログインで中身が見えない</td><td>○</td><td><strong>◎</strong> サインイン画面への遷移として書ける</td></tr>
+</tbody>
+</table>
+<p><strong>[9] を実施済みの場合</strong>、毎回のログイン操作を省ける（<code>@clerk/testing</code> は不要）。</p>
+<pre><code>npx playwright codegen http://localhost:8787/ --save-storage=auth-a.json   # 手動ログインして閉じる
+npx playwright codegen http://localhost:8787/ --load-storage=auth-a.json   # 2本目以降の録画</code></pre>
+<pre><code>use: { baseURL: 'http://localhost:8787', storageState: 'auth-a.json' },</code></pre>
+<blockquote class="warn">
+<p><strong>⚠️ <code>auth-*.json</code> は絶対にコミットしないこと。</strong></p>
+<p>Clerk のログインは Google SSO なので、このファイルには<strong>自分の Google アカウントのセッション Cookie が丸ごと入る</strong>。</p>
+<p>漏れた場合の被害はアプリのアカウントではなく、<strong>Google アカウントの乗っ取り</strong>。<code>.gitignore</code> に <code>auth-*.json</code> を追記する。</p>
+</blockquote>
+<p class="note"><code>storageState</code> は数日で期限切れになる。サインイン画面に飛ばされたら取り直す。</p>
+<p class="note"><strong>[8] を実施済みの場合</strong>、購入フローの E2E は Stripe の決済画面に入る手前までにする。先方の UI 変更で壊れるため。</p>
+</details>
+
+<blockquote class="warn">
+<p><strong>⚠️ ここまでやっても「本番の品質担保」には届かない。</strong></p>
+<p>テストは<strong>あるだけでは安全網にならない</strong>。実務では別途2つが要る。</p>
+<p>(1) <strong>CI で強制実行</strong>し、テストが赤ならマージ／デプロイを止める（人の裁量に任せない）。(2) <strong>カバレッジに下限</strong>を設けてゲートにする（[11] の SonarCloud 品質ゲートで縛れる）。</p>
+<p><strong>本ワークショップではスコープ外</strong>だが、顧客に出す規模では前提になる。</p>
+</blockquote>
 <hr>
 
 <h2 id="s13">[13] 自動デプロイ（Workers Builds）<span class="diff">★★☆</span></h2>
@@ -1976,7 +2219,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 </table></div>
 <p class="note">原則: <strong>鍵（API キー・トークン）は「消す」より先に「無効化（Revoke）」</strong>する（消しても発行済みの鍵は生きているため）。手元の <code>.dev.vars</code> / <code>.cf-ops.token</code> はローカルファイルなので削除でよい（Git には元々入れていない）。</p>
 
-<p class="foot">ワークショップフロー — AI とつくる「自分の SaaS の MVP」</p>
+<p class="foot">「高速Webサービス開発」ワークショップ</p>
 </section><!-- /ps-section3 -->
 
 <section class="page-section" id="ps-auth">
@@ -2119,7 +2362,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
   <a class="toc-group-label toc-sec2" href="#section2">Section 2 ― つなぐ・公開する</a>
   <ul>
     <li><a href="#s4">[4] バック作成</a></li>
-    <li><a href="#s5">[5] 自動テスト</a></li>
+    <li><a href="#s5">[5] レビューと自動テスト</a></li>
     <li><a href="#s6">[6] デプロイ</a></li>
   </ul>
   <a class="toc-group-label toc-sec3" href="#section3">Section 3 ― 育てる（オプション）</a>
@@ -2130,7 +2373,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
     <li><a href="#s9">[9] ID 連携</a></li>
     <li><a href="#s10">[10] 運用保守</a></li>
     <li><a href="#s11">[11] セキュリティ</a></li>
-    <li><a href="#s12">[12] テスト設計</a></li>
+    <li><a href="#s12">[12] E2E テスト</a></li>
     <li><a href="#s13">[13] 自動デプロイ</a></li>
     <li><a href="#wrap">ラップアップ</a></li>
     <li><a href="#cleanup">後片付け</a></li>
@@ -2332,7 +2575,9 @@ document.querySelectorAll('pre').forEach(pre => {
     'auth','auth-to-sub','auth-to-api','auth-check',
     'section1','s-env','s06','s0-nav','s0-repo','s1','s2-spec','s2','s3',
     'section2','s4','s4-scripts','s5','s6',
-    'section3','common','s7','s8','s9','s10','s11','s12','s13','wrap','cleanup',
+    // [7]〜[13] の手順スライドは廃止（オプション課題は主催者が 0→1 で説明せず各自この flow.html を読む）。
+    // したがって s7〜s13 はここに載せない＝各課題の見出しに 🎞 リンクを出さない。
+    'section3','common','wrap','cleanup',
   ]);
   // 暫定: slides-v2.html 側の章キーがまだ day1/2/3 のため、この3章だけ旧キーに読み替えて渡す。
   // slides-v2.html を Section 表記に揃えたらこの LEGACY_SLIDE_KEYS ごと削除する。
