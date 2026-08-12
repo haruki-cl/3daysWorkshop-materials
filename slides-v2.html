@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>3Days ワークショップ スライド v2（冒頭ブリーフィング版） — AIとつくる自分の SaaS の MVP</title>
+<title>「高速Webサービス開発」ワークショップ スライド v2（冒頭ブリーフィング版）</title>
 <style>
 :root{
   --bg:#d6d3ca; --paper:#fffdf8; --ink:#2d2a24; --muted:#6b6453;
@@ -209,7 +209,7 @@ strong{font-weight:700; color:inherit;}
 
 <script>
 const SLIDES = [
-  { type:'cover', badge:'3Days ワークショップ', title:'AI とつくる<br>「自分の SaaS の MVP」', sub:'Claude Design → Claude Code で、LP＋購入＋マイページを一周する3日間', meta:'<b>Day 1</b> つくる　・　<b>Day 2</b> つなぐ・公開する　・　<b>Day 3</b> 育てる（オプション＋発表会）' },
+  { type:'cover', badge:'3Days ワークショップ', title:'「高速Webサービス開発」<br>ワークショップ', sub:'Claude Design → Claude Code で、LP＋購入＋マイページを一周する3日間', meta:'<b>Day 1</b> つくる　・　<b>Day 2</b> つなぐ・公開する　・　<b>Day 3</b> 育てる（オプション＋発表会）' },
 
   { type:'divider', ref:'s0', day:0, label:'OVERVIEW', title:'目的・ゴールと全体像', sub:'この3日間で何を・どう作るか' },
   { type:'content', day:0, sec:'はじめに', title:'ワークショップの目的', body:[
@@ -261,10 +261,10 @@ const SLIDES = [
       ['[9]','ID連携(Clerk)','★★☆','未ログインで /mypage 不可・/api/me がログイン必須'],
       ['[10]','運用保守','★☆☆','wrangler tail でログ確認・運用スキルが1つ動く'],
       ['[11]','セキュリティ','★★★','認証境界・IDOR・機密マスクを点検し最低1つ修正'],
-      ['[12]','テスト設計','★★★','主要機能を1つ選び仕様化→期待動作表→テスト設計'],
+      ['[12]','E2E テスト','★★☆','起きたら困ることを書き→2つをブラウザ操作のテストにする'],
       ['[13]','自動デプロイ(Workers Builds)','★★☆','git push だけで自動デプロイされる設定を完了し、push で新しいビルドが自動で現れる'],
     ]}},
-    {note:'Day 3 は<strong>任意</strong>（やらない／1つだけ、も可）。'},
+    {note:'Day 3 は<strong>任意</strong>（やらない／1つだけ、も可）。各課題の手順はスライドに無く、<a href="flow.html#section3" target="flowdoc">flow.html の Section 3</a> を各自で読んで進める。'},
   ]},
   { type:'content', ref:'s-time', day:0, sec:'はじめに', title:'このワークショップの進め方', body:[
     {key:'<strong>Day 1 と Day 2 で進め方が変わる。</strong> Day 1 はセクションごとに全員そろって、Day 2 は冒頭にまとめて説明してから各自のペースで進める。'},
@@ -645,10 +645,10 @@ SPA なので未知のパスは index.html にフォールバックさせて。`
   ]},
   { type:'content', ref:'day3', day:2, sec:'[6] のあとは', title:'[6] が終わったら Day 3 へ（先に案内しておく）', body:[
     {key:'<strong>Day 3 を待たずに、[6] が終わった人からオプション課題に入ってよい</strong>。Day 3 当日に改めて課題の説明はしない。'},
-    {ul:['課題は <strong>[7] メール ／ [8] 決済 ／ [9] ID 連携 ／ [10] 運用保守 ／ [11] セキュリティ ／ [12] テスト設計 ／ [13] 自動デプロイ</strong> の7つ','<strong>やらない／1つだけ、も可</strong>。数より「自分で判断した跡」が残る方が発表で効く','手順は Day 3 のスライドに全部ある。<strong>説明を待たずに読んで始めてよい</strong>（o キーで一覧 → DAY 3 へ）']},
+    {ul:['課題は <strong>[7] メール ／ [8] 決済 ／ [9] ID 連携 ／ [10] 運用保守 ／ [11] セキュリティ ／ [12] E2E テスト ／ [13] 自動デプロイ</strong> の7つ','<strong>やらない／1つだけ、も可</strong>。数より「自分で判断した跡」が残る方が発表で効く','各課題の手順は<strong>スライドには無い</strong>——<strong>flow.html の Section 3</strong> に全部ある。<strong>説明を待たずに読んで始めてよい</strong>']},
     {h:'選ぶときの目安'},
     {ul:['<strong>迷ったら [7] メール（★☆☆）</strong> — 30分程度で「実際に自分宛に届く」ところまで行ける','<strong>[8] 決済（★★★）は重い</strong> — 5フェーズあるので、残り時間が1時間を切っていたら別の課題を選ぶ','[7][8][9] は外部サービスのアカウント登録から始まる（その時間も見込んでおく）']},
-    {note:'難易度と課題どうしの依存関係は、DAY 3 セクション先頭の「オプション課題の選び方」にまとめてある。ブリーフィングではそのスライドを開いて説明する。'},
+    {note:'難易度と課題どうしの依存関係は、DAY 3 セクション先頭の「オプション課題の選び方」スライドにまとめてある。ブリーフィングではそのスライドを開いて説明する（手順そのものは flow.html を各自で読む）。'},
   ]},
 
   { type:'divider', ref:'day2', day:2, label:'WORK', title:'ここから自由作業', sub:'[4] → [5] → [6]。終わった人はそのまま Day 3 のオプション課題へ' },
@@ -676,19 +676,19 @@ assets.not_found_handling を点検し、問題があれば修正して。`, don
 npm run deploy`, warn:'frontend/ からデプロイしない（API が消える）。事前に build:front の成功を確認。', done:'本番にデプロイされ URL が発行される 🎉' },
   { type:'break', day:2, step:'6-4', sec:'[6] デプロイ', title:'本番 URL で動作確認（LP・/mypage・API 1つ）→ dev→main', todo:['本番 URL で LP 表示','/mypage 等のルーティング（404 にならない）','API を1つ動かして確認','dev に push し、必要なら dev を main にマージ'], code:'デプロイ完了の作業をコミットして dev に push して。必要なら dev を main にマージして。', done:'本番で動作確認でき Day 2 完了（必達ライン到達）' },
 
-  { type:'divider', ref:'day3', day:3, label:'DAY 3', title:'育てる（オプション課題＋発表会）', sub:'[7]〜[13] は任意（やらない／1つだけ、も可）・<b>Day 2 が終わった人から随時着手</b>・最後30分は発表会' },
+  { type:'divider', ref:'day3', day:3, label:'DAY 3', title:'育てる（オプション課題＋発表会）', sub:'[7]〜[13] は任意（やらない／1つだけ、も可）・<b>Day 2 が終わった人から随時着手</b>・最後30分は発表会<br><b>各課題の手順は flow.html の Section 3</b>（このスライドは選び方と共通事項だけ）' },
   { type:'content', day:3, sec:'Day 3', title:'オプション課題の選び方', body:[
-    {p:'難易度: ★☆☆ 易しい / ★★☆ ふつう / ★★★ 難しい（≈ 所要時間）。'},
-    {table:{head:['#','課題','追加すると何が変わるか','難易度'],rows:[
-      ['[7]','メール(Resend)','問い合わせが<strong>実際にメールで届く</strong>','★☆☆'],
-      ['[8]','決済(Stripe)','<strong>本物の決済で買える</strong>ように','★★★'],
-      ['[9]','ID連携(Clerk)','<strong>本物のログイン</strong>（未ログインはサインインへ）','★★☆'],
-      ['[10]','運用保守','監視・ログ・コストが見られる','★☆☆'],
-      ['[11]','セキュリティ','脆弱性を点検して1つ直す','★★★'],
-      ['[12]','テスト設計','<strong>何をテストすべきかを自分で決める</strong>','★★★'],
-      ['[13]','自動デプロイ(Workers Builds)','<strong>git push するだけで自動デプロイ</strong>（手動 wrangler deploy から卒業）','★★☆'],
+    {p:'難易度: ★☆☆ 易しい / ★★☆ ふつう / ★★★ 難しい（≈ 所要時間）。<strong>手順は flow.html の Section 3</strong>（右端リンク）を各自で読んで進める。'},
+    {table:{head:['#','課題','追加すると何が変わるか','難易度','手順'],rows:[
+      ['[7]','メール(Resend)','問い合わせが<strong>実際にメールで届く</strong>','★☆☆','<a href="flow.html#s7" target="flowdoc">→ flow.html</a>'],
+      ['[8]','決済(Stripe)','<strong>本物の決済で買える</strong>ように','★★★','<a href="flow.html#s8" target="flowdoc">→ flow.html</a>'],
+      ['[9]','ID連携(Clerk)','<strong>本物のログイン</strong>（未ログインはサインインへ）','★★☆','<a href="flow.html#s9" target="flowdoc">→ flow.html</a>'],
+      ['[10]','運用保守','監視・ログ・コストが見られる','★☆☆','<a href="flow.html#s10" target="flowdoc">→ flow.html</a>'],
+      ['[11]','セキュリティ','脆弱性を点検して1つ直す','★★★','<a href="flow.html#s11" target="flowdoc">→ flow.html</a>'],
+      ['[12]','E2E テスト','<strong>自分が決めていなかったこと</strong>が画面を通したテストで見つかる','★★☆','<a href="flow.html#s12" target="flowdoc">→ flow.html</a>'],
+      ['[13]','自動デプロイ(Workers Builds)','<strong>git push するだけで自動デプロイ</strong>（手動 wrangler deploy から卒業）','★★☆','<a href="flow.html#s13" target="flowdoc">→ flow.html</a>'],
     ]}},
-    {note:'依存: [11] は [9] まで終えていると効果大（偽造トークン検証はモック認証では試せない）。[12] は他課題の後だと対象コードが増えて効果大。[13] は [6] の手動デプロイ完了が前提（設定中心でコード追加はほぼ無し）。1つだけなら軽い [7]・[10] から。'},
+    {note:'依存: [11] は [9] まで終えていると効果大（偽造トークン検証はモック認証では試せない）。[12] は逆に <strong>[8][9] より先に</strong>（決済とログインを外部サービスに置き換えると、購入も他人アカウントも画面から追えず E2E で書ける項目が激減する）。[13] は [6] の手動デプロイ完了が前提（設定中心でコード追加はほぼ無し）。1つだけなら軽い [7]・[10] から。'},
   ]},
   { type:'content', day:3, sec:'[7][8][9] 共通', title:'まず [7][8][9] に共通すること', body:[
     {h:'秘密情報の置き場所（[4] のおさらい）'},
@@ -703,221 +703,8 @@ npm run deploy`, warn:'frontend/ からデプロイしない（API が消える�
     {ol:['外部サービスで API キー（必要なら ID）を取得','<code>.dev.vars</code> に入れて<strong>ローカルで動かす</strong>','ローカル OK なら本番にシークレット投入してデプロイ']},
     {code:`wrangler secret put <NAME>   # 本番へシークレット投入（課題ごとに必要な分だけ）
 npm run deploy               # ビルド → デプロイ`},
-    {note:'オプションは必須ではない。興味のあるものから（やらない／1つだけ、も可）。Day 2 が未了ならその続きを優先しても可。'},
+    {note:'オプションは必須ではない。興味のあるものから（やらない／1つだけ、も可）。Day 2 が未了ならその続きを優先しても可。<strong>ここから先の手順は <a href="flow.html#section3" target="flowdoc">flow.html の Section 3</a> を読んで各自のペースで進める</strong>。'},
   ]},
-
-  { type:'divider', ref:'s7', day:3, kicker:'[7] ★☆☆', title:'メール機能の実装（Resend）', sub:'問い合わせ通知／ライセンス送付メールを実装し自分宛に届く' },
-  { type:'content', day:3, sec:'[7] メール(Resend)', title:'[7] 準備と送信ドメイン', body:[
-    {p:'<strong>お題:</strong> 問い合わせ通知／ライセンスキー送付メール。<strong>学び:</strong> 外部 API 連携の基本形・Secrets 管理。'},
-    {ol:['resend.com/login で <strong>Google SSO ログイン</strong>','<strong>API keys → Create API Key</strong>（権限 Sending access・Sending domain は <strong>All domains</strong>）','発行した <strong>API キーを手元にコピー</strong>']},
-    {imgrow:[{img:'img/ResendCreateAPIKEY1.png',cap:'API keys →「Create API key」'},{img:'img/ResendCreateAPIKEY2.png',cap:'Name を入れて Add'}]},
-    {warn:'<strong>送信ドメイン:</strong> 動作確認は Resend のテスト用 From <code>onboarding@resend.dev</code> を使う。ただし<strong>宛先は Resend に登録したアカウントのアドレス1つだけ</strong>（それ以外はエラー）。独自ドメインは公開後 DNS 検証が要るので任意。'},
-  ]},
-  { type:'content', day:3, sec:'[7] メール(Resend)', title:'[7] 実装〜確認と完了の定義', body:[
-    {ul:['From/To も含め AI に相談して実装。「要る環境変数を <code>.dev.vars.sample</code> に追記して」と依頼','確定した変数名で <code>.dev.vars</code> にキーを入れ（例 <code>RESEND_API_KEY=...</code>）、<code>npm run dev</code> 再起動→<strong>ローカルで往復</strong>','Resend の <strong>Logs で Status 確認</strong>。<strong>200 以外はエラー本文をそのまま AI に渡して直す</strong>']},
-    {done:['自分宛にメールが届けば完了','（余裕）連投対策まで実装','ローカル OK 後、<code>wrangler secret put</code> で本番投入→<code>npm run deploy</code>']},
-    {code:'メール機能実装の作業をコミットして dev ブランチに push して。'},
-  ]},
-  { type:'break', day:3, step:'7-1', sec:'[7] メール(Resend)', title:'Resend ログイン・API キー作成・コピー', todo:['resend.com/login で Google SSO','API keys → Create API Key（Sending access・All domains）','発行された API キーを手元にコピー'], done:'Resend の API キーが手元にある' },
-  { type:'break', day:3, step:'7-2', sec:'[7] メール(Resend)', title:'実装＋.dev.vars.sample 追記、.dev.vars にキー投入、ローカル往復（onboarding@resend.dev）', todo:['From/To を AI に相談して実装','「要る環境変数を .dev.vars.sample に追記して」と依頼','.dev.vars にキー投入（例 RESEND_API_KEY=...）→ npm run dev 再起動','From は onboarding@resend.dev、宛先は Resend 登録アドレスでローカル送信'], done:'ローカルでメール送信の往復ができた' },
-  { type:'break', day:3, step:'7-3', sec:'[7] メール(Resend)', title:'Resend Logs で Status 確認（200以外はエラー本文を AI へ）', todo:['Resend ダッシュボードの Logs で Status を確認','200 以外なら<strong>エラー本文をそのまま AI に渡して</strong>直す'], done:'Status 200 で自分宛にメールが届く' },
-  { type:'break', day:3, step:'7-4', sec:'[7] メール(Resend)', title:'本番シークレット投入＋deploy → push', todo:['wrangler secret put RESEND_API_KEY（本番）','npm run deploy','dev ブランチに push'], code:'メール機能実装の作業をコミットして dev ブランチに push して。', done:'本番でもメール機能が動き push 済み' },
-
-  { type:'divider', ref:'s8', day:3, kicker:'[8] ★★★', title:'決済機能の実装（Stripe）', sub:'Checkout → Webhook でライセンス自動発行（5フェーズ）' },
-  { type:'content', day:3, sec:'[8] 決済(Stripe)', title:'[8] お題と5フェーズ', body:[
-    {p:'<strong>お題:</strong> プラン購入（Stripe Checkout）→ Webhook でライセンス自動発行。<strong>実装ファイル:</strong> <code>backend/src/stripe.ts</code> / <code>license.ts</code>。<strong>学び:</strong> 二重発行防止・署名検証。'},
-    {ol:['① アカウントとキー準備','② プラン（商品）2つ作成','③ ローカルで Webhook 検証','④ 本番 Webhook 設定','⑤ 戻り先とマイページ表示（つなぎ込み）']},
-    {img:'img/stripe_flow.svg'},
-    {note:'デモ（玄米茶）: https://testai-payment.ha-toge.workers.dev/ — 「購入する」→Checkout（テストカード 4242…）→マイページにライセンス表示（テストモード）。'},
-  ]},
-  { type:'content', day:3, sec:'[8] 決済(Stripe)', title:'[8] ① アカウント準備 ／ ② プラン作成', body:[
-    {h:'① アカウントとキー'},
-    {ul:['dashboard.stripe.com/login で <strong>Google SSO</strong>。<strong>サンドボックス（テストモード）</strong>で終始','「開発者 > API キー」→ <strong>シークレットキー（<code>sk_test_...</code>）</strong>を <code>.dev.vars</code> に','ターミナルで <code>stripe login</code>（Stripe CLI を認証）']},
-    {h:'② プラン（商品）'},
-    {ul:['商品カタログ → ＋商品を作成で<strong>月額・年額の2つの継続課金プラン</strong>','各プランの <strong>Price ID（<code>price_...</code>）を控え</strong> <code>.dev.vars</code> に（例 PRICE_MONTHLY / PRICE_YEARLY）','LP の料金プランと Stripe の商品は<strong>数・内容を一致</strong>させる']},
-    {code:'Checkout セッションを作成する API（stripe.ts）とライセンス発行ロジック（license.ts）を実装して。'},
-    {imgrow:[{img:'img/StripeCreateItem2.png',cap:'商品を追加（継続・金額・請求期間）'},{img:'img/StripePrice2.png',cap:'ワークベンチで Price ID（price_...）を確認'}]},
-  ]},
-  { type:'content', day:3, sec:'[8] 決済(Stripe)', title:'[8] ③ ローカル Webhook ／ ④ 本番 Webhook', body:[
-    {h:'③ ローカルで Webhook 検証'},
-    {p:'ローカルには Stripe から直接届かない。ターミナル2つ：<strong>バック（npm run dev）を起動したまま</strong>別で <code>stripe listen</code>。'},
-    {code:'stripe listen --forward-to localhost:<バックのポート>/webhook/stripe'},
-    {ul:['listen 開始時の <strong>署名シークレット（<code>whsec_...</code>）</strong>を <code>.dev.vars</code> に→バック再起動','<strong>テストカード <code>4242 4242 4242 4242</code></strong>（期限=未来の任意日／CVC=任意3桁）で購入']},
-    {h:'④ 本番（デプロイ後）Webhook'},
-    {ul:['デプロイ前に Secret key・Price ID を本番にも設定 → [6] でデプロイ','Stripe で「Webhook を作成」→ <code>checkout.session.completed</code> は必須','エンドポイント URL に <code>https://&lt;name&gt;.workers.dev/webhook/stripe</code>','表示された<strong>本番用署名シークレット</strong>を Cloudflare に（Secret タイプ）→本番決済確認']},
-    {imgrow:[{img:'img/StripeWebhookCreating1.png',cap:'イベント選択（checkout.session.completed 必須）'},{img:'img/StripeWebhookCreating2.png',cap:'エンドポイント URL を入力'}]},
-  ]},
-  { type:'content', day:3, sec:'[8] 決済(Stripe)', title:'[8] ⑤ つなぎ込み・ハマりどころ・完了', body:[
-    {ul:['成功時は <code>success_url</code> を Day 2 の <code>/success</code> に（「購入後 /success に戻して」）','<strong>紐付け:</strong> ライセンスは購入者の email に紐づく。[9] をやらない場合、モック認証の email（<code>x-user-email</code>）と<strong>購入時 email を一致</strong>させる']},
-    {warn:'⚠️ 署名シークレットは<strong>ローカル(③)と本番(④)で別物</strong>。署名検証は<strong>生のリクエストボディ</strong>で（AI に点検させる）。<strong>二重発行防止</strong>（処理済みイベント ID を記録）。email 不一致で「マイページに出ない」に注意。'},
-    {done:['テストカードで購入 → <strong>マイページにライセンス表示</strong>','（余裕）二重発行防止まで確認','ローカル OK 後 <code>wrangler secret put</code>→<code>npm run deploy</code>']},
-    {code:'決済機能実装の作業をコミットして dev ブランチに push して。'},
-  ]},
-  { type:'break', day:3, step:'8-1', sec:'[8] 決済(Stripe)', title:'①アカウント/キー準備（SSO・sk_test_・stripe login）', todo:['Stripe に Google SSO ログイン（サンドボックス/テストモード）','「開発者 > API キー」→ シークレットキー sk_test_... を .dev.vars に','ターミナルで stripe login（Stripe CLI 認証）'], done:'sk_test_ が .dev.vars にあり stripe login 済み' },
-  { type:'break', day:3, step:'8-2', sec:'[8] 決済(Stripe)', title:'②プラン2つ作成・Price ID 控え→.dev.vars、stripe.ts/license.ts 実装', todo:['月額・年額の継続課金プランを2つ作成','各プランの Price ID（price_...）を控えて .dev.vars に','stripe.ts / license.ts を実装させる'], warn:'LP の料金プランと Stripe の商品は<strong>数・内容を一致</strong>させる。', done:'2つの Price ID が .dev.vars にあり実装が始まった' },
-  { type:'break', day:3, step:'8-3', sec:'[8] 決済(Stripe)', title:'③ローカル Webhook 検証（stripe listen・whsec_・テストカード4242）', todo:['stripe listen（バックは起動したまま・別ターミナル）','whsec_... を .dev.vars に→バック再起動','テストカード 4242 4242 4242 4242 で購入'], code:'stripe listen --forward-to localhost:<バックのポート>/webhook/stripe', done:'ローカルで購入→Webhook→ライセンス発行が通る' },
-  { type:'break', day:3, step:'8-4', sec:'[8] 決済(Stripe)', title:'④デプロイ→本番 Webhook 作成（checkout.session.completed・エンドポイント URL・本番 whsec 投入）→本番決済確認', todo:['Secret key・Price ID を本番にも設定→デプロイ','Stripe で「Webhook を作成」・checkout.session.completed は必須','エンドポイント URL に https://&lt;name&gt;.workers.dev/webhook/stripe','本番用 whsec を Cloudflare に（Secret）→本番で決済確認'], warn:'署名シークレットは<strong>ローカル(③)と本番(④)で別物</strong>。混同しない。', done:'本番でテスト決済が通る' },
-  { type:'break', day:3, step:'8-5', sec:'[8] 決済(Stripe)', title:'⑤success_url・マイページ紐付け（email 一致）', todo:['購入後 /success に戻す','[9] をやらない場合、モック認証の email（x-user-email）と購入時 email を一致させる'], warn:'email がズレると「購入したのにマイページに出ない（別人扱い）」。', done:'購入 → マイページにライセンスが表示される' },
-  { type:'break', day:3, step:'8-6', sec:'[8] 決済(Stripe)', title:'二重発行防止/署名検証を確認 → push', todo:['署名検証が生のリクエストボディで実装されているか AI に点検させる','二重発行防止（処理済みイベント ID を記録）を確認','dev ブランチに push'], code:'決済機能実装の作業をコミットして dev ブランチに push して。', done:'二重発行防止・署名検証を確認し push 済み' },
-
-  { type:'divider', ref:'s9', day:3, kicker:'[9] ★★☆', title:'ID 連携機能の実装（Clerk）', sub:'ログイン必須のマイページ（未ログイン→サインインへ）' },
-  { type:'content', day:3, sec:'[9] ID連携(Clerk)', title:'[9] お題とサービス側の準備', body:[
-    {p:'<strong>お題:</strong> ログイン必須のマイページ。<strong>使うもの:</strong> <code>@clerk/clerk-react</code>（フロント）＋ Hono で Clerk トークン検証。<strong>学び:</strong> JWT 検証を<strong>バックでやる理由</strong>（フロントの見た目だけの保護は無意味）。'},
-    {ol:['dashboard.clerk.com で <strong>Google SSO</strong>','<strong>アプリケーション作成</strong>: Email・Phone・Username をオフ、<strong>Google をオン</strong>（プレビューが「Continue with Google」だけに）','<strong>Configure → API keys</strong> から2つのキーを手元にコピー']},
-    {img:'img/clerk_auth_flow.svg'},
-    {note:'デモ（玄米茶）: https://testai-login.ha-toge.workers.dev/ — 未ログインで /mypage はサインインへ→Google ログイン→表示。'},
-  ]},
-  { type:'content', day:3, sec:'[9] ID連携(Clerk)', title:'[9] キーの置き場所（間違えやすい）と実装', body:[
-    {table:{head:['キー','置き場所','性質'],rows:[
-      ['Publishable key','<strong>フロント</strong> frontend/.env（<code>VITE_CLERK_PUBLISHABLE_KEY</code>）＋<strong>バック</strong> .dev.vars（<code>CLERK_PUBLISHABLE_KEY</code>）','公開可'],
-      ['Secret key','<strong>バック</strong> .dev.vars ／本番は Cloudflare（Secret）or <code>wrangler secret put CLERK_SECRET_KEY</code>','秘密'],
-    ]}},
-    {ul:['パッケージ（フロント <code>@clerk/clerk-react</code>／バック <code>@hono/clerk-auth</code>）は AI が導入','フロントは <code>&lt;ClerkProvider&gt;</code> で包み <strong>未ログインは /mypage に入れない</strong>','<strong>JWT 検証は <code>@hono/clerk-auth</code> 推奨</strong>。バックで<strong>必ず検証</strong>してから保護 API を返す','Day 2 のモック認証（<code>x-user-email</code>）を Clerk トークン検証に差し替えるのがゴール']},
-  ]},
-  { type:'content', day:3, sec:'[9] ID連携(Clerk)', title:'[9] ハマりどころと完了の定義', body:[
-    {warn:'⚠️ 本番でサインインが弾かれる時は、Clerk ダッシュボードに<strong>公開ドメイン（<code>https://&lt;name&gt;.workers.dev</code>）を許可オリジン登録</strong>。'},
-    {done:['ローカル: 未ログインで /mypage → サインイン画面に誘導','ローカル: 未ログインで <code>GET /api/me</code> が <strong>401</strong>／サインイン後は表示','本番: シークレット投入（Publishable は frontend/.env からビルド時埋め込み）→ <code>npm run deploy</code>','本番: サインイン → /mypage 表示']},
-    {code:'Clerk 認証実装の作業をコミットして dev ブランチに push して。'},
-  ]},
-  { type:'break', day:3, step:'9-1', sec:'[9] ID連携(Clerk)', title:'Clerk アプリ作成（Google SSO のみ）・2キーをコピー', todo:['dashboard.clerk.com で Google SSO','アプリ作成: Email/Phone/Username オフ・Google オン','Configure → API keys の2つのキーを手元にコピー'], done:'Publishable / Secret の2キーが手元にある' },
-  { type:'break', day:3, step:'9-2', sec:'[9] ID連携(Clerk)', title:'パッケージ導入＋キーを env にセット（置き場所を分ける）', todo:['@clerk/clerk-react（フロント）・@hono/clerk-auth（バック）を導入','Publishable → frontend/.env ＋ backend/.dev.vars の両方','Secret → backend/.dev.vars のみ','npm run dev 再起動'], warn:'置き場所の取り違えが一番のハマりどころ。', done:'キーが正しい場所にセットされた' },
-  { type:'break', day:3, step:'9-3', sec:'[9] ID連携(Clerk)', title:'フロント：ClerkProvider で包む・/mypage ガード', todo:['アプリを &lt;ClerkProvider&gt; で包む','サインイン UI を置く','未ログインは /mypage に入れないようガード'], done:'フロントでログイン UI とガードが動く' },
-  { type:'break', day:3, step:'9-4', sec:'[9] ID連携(Clerk)', title:'バック：モック認証を Clerk トークン検証に差し替え（@hono/clerk-auth）', todo:['@hono/clerk-auth で JWT を検証','必ず検証してから保護 API を返す','Day 2 の x-user-email モック認証を置き換える'], code:'Day 2 のモック認証を Clerk トークン検証に差し替えて。', done:'バックが Clerk トークンを検証している' },
-  { type:'break', day:3, step:'9-5', sec:'[9] ID連携(Clerk)', title:'ローカル確認（未ログイン /mypage 誘導・/api/me 401）', todo:['未ログインで /mypage → サインインに誘導されるか','未ログインで GET /api/me が 401 になるか'], done:'ローカルで認証境界が効いている' },
-  { type:'break', day:3, step:'9-6', sec:'[9] ID連携(Clerk)', title:'本番シークレット投入・deploy・本番確認（許可オリジン登録）→ push', todo:['Secret key を wrangler secret put で本番投入','npm run deploy','本番でサインイン→/mypage 表示（弾かれたら許可オリジン登録）','dev に push'], code:'Clerk 認証実装の作業をコミットして dev ブランチに push して。', done:'本番でログインが動き push 済み' },
-
-  { type:'divider', ref:'s10', day:3, kicker:'[10] ★☆☆', title:'運用保守', sub:'公開後の運用を Claude Code のスキルで仕組み化する' },
-  { type:'content', day:3, sec:'[10] 運用保守', title:'[10] Cloudflare API トークンを用意', body:[
-    {p:'<strong>お題:</strong> 監視・ログ・障害特定・対策・コスト。ログ集計やコスト試算には <strong>API トークン</strong>が要る（<code>wrangler</code> だけだと制限あり）。'},
-    {ol:['ダッシュボード右上アイコン → <strong>Profile</strong>','<strong>API Tokens → Create Token</strong> → 「Create Custom Token」','Permissions を <strong>Account / Account Analytics / Read</strong> にして作成','トークンを <strong><code>backend/.cf-ops.token</code></strong> に保存（例 <code>CLOUDFLARE_API_TOKEN=...</code>）。<code>.gitignore</code> に追加']},
-    {imgrow:[{img:'img/CloudflareGetAPIKEY2.png',cap:'API Tokens →「Create Token」'},{img:'img/CloudflareGetAPIKEY4.png',cap:'Permissions は Account Analytics / Read'}]},
-    {warn:'⚠️ <code>.dev.vars</code> は Day 1 の deny で Read 拒否 → スキルが読めない。運用トークンだけ<strong>別ファイル <code>.cf-ops.token</code></strong>に分離（Analytics 読み取り専用の低権限）。本番 secret 不要。トークン無しでも <code>wrangler tail</code> は見られる。'},
-  ]},
-  { type:'content', day:3, sec:'[10] 運用保守', title:'[10] 運用チェックをスキルにする', body:[
-    {p:'<code>.claude/skills/&lt;名前&gt;/</code> に置くと「運用チェックして」で呼べる。作るスキルは5つ＋統合 <code>ops-check</code>。'},
-    {table:{head:['#','スキル','やること'],rows:[
-      ['1','infra-status','依存サービスの公開ステータス確認'],
-      ['2','cf-log-check','Cloudflare のログ/エラー取得'],
-      ['3','fault-localize','ログ・直近デプロイをソースと突き合わせ原因を絞る'],
-      ['4','remediate','恒久対策・暫定ワークアラウンドを出す'],
-      ['5','cost-monitor','requests / CPU 時間からコスト試算'],
-    ]}},
-    {code:`.claude/skills/ 以下に本番運用チェック用のスキルを5つ作って。
-1. infra-status  2. cf-log-check  3. fault-localize  4. remediate  5. cost-monitor
-共通: Cloudflare API トークンは backend/.cf-ops.token に置いてある（.dev.vars は読まない）。
-使っていないサービスは対象から外して。5つを順に実行する統合スキル ops-check も作って。
-「運用チェックして」で ops-check が動くようにして。`},
-    {done:['5つのうち<strong>最低1つ</strong>が動作する（「運用チェックして」で応答）']},
-  ]},
-  { type:'break', day:3, step:'10-1', sec:'[10] 運用保守', title:'Cloudflare API トークン作成（Analytics/Read）→ .cf-ops.token 保存', todo:['Profile → API Tokens → Create Custom Token','Permissions: Account / Account Analytics / Read','backend/.cf-ops.token に保存（CLOUDFLARE_API_TOKEN=...）'], warn:'.dev.vars は deny で読めないので<strong>別ファイル</strong>に分ける（.gitignore に .cf-ops.token を追加しておく）。', done:'低権限トークンが .cf-ops.token にある' },
-  { type:'break', day:3, step:'10-2', sec:'[10] 運用保守', title:'運用スキルを作らせる（infra-status/cf-log-check/fault-localize/remediate/cost-monitor＋ops-check）', todo:['infra-status / cf-log-check / fault-localize / remediate / cost-monitor を作らせる','統合スキル ops-check も作る'], done:'.claude/skills/ に運用スキルができた' },
-  { type:'break', day:3, step:'10-3', sec:'[10] 運用保守', title:'「運用チェックして」で最低1つ動作確認 → push', todo:['「運用チェックして」で ops-check を動かす','最低1つのスキルが応答することを確認','dev に push'], code:'運用保守実装の作業をコミットして dev ブランチに push して。', done:'最低1つの運用スキルが動作し push 済み' },
-
-  { type:'divider', ref:'s11', day:3, kicker:'[11] ★★★', title:'セキュリティ', sub:'自分のアプリを点検し最低1つ直す（Claude Code ＋ SonarCloud）' },
-  { type:'content', day:3, sec:'[11] セキュリティ', title:'[11] 見る観点', body:[
-    {ul:['<strong>認証境界</strong>: 未認証／偽造 JWT で <strong>401</strong> になるか','<strong>IDOR</strong>: 他人の email を body に入れても無視されるか（他人のデータを引けないか）','<strong>機密のマスク</strong>: レスポンスにフルのライセンスキーが含まれていないか']},
-    {note:'参考: [5] の TEST.md の認証境界テストを回帰テストの土台にする。学び=「AI が書いたコード」を自分で点検できるようになる。'},
-  ]},
-  { type:'content', day:3, sec:'[11] セキュリティ', title:'[11] 2通りの点検を併用', body:[
-    {ul:['<strong>Claude Code</strong>: <code>/security-review</code> で差分点検・<code>security-guidance</code> は自動点検','<strong>SonarCloud</strong>（静的解析＝コードを動かさず読むだけで問題を見つける SaaS）: push のたび脆弱性・バグ・品質を自動検出']},
-    {warn:'⚠️ GitHub App 連携は必ず <strong>「Only select repositories」</strong>を選ぶ。「All repositories」だと（将来作るものも含め）プライベートリポジトリのコードが外部に見える状態になる。'},
-    {ol:['点検対象を <strong><code>main</code> ブランチに push</strong>（無料版は main / PR を解析）','sonarcloud.io → <strong>「GitHub」でログイン → Authorize</strong>（ここはまだ本人確認だけ）','<strong>Install &amp; Authorize</strong> 画面（一番の要注意）: <strong>Only select repositories</strong> で対象だけ許可','<strong>Create an organization</strong>: Name・Key を入力（自動インポートはチェックしない）→ <strong>Free プラン（$0・カード不要）</strong>で作成','右上 ＋ → <strong>Analyze new project</strong> → リポジトリにチェックし <strong>Set Up</strong>','解析完了を待つと <strong>Summary</strong> に項目別の指摘件数が出る']},
-    {imgrow:[{img:'img/SonarCloudInstallAuthorizeApp.png',cap:'Only select repositories で対象だけ許可'},{img:'img/SonarCloudSummaryResult.png',cap:'解析結果（Summary — 項目別 Open issues）'}]},
-    {note:'初回はアカウント作成〜組織作成の手順が多い。実際の画面ひとつずつのスクショは flow.html 側にある。'},
-  ]},
-  { type:'content', day:3, sec:'[11] セキュリティ', title:'[11] 指摘を AI とレビュー（プロンプトのひな形）', body:[
-    {p:'Summary の数字は集計にすぎない。<strong>Issues 画面で個別の指摘を開いて中身を見る</strong>のがレビューの本番。'},
-    {ol:['左サイドバーの <strong>Issues</strong>（または Summary の件数クリック）で指摘一覧へ','1件開くと該当コードと説明が出る。<strong>①ルール名 ②ルールID ③Software quality/重大度 ④行番号 ⑤ファイルパス</strong>をコピー','ひな形に埋めて Claude Code に送る（コードは AI が直接読める）','説明を踏まえ<strong>直すか・誤検知として無視するかを判断</strong>']},
-    {code:`SonarCloudで以下の指摘が出ました。意味と直し方を教えてください。
-
-ルール名: ①をここに
-ルールID: ②をここに
-Software quality / 重大度: ③をここに
-行番号: ④をここに
-ファイルパス: ⑤をここに`},
-    {imgrow:[{img:'img/SonarCloudIssuesList.png',cap:'Issues 一覧（Severity 別フィルタ）'},{img:'img/SonarCloudIssueDetailAnnotated.png',cap:'詳細画面の①〜⑤をコピーして埋める'}]},
-    {note:'文脈を足したいときは「Why is this an issue?」タブの説明文を範囲選択してコピペで添える（スクショは見切れやすい）。'},
-  ]},
-  { type:'content', day:3, sec:'[11] セキュリティ', title:'[11] ハマりどころと完了の定義', body:[
-    {ul:['指摘には<strong>誤検知</strong>もある。鵜呑みにせず AI と判断','<strong>Security 0 件でも異常ではない</strong>（典型的な穴が塞がれていれば出ない）。修正は Reliability・Maintainability の指摘から選んでも可','解析単位を分けるため<strong>専用リポジトリ</strong>推奨','All repositories＋自動取り込みが有効だと<strong>意図しないリポジトリまで解析</strong>される（GitHub の Installed App で Only select に絞る）']},
-    {done:['見つけた問題を <strong>1つ以上修正</strong>できれば完了']},
-    {code:'セキュリティ修正の作業をコミットして main ブランチに push して。'},
-  ]},
-  { type:'break', day:3, step:'11-1', sec:'[11] セキュリティ', title:'観点確認（認証境界・IDOR・機密マスク）', todo:['認証境界: 未認証/偽造 JWT で 401 か','IDOR: 他人の email を body に入れても無視されるか','機密マスク: レスポンスにフルのライセンスキーが無いか'], done:'3観点で自分のアプリを見る準備ができた' },
-  { type:'break', day:3, step:'11-2', sec:'[11] セキュリティ', title:'/security-review で点検', todo:['/security-review で差分・コードを点検'], code:'/security-review', done:'Claude Code 側の点検結果が出た' },
-  { type:'break', day:3, step:'11-3', sec:'[11] セキュリティ', title:'SonarCloud 設定（main push・Only select repositories・組織作成・解析）', todo:['対象を main ブランチに push','sonarcloud.io → GitHub でログイン（Authorize）','Install &amp; Authorize は <strong>Only select repositories</strong> で対象を絞る','組織作成（Name・Key 入力／自動インポートはチェックしない）→ Free プラン','＋ → Analyze new project → リポジトリを選び Set Up','解析完了を待つ（Summary が出る）'], warn:'All repositories は選ばない（プライベートコード外部送信の恐れ）。', done:'SonarCloud の解析結果（Summary）が出た' },
-  { type:'break', day:3, step:'11-4', sec:'[11] セキュリティ', title:'指摘を AI とレビュー→最低1つ修正（余裕あれば回帰テスト）→ push', todo:['Issues 画面で個別指摘を開き、①ルール名〜⑤ファイルパスをひな形にコピーして AI に説明させる（誤検知は判断）','最低1つ修正（Security 0 件なら Reliability・Maintainability から選んでも可）','（余裕）回帰テストを追加','main ブランチに push'], code:'セキュリティ修正の作業をコミットして main ブランチに push して。', done:'問題を1つ以上修正し push 済み' },
-
-  { type:'divider', ref:'s12', day:3, kicker:'[12] ★★★', title:'テスト設計（自分で決める）', sub:'何をテストすべきかを自分の判断で設計する' },
-  { type:'content', day:3, sec:'[12] テスト設計', title:'[12] お題と一番の罠', body:[
-    {p:'<strong>お題:</strong>「間違うと一番痛い」機能を1つ選び、正しい振る舞いを<strong>自分で仕様化</strong>して、要るテストを<strong>自分で決めて</strong>実装する。'},
-    {key:'[5] は「与えられた4観点」を通す最低ライン。[12] は観点を渡さない — <strong>何をテストすべきかを自分で決める</strong>のがゴール（本数ではなく判断の練習）。'},
-    {warn:'⚠️ 一番の罠: AI に丸投げすると AI は<strong>実装を読んで「今のコードがやっていること」をテスト化</strong>＝<strong>バグごと正解として固定</strong>。だから機能テストは、まず<strong>意図した仕様</strong>（自分の言葉／SCREEN_SPEC.md）から導き、実装と突き合わせる。'},
-  ]},
-  { type:'content', day:3, sec:'[12] テスト設計', title:'[12] 2つのレンズと人間／AI の分担', body:[
-    {ul:['<strong>機能レンズ</strong>（仕様起点・体系的）= 何を保証すべきかを仕様から積み上げ、入力・状態ごとに期待結果を決める','<strong>リスクレンズ</strong>（被害起点）=「壊れたら困る」でどれを書くか優先順位']},
-    {table:{head:['作業','人間','AI'],rows:[
-      ['意図した仕様を言葉にする','◎ 人間のみ','✕ 実装から推測させない'],
-      ['期待動作表の行出し','○ 取捨','◎ 大量列挙'],
-      ['各行の期待結果を確定','◎ 意図に照らす','△ 提案のみ'],
-      ['どのケースを書くか絞る','◎「壊れたら困る」','△ 影響度の観点'],
-      ['実装・検証・カバレッジ','○ 指示とレビュー','◎ 実装・実行・破壊'],
-    ]}},
-    {key:'背骨: <strong>人間＝意図と判断</strong>／<strong>AI＝量・機構・批判</strong>。'},
-  ]},
-  { type:'content', day:3, sec:'[12] テスト設計', title:'[12] 流れ ①②③（仕様 → 表）', body:[
-    {ol:['<strong>（5分）対象を1機能に絞り名前をつける</strong>（例「マイページのライセンス表示」）。全機能はやらない','<strong>（15分）あるべき動作を自分の言葉で書く</strong>（3問: 誰の何のため／使い終わって何が真であるべき／絶対起きてはいけないこと）','<strong>あるべき動作を AI に期待動作表へ展開させ docs/TEST.md へ</strong>']},
-    {code:`次は私が書いた「<機能名> のあるべき動作」です:
-（↑で書いた3〜5行を貼る）
-
-これを期待動作表に展開して docs/TEST.md に追記して。
-表は「入力・状態 | 期待結果 | 書く」の3列。
-入力の同値クラス（正常・不正・境界・空・重複）と状態・遷移で行を増やして。
-ただし「期待結果」と「書く」は空欄のまま——そこは私が埋める。
-実装コードは読まず、上の仕様だけを根拠にすること。`},
-    {warn:'⚠️ ここを AI に丸投げしない。頼むなら「backend のコードは読まず SCREEN_SPEC.md と私の説明だけを根拠に」と縛る。'},
-  ]},
-  { type:'content', day:3, sec:'[12] テスト設計', title:'[12] 流れ ④⑤⑥（絞る → 実装 → 破壊）', body:[
-    {ol:['<strong>（10分）書くケースを絞る</strong> — TEST.md の「書く」列に、今回書く行だけ ◎（リスクレンズ）','<strong>（15分）AI にテスト実装させる</strong>（期待値は自分の表の値を使わせる）','<strong>（10分）わざと壊して赤を確認＋敵対的レビュー1往復</strong>']},
-    {code:`① 追加したテストが効いているか、対象の関数のしきい値/条件を1つだけ一時的に壊して
-   該当テストが赤くなることを見せて。確認できたら元に戻して。
-② 私の期待動作表から漏れている振る舞いはある? 書いたテストで不要なものがあれば根拠つきで指摘して。`},
-    {ul:['期待結果は「エラーが出ない」で済ませず<strong>「この値が返る」</strong>まで書く（でないと壊しても赤にならない）','②の指摘は<strong>採否と理由を人間が1行残す</strong>（AI が正しいとは限らない）']},
-  ]},
-  { type:'content', day:3, sec:'[12] テスト設計', title:'[12] 完了の定義（判断の跡で確認）', body:[
-    {done:['1機能の「あるべき動作」を<strong>自分の言葉で書いた</strong>','期待動作表を起こし<strong>各行の期待結果を自分で埋めた</strong>','「書く／書かない」を判断した（◎ がついている）','各テストが表のどの行を守るか言える','「壊すと赤」を確認／<code>npm test</code> が最終的にグリーン']},
-    {code:'テスト設計の作業をコミットして push して。'},
-    {note:'⚠️ これでも「本番の品質担保」には未達。実務では別途 (1) CI で強制実行し赤ならマージ／デプロイを止める、(2) カバレッジ下限をゲートにする（[11] SonarCloud 品質ゲート）が要る。本ワークショップではスコープ外。'},
-  ]},
-  { type:'break', day:3, step:'12-1', sec:'[12] テスト設計', title:'対象を1機能に絞り機能名をつける', todo:['「間違うと一番痛い」機能を1つ選ぶ','短い機能名をつける（例: マイページのライセンス表示）'], done:'テスト対象の1機能と機能名が決まった' },
-  { type:'break', day:3, step:'12-2', sec:'[12] テスト設計', title:'「あるべき動作」を自分の言葉で書く（3問）', todo:['この機能は誰の・何のためか','正常に使い終わったとき何が「真」であるべきか','絶対に起きてはいけないことは何か'], warn:'実装が今どう動くかではなく<strong>作りたかった正しい動き</strong>を書く。AI に丸投げしない。', done:'あるべき動作を3〜5行で自分の言葉で書いた' },
-  { type:'break', day:3, step:'12-3', sec:'[12] テスト設計', title:'AI に期待動作表へ展開→docs/TEST.md、期待結果を自分で埋める', todo:['AI に期待動作表へ展開させ docs/TEST.md へ','「期待結果」列を自分で埋める'], code:`これを期待動作表に展開して docs/TEST.md に追記して。
-実装コードは読まず、上の仕様だけを根拠にすること。`, done:'期待動作表ができ、各行の期待結果を自分で埋めた' },
-  { type:'break', day:3, step:'12-4', sec:'[12] テスト設計', title:'「書く」列に ◎（リスクで絞る）', todo:['「書く」列に、今回書く行だけ ◎ を入れる（リスクで絞る）'], done:'書くケースを ◎ で絞った（リスクレンズ）' },
-  { type:'break', day:3, step:'12-5', sec:'[12] テスト設計', title:'◎の行を AI 実装→npm test グリーン', todo:['◎ の行だけ AI にテスト実装させる','npm test でグリーンを確認'], code:`docs/TEST.md の「書く」列が ◎ の行だけテストを実装して。
-期待値は表の値をそのまま使い、実装コードから推測しないで。`, done:'◎ の行のテストが実装され npm test がグリーン' },
-  { type:'break', day:3, step:'12-6', sec:'[12] テスト設計', title:'わざと壊して赤を確認＋敵対レビュー → push', todo:['わざと壊して該当テストが赤になるのを確認→戻す','敵対レビュー（漏れ・不要を指摘させる）','push'], code:'テスト設計の作業をコミットして push して。', done:'「壊すと赤」を確認し push 済み' },
-
-  { type:'divider', ref:'s13', day:3, kicker:'[13] ★★☆', title:'自動デプロイ（Workers Builds）', sub:'git push するだけで Cloudflare へ自動ビルド・デプロイ（手動 wrangler deploy を卒業）' },
-  { type:'content', day:3, sec:'[13] 自動デプロイ', title:'[13] お題と特徴', body:[
-    {p:'<strong>お題:</strong> <code>git push</code> するだけで Cloudflare へ自動的にビルド・デプロイされる状態にする（[6] の手動デプロイを卒業）。'},
-    {ul:['<strong>ツール</strong>: Cloudflare ダッシュボード（Workers Builds＝Git 連携による CI/CD 機能）','<strong>前提</strong>: [6] で <code>wrangler deploy</code> による手動デプロイまで完了していること','<strong>学び</strong>: CI/CD（push するだけで自動ビルド・デプロイされる仕組み）の初歩と、モノレポ構成でのビルド設定']},
-    {key:'他の Day 3 課題と違い、<strong>作業はすべて Cloudflare ダッシュボード側の設定で完結</strong>。コードの変更も Claude Code への依頼も無い。一度設定すれば、あとは普段どおり push するだけ。'},
-  ]},
-  { type:'content', day:3, sec:'[13] 自動デプロイ', title:'[13] 連携手順（4つの設定）', body:[
-    {ol:['Cloudflare ダッシュボード: <strong>Account home → 対象の Worker → Settings → Build</strong> の GitHub ボタン','GitHub 側の <strong>Install &amp; Authorize</strong> で <strong>Only select repositories</strong> を選び対象のみ許可','<strong>Connect to a repository</strong> 画面で4つを設定: <strong>Git account</strong>（自分のアカウント）／<strong>Path（Root directory）を <code>backend</code></strong>／<strong>Build command に <code>npm install --prefix ../frontend &amp;&amp; npm run build:front</code></strong>／<strong>Production branch を <code>main</code></strong>']},
-    {warn:'⚠️ ここでも「All repositories」は選ばない（プライベートリポジトリすべてに Cloudflare がアクセスできてしまう）。'},
-    {imgrow:[{img:'img/CloudflareWorkerBuildSection.png',cap:'Settings → Build セクションの GitHub ボタン'},{img:'img/CloudflareConnectRepoSettings.png',cap:'Connect to a repository — 4つの設定'}]},
-    {note:'Production branch が main のため、dev への push はプレビューのみ・<strong>dev→main マージがそのまま本番公開</strong>になる（Git ブランチ運用の注意参照）。'},
-  ]},
-  { type:'content', day:3, sec:'[13] 自動デプロイ', title:'[13] ハマりどころと完了の定義', body:[
-    {ul:['<strong>Path（Root directory）設定忘れ → API が全滅（404）</strong>: bot（<code>cloudflare-workers-and-pages</code>）がルートに静的配信専用の <code>wrangler.jsonc</code> を自動生成して PR を送ってくることがある——<strong>マージせずクローズ</strong>','<strong>Build command 設定忘れ → フロントがビルドされない</strong>（既定の <code>npx wrangler deploy</code> は vite build を含まない）','デプロイ直後は伝播に数秒〜十数秒かかる。404 でも少し待って再確認']},
-    {done:['軽微な変更を dev に push → Cloudflare の <strong>Deployments に新しいビルドが自動で現れる</strong>ことを確認','（余裕）dev→main マージで本番 URL への反映まで確認']},
-    {code:'Workers Builds の動作確認用に、軽微な変更（コメント追加など）をコミットして dev ブランチに push して。'},
-  ]},
-  { type:'break', day:3, step:'13-1', sec:'[13] 自動デプロイ', title:'GitHub 連携（Settings → Build → GitHub・Only select repositories）', todo:['Account home → 対象の Worker → Settings → Build','GitHub ボタン → Install &amp; Authorize','<strong>Only select repositories</strong> で対象のみ許可'], warn:'All repositories は選ばない。', done:'Connect to a repository 画面が開いた' },
-  { type:'break', day:3, step:'13-2', sec:'[13] 自動デプロイ', title:'接続設定4点（Git account・Path=backend・Build command・Production branch=main）', todo:['Git account を自分のアカウントに','Path（Root directory）を <code>backend</code> に','Build command: <code>npm install --prefix ../frontend &amp;&amp; npm run build:front</code>','Production branch: <code>main</code>'], warn:'Path が空のままだと bot の自動 PR（静的配信専用）が来ることがある——マージせずクローズ。', done:'4つの設定を保存できた' },
-  { type:'break', day:3, step:'13-3', sec:'[13] 自動デプロイ', title:'動作確認（軽微な変更を dev に push → 自動ビルド）', todo:['軽微な変更をコミットし dev に push','Cloudflare の Deployments に新しいビルドが現れるのを確認','（余裕）dev→main マージで本番 URL 反映を確認'], code:'Workers Builds の動作確認用に、軽微な変更（コメント追加など）をコミットして dev ブランチに push して。', done:'push だけで自動ビルドが走った——[13] 完了' },
 
   { type:'divider', ref:'wrap', day:3, label:'Day 3 最後の30分', title:'ラップアップ・発表会', sub:'1人3分のデモ＋振り返り' },
   { type:'content', day:3, sec:'ラップアップ', title:'最終発表会と振り返り', body:[
@@ -967,13 +754,6 @@ const SEC2REF = {
   '[6] デプロイ'                    : 's6',
   'Day 3'                           : 'day3',
   '[7][8][9] 共通'                  : 'common',
-  '[7] メール(Resend)'              : 's7',
-  '[8] 決済(Stripe)'                : 's8',
-  '[9] ID連携(Clerk)'               : 's9',
-  '[10] 運用保守'                   : 's10',
-  '[11] セキュリティ'               : 's11',
-  '[12] テスト設計'                 : 's12',
-  '[13] 自動デプロイ'               : 's13',
   'ラップアップ'                    : 'wrap',
   '後片付け'                        : 'cleanup',
 };
