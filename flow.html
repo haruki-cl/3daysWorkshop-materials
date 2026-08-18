@@ -1951,7 +1951,7 @@ npx playwright test --project=setup</code></pre>
 <tr><td>前提条件</td><td><strong>テストを始めるときの状態</strong>（例: A は購入済み・B は未購入）</td></tr>
 <tr><td>期待結果</td><td><strong>画面のどこがどうなっていれば OK か</strong>（①で答えた「見る場所」をそのまま書く）</td></tr>
 <tr><td>書く</td><td>今日テストする<strong>2行だけ</strong>に ◎</td></tr>
-<tr><td>備考</td><td>✕ を付けた行に、<strong>代わりに誰が守るか</strong></td></tr>
+<tr><td>備考</td><td>✕ を付けた行に、<strong>なぜ ✕ にしたか</strong></td></tr>
 </tbody>
 </table>
 
@@ -1972,12 +1972,8 @@ npx playwright test --project=setup</code></pre>
 <p><strong>◎ は2つまで。</strong></p>
 <p>1つだと全部緑で終わって⑤に進めない。3つ以上は時間内に終わらない。</p>
 </blockquote>
-<blockquote class="warn">
-<p><strong>⚠️ ✕ の行の「備考」を空にしないこと。</strong></p>
-<p>空欄のまま置くと、その保証は<strong>誰も守らなくなる</strong>。</p>
-</blockquote>
 
-<p class="note"><strong>完了</strong>: ◎ が2つあり、✕ の行すべてに行き先が書いてある。</p>
+<p class="note"><strong>完了</strong>: ◎ が2つあり、✕ の行すべてに理由が書いてある。</p>
 
 <h3>③ 操作を録画する</h3>
 
@@ -2160,7 +2156,7 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 <h3 class="done">✅ 完了の定義</h3>
 <ul>
 <li>①を自分の言葉で3〜5行書き、<strong>全部について「画面のどこを見るか」を言える</strong></li>
-<li>②の表に ◎ が2つあり、<strong>✕ の行には行き先が書いてある</strong></li>
+<li>②の表に ◎ が2つあり、<strong>✕ の行には理由が書いてある</strong></li>
 <li>テストを2本実行し、<strong>それぞれ緑か赤かが表に記録されている</strong></li>
 <li>赤が出た行について、<strong>直したか・仕様として認めたかを自分で決めた</strong></li>
 <li>1本以上で<strong>「壊すと赤」</strong>を確認した</li>
