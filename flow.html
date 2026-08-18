@@ -1981,11 +1981,6 @@ npx playwright test --project=setup</code></pre>
 <pre><code>cd &lt;リポジトリのルート&gt;
 npx playwright codegen http://localhost:8787/ -o tests/&lt;ファイル名&gt;.spec.ts</code></pre>
 
-<figure class="diagram">
-<img src="img/PlaywrightCodegenStart.png" alt="Codegen 起動直後の画面 — 左に操作対象のブラウザ、右に Playwright Inspector が並ぶ。Inspector 側には goto の1行だけが書かれており、判定の行はまだ無い">
-<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">起動すると<strong>ブラウザ</strong>と<strong>コード生成ウィンドウ（Playwright Inspector）</strong>が並んで開く。左を操作すると右にコードが溜まっていく</figcaption>
-</figure>
-
 <p><strong>末尾のファイル名は自分で決める。</strong> <code>-o</code> は「録画した結果をどこに書き出すか」の指定。②の表で ◎ を2つ付けたので、名前も2つ要る。</p>
 
 <p><strong>名前の付け方</strong>: <code>tests/&lt;番号&gt;-&lt;何を守るか分かる短い名前&gt;.spec.ts</code></p>
@@ -2009,6 +2004,11 @@ npx playwright codegen http://localhost:8787/ -o tests/&lt;ファイル名&gt;.s
 <p><strong>⚠️ <code>-o</code> は実行した場所からの相対パス。</strong></p>
 <p><code>tests/</code> の中で実行すると保存先が見つからずに落ちる。<strong>録画した内容はそのまま消える。</strong></p>
 </blockquote>
+
+<figure class="diagram">
+<img src="img/PlaywrightCodegenStart.png" alt="Codegen 起動直後の画面 — 左に操作対象のブラウザ、右に Playwright Inspector が並ぶ。Inspector 側には goto の1行だけが書かれており、判定の行はまだ無い">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">起動すると<strong>ブラウザ</strong>と<strong>コード生成ウィンドウ（Playwright Inspector）</strong>が並んで開く。左を操作すると右にコードが溜まっていく</figcaption>
+</figure>
 
 <p><strong>録画中にやること</strong>: ②の表に書いた「前提条件」を、画面を操作して自分で作る。そのうえで「期待結果」を見る画面まで進む。</p>
 <p>たとえば前提条件が「A は購入済み、B は未購入」なら、1回の録画の中で A として購入し、続けて B としてマイページを開くところまでを通しで操作する。前提条件を作る操作も録画に含める。</p>
