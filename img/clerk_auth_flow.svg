@@ -110,6 +110,6 @@
 
   <!-- 下部注記 -->
   <rect x="18" y="240" width="824" height="60" rx="8" fill="#f5f2e8"/>
-  <text x="430" y="264" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10" fill="#5a5040">Day 2 のモック認証は「<tspan font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="9">x-user-email</tspan> ヘッダを<tspan font-weight="700">検証せず信頼</tspan>」していた（誰でも名乗れる）。</text>
+  <text x="430" y="264" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10" fill="#5a5040">Section 2 のモック認証は「<tspan font-family="SFMono-Regular,Menlo,Consolas,monospace" font-size="9">x-user-email</tspan> ヘッダを<tspan font-weight="700">検証せず信頼</tspan>」していた（誰でも名乗れる）。</text>
   <text x="430" y="284" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10" fill="#5a5040">[9] のゴールはこれを<tspan font-weight="700" fill="#085450">⑤のトークン検証に差し替える</tspan>こと。検証はバックで行う（フロントの出し分けだけでは保護にならない）。</text>
 </svg>

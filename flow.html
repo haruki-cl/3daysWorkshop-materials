@@ -38,11 +38,13 @@ h1[id^="section"]{
 h1#section1{background:var(--sec1-bg); border-top:4px solid var(--sec1-bd); border-bottom:1px solid #c0d8f0; color:var(--sec1-text);}
 h1#section2{background:var(--sec2-bg); border-top:4px solid var(--sec2-bd); border-bottom:1px solid #f0d8a0; color:var(--sec2-text);}
 h1#section3{background:var(--sec3-bg); border-top:4px solid var(--sec3-bd); border-bottom:1px solid #d8c8f0; color:var(--sec3-text);}
-h2{font-size:1.5rem; margin:3.6em 0 .9em; padding:.35em .8em;
+h2{font-size:1.5rem; margin:4.4em 0 .9em; padding:.35em .8em;
   border-left:6px solid var(--accent); border-radius:0 6px 6px 0; background:#f0fafa;}
-h3{font-size:1.15rem; margin:1.8em 0 .6em; color:var(--ink); letter-spacing:.02em;
+h3{font-size:1.15rem; margin:3em 0 .6em; color:var(--ink); letter-spacing:.02em;
   padding-bottom:.3em; border-bottom:1px solid var(--line);}
-h4{font-size:1.02rem; margin:1.4em 0 .3em; color:var(--ink);}
+/* 見出しが連続するときは余白を詰める（間に本文が無いので空きすぎるため） */
+h2 + h3, h3 + h4{margin-top:1.2em;}
+h4{font-size:1.02rem; margin:2em 0 .3em; color:var(--ink);}
 p{margin:.85em 0}
 a{color:var(--accent);}
 strong{color:var(--ink); font-weight:700}
@@ -74,11 +76,11 @@ blockquote.key{
   border-left:5px solid var(--warn-bd); color:#5c4a2e; font-size:1rem;
 }
 /* ✅ 完了の定義 */
-h3.done{margin:2.2em 0 .8em; padding:.55em .95em; background:#e6fafa; border-bottom:none;
+h3.done{margin:3em 0 .8em; padding:.55em .95em; background:#e6fafa; border-bottom:none;
   border-left:5px solid var(--accent); border-radius:0 8px 8px 0;
   color:var(--accent-deep); font-size:1.08rem;}
 /* ⚠️ ハマりどころ */
-h3.warn{margin:2.2em 0 .8em; padding:.55em .95em; background:var(--danger-bg); border-bottom:none;
+h3.warn{margin:3em 0 .8em; padding:.55em .95em; background:var(--danger-bg); border-bottom:none;
   border-left:5px solid var(--danger-bd); border-radius:0 8px 8px 0;
   color:var(--danger-text); font-size:1.08rem;}
 p.warn{margin:1em 0; padding:.85em 1.2em; background:var(--danger-bg);
@@ -135,18 +137,6 @@ details.spec pre{margin:.5em 0 0;}
   font-size:1rem; font-weight:600; color:var(--muted);
   margin:0 0 12px; padding-bottom:8px; border-bottom:2px solid var(--line);
 }
-#toc-panel a#slides-link{
-  display:block; margin:0 0 14px; padding:.5em .8em; text-align:center;
-  background:var(--accent); color:#fff; border-radius:8px;
-  font-size:.9rem; font-weight:600; text-decoration:none;
-}
-#toc-panel a#slides-link:hover{background:var(--accent-deep); color:#fff;}
-/* 見出しに自動付与される「スライド版の該当箇所へ」リンク（JS で挿入） */
-a.slide-link{float:right; margin-left:1em; font-size:.72rem; font-weight:400; font-family:system-ui,sans-serif;
-  color:var(--muted); text-decoration:none; border:1px solid var(--line); border-radius:6px;
-  padding:.15em .5em; margin-top:.15em; white-space:nowrap; background:#fff;}
-a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
-@media print{ a.slide-link{display:none;} }
 #toc-panel ul{list-style:none; padding:0; margin:0; columns:1;}
 #toc-panel li{margin:.2em 0; font-size:.88rem; font-weight:400; color:var(--ink);}
 #toc-panel a{
@@ -318,9 +308,9 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <table>
 <thead><tr><th>Section</th><th>テーマ</th><th>内容</th></tr></thead>
 <tbody>
-<tr><td><strong>Section 1</strong></td><td>つくる</td><td>目的・技術紹介 / 環境確認 / [1] デザイン / [2] フロント / [3] フロントデプロイ</td></tr>
-<tr><td><strong>Section 2</strong></td><td>つなぐ・公開する</td><td>[4] バック / [5] 自動テスト / [6] 再デプロイ（Section 1 と同じ URL に API を統合）</td></tr>
-<tr><td><strong>Section 3</strong></td><td>育てる</td><td>オプション課題 [7]〜[13] / ラップアップ・発表会</td></tr>
+<tr><td><strong>Section 1</strong></td><td>UI設計（Claude Design）とフロント実装（Claude Code）</td><td>目的・技術紹介 / 環境確認 / [1] デザイン / [2] フロント / [3] フロントデプロイ</td></tr>
+<tr><td><strong>Section 2</strong></td><td>バックエンド実装（Claude Code）と品質担保</td><td>[4] バック / [5] 自動テスト / [6] 再デプロイ（Section 1 と同じ URL に API を統合）</td></tr>
+<tr><td><strong>Section 3</strong></td><td>機能追加と運用（メール、決済、ID連携、自動デプロイ等）</td><td>オプション課題 [7]〜[13] / ラップアップ・発表会</td></tr>
 </tbody>
 </table>
 
@@ -350,7 +340,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <hr>
 
 <h2 id="s-time">タイムテーブル目安（各セクション 2 時間 × 3 ＝ 計 6 時間）</h2>
-<h3>Section 1: つくる — 環境確認 + デザイン + フロント + デプロイ</h3>
+<h3>Section 1: UI設計（Claude Design）とフロント実装（Claude Code）</h3>
 <table>
 <thead><tr><th>経過</th><th>内容</th></tr></thead>
 <tbody>
@@ -363,7 +353,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 </tbody>
 </table>
 
-<h3>Section 2: つなぐ・公開する — バック＋テスト＋デプロイ（<strong>ここまでが必達</strong>）</h3>
+<h3>Section 2: バックエンド実装（Claude Code）と品質担保（<strong>ここまでが必達</strong>）</h3>
 <table>
 <thead><tr><th>経過</th><th>内容</th></tr></thead>
 <tbody>
@@ -375,7 +365,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 </tbody>
 </table>
 
-<h3>Section 3: 育てる（オプション課題 ＋ 発表会）</h3>
+<h3>Section 3: 機能追加と運用（メール、決済、ID連携、自動デプロイ等）</h3>
 <table>
 <thead><tr><th>経過</th><th>内容</th></tr></thead>
 <tbody>
@@ -463,7 +453,6 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <li>区切りのいいところで<strong>こまめに commit / push</strong>（環境が壊れても作業を失わないための保険）</li>
 <li><strong>各セクションのクロージングで「dev に push 済みか」を必ず確認</strong>（次のセクションのキャッチアップが楽になる）</li>
 <li><code>dev</code> → <code>main</code> への<strong>マージは、セキュリティ課題（SonarCloud 解析）に着手する前に行う</strong>（SonarCloud 無料版は <code>main</code> ブランチしか解析しないため）。<code>main</code> ＝ 公開・解析対象の安定版。セキュリティ課題をやらない場合は、最後に一度マージして締めればよい（任意）</li>
-<li>⚠️ <a href="#s13">[13]</a> の自動デプロイ（Workers Builds）で Production branch を <code>main</code> に設定している場合、この <code>dev</code> → <code>main</code> マージはそのまま本番デプロイになる。SonarCloud の解析結果（直すべき点）が出るのはマージ後なので、未修正の脆弱性が一時的に公開されることになる。気になる場合は、セキュリティ課題 <a href="#s11">[11]</a> の対応が終わってから main にマージして push する運用に変えるとよい</li>
 </ul>
 <figure class="diagram">
 <img src="img/git_flow.svg" alt="Git フロー図: dev ブランチで作業しこまめに commit/push、完成後に main へマージ">
@@ -480,7 +469,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 
 </section><!-- /ps-overview -->
 <section class="page-section" id="ps-section1">
-<h1 id="section1">Section 1: つくる</h1>
+<h1 id="section1">Section 1: UI設計（Claude Design）とフロント実装（Claude Code）</h1>
 
 <h2 id="s-env">環境確認タイム</h2>
 <ul>
@@ -606,7 +595,7 @@ audit=true</code></pre>
 │   │   └── routes/          # 例: me.ts, contact.ts など
 │   ├── migrations/          # D1 マイグレーション
 │   ├── docs/
-│   │   └── TEST.md          # テスト戦略書（[5]）
+│   │   └── TEST.md          # テストの方針（[5]）
 │   ├── wrangler.jsonc       # 最終的にフロント＋APIを1つのWorkerで配信（[6]）
 │   ├── .dev.vars            # ローカル用シークレット（.gitignore 済み）
 │   └── package.json</code></pre>
@@ -875,7 +864,7 @@ wrangler whoami    # ログインできたか／想定アカウントかを確�
 
 </section><!-- /ps-section1 -->
 <section class="page-section" id="ps-section2">
-<h1 id="section2">Section 2: つなぐ・公開する</h1>
+<h1 id="section2">Section 2: バックエンド実装（Claude Code）と品質担保</h1>
 
 <h2 id="s4">[4] Claude Code でバック作成</h2>
 <p><strong>ゴール:</strong> フロントと API がつながり、ローカルで一通りの機能が動く</p>
@@ -1049,7 +1038,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <hr>
 
 <h2 id="s5">[5] レビューと自動テスト</h2>
-<p><strong>ゴール:</strong> AI で作成したコードの<strong>品質を向上させる</strong>。<strong>2段構え</strong>で進める：<strong>① レビュー</strong>（Claude Code のコマンドで差分を点検）→ <strong>② 自動テスト</strong>（<code>npm test</code> で「正しいリクエストは通る・壊れたリクエストは弾く・ログインなしで保護 API に入れない」を毎回自動確認）。② はバックの API に加え<strong>フロントの主要画面も1本</strong>テストする（どちらも同じ「戦略 → レビュー → 実装」に乗せる）。デプロイ前にここまで通す。</p>
+<p><strong>ゴール:</strong> AI で作成したコードの<strong>品質を向上させる</strong>。<strong>2段構え</strong>で進める：<strong>① レビュー</strong>（Claude Code のコマンドで差分を点検）→ <strong>② 自動テスト</strong>（<code>npm test</code> で「正しいリクエストは通る・壊れたリクエストは弾く・ログインなしで保護 API に入れない」を毎回自動確認）。② はバックの API に加え<strong>フロントの主要画面も1本</strong>テストする（どちらも同じ「方針 → レビュー → 実装」に乗せる）。デプロイ前にここまで通す。</p>
 
 <h3>① レビュー: Claude Code のコマンドで点検する</h3>
 <p>ローカルの差分を、Claude Code の組み込みコマンド（最初から使える <code>/名前</code> のコマンド。スキルの自作は Section 3 [10] で扱う）で点検する。ローカルの差分に対して動くので <strong>git push は不要</strong>。</p>
@@ -1079,9 +1068,11 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 
 <h3>流れ</h3>
 <ol>
-<li>以下のプロンプトで <strong>TEST.md（戦略書）だけ</strong>を作らせる。<strong>対象はバック（<code>backend/</code>）の API に加え、フロントの主要画面を1つ</strong>——ここで「画面も1本テストする」と戦略に含めて決める:
-<pre><code>backend/ のコードと、frontend/ の主要画面（問い合わせフォーム）を対象に、
-テスト戦略を docs/TEST.md にまとめてください。
+<li>以下のプロンプトで <strong>TEST.md（何をテストするかを決めた文書）だけ</strong>を作らせる。<strong>対象はバック（<code>backend/</code>）の API に加え、フロントの主要画面を1つ</strong>。ここで「画面も1本テストする」ことも決めておく:
+<pre><code>SCREEN_SPEC.md（要求）と backend/ のコード、frontend/ の主要画面（問い合わせフォーム）
+を対象に、テストの方針を docs/TEST.md にまとめてください。
+
+SCREEN_SPEC.md に書いてある項目は、その記述を期待値の根拠にすること（実装から推測しない）。
 「何を・なぜテストするか・しないか」の判断も含めること。
 画面テストはフロントの主要フロー1本でよい（全画面はやらない）。
 テストファイルの実装はまだしないでください。</code></pre>
@@ -1092,7 +1083,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
   <li>正しい入力で API が成功レスポンスを返すテスト</li>
   <li>不正な入力で API が適切にエラーを返すテスト</li>
   <li>未認証でログインが必要な API にアクセスしたとき、拒否されるテスト</li>
-  <li><strong>フロントの主要画面（問い合わせフォーム）の画面テスト</strong></li>
+  <li>画面のテストが最低1本あること</li>
   </ul>
   <p>抜けている観点があれば Claude Code に伝えて追記させる:</p>
 <pre><code>TEST.md に「未認証でログイン必須 API にアクセスしたとき拒否される」観点が抜けているので追記して。</code></pre>
@@ -1130,7 +1121,7 @@ cd ../frontend &amp;&amp; npm test   # 画面テスト</code></pre>
 <li><code>npm test</code> が<strong>バック・フロントともグリーン</strong>（全ケース pass。<code>backend/</code> と <code>frontend/</code> それぞれで実行する）</li>
 <li>最低限カバーできている：
   <ul>
-  <li>外部サービスに依存しない純粋な関数（ライセンスキー生成・文字列マスク等）のテストが1つ以上</li>
+  <li>ライセンスキーの生成や文字列のマスクのように、外部サービスに依存しない関数のテストが1つ以上</li>
   <li>正しい入力で API が成功レスポンスを返すことを確認するテスト（例: 問い合わせフォームに正しい内容を入れて送ったとき、受付完了が返る）</li>
   <li>不正な入力で API が適切にエラーを返すことを確認するテスト（例: 必須項目が空のまま送信したとき、入力エラーとして弾かれる）</li>
   <li>未認証でログインが必要な API にアクセスしたとき、アクセスが拒否されることを確認するテスト（例: ログインせずにマイページ API を叩いたら弾かれる）</li>
@@ -1207,7 +1198,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 
 </section><!-- /ps-section2 -->
 <section class="page-section" id="ps-section3">
-<h1 id="section3">Section 3: 育てる（オプション課題 + 発表会）</h1>
+<h1 id="section3">Section 3: 機能追加と運用（メール、決済、ID連携、自動デプロイ等）</h1>
 
 <p>Section 3 最後の 30 分（1:30〜2:00）は最終発表会です。自分の公開 URL のデモを 1 人 3 分で発表します。詳細はページ末尾の「ラップアップ・発表会」を参照してください。</p>
 
@@ -1783,24 +1774,105 @@ END;
 <h2 id="s12">[12] E2E テスト（画面を通して確かめる）<span class="diff">★★☆</span></h2>
 <p><strong>お題</strong>: 「これが起きたら困る」ことを3〜5個書き、そのうち<strong>2個</strong>をブラウザ操作のテストにする<br>
 <strong>ツール</strong>: Playwright（Codegen）＋ Claude Code<br>
-<strong>前提</strong>: <a href="#s6">[6]</a> まで完了していること／<strong>[8] 決済・[9] ID 連携は未実施であること</strong>（実施済みの人は末尾の補足へ）／<strong>Node.js 22 以上</strong>（<code>node -v</code> で確認）<br>
-<strong>学び</strong>: AI が作った MVP について、<strong>自分が決めていなかったことを見つけて決められる</strong>ようになる</p>
+<strong>前提</strong>: <a href="#s6">[6]</a> まで完了していること／<strong>Node.js 22 以上</strong>（<code>node -v</code> で確認）<br>
+<strong>学び</strong>: AI が作ったものを鵜呑みにせず、<strong>画面を通して自分で確かめられる</strong>ようになる。決めたことが守られているかを見て、まだ決めていなかったことをその場で見つけて決める</p>
 
-<h3>流れ（60分）</h3>
+<h3>流れ</h3>
 <table>
-<thead><tr><th>経過</th><th>工程</th><th>やるのは</th><th>できるもの</th></tr></thead>
+<thead><tr><th>工程</th><th>やるのは</th><th>できるもの</th></tr></thead>
 <tbody>
-<tr><td>事前</td><td>⓪ 準備</td><td>コマンド</td><td><code>playwright.config.ts</code></td></tr>
-<tr><td>0–15</td><td>① 起きたら困ることを書く</td><td><strong>自分</strong></td><td><code>docs/TEST.md</code> に3〜5行</td></tr>
-<tr><td>15–25</td><td>② E2E で書くものを2つ選ぶ</td><td><strong>自分</strong></td><td>同ファイルに表</td></tr>
-<tr><td>25–35</td><td>③ 操作を録画する</td><td>Codegen</td><td><code>tests/*.spec.ts</code> 2本</td></tr>
-<tr><td>35–45</td><td>④ 検証を足して実行する</td><td>AI＋<strong>自分</strong></td><td>緑／赤の判定</td></tr>
-<tr><td>（赤なら）</td><td>⑤ 赤の原因を決める</td><td><strong>自分</strong>＋AI</td><td>+10分</td></tr>
-<tr><td>45–55</td><td>⑥ 壊して赤になるか確かめる</td><td>AI</td><td>なし</td></tr>
-<tr><td>55–60</td><td>⑦ コミットする</td><td>AI</td><td>なし</td></tr>
+<tr><td>⓪ 準備</td><td>コマンド</td><td><code>playwright.config.ts</code></td></tr>
+<tr><td>① 起きたら困ることを書く</td><td><strong>自分</strong></td><td><code>docs/TEST.md</code> に3〜5行</td></tr>
+<tr><td>② E2E で書くものを2つ選ぶ</td><td><strong>自分</strong></td><td>同ファイルに表</td></tr>
+<tr><td>③ 操作を録画する</td><td>Codegen</td><td><code>tests/*.spec.ts</code> 2本</td></tr>
+<tr><td>④ 検証を足して実行する</td><td>AI＋<strong>自分</strong></td><td>緑／赤の判定</td></tr>
+<tr><td>⑤ 赤の原因を決める（赤が出たときだけ）</td><td><strong>自分</strong>＋AI</td><td>直したか認めたかの判断</td></tr>
+<tr><td>⑥ 壊して赤になるか確かめる</td><td>AI</td><td>なし</td></tr>
+<tr><td>⑦ コミットする</td><td>AI</td><td>なし</td></tr>
 </tbody>
 </table>
 
+<details class="spec">
+<summary>⚠️ [9] ID 連携（Clerk）を実施済みの人は、⓪の前にここを読む</summary>
+
+<p>[9] を入れるとログインが <strong>Google の画面</strong>に移る。<strong>Playwright は Google のログイン画面を自動操作できない</strong>ので、そのままでは認証が要る画面のテストが1本も書けない。</p>
+
+<p>解決策は <code>@clerk/testing</code>。<strong>ログイン画面を通らずに</strong>認証済みの状態を作る。</p>
+
+<pre><code>npm i -D @clerk/testing</code></pre>
+
+<p><strong>1. テスト用ユーザを1人作る</strong> — Clerk ダッシュボードで作る。4ステップ。</p>
+
+<p><strong>(1) メール認証を一時的に有効化する</strong> — <strong>Configure → User &amp; authentication → Email</strong>。Google ログインしか有効にしていないと、次の画面でメール欄が使えない。「Sign-up with email」「Sign-in with email」を ON にして <strong>Save</strong>。</p>
+<figure class="diagram">
+<img src="img/ClerkEmailAuthOn.png" alt="Clerk ダッシュボード Configure → User &amp; authentication → Email タブ。Sign-up with email と Sign-in with email が ON になり、Verify at sign-up の検証方法として Email verification code が選択されている。画面下部に Unsaved changes の Save ボタンが出ている">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">(1) Email を ON にして <strong>Save</strong>。これは<strong>ユーザを作るためだけ</strong>の一時的な変更</figcaption>
+</figure>
+
+<p><strong>(2) Users タブで Create user を押す</strong></p>
+<figure class="diagram">
+<img src="img/ClerkUsersCreateButton.png" alt="Clerk ダッシュボードの Users タブ。右上に + Create user ボタンがある">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">(2) <strong>Users</strong> → 右上の <strong>Create user</strong></figcaption>
+</figure>
+
+<p><strong>(3) メールとパスワードを入れて作る</strong></p>
+<figure class="diagram">
+<img src="img/ClerkCreateTestUser.png" alt="Clerk の Create new user ダイアログ。Email 欄に e2e+clerk_test@example.com、Password 欄に任意のパスワードを入力し、Ignore password policies にチェックを入れた状態">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">(3) メールは <strong><code>+clerk_test</code> 付き</strong>にする。パスワードは<strong>この場だけ</strong>で以降使わない</figcaption>
+</figure>
+<ul>
+<li>メールは <code>e2e+clerk_test@example.com</code> のように <strong><code>+clerk_test</code> を付ける</strong>。付けないと「Enter a valid email address」で弾かれる</li>
+<li>パスワードは任意。通らなければ <strong>Ignore password policies</strong> にチェックを入れる。<strong>このパスワードは以降使わない</strong>（テストはログイン画面を通らないため）ので、どこにも保存しなくてよい</li>
+</ul>
+
+<p><strong>(4) メール認証を元に戻す</strong> — 同じ画面で両方 OFF にして Save。</p>
+<figure class="diagram">
+<img src="img/ClerkEmailAuthOff.png" alt="Clerk ダッシュボード Configure → User &amp; authentication → Email タブ。Sign-up with email と Sign-in with email が両方 OFF に戻っている">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">(4) OFF に戻す。<strong>いま作ったユーザは残り、テストもそのまま通る</strong></figcaption>
+</figure>
+
+<p><strong>2. 設定は AI に作らせる</strong></p>
+<pre><code>@clerk/testing を使って、Playwright のテストを Clerk 認証済みの状態で走らせたい。
+
+・テスト用ユーザのメールは環境変数 E2E_CLERK_USER_EMAIL から読む
+・サインイン画面は操作しないこと（Google ログインなので自動操作できない）
+・アプリの認証方式をあとから変えても壊れないようにすること
+・認証状態は毎回のテスト実行時に作り直すこと
+・認証状態のファイルは Git に入れないこと</code></pre>
+
+<p class="note">下3行が効いている。「サインイン画面を操作しない」でログイン画面を通らない方式に、「認証方式を変えても壊れない」でパスワードや確認コードに依存しない方式に、「毎回作り直す」で期限切れしない作りに寄る。<strong>ファイル構成は指定しなくてよい</strong>。</p>
+
+<p><strong>3. 認証状態を作る</strong> — 環境変数を渡して実行する。</p>
+<pre><code>set -a; . ./backend/.dev.vars; set +a
+export E2E_CLERK_USER_EMAIL='e2e+clerk_test@example.com'
+npx playwright test --project=setup</code></pre>
+<p class="note"><strong>これが緑になれば設定は正しい。</strong>ログイン画面を操作するコードが混ざっていれば、ここで止まる。</p>
+
+<p><strong>4. ③の録画はこう起動する</strong> — <strong>開いた瞬間からログイン済み</strong>になる。サインイン画面は出ない。</p>
+<pre><code>npx playwright codegen --load-storage=playwright/.clerk/user.json \
+  -o tests/01-xxx.spec.ts http://localhost:8787/mypage</code></pre>
+
+<p class="note">保存先のファイルは <code>.gitignore</code> に入れる（<code>/playwright/.clerk/</code>）。</p>
+
+<blockquote class="warn">
+<p><strong>⚠️ 手動でログインして <code>--save-storage</code> に保存する方法は取らないこと。</strong></p>
+<p>Google の画面を通るため、保存されるファイルに<strong>自分の Google アカウントのセッションが丸ごと入る</strong>。<code>.google.com</code> や <code>.youtube.com</code> のクッキーが数十個まとめて書き出される。漏れたときの被害はアプリのアカウントではなく <strong>Google アカウントの乗っ取り</strong>。しかも数日で期限切れになり、<strong>アプリが壊れていないのにテストが赤くなる</strong>。</p>
+<p>上の方法なら保存されるのは<strong>このアプリと Clerk のクッキーだけ</strong>で、Google のものは入らない。</p>
+</blockquote>
+
+<p><strong>[8] 決済（Stripe）も実施済みの場合</strong>: 購入操作は Stripe の決済画面（外部ホスト）を通るので、②で「購入操作そのもの」を保証項目にすると書けない。<strong>前提条件を「購入済みのアカウント」に置き、購入後の表示を見る</strong>形に寄せる。購入済みのアカウントは、上の <code>--load-storage</code> で開いたブラウザから1回だけ手で購入して作っておけばよい（テストカード <code>4242 4242 4242 4242</code>）。</p>
+<p>決済画面の中で起きた不具合は Stripe 側の設定や画面仕様に由来するため、直す先が自分のリポジトリにない。<strong>決済画面から先は E2E の対象外</strong>として②で ✕ を付け、備考に「Stripe の設定として確認する」と書く。</p>
+
+<table>
+<thead><tr><th>保証項目</th><th>[8][9] 実施前</th><th>実施後</th></tr></thead>
+<tbody>
+<tr><td>他人のデータが見えない</td><td>⭕ 別のメールを打つだけ</td><td>⭕ テスト用ユーザをもう1人作れば書ける</td></tr>
+<tr><td>購入操作そのものが正しい</td><td>⭕ 画面内で完結</td><td><strong>✕</strong> Stripe の決済画面を通る</td></tr>
+<tr><td>購入後の表示が正しい</td><td>⭕</td><td>⭕ 前提を「購入済み」に置けば書ける</td></tr>
+<tr><td>未ログインで中身が見えない</td><td>○</td><td><strong>◎</strong> サインイン画面への遷移として書ける</td></tr>
+</tbody>
+</table>
+</details>
 <h3>⓪ 準備</h3>
 <p><strong>やること</strong>: リポジトリのルートで Playwright を入れる。</p>
 <pre><code>npm init playwright@latest -- --browser=chromium</code></pre>
@@ -1810,9 +1882,8 @@ END;
 <p>省略すると Chrome 以外に Firefox と Safari のエンジンもダウンロードされる。数分待たされたうえ、以降のテストの実行時間も3倍になる。</p>
 </blockquote>
 
-<p>生成された <code>playwright.config.ts</code> の <code>use:</code> に1行足す。</p>
+<p>生成された <code>playwright.config.ts</code> の <code>use:</code> に1行足す。ポートは <code>wrangler dev</code> が使っているものに合わせる（フロント開発サーバーの <code>5173</code> ではない）。</p>
 <pre><code>use: { baseURL: 'http://localhost:8787' },</code></pre>
-<p class="note"><code>8787</code> は <code>wrangler dev</code> のポート。<code>5173</code> ではない。</p>
 
 <p>別のターミナルでアプリを起動しておく。作業中はずっと立ち上げたままにする。</p>
 <pre><code>cd backend &amp;&amp; npm run build:front &amp;&amp; npm run dev</code></pre>
@@ -1870,7 +1941,7 @@ END;
 <p><strong>3問すべて Yes のものだけが E2E。</strong> 表は Claude Code に作らせる。</p>
 <pre><code>backend/docs/TEST.md の「[12] 起きたら困ること」に私が書いた項目を、
 同じファイルに表として書き直して。
-列は「保証項目 | E2E | 前提条件 | 期待結果 | 書く | 備考」。
+列は「起きたら困ること | E2E | 前提条件 | 期待結果 | 書く | 備考」。
 中身は全部空欄にしておくこと。そこは私が埋める。
 実装コードは読まないこと。</code></pre>
 
@@ -1886,16 +1957,18 @@ END;
 </tbody>
 </table>
 
-<p class="note">埋め終わると <code>TEST.md</code> の表はこうなる（玄米茶サンプルの場合）。</p>
+<details class="spec">
+<summary>記入例を見る（玄米茶サンプル。自分のアプリでは中身が変わる）</summary>
 <table>
-<thead><tr><th>保証項目</th><th>E2E</th><th>前提条件</th><th>期待結果</th><th>書く</th><th>備考</th></tr></thead>
+<thead><tr><th>起きたら困ること</th><th>E2E</th><th>前提条件</th><th>期待結果</th><th>書く</th><th>備考</th></tr></thead>
 <tbody>
-<tr><td>他人のキーが見えない</td><td>⭕</td><td>A購入済み<br>B未購入</td><td>Bの画面にAのキーが出ない</td><td><strong>◎</strong></td><td></td></tr>
-<tr><td>購入するとキーが保存される</td><td>⭕</td><td>新しいメール</td><td>開き直しても出ている</td><td><strong>◎</strong></td><td></td></tr>
-<tr><td>キーは末尾4桁のみ表示</td><td>⭕</td><td>購入済み</td><td>全桁が出ない</td><td></td><td>余ったら</td></tr>
-<tr><td>問い合わせメールが届く</td><td>✕</td><td>なし</td><td>なし</td><td></td><td>外部の内側。画面で確認できない</td></tr>
+<tr><td>他人のライセンスキーが見えてしまう</td><td>⭕</td><td>A購入済み<br>B未購入</td><td>Bの画面にAのキーが出ない</td><td><strong>◎</strong></td><td></td></tr>
+<tr><td>購入したのに、キーが保存されていない</td><td>⭕</td><td>新しいメール</td><td>開き直しても出ている</td><td><strong>◎</strong></td><td></td></tr>
+<tr><td>キーが末尾4桁以外も表示されてしまう</td><td>⭕</td><td>購入済み</td><td>全桁が出ない</td><td></td><td>余ったら</td></tr>
+<tr><td>問い合わせを送ったのに、届いていない</td><td>✕</td><td>なし</td><td>なし</td><td></td><td>外部の内側。画面で確認できない</td></tr>
 </tbody>
 </table>
+</details>
 
 <blockquote class="key">
 <p><strong>◎ は2つまで。</strong></p>
@@ -1912,11 +1985,18 @@ END;
 
 <p><strong>やること</strong>: ◎ の2行それぞれについて、1回ずつ録画する。<strong>必ずリポジトリのルートで実行する。</strong></p>
 <pre><code>cd &lt;リポジトリのルート&gt;
-npx playwright codegen http://localhost:8787/ -o tests/01-other-user.spec.ts</code></pre>
+npx playwright codegen http://localhost:8787/ -o tests/&lt;ファイル名&gt;.spec.ts</code></pre>
+
+<figure class="diagram">
+<img src="img/PlaywrightCodegenStart.png" alt="Codegen 起動直後の画面 — 左に操作対象のブラウザ、右に Playwright Inspector が並ぶ。Inspector 側には goto の1行だけが書かれており、判定の行はまだ無い">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">起動すると<strong>ブラウザ</strong>と<strong>コード生成ウィンドウ（Playwright Inspector）</strong>が並んで開く。左を操作すると右にコードが溜まっていく</figcaption>
+</figure>
 
 <p><strong>末尾のファイル名は自分で決める。</strong> <code>-o</code> は「録画した結果をどこに書き出すか」の指定。②の表で ◎ を2つ付けたので、名前も2つ要る。</p>
 
 <p><strong>名前の付け方</strong>: <code>tests/&lt;番号&gt;-&lt;何を守るか分かる短い名前&gt;.spec.ts</code></p>
+<details class="spec">
+<summary>名前の例を見る（玄米茶サンプル）</summary>
 <table>
 <thead><tr><th>②の表で ◎ を付けた行</th><th>ファイル名</th></tr></thead>
 <tbody>
@@ -1924,8 +2004,9 @@ npx playwright codegen http://localhost:8787/ -o tests/01-other-user.spec.ts</co
 <tr><td>購入するとキーが保存される</td><td><code>tests/02-purchase-saved.spec.ts</code></td></tr>
 </tbody>
 </table>
+</details>
 <ul>
-<li>置き場所は <code>tests/</code>。<code>playwright.config.ts</code> の <code>testDir</code> がここを見ているので、別の場所に置くと<strong>実行されない</strong></li>
+<li>置き場所は <code>tests/</code>。⓪で生成された <code>playwright.config.ts</code> に <code>testDir: './tests'</code> という行があり、<strong>この場所だけがテストの探索対象</strong>になっている。別の場所に置くと実行されない</li>
 <li>番号は②の表の上から順に振る。そうしておくと、テストが落ちたとき<strong>表のどの行のことか</strong>すぐ分かる</li>
 <li>拡張子は <code>.spec.ts</code>。<strong>この拡張子で終わるファイルだけがテストとして拾われる</strong>（<code>.test.ts</code> も可。<code>.ts</code> だけだと無視される）</li>
 </ul>
@@ -1935,8 +2016,27 @@ npx playwright codegen http://localhost:8787/ -o tests/01-other-user.spec.ts</co
 <p><code>tests/</code> の中で実行すると保存先が見つからずに落ちる。<strong>録画した内容はそのまま消える。</strong></p>
 </blockquote>
 
-<p><strong>録画中にやること</strong>: 表の「前提条件」の状態を作りながら、画面を操作する。「他人のキーが見えない」なら、<strong>1回の録画で A の購入と B のマイページ確認を続けて行う</strong>。</p>
-<p>終わったらブラウザを閉じる。それでファイルができる。</p>
+<p><strong>録画中にやること</strong>: ②の表に書いた「前提条件」を、画面を操作して自分で作る。そのうえで「期待結果」を見る画面まで進む。</p>
+<p>たとえば前提条件が「A は購入済み、B は未購入」なら、1回の録画の中で A として購入し、続けて B としてマイページを開くところまでを通しで操作する。前提条件を作る操作も録画に含める。</p>
+<figure class="diagram">
+<img src="img/PlaywrightCodegenLocator.png" alt="Codegen 録画中のブラウザ — 「← トップへ戻る」リンクにカーソルを乗せると、その要素を指す getByRole('link', { name: '← トップへ戻る' }) がツールチップで表示されている">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">カーソルを乗せると、<strong>その要素をどう指すか</strong>が吹き出しで出る。クリックすると、この式がそのままコードになる</figcaption>
+</figure>
+
+<figure class="diagram">
+<img src="img/PlaywrightCodegenRecorded.png" alt="リンクをクリックした直後の Codegen — 左のブラウザはトップページへ遷移し、右のコードに getByRole('link', ...).click() の1行が追加されている。expect の行は無い">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">クリックすると <code>.click()</code> の行が増える。<strong>増えるのは操作の行だけで、判定の行（<code>expect</code>）は1つも出ない</strong></figcaption>
+</figure>
+
+<p>操作し終わったらブラウザを閉じる。閉じた時点でファイルが書き出される。</p>
+
+<blockquote class="warn">
+<p><strong>⚠️ 画面が自動で切り替わったときは、生成された <code>goto</code> を必ず見ること。</strong></p>
+<p>Codegen が書く <code>goto</code> は<strong>開いた URL ではなく、移動が終わったあとの URL</strong> になる。未ログインで <code>/mypage</code> を開くとサインイン画面に飛ぶが、そのとき生成されるのはこうなる。</p>
+<pre><code>// 開いたのは http://localhost:8787/mypage なのに…
+await page.goto('https://&lt;認証サービスのホスト&gt;/sign-in?redirect_url=...');</code></pre>
+<p>このまま実行すると<strong>サインイン画面を開いてサインイン画面が出た</strong>だけのテストになり、確かめたかったことが消える。自分のアプリの URL に戻すのは④でやる。</p>
+</blockquote>
 
 <p><strong>検証（目玉マーク）は押さなくてよい。</strong> 検証は次の工程で AI に書かせる。</p>
 
@@ -1944,7 +2044,6 @@ npx playwright codegen http://localhost:8787/ -o tests/01-other-user.spec.ts</co
 <thead><tr><th>録画中の注意</th><th>理由</th></tr></thead>
 <tbody>
 <tr><td><strong>実名・実メールを入れない</strong></td><td>入力値がテストコードに残り Git に入る。<code>test@example.com</code> を使う</td></tr>
-<tr><td>Enter キーを使わない</td><td>フォームが意図せず送信され、余計な行が増える</td></tr>
 <tr><td>迷ってクリックしない</td><td>押した操作がすべてコードになる</td></tr>
 </tbody>
 </table>
@@ -1953,32 +2052,34 @@ npx playwright codegen http://localhost:8787/ -o tests/01-other-user.spec.ts</co
 
 <h3>④ 検証を足して実行する</h3>
 
-<p><strong>やること</strong>: 録画したファイル1本ずつ、AI に検証を足させる。<strong>表のどの行に対応するかを指定するのがポイント。</strong></p>
-<pre><code>tests/01-other-user.spec.ts を backend/docs/TEST.md の表の行
-「他人のキーが見えない」に合わせて仕上げて。
+<p><strong>やること</strong>: 録画したファイル1本ずつ、AI に検証を足させる。</p>
+<p><strong>埋めるのは <code>&lt; &gt;</code> の2箇所だけ。</strong>あとの3行はそのままコピーする。</p>
+<pre><code>tests/&lt;録画したファイル名&gt; を backend/docs/TEST.md の表で
+「&lt;②で ◎ を付けた行&gt;」に合わせて仕上げて。
 
-- メールアドレスは毎回ユニークにする（Date.now() を使う）
-- A の購入後に、発行されたライセンスキーを変数に捕捉する
-- B のマイページで、捕捉したキーが表示されないことを確認する（toHaveCount(0)）
-- 表の「期待結果」列の値をそのまま使い、実装コードから推測しないこと
-- 固定待ち（waitForTimeout）は入れないこと</code></pre>
+・表の「前提条件」から始めて、「期待結果」を確かめて終わる形にする
+・期待結果は表の文言だけを根拠にする。実装コードは読まないこと
+・録画に入り込んだその場限りの値や外部サイトの URL は、何度実行しても通る形に直す</code></pre>
 
 <blockquote class="warn">
 <p><strong>⚠️ 「このアプリのテストを書いて」と頼まないこと。</strong></p>
-<p>そう頼むと AI は<strong>実装を読んで「今の動き」を正解として固定</strong>する。今あるバグごと正解になってしまう。</p>
-<p>表だけを根拠にさせるため、プロンプトの最後の2行を必ず入れる。</p>
+<p>そう頼むと AI は実装を読んで「今の動き」を正解として固定する。今あるバグごと正解になってしまう。</p>
+<p>表だけを根拠にさせるため、2行目の「実装コードは読まないこと」を必ず入れる。</p>
 </blockquote>
 
 <p><strong>自分でやること</strong>: AI が書いたテストを開き、確認として足りているかを見る。</p>
-<p>「保存されている」を確認する行なら、次の3つが要る。1つでも欠けると確認になっていない。</p>
-<table>
-<thead><tr><th>要素</th><th>欠けると</th></tr></thead>
-<tbody>
-<tr><td>毎回ユニークなメールを使う</td><td>前回のデータを見て緑になる</td></tr>
-<tr><td>購入前に「購入なし」を確認する</td><td>何が増えたのか分からない</td></tr>
-<tr><td><strong>マイページを開き直して確認する</strong></td><td>購入完了画面は<strong>サーバーの返事を表示しているだけ</strong>で、保存の証明にならない</td></tr>
-</tbody>
-</table>
+
+<blockquote class="warn">
+<p><strong>⚠️ 録画したときの画面の値が、そのまま埋まっていないか。</strong></p>
+<p>Codegen は<strong>いま画面に出ている文字</strong>で要素を掴む。掴んだ文字が<strong>そのとき表示されていたデータ</strong>だと、次に実行したときには別の値になっていて画面に存在しない。<strong>アプリは正しいのにテストだけが落ちる</strong>。</p>
+<p>毎回変わる値ではなく、変わらない形で探す形に直す。</p>
+<p class="note">下は玄米茶サンプルの場合。ライセンスキーの欄をクリックしたときの例。</p>
+<pre><code>// 録画されたまま（そのとき発行されていたキーの値を探している）
+await page.getByText('GMC-••••-••••-FS9J').click();
+
+// 直したあと（キーの形を探している）
+await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
+</blockquote>
 
 <p><strong>実行する</strong>:</p>
 <pre><code>npx playwright test
@@ -1990,7 +2091,7 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 <h3>⑤ 赤の原因を決める（赤が出たときだけ）</h3>
 
 <p><strong>やること</strong>: まず AI に原因を切り分けさせる。</p>
-<pre><code>tests/01-other-user.spec.ts が落ちた。
+<pre><code>tests/&lt;落ちたファイル名&gt; が落ちた。
 テストの書き方が悪いのか、実装が保証を満たしていないのか判定して。
 実装が原因なら実装のほうを直して。テストの期待値は変えないこと。</code></pre>
 
@@ -2015,7 +2116,7 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 
 <blockquote class="warn">
 <p><strong>⚠️ 期待値を書き換えて緑にするのは禁じ手。</strong></p>
-<p>テストは AI への発注書にあたる。発注書のほうを書き換えたら、検収したことにならない。</p>
+<p>テストは AI への発注書にあたる。発注書のほうを書き換えてしまったら、何も確かめていないのと同じになる。</p>
 </blockquote>
 
 <p class="note"><strong>完了</strong>: 赤だった行について、直したか・仕様として認めたかが決まっている。</p>
@@ -2043,7 +2144,8 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 <pre><code>/test-results/
 /playwright-report/
 /blob-report/
-/playwright/.cache/</code></pre>
+/playwright/.cache/
+/playwright/.clerk/     # [9] 実施済みで @clerk/testing を使った場合のみ</code></pre>
 <p>確認できたらコミットさせる。</p>
 <pre><code>E2E テストの追加をコミットして push して。</code></pre>
 <p class="note"><strong>完了</strong>: <code>test-results/</code> <code>playwright-report/</code> が入っていない状態で push できている。</p>
@@ -2092,37 +2194,6 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 </table>
 <p>E2E は [5] の置き換えではなく<strong>補完</strong>。だから②で ✕ を付けた行は [5] のテストが引き取る。</p>
 </details>
-
-<details class="spec">
-<summary>[8] 決済・[9] ID 連携を先に実施してしまった人へ</summary>
-<p>外部サービスに置き換えるほど、<strong>境界が自分のアプリの外へ移動し、E2E で書ける項目が減る</strong>。減った分は <a href="#s5">[5]</a> のテストが引き取る。</p>
-<table>
-<thead><tr><th>保証項目</th><th>[8][9] 実施前</th><th>実施後</th></tr></thead>
-<tbody>
-<tr><td>他人のデータが見えない</td><td>⭕ 別のメールを打つだけ</td><td><strong>✕</strong> Google SSO のみで2人目のアカウントを作れない</td></tr>
-<tr><td>購入するとキーが保存される</td><td>⭕ 画面内で完結</td><td><strong>✕</strong> Stripe Checkout（外部ホスト）を通る</td></tr>
-<tr><td>未ログインで中身が見えない</td><td>○</td><td><strong>◎</strong> サインイン画面への遷移として書ける</td></tr>
-</tbody>
-</table>
-<p><strong>[9] を実施済みの場合</strong>、毎回のログイン操作を省ける（<code>@clerk/testing</code> は不要）。</p>
-<pre><code>npx playwright codegen http://localhost:8787/ --save-storage=auth-a.json   # 手動ログインして閉じる
-npx playwright codegen http://localhost:8787/ --load-storage=auth-a.json   # 2本目以降の録画</code></pre>
-<pre><code>use: { baseURL: 'http://localhost:8787', storageState: 'auth-a.json' },</code></pre>
-<blockquote class="warn">
-<p><strong>⚠️ <code>auth-*.json</code> は絶対にコミットしないこと。</strong></p>
-<p>Clerk のログインは Google SSO なので、このファイルには<strong>自分の Google アカウントのセッション Cookie が丸ごと入る</strong>。</p>
-<p>漏れた場合の被害はアプリのアカウントではなく、<strong>Google アカウントの乗っ取り</strong>。<code>.gitignore</code> に <code>auth-*.json</code> を追記する。</p>
-</blockquote>
-<p class="note"><code>storageState</code> は数日で期限切れになる。サインイン画面に飛ばされたら取り直す。</p>
-<p class="note"><strong>[8] を実施済みの場合</strong>、購入フローの E2E は Stripe の決済画面に入る手前までにする。Stripe 側の UI 変更で壊れるため。</p>
-</details>
-
-<blockquote class="warn">
-<p><strong>⚠️ ここまでやっても「本番の品質担保」には届かない。</strong></p>
-<p>テストは<strong>あるだけでは安全網にならない</strong>。実務では別途2つが要る。</p>
-<p>(1) <strong>CI で強制実行</strong>し、テストが赤ならマージ／デプロイを止める（人の裁量に任せない）。(2) <strong>カバレッジに下限</strong>を設けてゲートにする（[11] の SonarCloud 品質ゲートで縛れる）。</p>
-<p><strong>本ワークショップではスコープ外</strong>だが、顧客に出す規模では前提になる。</p>
-</blockquote>
 <hr>
 
 <h2 id="s13">[13] 自動デプロイ（Workers Builds）<span class="diff">★★☆</span></h2>
@@ -2358,7 +2429,6 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 <div id="toc-overlay"></div>
 <nav id="toc-panel">
   <p id="toc-panel-head">目次</p>
-  <a id="slides-link" href="slides-v2.html" target="slidesdeck">🎞 スライド版を開く</a>
   <a class="toc-group-label" href="#top">前提・準備</a>
   <ul>
     <li><a href="#s0">目的・ゴール</a></li>
@@ -2367,7 +2437,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
     <li><a href="#s05">使う技術</a></li>
     <li><a href="#s07">Git ブランチ</a></li>
   </ul>
-  <a class="toc-group-label toc-sec1" href="#section1">Section 1 ― つくる</a>
+  <a class="toc-group-label toc-sec1" href="#section1">Section 1 ― UI設計とフロント実装</a>
   <ul>
     <li><a href="#s-env">環境確認</a></li>
     <li><a href="#s06">セキュリティ対策</a></li>
@@ -2377,13 +2447,13 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
     <li><a href="#s2">[2] フロント作成</a></li>
     <li><a href="#s3">[3] フロントデプロイ</a></li>
   </ul>
-  <a class="toc-group-label toc-sec2" href="#section2">Section 2 ― つなぐ・公開する</a>
+  <a class="toc-group-label toc-sec2" href="#section2">Section 2 ― バックエンド実装と品質担保</a>
   <ul>
     <li><a href="#s4">[4] バック作成</a></li>
     <li><a href="#s5">[5] レビューと自動テスト</a></li>
     <li><a href="#s6">[6] デプロイ</a></li>
   </ul>
-  <a class="toc-group-label toc-sec3" href="#section3">Section 3 ― 育てる（オプション）</a>
+  <a class="toc-group-label toc-sec3" href="#section3">Section 3 ― 機能追加と運用</a>
   <ul>
     <li><a href="#common">[7][8][9] 共通</a></li>
     <li><a href="#s7">[7] メール</a></li>
@@ -2582,38 +2652,6 @@ document.querySelectorAll('pre').forEach(pre => {
   });
   wrap.appendChild(btn);
 });
-</script>
-<script>
-// 見出し → スライド版の該当箇所へのリンクを自動挿入。
-// 見出しの id をそのまま章キーとして slides-v2.html#<id> に渡す（slides 側は ref で同じキーを持つ）。
-// SLIDE_KEYS はスライドが実在する章だけを列挙する＝リンク先が無い見出しにはリンクを出さない。
-(function(){
-  const SLIDE_KEYS = new Set([
-    's0','s-map','s-time','s05','s07',
-    'auth','auth-to-sub','auth-to-api','auth-check',
-    'section1','s-env','s06','s0-nav','s0-repo','s1','s2-spec','s2','s3',
-    'section2','s4','s4-scripts','s5','s6',
-    // [7]〜[13] の手順スライドは廃止（オプション課題は主催者が 0→1 で説明せず各自この flow.html を読む）。
-    // したがって s7〜s13 はここに載せない＝各課題の見出しに 🎞 リンクを出さない。
-    'section3','common','wrap','cleanup',
-  ]);
-  // 暫定: slides-v2.html 側の章キーがまだ day1/2/3 のため、この3章だけ旧キーに読み替えて渡す。
-  // slides-v2.html を Section 表記に揃えたらこの LEGACY_SLIDE_KEYS ごと削除する。
-  const LEGACY_SLIDE_KEYS={section1:'day1',section2:'day2',section3:'day3'};
-  document.querySelectorAll('article h1[id], article h2[id], article h3[id]').forEach(h=>{
-    if(!SLIDE_KEYS.has(h.id)) return;
-    const a=document.createElement('a');
-    a.className='slide-link';
-    a.href='slides-v2.html#'+(LEGACY_SLIDE_KEYS[h.id]||h.id);
-    // 名前付きターゲット＝クリックのたびに新しいタブを増やさず同じタブを開き直す。
-    // rel="noopener" を付けるとターゲット名が無視され毎回新規タブになるため、あえて付けない（同一オリジンの自資料）。
-    a.target='slidesdeck';
-    a.title='スライド版の該当箇所を開く';
-    a.textContent='🎞 スライド';
-    // float:right は出現位置の行に置かれるため、先頭に入れて右上に固定する
-    h.insertBefore(a,h.firstChild);
-  });
-})();
 </script>
 <script>
 // ディレクトリ構成のフローティング表示（全ページ共通で参照できるよう body 直下に複製）

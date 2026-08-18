@@ -91,9 +91,9 @@
     <text x="70" y="88" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="9" fill="#16a34a">FE / BE 統一テスト</text>
   </g>
 
-  <!-- Day 3 option label -->
+  <!-- Section 3 option label -->
   <rect x="36" y="284" width="648" height="40" rx="8" fill="#f5f2e8" stroke="#e7e1d3" stroke-width="1"/>
-  <text x="116" y="301" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10" font-weight="700" fill="#6b6453">Day 3 オプション</text>
+  <text x="116" y="301" text-anchor="middle" font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif" font-size="10" font-weight="700" fill="#6b6453">Section 3 オプション</text>
   <line x1="148" y1="296" x2="148" y2="316" stroke="#e7e1d3" stroke-width="1"/>
 
   <!-- option badges -->
