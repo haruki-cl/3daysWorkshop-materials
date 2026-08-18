@@ -1474,10 +1474,11 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 
 <h3>サービス側の準備</h3>
 <ol>
-<li><a target="_blank" rel="noopener" href="https://dashboard.clerk.com/">https://dashboard.clerk.com/</a> で <strong>Google SSO ログイン</strong></li>
+<li><a target="_blank" rel="noopener" href="https://dashboard.clerk.com/">https://dashboard.clerk.com/</a> で <strong>Google SSO ログイン</strong>。<span class="note">初めて使う場合は、サインイン画面で Google を押すと「<code>The External Account was not found</code>」と出る（そのアカウントに紐づく Clerk アカウントがまだ無いため）。画面下の <strong>Sign up</strong> から同じ Google で登録すればよい（既にアカウントがあれば Sign in）。</span></li>
 <li><strong>アプリケーションを作成</strong>する。作成画面で <strong>Application name</strong>（後でいつでも変更可）と <strong>Sign in options（サインイン方法）</strong>をその場で選べる。<br>
 ここで <strong>Email・Phone number・Username をオフ、Google をオン</strong>にする（メール認証は使わず Google SSO のみにする）。設定できたら、右側のプレビューが「Continue with Google」だけになっているか確認する。<br>
-なお<strong>この設定はダッシュボードから後でいつでも変更できる</strong>ので、作成後に直しても構わない。
+なお<strong>この設定はダッシュボードから後でいつでも変更できる</strong>ので、作成後に直しても構わない。<br>
+<span class="note">現在の Clerk では、作成時にこの選択画面が出ず、アプリ（例 <code>My Application</code>）が自動作成されて Overview に着地することがある。その場合は後から設定する：<strong>Configure</strong> の User &amp; authentication（SSO connections）で <strong>Google をオン・Email/Phone/Username をオフ</strong>にする。</span>
   <figure class="diagram">
   <img src="img/ClerkCreateApplication.png" alt="Clerk のアプリケーション作成画面 — Application name と Sign in options。Email/Phone number/Username をオフ、Google をオンにして「Create application」。右側は Continue with Google のみのプレビュー">
   </figure>
@@ -1802,7 +1803,7 @@ END;
 </table>
 
 <h3>⓪ 準備</h3>
-<p><strong>やること</strong>: リポジトリのルートで Playwright を入れる。</p>
+<p><strong>やること</strong>: リポジトリのルート（<code>frontend/</code> と <code>backend/</code> が並ぶ階層）で Playwright を入れる。アプリがサブフォルダにある構成なら、その <code>frontend/</code>・<code>backend/</code> が見える階層で実行する。</p>
 <pre><code>npm init playwright@latest -- --browser=chromium</code></pre>
 <p>実行するといくつか質問が出る（言語・テストの置き場所・GitHub Actions を作るか）。<strong>すべてそのまま Enter でよい。</strong></p>
 <blockquote class="warn">
@@ -1817,6 +1818,8 @@ END;
 <p>別のターミナルでアプリを起動しておく。作業中はずっと立ち上げたままにする。</p>
 <pre><code>cd backend &amp;&amp; npm run build:front &amp;&amp; npm run dev</code></pre>
 
+<p class="note">起動したら、ログの <code>Ready on http://localhost:8787</code> が <strong>8787</strong> になっているか確認する。別の <code>wrangler dev</code> が残っていて 8787 が塞がっていると、エラーにならず<strong>黙って別ポート</strong>で起動する。その状態で 8787 を開くと<strong>前のアプリ</strong>が表示され、古い／別物を気づかずテストしてしまう（<code>lsof -nP -iTCP:8787</code> で占有プロセスを確認・停止できる）。</p>
+
 <p class="note"><strong>完了</strong>: ブラウザで <code>http://localhost:8787</code> が開き、購入もマイページも動く。</p>
 
 <h3>① 起きたら困ることを3〜5個書く</h3>
@@ -1824,12 +1827,13 @@ END;
 <p><strong>やること</strong>:</p>
 <ol>
 <li><code>http://localhost:8787</code> を開き、<strong>自分のサービスに月300円払った人のつもりで</strong>、購入 → マイページ → 問い合わせを一通り操作する</li>
-<li><code>backend/docs/TEST.md</code> の末尾に、<strong>自分のアプリについて</strong>3〜5行書く</li>
+<li><code>backend/docs/TEST.md</code> の末尾に、<strong>自分のアプリについて</strong>3〜5行書く（<span class="note">[5] で作ったファイル。完成デモなど構成が違う場合は、そのアプリの <code>TEST.md</code> の場所に合わせる</span>）</li>
 </ol>
 
 <p><strong>書き方</strong>: <strong>「〜すると、〜してしまう」</strong>の形で、<strong>困る人の言葉</strong>で書く。機能名や技術用語は使わない。</p>
 
 <p class="note">下は玄米茶サンプルの場合の例。<strong>写し取らず、自分のアプリで考えて書くこと。</strong></p>
+<p class="note">このサンプルは <strong>[8][9] 未実施時点</strong>の玄米茶を前提にしている。Clerk / Stripe を実装済みのアプリ（完成デモなど）で試す場合は、下の項目の多くが画面から確かめられなくなる（ログイン必須・外部ホスト経由になるため）。②で <strong>◎</strong> を付ける対象は、末尾の「<a href="#s12-done">[8] 決済・[9] ID 連携を先に実施してしまった人へ</a>」の補足に従って選び直すこと。</p>
 <pre><code>## [12] 起きたら困ること
 
 - 他人のメールを指定すると、他人のライセンスキーが見えてしまう
@@ -1910,7 +1914,7 @@ END;
 
 <h3>③ 操作を録画する</h3>
 
-<p><strong>やること</strong>: ◎ の2行それぞれについて、1回ずつ録画する。<strong>必ずリポジトリのルートで実行する。</strong></p>
+<p><strong>やること</strong>: ◎ の2行それぞれについて、1回ずつ録画する。<strong>必ずリポジトリのルート（<code>frontend/</code>・<code>backend/</code> が並ぶ階層）で実行する。</strong></p>
 <pre><code>cd &lt;リポジトリのルート&gt;
 npx playwright codegen http://localhost:8787/ -o tests/01-other-user.spec.ts</code></pre>
 
@@ -1963,6 +1967,8 @@ npx playwright codegen http://localhost:8787/ -o tests/01-other-user.spec.ts</co
 - 表の「期待結果」列の値をそのまま使い、実装コードから推測しないこと
 - 固定待ち（waitForTimeout）は入れないこと</code></pre>
 
+<p class="note">この例は「他人のキーが見えない」1本用。上の3項目（メールをユニークに／発行キーを捕捉／<code>toHaveCount(0)</code>）は<strong>そのテスト固有</strong>なので、別のテストに使うときは自分のテスト内容に置き換える。下の2行（<strong>期待結果の値をそのまま使う／<code>waitForTimeout</code> を入れない</strong>）は、どのテストでも共通で必ず入れる。</p>
+
 <blockquote class="warn">
 <p><strong>⚠️ 「このアプリのテストを書いて」と頼まないこと。</strong></p>
 <p>そう頼むと AI は<strong>実装を読んで「今の動き」を正解として固定</strong>する。今あるバグごと正解になってしまう。</p>
@@ -1979,6 +1985,7 @@ npx playwright codegen http://localhost:8787/ -o tests/01-other-user.spec.ts</co
 <tr><td><strong>マイページを開き直して確認する</strong></td><td>購入完了画面は<strong>サーバーの返事を表示しているだけ</strong>で、保存の証明にならない</td></tr>
 </tbody>
 </table>
+<p class="note">仕上げで確認する2点：① <code>getByRole</code> の <code>name</code> は<strong>既定で部分一致</strong>。ボタン名などを厳密に守りたいときは <code>{ name: '送信する', exact: true }</code> のように <strong>exact</strong> にする（曖昧だと壊しても赤にならず、⑥で露見する）。② 録画直後の <code>goto</code> は絶対URL（<code>http://localhost:8787/…</code>）で出るので、設定した <code>baseURL</code> を活かして<strong>相対パス</strong>（<code>'/…'</code>）に直す。</p>
 
 <p><strong>実行する</strong>:</p>
 <pre><code>npx playwright test
@@ -1992,7 +1999,10 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 <p><strong>やること</strong>: まず AI に原因を切り分けさせる。</p>
 <pre><code>tests/01-other-user.spec.ts が落ちた。
 テストの書き方が悪いのか、実装が保証を満たしていないのか判定して。
-実装が原因なら実装のほうを直して。テストの期待値は変えないこと。</code></pre>
+実装が原因なら実装のほうを直して。テストの期待値は変えないこと。
+どちらとも言えない（仕様が決まっていない）場合は、勝手に直さず、
+決めるべき論点を挙げて止まること。</code></pre>
+<p class="note">最後の1文が要。これが無いと、AI は「テストか実装か」の二択に無理やり当てはめ、<strong>本来あなたが決めるべき仕様を勝手に決めて実装を書き換える</strong>ことがある（次の3つ目のケース）。</p>
 
 <p><strong>判定</strong>: 返ってきた答えで対応が変わる。</p>
 <table>
@@ -2044,6 +2054,7 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 /playwright-report/
 /blob-report/
 /playwright/.cache/</code></pre>
+<p class="note">最近の <code>npm init playwright@latest</code> はこの4行を<strong>自動生成する</strong>ので、多くは確認だけで済む。ただし storageState（末尾の補足）で使う <code>auth-*.json</code> は自動生成に含まれないので、その場合は <code>auth-*.json</code> も忘れず追記する。</p>
 <p>確認できたらコミットさせる。</p>
 <pre><code>E2E テストの追加をコミットして push して。</code></pre>
 <p class="note"><strong>完了</strong>: <code>test-results/</code> <code>playwright-report/</code> が入っていない状態で push できている。</p>
@@ -2053,6 +2064,7 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 <li><strong><code>frontend</code> の <code>npm run dev</code>（:5173）で録画してしまう</strong>: API が動かないので、購入も送信も失敗する。<code>backend</code> の <code>wrangler dev</code>（:8787）を使うこと</li>
 <li><strong><code>tests/</code> の中で <code>codegen -o tests/...</code> を実行する</strong>: 保存先が見つからずに落ちて、録画が消える</li>
 <li><strong><code>npm run build:front</code> を忘れる</strong>: 画面が古いまま配信される。しかも [5] のテストは全部緑になるので、E2E 以外では気づけない</li>
+<li><strong><code>build:front</code> が失敗しているのに気づかない</strong>: 型エラー（未使用 import など）で <code>build</code> が止まると、配信される <code>dist</code> は<strong>古いまま更新されない</strong>。壊したはずのテストが緑になったら、まず <code>build:front</code> がエラーで止まっていないかを疑う</li>
 <li><strong>同じメールアドレスを使い回す</strong>: テストは並列で走るので、互いのデータを踏む</li>
 <li><strong><code>expect</code> が弱い</strong>: 「見出しが見える」だけだと壊しても赤にならない。これは⑥で必ず露見する</li>
 </ul>
@@ -2093,7 +2105,7 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 <p>E2E は [5] の置き換えではなく<strong>補完</strong>。だから②で ✕ を付けた行は [5] のテストが引き取る。</p>
 </details>
 
-<details class="spec">
+<details class="spec" id="s12-done">
 <summary>[8] 決済・[9] ID 連携を先に実施してしまった人へ</summary>
 <p>外部サービスに置き換えるほど、<strong>境界が自分のアプリの外へ移動し、E2E で書ける項目が減る</strong>。減った分は <a href="#s5">[5]</a> のテストが引き取る。</p>
 <table>
@@ -2104,7 +2116,14 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 <tr><td>未ログインで中身が見えない</td><td>○</td><td><strong>◎</strong> サインイン画面への遷移として書ける</td></tr>
 </tbody>
 </table>
-<p><strong>[9] を実施済みの場合</strong>、毎回のログイン操作を省ける（<code>@clerk/testing</code> は不要）。</p>
+<p><strong>[9] を実施済みの場合、ログインが必要な保証は E2E で守りにくい。</strong> 上の表でも <strong>◎</strong> は「未ログインで中身が見えない」の1本だけで、ログイン後の画面は E2E 化を勧めていない。理由は3つ：</p>
+<ul>
+<li>録画に使う <code>codegen</code> のブラウザ（Chrome for Testing）は<strong>まっさらな別プロファイル</strong>で、普段の Google セッションが無い。毎回メール＋パスワード（＋2段階認証）を手入力する必要があり、Google は自動化ブラウザからのログインを弾くことがある。</li>
+<li>ログイン状態を保存する <code>storageState</code> は、<strong>Clerk の開発モードでは短時間（数分〜十数分）で失効</strong>する。取り直しても再現性のあるテストにしにくい。</li>
+<li>どうしてもログイン後を E2E 化するなら、実ログインの自動化ではなく <strong>Clerk のテスト用手段（<code>@clerk/testing</code> の Testing Token 等）</strong>を検討する。</li>
+</ul>
+<p class="note">＝ ログイン後の保証（マイページの表示内容など）は、無理に E2E にせず <strong>[5] の部品テスト</strong>で守るのが現実的。</p>
+<p class="note">参考：それでも <code>storageState</code> で試す場合の手順（上のとおり開発モードでは失効しやすい）：</p>
 <pre><code>npx playwright codegen http://localhost:8787/ --save-storage=auth-a.json   # 手動ログインして閉じる
 npx playwright codegen http://localhost:8787/ --load-storage=auth-a.json   # 2本目以降の録画</code></pre>
 <pre><code>use: { baseURL: 'http://localhost:8787', storageState: 'auth-a.json' },</code></pre>
@@ -2113,7 +2132,7 @@ npx playwright codegen http://localhost:8787/ --load-storage=auth-a.json   # 2�
 <p>Clerk のログインは Google SSO なので、このファイルには<strong>自分の Google アカウントのセッション Cookie が丸ごと入る</strong>。</p>
 <p>漏れた場合の被害はアプリのアカウントではなく、<strong>Google アカウントの乗っ取り</strong>。<code>.gitignore</code> に <code>auth-*.json</code> を追記する。</p>
 </blockquote>
-<p class="note"><code>storageState</code> は数日で期限切れになる。サインイン画面に飛ばされたら取り直す。</p>
+<p class="note"><code>storageState</code> は短時間（数分〜十数分）で期限切れになることがある。サインイン画面に飛ばされたら取り直す。</p>
 <p class="note"><strong>[8] を実施済みの場合</strong>、購入フローの E2E は Stripe の決済画面に入る手前までにする。Stripe 側の UI 変更で壊れるため。</p>
 </details>
 
