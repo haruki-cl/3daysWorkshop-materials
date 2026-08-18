@@ -1778,19 +1778,17 @@ END;
 <strong>学び</strong>: AI が作ったものを鵜呑みにせず、<strong>画面を通して自分で確かめられる</strong>ようになる。決めたことが守られているかを見て、まだ決めていなかったことをその場で見つけて決める</p>
 
 <h3>流れ</h3>
-<table>
-<thead><tr><th>工程</th><th>やるのは</th><th>できるもの</th></tr></thead>
-<tbody>
-<tr><td>⓪ 準備</td><td>コマンド</td><td><code>playwright.config.ts</code></td></tr>
-<tr><td>① 起きたら困ることを書く</td><td><strong>自分</strong></td><td><code>docs/TEST.md</code> に3〜5行</td></tr>
-<tr><td>② E2E で書くものを2つ選ぶ</td><td><strong>自分</strong></td><td>同ファイルに表</td></tr>
-<tr><td>③ 操作を録画する</td><td>Codegen</td><td><code>tests/*.spec.ts</code> 2本</td></tr>
-<tr><td>④ 検証を足して実行する</td><td>AI＋<strong>自分</strong></td><td>緑／赤の判定</td></tr>
-<tr><td>⑤ 赤の原因を決める（赤が出たときだけ）</td><td><strong>自分</strong>＋AI</td><td>直したか認めたかの判断</td></tr>
-<tr><td>⑥ 壊して赤になるか確かめる</td><td>AI</td><td>なし</td></tr>
-<tr><td>⑦ コミットする</td><td>AI</td><td>なし</td></tr>
-</tbody>
-</table>
+<ul>
+<li>⓪ 準備</li>
+<li>① 起きたら困ることを3〜5個書く</li>
+<li>② E2E で書くものを2つ選ぶ</li>
+<li>③ 操作を録画する</li>
+<li>④ 検証を足して実行する</li>
+<li>⑤ 赤の原因を決める（赤が出たときだけ）</li>
+<li>⑥ 壊して赤になるか確かめる</li>
+<li>⑦ コミットする</li>
+</ul>
+<p>このうち<strong>自分で考えるのは①②⑤</strong>。ほかは Codegen と AI が進める。</p>
 
 <details class="spec">
 <summary>⚠️ [9] ID 連携（Clerk）を実施済みの人は、⓪の前にここを読む</summary>
