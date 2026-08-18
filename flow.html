@@ -286,11 +286,11 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
     <figure class="diagram" style="margin:0;flex:1 1 220px;"><img src="img/sample_success.png" alt="玄米茶サンプル: 購入完了（/success）"><figcaption style="text-align:center;font-size:12px;">/success</figcaption></figure>
   </div>
 </li>
-<li>注意喚起: 全3セクションで一周するため、<strong>Section 2 までは構成を盛りすぎない</strong>（拡張は Section 3 のオプションで）</li>
+<li>全3セクションで一周するため、<strong>Section 2 までは構成を盛りすぎない</strong>（拡張は Section 3 のオプションで）</li>
 </ul>
 
 <h3>必須機能（Section 2 までに作るものの最低ライン）</h3>
-<p><strong>ライセンスキー（購入の証として発行する一意の文字列）の配布は、題材によらず全員共通の実装要件</strong>。「ライセンスキー」は玄米茶サンプルでの呼び方なので、自分の SaaS では呼び名と意味づけ（アクセス権の証・ダウンロードコード等）だけを自分のサービスに合わせる。</p>
+<p><strong>ライセンスキー（購入の証として発行する一意の文字列）の配布は、題材によらず全員共通の実装要件</strong>。「ライセンスキー」は玄米茶サンプルでの呼び方なので、自分の題材では、呼び名と意味づけ（アクセス権の証・ダウンロードコード等）だけを自分のサービスに合わせる。</p>
 <p class="note">Section 2 到達時点の見本（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://testai-genmaicha.ha-toge.workers.dev/">https://testai-genmaicha.ha-toge.workers.dev/</a> — 下の5機能が動く状態がゴール。</p>
 <p class="note">各リンクの遷移先・購入導線は <a href="#s0-nav">画面構成とナビゲーション</a> で、各画面の中身は [2] の <code>SCREEN_SPEC.md</code> で定義する。ここでは「Section 2 までに動くべき機能」だけを挙げる。</p>
 <table>
@@ -332,7 +332,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <tr><td><strong>[2]</strong></td><td>フロント</td><td>Section 1</td><td></td><td><code>npm run dev</code> の表示 URL で表示崩れなし／React Router で4ページ遷移できる</td></tr>
 <tr><td><strong>[3]</strong></td><td>フロントデプロイ</td><td>Section 1</td><td></td><td><code>https://&lt;name&gt;.workers.dev</code> で LP が表示され、URL を他の参加者と共有できる</td></tr>
 <tr><td><strong>[4]</strong></td><td>バック</td><td>Section 2</td><td></td><td>フロントと API がつながりローカルで一通りの機能が動く。<code>/api/me</code> は未認証で弾かれ、<code>/api/contact</code> は不正入力で弾かれる</td></tr>
-<tr><td><strong>[5]</strong></td><td>自動テスト</td><td>Section 2</td><td></td><td><code>npm test</code> がバック・フロントとも グリーン（それぞれで実行）。純粋関数・正常系・異常系・未認証テスト各1本以上＋フロントの画面テスト1本</td></tr>
+<tr><td><strong>[5]</strong></td><td>自動テスト</td><td>Section 2</td><td></td><td><code>npm test</code> がバック・フロントともグリーン（それぞれで実行）。純粋関数・正常系・異常系・未認証テスト各1本以上＋フロントの画面テスト1本</td></tr>
 <tr><td><strong>[6]</strong></td><td>デプロイ</td><td>Section 2</td><td></td><td>自分の <code>https://&lt;name&gt;.workers.dev</code> で LP が表示され <code>/mypage</code> も 404 にならない</td></tr>
 <tr><td><strong>[7]</strong></td><td>メール（Resend）</td><td>Section 3</td><td>★☆☆</td><td>問い合わせ受付やライセンス送付などのメールを実装し、自分宛に届くことを確認できる</td></tr>
 <tr><td><strong>[8]</strong></td><td>決済（Stripe）</td><td>Section 3</td><td>★★★</td><td>Stripe Checkout → Webhook でライセンスキー自動発行。テスト用カードでマイページにライセンスキーが表示されること</td></tr>
@@ -463,7 +463,7 @@ a.slide-link:hover{border-color:var(--accent); color:var(--accent);}
 <li>区切りのいいところで<strong>こまめに commit / push</strong>（環境が壊れても作業を失わないための保険）</li>
 <li><strong>各セクションのクロージングで「dev に push 済みか」を必ず確認</strong>（次のセクションのキャッチアップが楽になる）</li>
 <li><code>dev</code> → <code>main</code> への<strong>マージは、セキュリティ課題（SonarCloud 解析）に着手する前に行う</strong>（SonarCloud 無料版は <code>main</code> ブランチしか解析しないため）。<code>main</code> ＝ 公開・解析対象の安定版。セキュリティ課題をやらない場合は、最後に一度マージして締めればよい（任意）</li>
-<li>⚠️ <a href="#s13">[13]</a> の自動デプロイ（Workers Builds）で Production branch を <code>main</code> に設定している場合、この <code>dev</code> → <code>main</code> マージはそのまま本番デプロイになる。SonarCloud の解析結果（直すべき点）が出るのはマージ後なので、未修正の脆弱性が一時的に公開されることになる。気になる場合は、セキュリティ課題 <a href="#s11">[11]</a> の対応が終わってから main にマージ・pushする運用に変えるとよい</li>
+<li>⚠️ <a href="#s13">[13]</a> の自動デプロイ（Workers Builds）で Production branch を <code>main</code> に設定している場合、この <code>dev</code> → <code>main</code> マージはそのまま本番デプロイになる。SonarCloud の解析結果（直すべき点）が出るのはマージ後なので、未修正の脆弱性が一時的に公開されることになる。気になる場合は、セキュリティ課題 <a href="#s11">[11]</a> の対応が終わってから main にマージして push する運用に変えるとよい</li>
 </ul>
 <figure class="diagram">
 <img src="img/git_flow.svg" alt="Git フロー図: dev ブランチで作業しこまめに commit/push、完成後に main へマージ">
@@ -624,7 +624,7 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 </blockquote>
 
 <h3>事前確認: モデルと Effort の設定・デザインシステムのリセット</h3>
-<p class="note">Claude Design を開くと「Make something new」の一覧が表示される。ここでは「Product prototype」を選ぶ（Slides・Document 等は使わない）。一覧の右上に「Design system: None」表示がある。過去に使ったデザインシステム名が残っていることがあるので、<strong>「None」になっているか確認し、違えばリセットしてから始める</strong>。</p>
+<p class="note">Claude Design を開くと「Make something new」の一覧が表示される。ここでは「Product prototype」を選ぶ（Slides・Document 等は使わない）。一覧の右上に「Design system: None」という表示がある。過去に使ったデザインシステム名が残っていることがあるので、<strong>「None」になっているか確認し、違えばリセットしてから始める</strong>。</p>
 <figure class="diagram">
 <img src="img/ClaudeDesignHomeReset.png" alt="Claude Design のホーム画面。「Make something new」の一覧で「Product prototype」を選択し、右上の「Design system: None」がリセットされていることを確認する">
 </figure>
@@ -639,7 +639,7 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 <ol>
 <li>Claude Design に「何を・誰に向けて作るか／何を売るか／欲しい機能」を伝えて <strong>LP だけ</strong>デザインを生成する
   <ul>
-  <li>Claude Design は、トーンや配色など方向性を決める質問を自分から投げ返してくれる。だから最初から「和モダンで緑系で…」と細かく指定する必要はない。むしろ<strong>サービスの中身（何のサービスか・売りたいもの・載せたい機能）</strong>を伝える方が効く</li>
+  <li>Claude Design は、トーンや配色など方向性を決める質問を自分から出してくれる。だから最初から「和モダンで緑系で…」と細かく指定する必要はない。むしろ<strong>サービスの中身（何のサービスか・売りたいもの・載せたい機能）</strong>を伝える方が効く</li>
   <li>最初に渡すプロンプト例:
     <pre><code>Slack AI サブスク SaaS『玄米茶』の LP を作りたい。
 月額／年額プランを売りたい。
@@ -648,7 +648,7 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
     <figure class="diagram">
     <img src="img/claude-design-prompt.png" alt="Claude Design のプロンプト入力画面">
     </figure>
-    これ程度の粒度でOK。色・フォント・トーンは Claude Design が質問してくれるので最初から細かく書かなくてよい
+    この程度の粒度で十分。色・フォント・トーンは Claude Design が質問してくれるので最初から細かく書かなくてよい
     <figure class="diagram">
     <img src="img/claude-design-questions.png" alt="Claude Design がトーン・配色などを質問してくれる画面">
     </figure></li>
@@ -715,11 +715,11 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 <ul>
 <li><strong>「それっぽいものが作れた」で十分</strong>。完璧より方向性の確定が目的</li>
 <li><strong>最初に伝えるのはサービスの中身</strong>（何のサービスか・売りたいもの・載せたい機能）。色味・トーン・雰囲気は Claude Design の質問に答えながら決めればよく、見た目の細部は後から Tweaks で触る</li>
-<li><strong>いきなり1案に飛びつかない</strong>。デフォで出る3案を見比べて選ぶ</li>
+<li><strong>いきなり1案に飛びつかない</strong>。出てきた3案を見比べて選ぶ</li>
 <li><strong>言語化テキストを書くより、デザイン Project（zip）を丸ごと渡す</strong>のが [2] への一番の橋渡し</li>
 <li><strong>チャットは何度でも使える</strong>。「このボタンの色を変えて」「このセクションを上に移動して」など気になる点は遠慮なく伝える</li>
 <li><strong>他ページは指定しない</strong>。Claude Design はデザインシステム確定だけに使う</li>
-<li><strong>Claude Design の質問への回答の自由度</strong>: トーン・配色・キャッチコピーなどの見た目・言い回しは自由に決めてよい（Claude Design の質問にそのまま答えればよい）。一方、<strong>料金プランは「月額・年額の2プラン」を用意するのがワークショップ流の推奨</strong>（後続の [2] フロント・[3] バックの実装がスムーズになるため）</li>
+<li><strong>Claude Design の質問への回答の自由度</strong>: トーン・配色・キャッチコピーなどの見た目・言い回しは自由に決めてよい（Claude Design の質問にそのまま答えればよい）。一方、<strong>料金プランは「月額・年額の2プラン」を用意することを推奨する</strong>（後続の [2] フロント・[4] バックの実装がスムーズになるため）</li>
 </ul>
 
 <h3 class="done">✅ 完了の定義（これが満たせたら [2] へ）</h3>
@@ -797,7 +797,7 @@ GitHub でリポジトリを1つ作成してローカルに clone し、<strong>
 <h3>流れ</h3>
 <ol>
 <li>リポジトリのルートで Claude Code を起動する</li>
-<li>[1] でエクスポートした Claude Design の Project（zip）をリポジトリ直下に置き（例: <code>design.zip</code>）、以下のプロンプトを<strong>自分のSaaSの内容に合わせて適宜書き換えて</strong>送る（zip のファイル名が違う場合はプロンプト中のパスも合わせる）
+<li>[1] でエクスポートした Claude Design の Project（zip）をリポジトリ直下に置き（例: <code>design.zip</code>）、以下のプロンプトを<strong>自分の SaaS の内容に合わせて適宜書き換えて</strong>送る（zip のファイル名が違う場合はプロンプト中のパスも合わせる）
   <p class="note">言語化テキストではなくデザインそのものを渡す。色・フォント・余白の指定はそこから AI が拾う。<code>wrangler.jsonc</code>（Cloudflare の CLI「wrangler」の設定ファイル。Worker 名や配信設定を書く）の <code>name</code> はデプロイ先 URL（<code>https://&lt;name&gt;.workers.dev</code>）になるので自分の名前に書き換えること。name に使えるのは<strong>小文字英数字とハイフンのみ</strong>（大文字・アンダースコア・日本語は不可）。</p>
 <pre><code>frontend/ に Vite + React + TypeScript + Tailwind CSS v4 + shadcn/ui で SPA を作って。
 ルーティングは React Router を使って。
@@ -901,7 +901,7 @@ wrangler whoami    # ログインできたか／想定アカウントかを確�
 <li>Hono + Cloudflare Workers のプロジェクトを Claude Code に作らせる（<code>backend/</code>）
   <ul>
   <li>成果物: <code>backend/</code> に Hono の雛形（<code>src/index.ts</code>・<code>wrangler.jsonc</code>・<code>package.json</code>）が揃った状態</li>
-  <li><code>npm run dev</code> を実行し、表示された URL に <code>GET /</code> して返ってくれば OK（<code>wrangler dev</code> が<strong>使うポートは環境により変わる</strong>ので、ターミナルに表示された URL を使うこと）。<code>npm run dev</code> などの script 定義は下の<a href="#s4-scripts">必要な npm scripts</a>にまとめてある（無ければ Claude Code に追加させる）</li>
+  <li><code>npm run dev</code> を実行し、表示された URL を開いて応答が返れば OK（<code>wrangler dev</code> が<strong>使うポートは環境により変わる</strong>ので、ターミナルに表示された URL を使うこと）。<code>npm run dev</code> などの script 定義は下の<a href="#s4-scripts">必要な npm scripts</a>にまとめてある（無ければ Claude Code に追加させる）</li>
   <li><code>.gitignore</code> も一緒に作らせる（<code>node_modules</code> / <code>dist</code> / <code>.dev.vars</code> などを除外）</li>
   <li>プロンプト例:
 <pre><code>backend/ に Hono + Cloudflare Workers の API プロジェクトを作って。
@@ -1014,14 +1014,14 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 - test: vitest run</code></pre>
 
 <h3>ローカルでの動かし方</h3>
-<p>このコマンドは自分で打つ代わりに、<strong>Claude Code に「ローカルで起動して動作確認して」と依頼して実行させるのがデフォルト</strong>。参考として手元で打つ場合のコマンドも示す:</p>
+<p>このコマンドは自分で打たず、<strong>Claude Code に「ローカルで起動して動作確認して」と依頼して実行させるのが基本</strong>。参考として手元で打つ場合のコマンドも示す:</p>
 <pre><code>cd backend &amp;&amp; npm run build:front &amp;&amp; npm run dev</code></pre>
 <p class="note">フロントを変更したら毎回 <code>npm run build:front</code> が必要。<code>npm run dev</code> の出力に表示された URL で確認する。</p>
 
 <h3>ポイント</h3>
 <ul>
 <li>認証（Clerk）・決済（Stripe）・メール（Resend）は Section 2 では深追いしない → Section 3 のオプション課題 [7][8][9] で扱う</li>
-<li>Section 2 のログイン周りはモック認証でよい（<a href="#s4-step3">手順3</a>）。後から Clerk に差し替えやすい作りにしておくと教材としても良い</li>
+<li>Section 2 のログイン周りはモック認証でよい（<a href="#s4-step3">手順3</a>）。後から Clerk に差し替えやすい作りにしておくと [9] が楽になる</li>
 <li>秘密情報は <code>.dev.vars</code>（ローカル）/ <code>wrangler secret put</code>（本番）で管理する。コードへのハードコードや AI への指示文への貼り付けは禁止</li>
 <li>Section 2 本編は<strong>環境変数・シークレット無しで動く</strong>（Stripe / Clerk / Resend のキーが要るのは Section 3 のオプションから）</li>
 </ul>
@@ -1127,7 +1127,7 @@ cd ../frontend &amp;&amp; npm test   # 画面テスト</code></pre>
 
 <h3 class="done">✅ 完了の定義（Section 2 の到達点・前半）</h3>
 <ul>
-<li><code>npm test</code> が<strong>バック・フロントとも グリーン</strong>（全ケース pass。<code>backend/</code> と <code>frontend/</code> それぞれで実行する）</li>
+<li><code>npm test</code> が<strong>バック・フロントともグリーン</strong>（全ケース pass。<code>backend/</code> と <code>frontend/</code> それぞれで実行する）</li>
 <li>最低限カバーできている：
   <ul>
   <li>外部サービスに依存しない純粋な関数（ライセンスキー生成・文字列マスク等）のテストが1つ以上</li>
@@ -1191,7 +1191,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <ul>
 <li>自分の <strong><code>https://&lt;name&gt;.workers.dev</code> にブラウザでアクセスして LP が表示</strong>される</li>
 <li>本番 URL で <code>/mypage</code> 等のルーティングも 404 にならず動く（404 になる場合は wrangler.jsonc の <code>assets.not_found_handling</code> に <code>"single-page-application"</code> を追記してから再デプロイ）</li>
-<li>（API を使う画面が）本番でも動作する</li>
+<li>API を使う画面が本番でも動作する</li>
 <li>（余裕があれば）公開した本番 URL で<strong>トップページ・<code>/mypage</code>・API を1つ</strong>ブラウザで開き、ローカルと同じ挙動か目視確認する</li>
 </ul>
 
@@ -1224,7 +1224,12 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <tr><td><strong>[13]</strong></td><td>自動デプロイ（Workers Builds）</td><td><code>git push</code> するだけで<strong>Cloudflare へ自動的にビルド・デプロイ</strong>されるようになる（手動の <code>wrangler deploy</code> から卒業）</td><td>★★☆</td><td><a href="#s13">→ [13] 自動デプロイ</a></td></tr>
 </tbody>
 </table>
-<p class="note">選び方: <strong>作りたい変化で選ぶ</strong>（上表）。<strong>依存</strong>: [11] は [9]（本物の認証）まで終えていると効果が高い（偽造トークンの検証はモック認証では試せない）。[12] は逆に <strong>[8][9] より先にやる</strong>（決済とログインを外部サービスに置き換えると、購入フローも他人のアカウントも画面から追えなくなり、E2E で書ける項目が激減する）。[13] は [6] の手動デプロイが完了していることが前提（Cloudflare ダッシュボードでの連携設定が中心で、コードの追加はほぼ無い）。<strong>目安</strong>: ★＝重さ＝所要時間の目安（★☆☆ ≈ 30〜45分 / ★★☆ ≈ 45〜60分 / ★★★ ≈ 60分〜）。1つだけなら軽い [7]・[10] から。</p>
+<p class="note"><strong>選び方</strong>: 上の表の「追加すると制作物がどう変わるか」を見て、自分が作りたい変化で選ぶ。1つだけやるなら、軽い [7]・[10] から始めるとよい。<br>
+<strong>所要時間の目安</strong>: ★の数がそのまま重さの目安になっている。★☆☆ でおよそ 30〜45分、★★☆ でおよそ 45〜60分、★★★ で 60分以上。<br>
+<strong>課題どうしの依存</strong>: 次の3つは順番に注意する。<br>
+・[11] は [9]（本物の認証）まで終えていると効果が高い。というのも、偽造トークンの検証はモック認証では試せないため。<br>
+・[12] は逆に <strong>[8][9] より先にやる</strong>。決済とログインを外部サービスに置き換えると、購入フローも他人のアカウントも画面から追えなくなり、E2E で書ける項目が激減するため。<br>
+・[13] は [6] の手動デプロイが完了していることが前提。ただし作業は Cloudflare ダッシュボードでの連携設定が中心で、コードの追加はほぼ無い。</p>
 
 <h2 id="common">まず [7][8][9] に共通すること</h2>
 <ul>
@@ -1245,7 +1250,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 <img src="img/CloudflareAddSecret2.png" class="portrait" alt="Variables and secrets の追加ダイアログ。Type のドロップダウンで Secret を選択している状態。Variable name と Value の入力欄があり、保存後は値が表示されなくなる旨の注記がある">
 <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">② <strong>Type</strong> で <strong>Secret</strong> を選ぶ（テキストのままだと値が残る）→ Variable name と Value を入れて保存。保存後は値が見えなくなる（"This value will no longer be viewable once saved"）</figcaption>
 </figure>
-API キー等の秘密情報は<strong>コードにも AI への指示にも貼らない</strong>。<code>.dev.vars</code> に入れて参照させる。</li>
+<p>API キー等の秘密情報は<strong>コードにも AI への指示にも貼らない</strong>。かならず <code>.dev.vars</code> に入れて、そこから参照させる。</p></li>
 <li><strong>必要な環境変数は、まず AI に聞く</strong> →「この機能に要る環境変数を <code>.dev.vars.sample</code> に追記して」</li>
 <li><code>.dev.vars.sample</code> を <code>.dev.vars</code> にコピーして実際の値を入力する（<code>cp .dev.vars.sample .dev.vars</code>）。<code>.dev.vars</code> が既にある場合は必要な行だけ追記する</li>
 <li><strong><code>.dev.vars</code> を書き換えたら <code>npm run dev</code> を再起動</strong>（読み込みは起動時）</li>
@@ -1273,7 +1278,7 @@ npm run deploy               # ビルド → デプロイ</code></pre>
 <h3>サービス側の準備</h3>
 <ol>
 <li><a target="_blank" rel="noopener" href="https://resend.com/login">https://resend.com/login</a> で <strong>Google SSO ログイン</strong></li>
-<li>左タブ <strong>API keys → Create API Key</strong>（権限は <strong>Sending access</strong> で十分。Sending domain は <strong>All domains</strong> を選択。名前は各自）
+<li>左タブ <strong>API keys → Create API Key</strong>（権限は <strong>Sending access</strong> で十分。Sending domain は <strong>All domains</strong> を選択。名前は各自で決めてよい）
   <figure class="diagram">
   <img src="img/ResendCreateAPIKEY1.png" alt="Resend の API keys 画面 — 右上に「Create API key」ボタン">
   </figure>
@@ -1302,14 +1307,16 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 
 <h3>実装〜確認</h3>
 <ul>
-<li>From / To をどうするかも含めて AI に相談して<strong>実装する</strong>。あわせて<strong>「この機能に要る環境変数を <code>.dev.vars.sample</code> に追記して」</strong>と依頼し、確定した変数名で <code>.dev.vars</code>（<code>backend/</code> 直下のローカル用環境変数ファイル。無ければ新規作成）に、サービス側の準備で取得した API キーを入れる（例 <code>RESEND_API_KEY=...</code>）。入れたら <code>npm run dev</code> を(再)起動して、まず<strong>ローカルで往復</strong>させる</li>
+<li>From / To をどうするかも含めて AI に相談して<strong>実装する</strong>。<br>
+あわせて<strong>「この機能に要る環境変数を <code>.dev.vars.sample</code> に追記して」</strong>と依頼し、確定した変数名で <code>.dev.vars</code>（<code>backend/</code> 直下のローカル用環境変数ファイル。無ければ新規作成）に、サービス側の準備で取得した API キーを入れる（例 <code>RESEND_API_KEY=...</code>）。<br>
+入れたら <code>npm run dev</code> を（再）起動して、まず<strong>ローカルで往復</strong>させる</li>
 <li>送ったら Resend ダッシュボードの <strong>Logs で Status を確認</strong></li>
 <li><strong>200 以外</strong>が出たら、<strong>エラー本文をそのまま AI に渡して直す</strong></li>
 <li>本番でも使うなら、<code>RESEND_API_KEY</code> を<strong>本番側にも設定</strong>してデプロイ（<a href="#common">[7][8][9] 共通の手順</a>参照）</li>
 </ul>
 
 <h3 class="done">✅ 完了の定義</h3>
-<p>自分宛にメールが届けば完了。余裕があれば: 連投対策（短時間に何度も送ると送りすぎ拒否エラーが返る）まで実装する。ローカルで動作確認できたら、<code>wrangler secret put</code> でシークレットを本番に投入して <code>npm run deploy</code> までを完了とする。</p>
+<p>自分宛にメールが届けば完了。余裕があれば: 連投対策（短時間に何度も送ると Resend がレート制限エラーを返す）まで実装する。ローカルで動作確認できたら、<code>wrangler secret put</code> でシークレットを本番に投入して <code>npm run deploy</code> までを完了とする。</p>
 <pre><code>メール機能実装の作業をコミットして dev ブランチに push して。</code></pre>
 
 <hr>
@@ -1318,7 +1325,8 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <p><strong>お題</strong>: プラン購入（Stripe Checkout）→ Webhook でライセンス自動発行<br>
 <strong>実装ファイル（ここに作る）</strong>: <code>backend/src/stripe.ts</code> / <code>license.ts</code><br>
 <strong>学び</strong>: Webhook の二重発行防止（同じイベントが再送されてもライセンスを1件だけ出す）・署名検証（届いた Webhook が本当に Stripe から来たものかを確かめる仕組み）</p>
-<p class="note">決済まで組み込んだ動くデモ（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://testai-payment.ha-toge.workers.dev/">https://testai-payment.ha-toge.workers.dev/</a> — LP の「購入する」→ Stripe Checkout（テストカード <code>4242 4242 4242 4242</code>）→ マイページにライセンス表示、までが動く（Stripe テストモード）。</p>
+<p class="note">決済まで組み込んだ動くデモ（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://testai-payment.ha-toge.workers.dev/">https://testai-payment.ha-toge.workers.dev/</a><br>
+このデモでは、LP の「購入する」から Stripe Checkout（テストカード <code>4242 4242 4242 4242</code>）を通り、マイページにライセンスが表示されるところまでが動く（Stripe テストモード）。</p>
 <figure class="diagram">
 <img src="img/stripe_flow.svg" alt="Stripe 決済フロー: ブラウザ→Hono API→Stripe Checkout→Webhook→D1保存→/success→マイページ表示">
 </figure>
@@ -1341,7 +1349,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">② 標準キーの <strong>シークレットキー（<code>sk_test_...</code>）</strong>をクリックしてコピー → <code>.dev.vars</code> にセット</figcaption>
 </figure>
 </li>
-<li>（Stripe CLI が未インストールの場合は事前準備 ④ を参照してインストールしてから実行）ターミナルで <strong><code>stripe login</code></strong> し、Stripe CLI にアカウントを認証</li>
+<li>（Stripe CLI が未インストールの場合は事前準備 ④ を参照してインストールしてから実行）ターミナルで <strong><code>stripe login</code></strong> を実行し、Stripe CLI を自分のアカウントで認証する</li>
 </ol>
 
 <h3>② プラン（商品）を作る</h3>
@@ -1388,7 +1396,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <p>ターミナルを<strong>2つ</strong>使う。<strong>バック（<code>npm run dev</code>）を起動したまま</strong>、別ターミナルで <code>stripe listen</code> を動かす。</p>
 </blockquote>
 <ol>
-<li>別ターミナルで <strong>Stripe CLI を listen</strong>（転送先は実際にバックが起動しているポートに置き換える。例:）
+<li>別ターミナルで <strong>Stripe CLI の <code>listen</code> を実行する</strong>（転送先は、実際にバックが起動しているポートに置き換える）:
 <pre><code>stripe listen --forward-to localhost:&lt;バックのポート&gt;/webhook/stripe</code></pre>
 </li>
 <li>listen 開始時に表示される <strong>Webhook 署名シークレット（<code>whsec_...</code>）を <code>.dev.vars</code> にセット</strong>（例: <code>STRIPE_WEBHOOK_SECRET=whsec_...</code>）して <code>npm run dev</code> を再起動（<code>stripe listen</code> は止めなくてよい。バックのターミナルだけ Ctrl+C → 再起動）</li>
@@ -1430,7 +1438,8 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <li>「マイページにライセンスが出る」ための<strong>紐付け</strong>に注意:
   <ul>
   <li>Webhook で発行したライセンスは<strong>購入者の email</strong>に紐づく。マイページはログイン中ユーザーの email でライセンスを引く</li>
-  <li>[9] Clerk をやらない場合は、Section 2 の<strong>モック認証の email</strong>（ヘッダ <code>x-user-email</code>）と<strong>購入時の email を一致させる</strong>こと。ここがズレると「購入したのにマイページに出ない（別人扱い）」になる（フロントのリクエストヘッダ <code>X-User-Email</code> に固定値（例: test@example.com）をセットし、Stripe Checkout の <code>customer_email</code> にも同じ値を渡すことで一致させる）</li>
+  <li>[9] Clerk をやらない場合は、Section 2 の<strong>モック認証の email</strong>（ヘッダ <code>x-user-email</code>）と<strong>購入時の email を一致させる</strong>こと。ここがズレると「購入したのにマイページに出ない（別人扱い）」になる。<br>
+具体的には、フロントのリクエストヘッダ <code>X-User-Email</code> に固定値（例: <code>test@example.com</code>）をセットし、Stripe Checkout の <code>customer_email</code> にも同じ値を渡せば一致する</li>
   </ul>
 </li>
 </ul>
@@ -1452,8 +1461,9 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <h2 id="s9">[9] ID 連携機能の実装（Clerk）<span class="diff">★★☆</span></h2>
 <p><strong>お題</strong>: ログイン必須のマイページ（未ログイン → サインインへリダイレクト）<br>
 <strong>使うもの</strong>: <code>@clerk/clerk-react</code>（フロント）＋ Hono 側で Clerk の認証トークンを検証<br>
-<strong>学び</strong>: JWT（JSON Web Token＝ログイン済みであることを証明するトークン）の検証——リクエストが本当にログイン済み本人からのものかの確認——を<strong>バックでやる理由</strong>（フロントの見た目だけの保護は無意味）</p>
-<p class="note">ログイン（Clerk）まで組み込んだ動くデモ（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://testai-login.ha-toge.workers.dev/">https://testai-login.ha-toge.workers.dev/</a> — 未ログインで <code>/mypage</code> はサインイン画面へリダイレクト → Google でログイン → マイページ表示、までが動く（Clerk 開発モード）。</p>
+<strong>学び</strong>: JWT（JSON Web Token＝ログイン済みであることを証明するトークン）の検証、つまりリクエストが本当にログイン済み本人からのものかの確認を、<strong>バックでやる理由</strong>（フロントの見た目だけの保護は無意味）</p>
+<p class="note">ログイン（Clerk）まで組み込んだ動くデモ（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://testai-login.ha-toge.workers.dev/">https://testai-login.ha-toge.workers.dev/</a><br>
+このデモでは、未ログインで <code>/mypage</code> を開くとサインイン画面へリダイレクトされ、Google でログインするとマイページが表示される、というところまでが動く（Clerk 開発モード）。</p>
 <blockquote>
 <p>Section 2 で<strong>モック認証</strong>にしておいた <code>GET /api/me</code>（ハンドラ＝リクエストを受けて処理する関数。<code>backend/src/routes/me.ts</code> など）を、<strong>本物の Clerk 認証に差し替える</strong>課題。Claude Code に『Section 2 のモック認証を Clerk トークン検証に差し替えて』と指示するだけで進められる。</p>
 </blockquote>
@@ -1465,12 +1475,15 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <h3>サービス側の準備</h3>
 <ol>
 <li><a target="_blank" rel="noopener" href="https://dashboard.clerk.com/">https://dashboard.clerk.com/</a> で <strong>Google SSO ログイン</strong></li>
-<li><strong>アプリケーションを作成</strong>する。作成画面で <strong>Application name</strong>（後でいつでも変更可）と <strong>Sign in options（サインイン方法）</strong>をその場で選べる。ここで <strong>Email・Phone number・Username をオフ、Google をオン</strong>にする（メール認証は使わず Google SSO のみにする）。右側のプレビューが「Continue with Google」だけになっていれば OK。<strong>この設定はダッシュボードから後でいつでも変更できる</strong>ので、作成後に直しても構わない。
+<li><strong>アプリケーションを作成</strong>する。作成画面で <strong>Application name</strong>（後でいつでも変更可）と <strong>Sign in options（サインイン方法）</strong>をその場で選べる。<br>
+ここで <strong>Email・Phone number・Username をオフ、Google をオン</strong>にする（メール認証は使わず Google SSO のみにする）。設定できたら、右側のプレビューが「Continue with Google」だけになっているか確認する。<br>
+なお<strong>この設定はダッシュボードから後でいつでも変更できる</strong>ので、作成後に直しても構わない。
   <figure class="diagram">
   <img src="img/ClerkCreateApplication.png" alt="Clerk のアプリケーション作成画面 — Application name と Sign in options。Email/Phone number/Username をオフ、Google をオンにして「Create application」。右側は Continue with Google のみのプレビュー">
   </figure>
 </li>
-<li><strong>Configure → Instance → API keys</strong> から2つのキーを<strong>手元にコピーしておく</strong>。env への<strong>投入は次の「実装メモ」で AI にパッケージを導入させたあと</strong>に行う（変数名は <code>@clerk/*</code> の規約で下表に固定。<strong>置き場所を分ける</strong>のがポイント——ここを間違えやすい）：
+<li><strong>Configure → Instance → API keys</strong> から2つのキーを<strong>手元にコピーしておく</strong>。ただし env への<strong>投入は、次の「実装メモ」で AI にパッケージを導入させたあと</strong>に行う。<br>
+変数名は <code>@clerk/*</code> の規約で下表のとおりに固定されている。そして<strong>2つのキーで置き場所が違う</strong>のがポイントで、ここを間違えやすい。
 <table>
 <thead><tr><th>キー</th><th>置き場所</th><th>性質</th></tr></thead>
 <tbody>
@@ -1486,12 +1499,12 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 
 <h3>実装メモ</h3>
 <ul>
-<li>必要なパッケージ（フロント <code>@clerk/clerk-react</code> ／ バック <code>@hono/clerk-auth</code>）も <strong>AI が導入してくれる</strong>。導入できたら、サービス側の準備でコピーした2つのキーを<strong>上表のとおり env にセット</strong>して <code>npm run dev</code> を(再)起動する</li>
+<li>必要なパッケージ（フロント <code>@clerk/clerk-react</code> ／ バック <code>@hono/clerk-auth</code>）も <strong>AI が導入してくれる</strong>。導入できたら、サービス側の準備でコピーした2つのキーを<strong>上表のとおり env にセット</strong>して <code>npm run dev</code> を（再）起動する</li>
 <li>フロントはアプリを <strong><code>&lt;ClerkProvider&gt;</code></strong> で包み、サインイン UI を置く。<strong>未ログインなら <code>/mypage</code> に入れない</strong>ようガード</li>
 <li><strong>JWT 検証は <code>@hono/clerk-auth</code> が推奨</strong>（バックでのトークン検証が一気に楽になる）</li>
 <li>バックは<strong>必ずトークンを検証</strong>してから保護 API を返す（フロントの出し分けだけでは保護にならない）</li>
 <li>Section 2 のモック認証（ヘッダ <code>x-user-email</code> を信頼）を、<strong>この Clerk トークン検証に差し替える</strong>のがゴール</li>
-<li><strong>余裕があれば</strong>: マイページだけでなく<strong>購入（ライセンス発行）系の API も認証必須</strong>にし、購入者の email をクライアント入力ではなく<strong>検証済みトークンから取得</strong>する（認証なしだと他人の email を名乗ってライセンスを発行できてしまう——[11] セキュリティで指摘される穴になる）</li>
+<li><strong>余裕があれば</strong>: マイページだけでなく<strong>購入（ライセンス発行）系の API も認証必須</strong>にし、購入者の email をクライアント入力ではなく<strong>検証済みトークンから取得</strong>する（認証なしだと他人の email を名乗ってライセンスを発行できてしまい、[11] セキュリティで指摘される穴になる）</li>
 </ul>
 
 <blockquote class="key">
@@ -1546,11 +1559,15 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <li>取得したトークンを <strong><code>backend/.cf-ops.token</code> に保存</strong>（例 <code>CLOUDFLARE_API_TOKEN=...</code> の1行）。<code>.dev.vars</code> とは<strong>別ファイル</strong>にする（理由は下記）。<code>.gitignore</code> に <code>.cf-ops.token</code> を追加しておく</li>
 </ol>
 <blockquote>
-<p><strong>このトークンは Worker が使うのではなく、運用スキルが shell からファイルを読んで使う</strong>（Cloudflare の集計 API（GraphQL）を叩くため）。ここで注意: <strong><code>.dev.vars</code> は Section 1 の設定で Read を拒否している</strong>ので、スキルが <code>cat</code> 等で読もうとすると<strong>ブロックされる</strong>。そこで運用トークンだけは deny 対象外の<strong>別ファイル（<code>.cf-ops.token</code>）</strong>に分離する。ここに入れるのは <strong>Analytics 読み取り専用</strong>の低権限トークンで、Stripe/Clerk 等の高価値シークレット（<code>.dev.vars</code>）とは分けて扱う。<strong>本番 secret に入れる必要はない</strong>（ローカルにあれば十分）。トークンが無くても <strong><code>wrangler tail</code> のライブログ</strong>は見られる。集計・コスト試算だけがトークン必須。</p>
+<p><strong>このトークンは Worker が使うのではなく、運用スキルが shell からファイルを読んで使う</strong>（Cloudflare の集計 API（GraphQL）を叩くため）。</p>
+<p>ここで注意したいのが置き場所。<strong><code>.dev.vars</code> は Section 1 の設定で Read を拒否している</strong>ので、スキルが <code>cat</code> 等で読もうとすると<strong>ブロックされる</strong>。そこで運用トークンだけは deny 対象外の<strong>別ファイル（<code>.cf-ops.token</code>）</strong>に分離する。ここに入れるのは <strong>Analytics 読み取り専用</strong>の低権限トークンなので、Stripe/Clerk 等の高価値シークレット（<code>.dev.vars</code>）とは分けて扱ってよい。</p>
+<p>なお<strong>本番 secret に入れる必要はない</strong>（ローカルにあれば十分）。また、トークンが無くても <strong><code>wrangler tail</code> のライブログ</strong>は見られる。トークンが必須なのは集計・コスト試算だけ。</p>
 </blockquote>
 
 <h3>運用チェックを「スキル」にする</h3>
-<p>Claude Code のスキルとは、<code>.claude/skills/&lt;名前&gt;/</code> ディレクトリに必要なファイルを置くことで「運用チェックして」のような自然言語で呼び出せる専用コマンドを登録できる機能。[5] で使った <code>/code-review</code> などの「組み込みスキル」は最初から入っているスキル、Section 1 で入れた security-guidance のような「プラグイン」はスキル等をまとめて配布するパッケージ、という関係。毎回同じ確認を <strong>Claude Code のスキル（<code>.claude/skills/</code>）</strong>にしておけば、「<strong>運用チェックして</strong>」の一言で再利用できる。作ってもらうスキルは5つ：</p>
+<p>Claude Code のスキルとは、<code>.claude/skills/&lt;名前&gt;/</code> ディレクトリに必要なファイルを置くことで、「運用チェックして」のような自然言語で呼び出せる専用コマンドを登録できる機能。</p>
+<p>なお [5] で使った <code>/code-review</code> などの「組み込みスキル」は最初から入っているスキルで、Section 1 で入れた security-guidance のような「プラグイン」は、スキルなどをまとめて配布するパッケージにあたる。</p>
+<p>毎回同じ確認を<strong>スキル（<code>.claude/skills/</code>）</strong>にしておけば、「<strong>運用チェックして</strong>」の一言で再利用できる。ここで作ってもらうスキルは次の5つ。</p>
 <table>
 <thead><tr><th>#</th><th>スキル</th><th>やること</th><th>置き場所</th></tr></thead>
 <tbody>
@@ -1612,7 +1629,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
   </ul>
 </li>
 <li><strong>SonarCloud（静的解析）</strong>
-  <blockquote><p>静的解析（コードを実際に動かさずに、書かれた内容を読むだけで問題を見つける手法）を GitHub と連携して行ってくれる SaaS が SonarCloud。コードを push するたびにセキュリティ脆弱性・バグ・コード品質の問題を自動検出し、Claude Code の差分レビューでは気づきにくいパターンを補完する。<strong>初回のアカウント作成〜組織作成は手順が多い</strong>ので、以下は実際の画面ひとつずつに沿って説明する。</p></blockquote>
+  <blockquote><p>SonarCloud は、静的解析（コードを実際に動かさずに、書かれた内容を読むだけで問題を見つける手法）を GitHub と連携して行う SaaS。コードを push するたびにセキュリティ脆弱性・バグ・コード品質の問題を自動検出し、Claude Code の差分レビューでは気づきにくいパターンを補完する。<strong>初回のアカウント作成〜組織作成は手順が多い</strong>ので、以下は実際の画面ひとつずつに沿って説明する。</p></blockquote>
   <ol>
   <li>点検対象を <strong><code>main</code> ブランチに push</strong>（SonarCloud は <code>main</code> / PR を解析）
     <figure class="diagram">
@@ -1645,7 +1662,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
     <img src="img/SonarCloudCreateOrgNameKey.png" alt="SonarCloud の Create an organization 画面 — Name と Key を入力し、Automatically import new GitHub repositories はチェックしないでおく">
     </figure>
   </li>
-  <li>下にスクロールすると <strong>「Enter payment details」</strong>でプランを選ぶ画面が続く。個人の小さな MVP なら容量的に十分なので <strong>「Free」（$0）を選ぶ</strong>（カード情報の入力は不要）
+  <li>下にスクロールすると <strong>「Enter payment details」</strong>でプランを選ぶ画面が続く。個人の小さな MVP なら無料枠で十分なので <strong>「Free」（$0）を選ぶ</strong>（カード情報の入力は不要）
     <figure class="diagram">
     <img src="img/SonarCloudSelectPlan.png" alt="SonarCloud のプラン選択画面 — Free / Team / Enterprise の3択。個人開発者・学生向けの Free（$0）を選ぶ">
     </figure>
@@ -1716,7 +1733,7 @@ Software quality / 重大度: ③をここに
 行番号: ④をここに
 ファイルパス: ⑤をここに</code></pre>
   <p class="note">Claude Code はリポジトリのコードを直接読めるので、この5項目さえ伝われば該当箇所を実際に開いて「なぜ指摘されたか」「どう直すべきか」を具体的に説明できる。</p>
-  <p>もう少し文脈を足したいときは、上図<strong>⑥の「Why is this an issue?」タブ</strong>（「Where is the issue?」の右隣のタブ）を開き、その説明文もあわせて伝えるとよい（SonarCloud独自の解説と、Noncompliant/Compliantのコード例が載っている）。ただしこのタブは長くなりがちで1回のスクショに収まらないことがあるので、<strong>範囲選択してそのままコピー&amp;ペースト</strong>する方が確実（見切れる心配がない）。多くのルールはだいたい同じ構成（説明文 → Noncompliant code example → Compliant solution）で、今回の指摘なら:</p>
+  <p>もう少し文脈を足したいときは、上図<strong>⑥の「Why is this an issue?」タブ</strong>（「Where is the issue?」の右隣のタブ）を開き、その説明文もあわせて伝えるとよい（SonarCloud 独自の解説と、Noncompliant／Compliant のコード例が載っている）。ただしこのタブは長くなりがちで1回のスクショに収まらないことがあるので、<strong>範囲選択してそのままコピー&amp;ペースト</strong>する方が確実（見切れる心配がない）。多くのルールはだいたい同じ構成（説明文 → Noncompliant code example → Compliant solution）で、今回の指摘なら:</p>
   <pre><code>UPDATE and DELETE statements should contain WHERE clauses to keep the modification of records under control. Otherwise unexpected data loss could result.
 
 Noncompliant code example
@@ -1737,18 +1754,19 @@ END;
 </li>
 <li>説明を踏まえて<strong>直すか・誤検知として無視するかを判断</strong>する（鵜呑みにしない。下記ハマりどころ参照）</li>
 </ol>
-<p class="note">Security の指摘が 0 件でも異常ではない。認証境界・IDOR・機密マスクなどの典型的な穴が既に塞がれていれば Security 分類の指摘は出ない。[11]の完了条件（1つ以上修正）は、Reliability・Maintainability の指摘から選んでも構わない。</p>
+<p class="note">Security の指摘が 0 件でも異常ではない。認証境界・IDOR・機密マスクなどの典型的な穴が既に塞がれていれば Security 分類の指摘は出ない。[11] の完了条件（1つ以上修正）は、Reliability・Maintainability の指摘から選んでも構わない。</p>
 
 <h3 class="warn">⚠️ ハマりどころ</h3>
 <ul>
 <li>SonarCloud の指摘には<strong>誤検知（false positive）</strong>もある。<strong>鵜呑みにせず AI と判断</strong>する</li>
-<li>解析単位を分けたいので、<strong>専用リポジトリ</strong>を対象にするのが推奨（<a href="#s07">Git ブランチ参照</a>）</li>
+<li>解析対象を絞りたいので、<strong>このワークショップ用のリポジトリだけ</strong>を対象にするのが推奨（<a href="#s07">Git ブランチ参照</a>）</li>
 <li><strong>意図しないリポジトリまで勝手に解析される</strong>ことがある。原因は2つの組み合わせ:
   <ul>
   <li>SonarCloud の <strong>GitHub App を <code>All repositories</code>（全リポジトリ）で許可</strong>している</li>
   <li>SonarCloud の Organization で<strong>新規リポジトリの自動取り込み（Automatic Analysis / auto-provisioning）が有効</strong></li>
   </ul>
-  → App が見える全リポジトリに push のたび SonarCloud が自動でプロジェクトを生成して解析する。プライベートリポジトリが含まれる場合はコードが外部に送られるため注意。誤って All repositories を選んでしまった場合の対処:
+  <p>この2つがそろうと、App から見えるすべてのリポジトリで、push のたびに SonarCloud が自動でプロジェクトを生成して解析する。プライベートリポジトリが含まれる場合はコードが外部に送られるため注意したい。</p>
+  <p>誤って All repositories を選んでしまった場合は、次のどちらかで対処する。</p>
   <ul>
   <li>GitHub → Settings → Integrations → Applications → SonarCloud → Configure（<a target="_blank" rel="noopener" href="https://github.com/settings/installations">https://github.com/settings/installations</a>）で <code>Only select repositories</code> に変更して対象を絞る</li>
   <li>個別プロジェクトだけ止めたいなら、SonarCloud の対象プロジェクト → Administration → Analysis Method の「Automatic Analysis」を OFF、または Administration → Deletion で削除</li>
@@ -1768,12 +1786,6 @@ END;
 <strong>前提</strong>: <a href="#s6">[6]</a> まで完了していること／<strong>[8] 決済・[9] ID 連携は未実施であること</strong>（実施済みの人は末尾の補足へ）／<strong>Node.js 22 以上</strong>（<code>node -v</code> で確認）<br>
 <strong>学び</strong>: AI が作った MVP について、<strong>自分が決めていなかったことを見つけて決められる</strong>ようになる</p>
 
-<blockquote class="key">
-<p><strong>この課題でコードは1行も書かない。</strong>書くのは録画と AI。</p>
-<p>人間がやるのは<strong>決めること</strong>だけ。①②で「何を保証するか」を決め、④⑤で「その確認で足りているか・赤をどう扱うか」を決める。</p>
-<p>テストが赤くなったとき、その原因は「AI が作ったバグ」よりも<strong>「自分が決めていなかったこと」</strong>であることが多い。それを決めるのがこの課題。決まったあとの実装は AI に直させればよい。</p>
-</blockquote>
-
 <h3>流れ（60分）</h3>
 <table>
 <thead><tr><th>経過</th><th>工程</th><th>やるのは</th><th>できるもの</th></tr></thead>
@@ -1784,8 +1796,8 @@ END;
 <tr><td>25–35</td><td>③ 操作を録画する</td><td>Codegen</td><td><code>tests/*.spec.ts</code> 2本</td></tr>
 <tr><td>35–45</td><td>④ 検証を足して実行する</td><td>AI＋<strong>自分</strong></td><td>緑／赤の判定</td></tr>
 <tr><td>（赤なら）</td><td>⑤ 赤の原因を決める</td><td><strong>自分</strong>＋AI</td><td>+10分</td></tr>
-<tr><td>45–55</td><td>⑥ 壊して赤になるか確かめる</td><td>AI</td><td>—</td></tr>
-<tr><td>55–60</td><td>⑦ コミットする</td><td>AI</td><td>—</td></tr>
+<tr><td>45–55</td><td>⑥ 壊して赤になるか確かめる</td><td>AI</td><td>なし</td></tr>
+<tr><td>55–60</td><td>⑦ コミットする</td><td>AI</td><td>なし</td></tr>
 </tbody>
 </table>
 
@@ -1881,7 +1893,7 @@ END;
 <tr><td>他人のキーが見えない</td><td>⭕</td><td>A購入済み<br>B未購入</td><td>Bの画面にAのキーが出ない</td><td><strong>◎</strong></td><td></td></tr>
 <tr><td>購入するとキーが保存される</td><td>⭕</td><td>新しいメール</td><td>開き直しても出ている</td><td><strong>◎</strong></td><td></td></tr>
 <tr><td>キーは末尾4桁のみ表示</td><td>⭕</td><td>購入済み</td><td>全桁が出ない</td><td></td><td>余ったら</td></tr>
-<tr><td>問い合わせメールが届く</td><td>✕</td><td>—</td><td>—</td><td></td><td>外部の内側。画面で確認できない</td></tr>
+<tr><td>問い合わせメールが届く</td><td>✕</td><td>なし</td><td>なし</td><td></td><td>外部の内側。画面で確認できない</td></tr>
 </tbody>
 </table>
 
@@ -1913,9 +1925,9 @@ npx playwright codegen http://localhost:8787/ -o tests/01-other-user.spec.ts</co
 </tbody>
 </table>
 <ul>
-<li><code>tests/</code> — <code>playwright.config.ts</code> の <code>testDir</code> がここを見ている。別の場所に置くと<strong>実行されない</strong></li>
-<li>番号 — ②の表の上から順に振る。テストが落ちたとき<strong>表のどの行のことか</strong>すぐ分かる</li>
-<li><code>.spec.ts</code> — <strong>この拡張子で終わるファイルだけがテストとして拾われる</strong>（<code>.test.ts</code> も可。<code>.ts</code> だけだと無視される）</li>
+<li>置き場所は <code>tests/</code>。<code>playwright.config.ts</code> の <code>testDir</code> がここを見ているので、別の場所に置くと<strong>実行されない</strong></li>
+<li>番号は②の表の上から順に振る。そうしておくと、テストが落ちたとき<strong>表のどの行のことか</strong>すぐ分かる</li>
+<li>拡張子は <code>.spec.ts</code>。<strong>この拡張子で終わるファイルだけがテストとして拾われる</strong>（<code>.test.ts</code> も可。<code>.ts</code> だけだと無視される）</li>
 </ul>
 
 <blockquote class="warn">
@@ -2038,11 +2050,11 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 
 <h3 class="warn">⚠️ ハマりどころ</h3>
 <ul>
-<li><strong><code>frontend</code> の <code>npm run dev</code>（:5173）で録画してしまう</strong> — API が動かないので購入も送信も失敗する。<code>backend</code> の <code>wrangler dev</code>（:8787）を使う</li>
-<li><strong><code>tests/</code> の中で <code>codegen -o tests/...</code> を実行する</strong> — 落ちて録画が消える</li>
-<li><strong><code>npm run build:front</code> を忘れる</strong> — 画面が古いまま。[5] のテストは全部緑なので、E2E 以外では気づけない</li>
-<li><strong>同じメールアドレスを使い回す</strong> — テストは並列で走るので互いのデータを踏む</li>
-<li><strong><code>expect</code> が弱い</strong> — 「見出しが見える」だけだと壊しても赤にならない。⑥で必ず露見する</li>
+<li><strong><code>frontend</code> の <code>npm run dev</code>（:5173）で録画してしまう</strong>: API が動かないので、購入も送信も失敗する。<code>backend</code> の <code>wrangler dev</code>（:8787）を使うこと</li>
+<li><strong><code>tests/</code> の中で <code>codegen -o tests/...</code> を実行する</strong>: 保存先が見つからずに落ちて、録画が消える</li>
+<li><strong><code>npm run build:front</code> を忘れる</strong>: 画面が古いまま配信される。しかも [5] のテストは全部緑になるので、E2E 以外では気づけない</li>
+<li><strong>同じメールアドレスを使い回す</strong>: テストは並列で走るので、互いのデータを踏む</li>
+<li><strong><code>expect</code> が弱い</strong>: 「見出しが見える」だけだと壊しても赤にならない。これは⑥で必ず露見する</li>
 </ul>
 
 <h3 class="done">✅ 完了の定義</h3>
@@ -2059,7 +2071,7 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 </blockquote>
 
 <details class="spec">
-<summary>なぜ [5] の自動テストとは別にやるのか — 部品検査と試乗</summary>
+<summary>なぜ [5] の自動テストとは別にやるのか（部品検査と試乗）</summary>
 <p>[5] のテストは<strong>部品を1つずつ台の上で検査する</strong>。E2E は<strong>組み上がったものに実際に乗ってみる</strong>。守っている場所が違う。</p>
 <pre><code>         画面(React) ─── HTTP ─── Worker(Hono) ── D1
 [5]      ├────┤                   ├────────┤
@@ -2083,7 +2095,7 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 
 <details class="spec">
 <summary>[8] 決済・[9] ID 連携を先に実施してしまった人へ</summary>
-<p>外部サービスに置き換えるほど、<strong>境界が自分のアプリの外へ移動し、E2E で書ける項目が減る</strong>。痩せた分は <a href="#s5">[5]</a> のテストが引き取る。</p>
+<p>外部サービスに置き換えるほど、<strong>境界が自分のアプリの外へ移動し、E2E で書ける項目が減る</strong>。減った分は <a href="#s5">[5]</a> のテストが引き取る。</p>
 <table>
 <thead><tr><th>保証項目</th><th>[8][9] 実施前</th><th>実施後</th></tr></thead>
 <tbody>
@@ -2102,7 +2114,7 @@ npx playwright codegen http://localhost:8787/ --load-storage=auth-a.json   # 2�
 <p>漏れた場合の被害はアプリのアカウントではなく、<strong>Google アカウントの乗っ取り</strong>。<code>.gitignore</code> に <code>auth-*.json</code> を追記する。</p>
 </blockquote>
 <p class="note"><code>storageState</code> は数日で期限切れになる。サインイン画面に飛ばされたら取り直す。</p>
-<p class="note"><strong>[8] を実施済みの場合</strong>、購入フローの E2E は Stripe の決済画面に入る手前までにする。先方の UI 変更で壊れるため。</p>
+<p class="note"><strong>[8] を実施済みの場合</strong>、購入フローの E2E は Stripe の決済画面に入る手前までにする。Stripe 側の UI 変更で壊れるため。</p>
 </details>
 
 <blockquote class="warn">
@@ -2148,9 +2160,8 @@ npx playwright codegen http://localhost:8787/ --load-storage=auth-a.json   # 2�
 Cloudflare が自動生成した誤った設定でデプロイされてしまうので注意。詳細は下記ハマりどころ）</li>
 <li><strong>Build command に <code>npm install --prefix ../frontend && npm run build:front</code> を設定する</strong>
 （フロントのビルドをここで行う。空のままだとフロントがビルドされない）</li>
-<li><strong>Production branch を <code>main</code> に設定する</strong>（<code>dev</code> への push はプレビューのみになる。
-<a href="#s07">Git ブランチ</a> の運用（<code>dev</code>→<code>main</code> マージ後に SonarCloud 解析）と組み合わせる場合は、
-マージがそのまま本番公開になる点に注意——詳細は <a href="#s07">Git ブランチ</a> 参照）
+<li><strong>Production branch を <code>main</code> に設定する</strong>（<code>dev</code> への push はプレビューのみになる）。<br>
+ただし <a href="#s07">Git ブランチ</a> の運用（<code>dev</code>→<code>main</code> マージ後に SonarCloud 解析）と組み合わせる場合は、マージがそのまま本番公開になる点に注意する。詳細は <a href="#s07">Git ブランチ</a> を参照。
   <figure class="diagram">
   <img src="img/CloudflareConnectRepoSettings.png" class="portrait" alt="Connect to a repository 画面 — Git account・Repository・Production branch・Build command・Deploy command を設定する">
   </figure>
@@ -2162,7 +2173,10 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 
 <h3 class="warn">⚠️ ハマりどころ</h3>
 <ul>
-<li><strong>Path（Root directory）を設定し忘れると、API が全滅する</strong>: このリポジトリは <code>frontend/</code>・<code>backend/</code> に分かれたモノレポ構成。Path を空のままにすると、Cloudflare は「ルートに設定ファイルが無い」と判断し、<code>cloudflare-workers-and-pages[bot]</code> がリポジトリのルートに簡易的な <code>wrangler.jsonc</code> を自動生成して PR を送ってくることがある。この自動生成ファイルは静的配信専用で API のルーティングも D1/KV のバインディングも含まないため、誤ってデプロイされると <strong><code>/api/*</code> が全滅（404）</strong>し、フロントも未ビルドの生ファイルが配信されてしまう。<strong>Path 設定を先に済ませ</strong>、もし該当 PR が来ていたらマージせずクローズする</li>
+<li><strong>Path（Root directory）を設定し忘れると、API が全滅する</strong>: このリポジトリは <code>frontend/</code>・<code>backend/</code> に分かれたモノレポ構成になっている。<br>
+そのため Path を空のままにすると、Cloudflare は「ルートに設定ファイルが無い」と判断し、<code>cloudflare-workers-and-pages[bot]</code> がリポジトリのルートに簡易的な <code>wrangler.jsonc</code> を自動生成して PR を送ってくることがある。<br>
+この自動生成ファイルは静的配信専用で、API のルーティングも D1/KV のバインディングも含まない。だから誤ってデプロイされると <strong><code>/api/*</code> が全滅（404）</strong>し、フロントも未ビルドの生ファイルが配信されてしまう。<br>
+対策として<strong>Path 設定を先に済ませ</strong>、もし該当 PR が来ていたらマージせずクローズすること</li>
 <li><strong>Build command を設定し忘れると、フロントがビルドされない</strong>: 既定の Deploy command は <code>npx wrangler deploy</code> だけで、これは <code>vite build</code>（フロントのビルド）を含まない。必ず上記手順3の Build command を設定する</li>
 <li>デプロイ直後は数秒〜十数秒、変更が全世界のエッジサーバーに伝播しきっていないことがある。すぐにアクセスして 404 が出ても、少し待ってから再確認する</li>
 </ul>
@@ -2214,7 +2228,11 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 <tr><td>Clerk アプリ</td><td>残すならそのまま</td><td>不要ならアプリを削除。<code>frontend/.env</code> の鍵も消す</td></tr>
 <tr><td>Resend API キー</td><td>公開アプリでメール送信（[7]）を使い続けるなら残す</td><td><strong>ダッシュボードで API キーを Revoke（無効化）</strong></td></tr>
 <tr><td>SonarCloud / GitHub App</td><td>継続解析するなら残す</td><td>不要なら SonarCloud のプロジェクトを削除し、GitHub の Installed App から権限を解除</td></tr>
-<tr><td>Cloudflare Workers Builds（Git 連携。<a href="#s13">[13]</a> を試した場合）</td><td>継続して自動デプロイを使うなら残す</td><td>不要なら Cloudflare の Worker → Settings → Build で「Disconnect」する。GitHub 側は<strong>2箇所</strong>の解除が必要（片方だけでは不十分）: <strong>①</strong>GitHub右上のアイコン → Settings（<strong>リポジトリ側の Settings ではなくアカウント側から入る</strong>。入口を間違えると同じ設定でも違う画面に見える）→ Applications → <strong>Installed GitHub Apps</strong> → Cloudflare Workers and Pages を<strong>Uninstall</strong>（リポジトリへのアクセスを削除）。<strong>②</strong>同じ Applications 内の<strong>Authorized GitHub Apps</strong> タブ → Cloudflare Workers and Pages を<strong>Revoke</strong>（①のUninstallだけでは自動的に消えない、別のユーザー認可を取り消す）。画面に出てくる<code>Suspend</code>は一時停止用の別ボタンで、完全に片付ける場合は不要</td></tr>
+<tr><td>Cloudflare Workers Builds（Git 連携。<a href="#s13">[13]</a> を試した場合）</td><td>継続して自動デプロイを使うなら残す</td><td>不要なら Cloudflare の Worker → Settings → Build で「Disconnect」する。<br>
+そのうえで GitHub 側は<strong>2箇所</strong>の解除が必要で、片方だけでは不十分。<br>
+<strong>①</strong> GitHub 右上のアイコン → Settings（<strong>リポジトリ側の Settings ではなくアカウント側から入る</strong>。入口を間違えると同じ設定でも違う画面に見える）→ Applications → <strong>Installed GitHub Apps</strong> → Cloudflare Workers and Pages を <strong>Uninstall</strong>（リポジトリへのアクセスを削除）。<br>
+<strong>②</strong> 同じ Applications 内の <strong>Authorized GitHub Apps</strong> タブ → Cloudflare Workers and Pages を <strong>Revoke</strong>（ユーザー認可の取り消し。①の Uninstall だけでは残ってしまう）。<br>
+なお画面に出てくる <code>Suspend</code> は一時停止用の別ボタンなので、完全に片付ける場合は不要</td></tr>
 </tbody>
 </table></div>
 <p class="note">原則: <strong>鍵（API キー・トークン）は「消す」より先に「無効化（Revoke）」</strong>する（消しても発行済みの鍵は生きているため）。手元の <code>.dev.vars</code> / <code>.cf-ops.token</code> はローカルファイルなので削除でよい（Git には元々入れていない）。</p>
@@ -2229,7 +2247,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 <blockquote class="key">
 <strong>これだけ覚える:</strong> どのキーを使うかは <code>~/.claude.json</code> の記録で決まる。
 <strong><code>rejected</code> にあるキーは無視され</strong>てサブスクが使われ、<strong><code>approved</code> にあるキーは使われる</strong>（サブスクより優先）。
-切り替えとは、この記録を <code>/config</code> や起動時プロンプトで切り替えること。
+切り替えとは、この記録を <code>/config</code> や起動時プロンプトで書き換えること。
 </blockquote>
 
 <h3>認証の記録は <code>~/.claude.json</code> にある</h3>
