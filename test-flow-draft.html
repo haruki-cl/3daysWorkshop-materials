@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>テスト工程ドラフト</title>
+<style>
+:root{
+  --bg:#d6d3ca; --paper:#fffdf8; --ink:#2d2a24; --muted:#6b6453;
+  --accent:#0d9488; --accent-deep:#0f766e; --gold:#c8a96a; --line:#e7e1d3;
+  --code-bg:#f3efe4; --warn-bg:#fcf3e6; --warn-bd:#e3b873;
+  --danger-bg:#fef0ec; --danger-bd:#dc6931; --danger-text:#8a3010;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto; scroll-padding-top:1em;}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,system-ui,sans-serif;
+  line-height:1.85; font-size:16px;
+}
+.wrap{margin-left:280px; padding:56px 28px 120px; padding-top:3.6em;}
+article{
+  max-width:960px; margin:0 auto;
+  background:var(--paper); border:1px solid var(--line); border-radius:16px;
+  padding:48px 56px; box-shadow:0 8px 40px rgba(60,50,30,.06);
+}
+h1,h2,h3,h4{font-family:"Hiragino Mincho ProN","Yu Mincho",serif; line-height:1.4; color:var(--ink); scroll-margin-top:1em;}
+h1{font-size:2rem; margin:0 0 .6em; padding-bottom:.5em; border-bottom:3px solid var(--gold);}
+h2{font-size:1.5rem; margin:4.4em 0 .9em; padding:.35em .8em;
+  border-left:6px solid var(--accent); border-radius:0 6px 6px 0; background:#f0fafa;}
+h3{font-size:1.15rem; margin:3em 0 .6em; color:var(--ink); letter-spacing:.02em;
+  padding-bottom:.3em; border-bottom:1px solid var(--line);}
+h2 + h3, h3 + h4{margin-top:1.2em;}
+h4{font-size:1.02rem; margin:2em 0 .3em; color:var(--ink);}
+p{margin:.85em 0}
+a{color:var(--accent);}
+strong{color:var(--ink); font-weight:700}
+hr{border:0; border-top:1px dashed var(--line); margin:3em 0;}
+ul,ol{margin:.8em 0 1.1em; padding-left:1.6em}
+li{margin:.35em 0}
+li::marker{color:var(--gold)}
+ol>li{font-size:.97rem; font-weight:500; color:var(--ink); margin:3.2em 0; line-height:1.65;}
+ol ol>li,li ol>li{margin:1.2em 0;}
+ul>li{font-size:.88rem; font-weight:400; color:var(--muted); margin:1.1em 0;}
+ol>li>ul{margin:1.1em 0 1.6em}
+code{background:var(--code-bg); padding:.12em .42em; border-radius:5px; font-size:.9em;
+  font-family:"SFMono-Regular",Menlo,Consolas,monospace; color:#7a4f2a;}
+pre{background:#2d2a24; color:#f4efe4; padding:18px 20px; border-radius:10px; overflow:auto;
+  font-size:.86rem; line-height:1.6; box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
+  margin:1.1em 0;}
+pre code{background:none; color:inherit; padding:0; font-size:.95em;}
+blockquote{
+  margin:1.3em 0; padding:.6em 1.1em;
+  border-left:3px solid var(--line); color:var(--muted); font-size:.92rem;
+}
+blockquote p{margin:.5em 0}
+blockquote.key{
+  padding:1.1em 1.3em; background:var(--warn-bg);
+  border-left:5px solid var(--warn-bd); color:#5c4a2e; font-size:1rem;
+}
+h3.done{margin:3em 0 .8em; padding:.55em .95em; background:#e6fafa; border-bottom:none;
+  border-left:5px solid var(--accent); border-radius:0 8px 8px 0;
+  color:var(--accent-deep); font-size:1.08rem;}
+h3.warn{margin:3em 0 .8em; padding:.55em .95em; background:var(--danger-bg); border-bottom:none;
+  border-left:5px solid var(--danger-bd); border-radius:0 8px 8px 0;
+  color:var(--danger-text); font-size:1.08rem;}
+p.warn{margin:1em 0; padding:.85em 1.2em; background:var(--danger-bg);
+  border-left:5px solid var(--danger-bd); border-radius:0 8px 8px 0;
+  color:var(--danger-text); font-size:.97rem;}
+p.warn strong{color:var(--danger-text);}
+p.note,div.note{margin:.9em 0; padding:.7em 1.1em; background:#f5f2ea; border-left:3px solid var(--line);
+  border-radius:0 6px 6px 0; font-size:.92rem; color:var(--muted);}
+div.note>p{margin:.45em 0; font-size:1em; color:inherit;}
+div.note>p:first-child{margin-top:0;}
+div.note>p:last-child{margin-bottom:0;}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1.1em 0;}
+table{border-collapse:collapse; width:100%; margin:0; font-size:.93rem;
+  background:#fff; border:1px solid var(--line); border-radius:10px; overflow:hidden;}
+th,td{padding:10px 13px; border:1px solid var(--line); text-align:left; vertical-align:top; white-space:normal;}
+td:first-child,th:first-child{white-space:nowrap;}
+thead th{background:var(--accent); color:#fff; font-weight:600; border-color:var(--accent);}
+tbody tr:nth-child(even){background:#faf7ef}
+.foot{text-align:center;color:var(--muted);font-size:.8rem;margin-top:30px}
+details.spec{margin:1.1em 0;border:1px solid var(--line);border-radius:10px;background:#fbf9f2;padding:0 1.1em;}
+details.spec>summary{cursor:pointer;padding:.85em .2em;font-weight:600;color:var(--accent-deep);font-family:"Hiragino Mincho ProN","Yu Mincho",serif;list-style-position:inside;}
+details.spec[open]{padding-bottom:.8em;}
+details.spec pre{margin:.5em 0 0;}
+#toc-btn{
+  position:fixed; bottom:28px; left:28px;
+  width:44px; height:44px; border-radius:50%;
+  background:var(--accent); color:#fff; border:none; cursor:pointer;
+  font-size:1.25rem; box-shadow:0 4px 14px rgba(0,0,0,.18);
+  display:none; align-items:center; justify-content:center;
+  transition:background .2s; z-index:100;
+}
+#toc-btn:hover{background:var(--accent-deep);}
+#toc-overlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.3);
+  opacity:0; pointer-events:none; transition:opacity .25s; z-index:200;
+}
+#toc-overlay.show{opacity:1; pointer-events:auto;}
+#toc-panel{
+  position:fixed; top:0; left:0; height:100vh; width:280px;
+  background:var(--paper); border-right:1px solid var(--line);
+  z-index:300; overflow-y:auto; padding:24px 20px; padding-top:3.4em;
+}
+@media(max-width:900px){
+  #toc-btn{display:flex;}
+  #toc-panel{box-shadow:4px 0 24px rgba(0,0,0,.15); transform:translateX(-100%); transition:transform .28s ease;}
+  #toc-panel.show{transform:translateX(0);}
+  .wrap{margin-left:0 !important;}
+}
+#toc-panel-head{
+  font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
+  font-size:1rem; font-weight:600; color:var(--muted);
+  margin:0 0 12px; padding-bottom:8px; border-bottom:2px solid var(--line);
+}
+#toc-panel ul{list-style:none; padding:0; margin:0;}
+#toc-panel li{margin:.2em 0; font-size:.88rem; font-weight:400; color:var(--ink);}
+#toc-panel a{
+  display:block; padding:.3em .5em; border-radius:5px;
+  text-decoration:none; color:var(--ink); font-size:.88rem;
+  transition:background .15s;
+}
+#toc-panel a:hover{background:var(--code-bg); color:var(--accent);}
+.toc-group-label{
+  display:block; margin:1.1em 0 .3em; padding:.2em .5em;
+  font-size:.75rem; font-weight:700; letter-spacing:.05em;
+  border-radius:4px; background:var(--line); color:var(--muted);
+  text-decoration:none;
+}
+#totop{
+  position:fixed; bottom:28px; right:28px;
+  width:44px; height:44px; border-radius:50%;
+  background:var(--accent); color:#fff; border:none; cursor:pointer;
+  font-size:1.2rem; box-shadow:0 4px 14px rgba(0,0,0,.18);
+  opacity:0; pointer-events:none; transition:opacity .25s;
+  display:flex; align-items:center; justify-content:center;
+}
+#totop.show{opacity:1; pointer-events:auto;}
+#totop:hover{background:var(--accent-deep);}
+.copy-wrap{position:relative;}
+.copy-wrap>pre{padding-right:76px;}
+.copy-btn{
+  position:absolute; top:8px; right:8px;
+  background:rgba(255,255,255,.13); color:#b0a890;
+  border:1px solid rgba(255,255,255,.18); border-radius:5px;
+  padding:3px 10px; font-size:.73rem; cursor:pointer;
+  font-family:system-ui,sans-serif; transition:background .15s, color .15s;
+  user-select:none; line-height:1.4;
+}
+.copy-btn:hover{background:rgba(255,255,255,.24);}
+.copy-btn.copied{background:var(--accent); color:#fff; border-color:var(--accent);}
+@media(max-width:640px){
+  article{padding:30px 20px}
+  .wrap{padding:28px 12px 80px;}
+}
+</style></head>
+<body>
+<div class="wrap"><article>
+
+<h1 id="top">テスト工程ドラフト</h1>
+
+<div class="note">
+<p>このドラフトは、<code>flow.html</code> の <code>[5] レビューと自動テスト</code> の後半（自動テスト）を差し替えるために書いた。</p>
+<p>工程の番号は、現行 [5] の <code>①</code> レビューに続けて <code>②</code>〜<code>⑦</code> とした。</p>
+</div>
+
+<h2 id="goal">ゴールと考え方</h2>
+
+<p><strong>ゴール:</strong> AI が書いたコードについて、「何を守れていて、何を守れていないか」を一覧で言える状態にする。</p>
+
+<p><strong>考え方:</strong> この工程は、テストを緑にすることを目標にしていない。
+テストは、何も検査していなくても緑になる。
+だから緑の本数を数えても、何を守れているかは分からない。
+守るべきことを決め、一つずつ確かめて結果を書き残すところまでが、この工程である。</p>
+
+<p><strong>分担:</strong> 要件を決めるところから結果を判定するところまで、全部を AI に任せることはできない。
+アプリを誰が使うか、何が起きたら困るかを知っているのは人間だけである。
+そしてテストが落ちたとき、AI はアプリではなくテストのほうを緩めて通すことがある。
+だから工程ごとに、AI に書かせる部分と人間が決める部分を分けてある。</p>
+
+<h2 id="flow">全体の流れ</h2>
+
+<table>
+<thead><tr><th>工程</th><th>やること</th><th>できあがるもの</th></tr></thead>
+<tbody>
+<tr><td>②</td><td>AI と壁打ちして、守られるべきことを箇条書きにする</td><td><code>TEST.md</code> の「テスト要件」</td></tr>
+<tr><td>③</td><td>要件ごとに「どこが壊れていたら守られないか」を挙げ、表にする</td><td><code>TEST.md</code> の「テスト項目」</td></tr>
+<tr><td>④</td><td>表で指定した種類の分だけ実行環境を用意する</td><td>Vitest の設定</td></tr>
+<tr><td>⑤</td><td>表を渡してテストコードを書かせる</td><td>テストファイル</td></tr>
+<tr><td>⑥</td><td>バックとフロントそれぞれで実行する</td><td>実行結果</td></tr>
+<tr><td>⑦</td><td>表の結果列を埋め、落ちた原因を切り分ける</td><td>結果入りの表</td></tr>
+</tbody>
+</table>
+
+<h2 id="s2">② テスト要件を決める（Why）</h2>
+
+<h3>流れ</h3>
+
+<ol>
+<li>
+Claude Code に壁打ちを頼む。前提を人間が先に整理しておく必要はない。
+
+<pre><code>このアプリのテスト要件を決めたい。壁打ちに付き合ってほしい。
+
+まず、要件を決めるために必要なことを私に質問して。
+わからないことは推測せず、必ず質問すること。
+
+決まったら docs/TEST.md の「## テスト要件」に箇条書きで書いて。
+各項目は「〜してはいけない」「〜は必ず」の形にすること。</code></pre>
+
+<p>「わからないことは推測せず質問して」の一行がないと、AI は「一般利用者向けの公開サービスと仮定して」と書いて先に進む。
+前提を想像で埋めれば、そこから導く要件も想像になる。</p>
+</li>
+
+<li>
+出てきた項目を、載せる基準にかけて取捨する。基準は<strong>破られたら何が起きるかを1行で言えること</strong>。
+
+<table>
+<thead><tr><th>項目</th><th>破られたら</th><th>判定</th></tr></thead>
+<tbody>
+<tr><td>他人のライセンスキーが返る</td><td>買っていない人が使える。個人情報が漏れる</td><td>載せる</td></tr>
+<tr><td>購入したキーが消える</td><td>金を受け取ってモノを渡していない状態になる</td><td>載せる</td></tr>
+<tr><td>レスポンスが遅い</td><td>言えない（何秒から問題かを決めていない）</td><td>載せない</td></tr>
+<tr><td>エラーが出ない</td><td>言えない（何も起きていない状態と区別できない）</td><td>載せない</td></tr>
+</tbody>
+</table>
+</li>
+
+<li>
+<code>docs/TEST.md</code> がこの形になったら ② は終わり。
+
+<pre><code>## テスト要件
+
+- ライセンスキーとメールアドレスを本人以外に返さない
+- 購入が成立したらライセンスは必ず発行され、再読込しても消えない
+- ユーザが登録される
+- 認証が必要な API は未認証のアクセスを拒否する
+- 必須項目が空の入力を受け付けない</code></pre>
+</li>
+</ol>
+
+<h3>ポイント</h3>
+
+<ul>
+<li>ここで出た要件が以降すべての土台になるので、モデルは高精度なもの（Fable / Opus）を使う。</li>
+<li>書き終えた「## テスト要件」は、③ 以降で AI に書き換えさせない。
+上書きされると、③ で項目を判定する根拠と、⑦ で原因を帰属させる根拠が消える。</li>
+<li>要件を数え上げきることは目標にしない。
+数え上げたかどうかを確かめる手段がないので、いくら時間をかけても終わったと判断できない。</li>
+</ul>
+
+<h2 id="s3">③ 何をテストするかを決める（What）</h2>
+
+<h3>流れ</h3>
+
+<ol>
+<li>
+Claude Code に表を書かせる。
+
+<pre><code>docs/TEST.md の「## テスト要件」と SCREEN_SPEC.md を読んで、
+同じファイルに「## テスト項目」として表を追記して。
+
+・要件1つについて「どこが壊れていたらこの要件が守られないか」を挙げ、
+  挙げた場所ごとに1行を作る
+・列は「番号 | 守る項目 | どこで確かめる | 前提条件 | やること | 期待結果 | 結果」
+・「どこで確かめる」は 関数 / API / 画面 のどれか
+・見る場所が違えば別の行にする（レスポンスを見る行と DB を見る行は分ける）
+・前提条件は空欄にしないこと
+・「結果」列は空欄のままにする
+・「## テスト要件」は読むだけ。書き換えないこと
+・期待値の根拠は要件と SCREEN_SPEC.md の記述に置き、実装コードから推測しないこと</code></pre>
+
+<p>このプロンプトの中心は、<strong>どこが壊れていたらこの要件が守られないか</strong>を挙げさせるところにある。
+「ユーザが登録される」なら、フォームが送信していない、API がリクエストを処理していない、DB に入っていない、入ったものが読み出せない、の4か所が出る。
+このうち1か所でも壊れれば、ユーザは登録できない。
+だから挙げた場所ごとに1行を作る。
+API だけ確かめて済ませると、送信ボタンが繋がっていないことに気付けない。</p>
+</li>
+
+<li>
+こういう表になる。
+
+<table>
+<thead><tr><th>番号</th><th>守る項目</th><th>どこで確かめる</th><th>前提条件</th><th>やること</th><th>期待結果</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td>T-001</td><td>ユーザが登録される</td><td>画面</td><td>登録フォームを表示</td><td>有効な値で送信</td><td>登録 API が呼ばれる</td><td></td></tr>
+<tr><td>T-002</td><td>ユーザが登録される</td><td>API</td><td>DB が空</td><td>POST /api/users</td><td>201 が返る</td><td></td></tr>
+<tr><td>T-003</td><td>ユーザが登録される</td><td>API</td><td>同上</td><td>POST 後に DB を直接見る</td><td>レコードが1件ある</td><td></td></tr>
+<tr><td>T-004</td><td>ユーザが登録される</td><td>API</td><td>T-003 の状態</td><td>GET /api/users/:id</td><td>保存した値が返る</td><td></td></tr>
+<tr><td>T-005</td><td>キーを本人以外に返さない</td><td>API</td><td>A 購入済み、B 未購入</td><td>B でライセンス取得 API</td><td>A のキーが返らない</td><td></td></tr>
+<tr><td>T-006</td><td>キーを本人以外に返さない</td><td>画面</td><td>同上</td><td>B でマイページを開く</td><td>A のキーが出ない</td><td></td></tr>
+</tbody>
+</table>
+</li>
+
+<li>
+人間が確認する。見るものが2つあるので、順番に見る。
+
+<table>
+<thead><tr><th>順</th><th>見るもの</th><th>やること</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>観点の抜け</td><td>挙げた場所が足りているか。「ユーザが登録される」に DB の行がない等</td></tr>
+<tr><td>2</td><td>テストしなくていい箇所</td><td>挙げた場所のうち、確かめるコストに見合わないものを落とす</td></tr>
+</tbody>
+</table>
+
+<p>1 と 2 を同時に見ると、片方が浅くなる。
+足りない行を探す作業と、多すぎる行を削る作業は、向きが逆だからである。
+1 を確定させてから 2 に入る。
+落とした行には、落とした理由を1行残す。</p>
+</li>
+</ol>
+
+<h3>「どこで確かめる」の3種</h3>
+
+<p>この列が、原案でいう「テストスイートの指定」に当たる。
+<code>npm test</code> が3つ並ぶのは、テストを走らせるランナーが同じで、その下の実行環境だけが違うからである。
+環境と必要なパッケージは ④ で用意する。</p>
+
+<table>
+<thead><tr><th>語</th><th>叩く場所</th><th>見る場所</th><th>コマンド</th></tr></thead>
+<tbody>
+<tr><td>関数</td><td>関数を直接呼ぶ</td><td>戻り値</td><td><code>npm test</code></td></tr>
+<tr><td>API</td><td>HTTP リクエストを投げる</td><td>レスポンスと DB</td><td><code>npm test</code></td></tr>
+<tr><td>画面</td><td>React を描画して操作</td><td>描画された内容</td><td><code>npm test</code></td></tr>
+</tbody>
+</table>
+
+<p>同じ「API」でも、T-002 と T-003 は別の行になる。
+T-002 はレスポンスを見て、T-003 は DB を見る。
+API が 201 を返しても、DB に書けていないことはある。</p>
+
+<div class="note">
+<p>本物のブラウザで画面からデータベースまで通すテストは、この工程に含めない。
+Section 3 の [12] E2E テストで扱う。</p>
+</div>
+
+<h3>ポイント</h3>
+
+<ul>
+<li><strong>前提条件の列を空欄のまま ⑤ に進めない。</strong>
+空欄だと、AI は初期状態を用意するコードを書かない。
+前のテストが残したデータがそのまま残り、テストはそれを見て通ってしまう。</li>
+<li>確かめる場所は、実行が速く書く手間も小さいほうから選ぶ。
+関数がいちばん軽く、API、画面の順に重くなる。
+同じことを確かめられるなら、軽いほうを選ぶ。</li>
+<li>要件を壊れる場所ごとに行に分けておくと、⑦ で落ちた行がそのまま原因の場所を指す。
+1本のテストで画面からデータベースまで通してしまうと、落ちたときにどこが原因か分からない。</li>
+<li>番号は、AI にテスト名の先頭へ入れさせる。
+⑦ で表の行とテストコードを番号で照合するために使う。</li>
+</ul>
+
+<h2 id="s4">④ テストスイートを用意する</h2>
+
+<p>③ の表の「どこで確かめる」列に出てきた種類だけを用意する。
+「関数」の行しかなければ、画面テスト用のパッケージは入れない。</p>
+
+<pre><code>docs/TEST.md の「## テスト項目」の「どこで確かめる」列を見て、
+必要なテスト環境だけを用意して。
+
+・関数・API のテスト（backend/）: @cloudflare/vitest-pool-workers を使い、
+  設定は cloudflareTest プラグイン方式で書く
+・画面のテスト（frontend/）: 同じ Vitest を jsdom 環境で使い、
+  @testing-library/react で描画・操作する
+・表に出てこない種類の環境は入れないこと</code></pre>
+
+<h2 id="s5">⑤ テストコードを書かせる（How）</h2>
+
+<pre><code>docs/TEST.md の「## テスト項目」の表に従ってテストを実装して。
+
+・テスト名の先頭に表の番号を入れる（例: test('T-003 POST 後に DB にレコードが1件ある', ...)）
+・「期待結果」列の値をそのまま使い、実装コードから推測しないこと
+・表にない項目を勝手に足さないこと
+・test.skip / it.todo / it.only を使わないこと
+・固定待ち（waitForTimeout）を入れないこと
+・外部サービスへの fetch はすべてモックすること</code></pre>
+
+<p>番号をテスト名の先頭に入れておくと、⑦ で表とテストコードを <code>grep</code> だけで突き合わせられる。</p>
+
+<h2 id="s6">⑥ 実行する</h2>
+
+<p>バックとフロントは別パッケージなので、それぞれのディレクトリで実行する。</p>
+
+<pre><code>cd backend  &amp;&amp; npm test
+cd ../frontend &amp;&amp; npm test</code></pre>
+
+<p class="warn"><strong>出力の skipped が0件であることを、人間が自分で見る。</strong>
+<code>skip</code> や <code>todo</code> が付いたテストは実行されない。
+実行されなかった分は失敗として数えられないので、本数が足りないまま「全部緑」と表示される。</p>
+
+<h3>ここでコミットする</h3>
+
+<p>⑦ でテストファイルの差分を見るが、git に追跡されていないファイルは差分が出ない。
+先にコミットしておかないと、テストが改変されていても気付けない。</p>
+
+<pre><code>docs/TEST.md とテストコードとテストの設定をコミットして。
+このあと git で確認するので、私が言うまで追加のコミットはしないこと。</code></pre>
+
+<h2 id="s7">⑦ 集計して原因を切り分ける</h2>
+
+<h3>流れ</h3>
+
+<ol>
+<li>
+表とテストコードを番号で突き合わせる。
+
+<pre><code>docs/TEST.md の表にある番号と、テストコードのテスト名に入っている番号を
+grep で抽出して diff で突き合わせて。
+
+実行したコマンドと出力をそのまま見せること。要約しないこと。
+判定はこちらでする。</code></pre>
+
+<ul>
+<li>表にあってコードにない → ③ の項目が ⑤ で落ちている</li>
+<li>コードにあって表にない → AI が勝手に足している</li>
+</ul>
+</li>
+
+<li>
+落ちた原因を切り分けさせる。<strong>この時点では直させない。</strong>
+
+<pre><code>落ちているテストの原因を切り分けて。
+実装が要件を満たしていないのか、テストの書き方（ロケーター・期待値）が
+悪いのか、それぞれについて判定だけ報告して。
+まだ何も直さないこと。</code></pre>
+
+<p>診断と修正を1回のやりとりでまとめて頼むと、AI はテストの期待値を緩めて緑にする道を選べる。
+実装を直すより手数が少ないからである。
+判定だけを先に受け取り、どちらを直すかは人間が決める。</p>
+</li>
+
+<li>
+判定に応じて表の「結果」列を埋める。
+
+<table>
+<thead><tr><th>番号</th><th>守る項目</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td>T-002</td><td>ユーザが登録される</td><td>緑 → 保証できる</td></tr>
+<tr><td>T-003</td><td>ユーザが登録される</td><td>落ちた → 保存処理が未対応</td></tr>
+<tr><td>T-005</td><td>キーを本人以外に返さない</td><td>落ちた → 認可の抜け（バグ）</td></tr>
+</tbody>
+</table>
+
+<p>要件を壊れる場所ごとに分けて行にしてあるので、落ちた行がそのまま原因の場所を指す。
+T-001 が落ちたなら画面、T-003 が落ちたなら保存処理である。</p>
+</li>
+
+<li>
+直す対象を指示する。テストファイルは変更禁止だと明示する。
+
+<pre><code>T-005 の原因は認可の抜けなので、backend の実装を直して。
+テストファイルは変更しないこと。</code></pre>
+</li>
+
+<li>
+修正後に、テストファイルが変わっていないことを人間が見る。
+
+<pre><code>git diff --stat -- '*.test.ts' '*.test.tsx'</code></pre>
+
+<p>ここに差分が出ていたら、直されたのはアプリではなくテストである。</p>
+</li>
+
+</ol>
+
+<h3>完了したら push する</h3>
+
+<p>手順5 の差分確認が終わってから push する。
+ここまで追加のコミットを止めていたので、残っている変更をまとめる。</p>
+
+<pre><code>テスト工程の作業をコミットして dev ブランチに push して。</code></pre>
+
+<h3>ポイント</h3>
+
+<ul>
+<li>落ちた原因が実装か、テストか、要件かを切り分ける作業は、この工程でいちばん推論を要する。
+モデルは ② と同じく高精度なものを使う。</li>
+<li>全部が緑にならなくてよい。
+落ちた行は「作ったつもりが作られていなかった」という発見であり、表に残せばそれも成果になる。</li>
+</ul>
+
+<h3 class="done">✅ 完了の定義</h3>
+
+<ul>
+<li><code>docs/TEST.md</code> に「テスト要件」と「テスト項目」の表があり、各行の「前提条件」が埋まっている</li>
+<li>表の番号とテストコードのテスト名が一致している（どちらか片方にしかない番号がない）</li>
+<li><code>npm test</code> の出力に skipped が0件</li>
+<li>表の「結果」列がすべて埋まっている（緑／落ちた＋原因）</li>
+<li>落ちた項目を直した場合、テストファイルに差分が入っていない</li>
+</ul>
+
+<h3 class="warn">⚠️ ハマりどころ</h3>
+
+<ol>
+<li><strong>「テストを通して」と頼んでしまう。</strong>
+アプリに問題があるときでも、AI はテストの期待値を緩めて応じることがある。
+診断を頼むターンと、修正を頼むターンを分ける。</li>
+<li><strong>前提条件が空欄のまま ⑤ に進む。</strong>
+前のテストが残したデータを見て緑になるので、実装が壊れていても気付けない。</li>
+<li><strong>AI が「画面」に寄せる。</strong>
+画面を操作すれば何でも確かめられるように見えるため、行の割り当てを任せると画面が増える。
+「どこで確かめる」は人間が決める。</li>
+<li><strong>AI が要件を書き換える。</strong>
+同じ <code>TEST.md</code> に追記していくので、黙っていると「テスト要件」ごと整形し直す。
+「読むだけ」を毎回プロンプトに書く。</li>
+</ol>
+
+<p class="foot">テスト工程ドラフト</p>
+
+</article></div>
+
+<button id="toc-btn" title="目次" aria-label="目次を開く">☰</button>
+<div id="toc-overlay"></div>
+<nav id="toc-panel">
+  <p id="toc-panel-head">目次</p>
+  <a class="toc-group-label" href="#top">テスト工程ドラフト</a>
+  <ul>
+    <li><a href="#goal">ゴールと考え方</a></li>
+    <li><a href="#flow">全体の流れ</a></li>
+  </ul>
+  <a class="toc-group-label" href="#s2">工程</a>
+  <ul>
+    <li><a href="#s2">② テスト要件</a></li>
+    <li><a href="#s3">③ 何をテストするか</a></li>
+    <li><a href="#s4">④ スイートを用意</a></li>
+    <li><a href="#s5">⑤ テストコード</a></li>
+    <li><a href="#s6">⑥ 実行</a></li>
+    <li><a href="#s7">⑦ 集計と切り分け</a></li>
+  </ul>
+</nav>
+<button id="totop" title="ページ先頭へ" aria-label="ページ先頭へ戻る" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const totop=document.getElementById('totop');
+window.addEventListener('scroll',()=>totop.classList.toggle('show',window.scrollY>300));
+
+const panel=document.getElementById('toc-panel');
+const overlay=document.getElementById('toc-overlay');
+document.getElementById('toc-btn').addEventListener('click',()=>{
+  overlay.classList.add('show'); panel.classList.add('show');
+});
+overlay.addEventListener('click',()=>{
+  overlay.classList.remove('show'); panel.classList.remove('show');
+});
+panel.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  overlay.classList.remove('show'); panel.classList.remove('show');
+}));
+
+// テーブルを横スクロールラッパーで包む
+document.querySelectorAll('article table').forEach(t=>{
+  const w=document.createElement('div');
+  w.className='table-wrap';
+  t.parentNode.insertBefore(w,t);
+  w.appendChild(t);
+});
+
+// コピーボタンを全 pre に追加
+document.querySelectorAll('pre').forEach(pre => {
+  const wrap = document.createElement('div');
+  wrap.className = 'copy-wrap';
+  pre.parentNode.insertBefore(wrap, pre);
+  wrap.appendChild(pre);
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', () => {
+    const text = (pre.querySelector('code') || pre).innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ コピーしました';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 2000);
+    });
+  });
+  wrap.appendChild(btn);
+});
+</script>
+</body></html>

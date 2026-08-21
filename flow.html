@@ -54,6 +54,8 @@ li{margin:.35em 0}
 li::marker{color:var(--gold)}
 /* 番号リスト（手順）= 主役 */
 ol>li{font-size:.97rem; font-weight:500; color:var(--ink); margin:3.2em 0; line-height:1.65;}
+/* 入れ子の番号リストは最上位ほど間隔を取らない */
+ol ol>li,li ol>li{margin:1.2em 0;}
 /* 箇条書き（補足・Tips）= 脇役：細く・小さく・薄く */
 ul>li{font-size:.88rem; font-weight:400; color:var(--muted); margin:1.1em 0;}
 /* 手順リスト（ol）配下の入れ子 ul の下端余白 */
@@ -209,6 +211,8 @@ details.spec pre{margin:.5em 0 0;}
 }
 /* コピーボタン */
 .copy-wrap{position:relative;}
+/* コピーボタンとコード1行目の重なりを防ぐ */
+.copy-wrap>pre{padding-top:40px;}
 .copy-btn{
   position:absolute; top:8px; right:8px;
   background:rgba(255,255,255,.13); color:#b0a890;
@@ -310,7 +314,7 @@ details.spec pre{margin:.5em 0 0;}
 <tbody>
 <tr><td><strong>Section 1</strong></td><td>UI設計（Claude Design）とフロント実装（Claude Code）</td><td>目的・技術紹介 / 環境確認 / [1] デザイン / [2] フロント / [3] フロントデプロイ</td></tr>
 <tr><td><strong>Section 2</strong></td><td>バックエンド実装（Claude Code）と品質担保</td><td>[4] バック / [5] 自動テスト / [6] 再デプロイ（Section 1 と同じ URL に API を統合）</td></tr>
-<tr><td><strong>Section 3</strong></td><td>機能追加と運用（メール、決済、ID連携、自動デプロイ等）</td><td>オプション課題 [7]〜[13] / ラップアップ・発表会</td></tr>
+<tr><td><strong>Section 3</strong></td><td>機能追加と品質確保（メール、決済、ID連携、自動デプロイ等）</td><td>オプション課題 [7]〜[13] / ラップアップ・発表会</td></tr>
 </tbody>
 </table>
 
@@ -334,7 +338,7 @@ details.spec pre{margin:.5em 0 0;}
 </tbody>
 </table>
 <blockquote class="key">
-<p><strong>必達は [1]〜[6]（Section 1〜2 全員）</strong>。<br><strong>Section 3 の [7]〜[13] は任意</strong>(やらない／1つだけ、も可)。</p>
+<p><strong>必達は [1]〜[6]（Section 1〜2 全員）</strong>。<br><strong>Section 3 の [7]〜[13] は任意</strong>（やらない／1つだけ、も可）。</p>
 </blockquote>
 
 <hr>
@@ -346,7 +350,7 @@ details.spec pre{margin:.5em 0 0;}
 <tbody>
 <tr><td>0:00–0:10</td><td>オープニング: 目的・ゴール・技術紹介・全体像</td></tr>
 <tr><td>0:10–0:20</td><td>環境確認（node / git / claude 確認。手短に。wrangler は [3] で導入）</td></tr>
-<tr><td>0:20–0:50</td><td>[1] Claude Design（LP のデザインシステム（配色・トーン・構成）を確定する。3案 → 1つ選ぶ → zip 書き出し。<strong>機能ページは [2] で Claude Code が実装</strong>）</td></tr>
+<tr><td>0:20–0:50</td><td>[1] Claude Design: LP のデザインシステム（配色・トーン・構成）を確定する。<br>3案 → 1つ選ぶ → zip 書き出し。<br><strong>機能ページは [2] で Claude Code が実装</strong></td></tr>
 <tr><td>0:50–1:35</td><td>[2] フロント作成（デザイン zip を渡して全画面・モックで動かす）</td></tr>
 <tr><td>1:35–1:50</td><td>[3] フロントを Cloudflare Workers にデプロイ（URL を共有） 🎉</td></tr>
 <tr><td>1:50–2:00</td><td>クロージング: dev ブランチに git push できているか確認</td></tr>
@@ -365,7 +369,7 @@ details.spec pre{margin:.5em 0 0;}
 </tbody>
 </table>
 
-<h3>Section 3: 機能追加と運用（メール、決済、ID連携、自動デプロイ等）</h3>
+<h3>Section 3: 機能追加と品質確保（メール、決済、ID連携、自動デプロイ等）</h3>
 <table>
 <thead><tr><th>経過</th><th>内容</th></tr></thead>
 <tbody>
@@ -380,7 +384,7 @@ details.spec pre{margin:.5em 0 0;}
 
 <h2 id="s05">使う技術の紹介</h2>
 <figure class="diagram">
-<img src="img/tech_stack.svg" alt="技術スタック一覧: Claude Design, Claude Code, Vite+React+TS, Tailwind CSS v4+shadcn/ui, Hono, Cloudflare Workers, Cloudflare D1, Vitest と Section 3 オプション">
+<img src="img/tech_stack.svg" alt="技術スタック一覧: Claude Design, Claude Code, Vite+React+TS, Tailwind CSS v4+shadcn/ui, Hono, Cloudflare Workers, Cloudflare D1, Vitest。Section 3 オプションとして Resend, Stripe, Clerk, SonarCloud, Playwright">
 </figure>
 <table>
 <thead><tr><th>カテゴリ</th><th>技術</th><th>選定理由（一言）</th></tr></thead>
@@ -393,7 +397,11 @@ details.spec pre{margin:.5em 0 0;}
 <tr><td>実行基盤</td><td>Cloudflare Workers</td><td>無料枠で本番公開まで行ける</td></tr>
 <tr><td>DB</td><td>Cloudflare D1</td><td>SQLite データベース。Workers にビルトインでセットアップ最小</td></tr>
 <tr><td>テスト</td><td>Vitest（+ vitest-pool-workers）</td><td>フロント・バックで統一できる</td></tr>
-<tr><td>（Section 3）</td><td>Resend / Stripe / Clerk / SonarCloud</td><td>Section 3 のオプション課題で登場</td></tr>
+<tr><td>メール（Section 3）</td><td>Resend（[7]）</td><td>メール送信 API。無料枠で自分宛の送信をすぐ試せる</td></tr>
+<tr><td>決済（Section 3）</td><td>Stripe（[8]）</td><td>決済のデファクト。テストモードで本物の課金なしに一周できる</td></tr>
+<tr><td>認証（Section 3）</td><td>Clerk（[9]）</td><td>ユーザー認証 SaaS。ログイン UI とトークン検証をまとめて任せられる</td></tr>
+<tr><td>静的解析（Section 3）</td><td>SonarCloud（[11]）</td><td>GitHub 連携。push ごとに脆弱性・バグを自動検出</td></tr>
+<tr><td>E2E テスト（Section 3）</td><td>Playwright（[12]）</td><td>ブラウザ操作を録画してテストコードにできる</td></tr>
 </tbody>
 </table>
 
@@ -516,7 +524,17 @@ details.spec pre{margin:.5em 0 0;}
 
 <h3>security-guidance プラグインを入れておく</h3>
 <blockquote>
-<p><strong>security-guidance</strong>: Claude が生成したコードをバックグラウンドで自動セキュリティレビューしてくれるプラグイン。SQL インジェクション（等）・XSS（悪意あるスクリプトを画面に混入させる攻撃）・SSRF（サーバーに内部への不正リクエストをさせる攻撃）・IDOR（他人のデータを覗ける穴）・認可バイパス（ログインできた人が権限外のデータ・操作に届いてしまう穴）など <strong>25 種類以上の脆弱性クラス</strong>を継続的に見てくれる。「AI が書いたコードを AI が点検する」を自動でやってくれるのがポイント。</p>
+<p><strong>security-guidance</strong>: Claude が生成したコードをバックグラウンドで自動セキュリティレビューしてくれるプラグイン。
+<strong>25 種類以上の脆弱性クラス</strong>を継続的に見てくれる。
+「AI が書いたコードを AI が点検する」を自動でやってくれるのがポイント。</p>
+<p>見てくれるものの例:</p>
+<ul>
+<li><strong>SQL インジェクション</strong>: 入力値で SQL 文を書き換えられる穴</li>
+<li><strong>XSS</strong>: 悪意あるスクリプトを画面に混入させる攻撃</li>
+<li><strong>SSRF</strong>: サーバーに内部への不正リクエストをさせる攻撃</li>
+<li><strong>IDOR</strong>: 他人のデータを覗ける穴</li>
+<li><strong>認可バイパス</strong>: ログインできた人が権限外のデータや操作に届いてしまう穴</li>
+</ul>
 </blockquote>
 <p>メニューから入れる。まず次を実行:</p>
 <pre><code>/plugin</code></pre>
@@ -556,7 +574,9 @@ audit=true</code></pre>
 
 <h2 id="s0-nav">画面構成とナビゲーション（[1] 着手前に確認する）</h2>
 <blockquote class="key">
-<p><strong>[1] Claude Design を始める前に、この構成を固める。</strong> あいまいなまま渡すと「購入する」ボタンが問い合わせに飛んだり、マイページがダッシュボード型（問い合わせ数・AI解決率などの運用指標を並べる画面）になったりする。以下は玄米茶サンプルでのナビゲーション例。自分の題材に読み替えて、各リンクの遷移先と購入導線を固める（各画面の中身は [2] の <code>SCREEN_SPEC.md</code> で書く）。</p>
+<p><strong>[1] Claude Design を始める前に、この構成を固める。</strong>
+あいまいなまま渡すと「購入する」ボタンが問い合わせに飛んだり、マイページがダッシュボード型（問い合わせ数・AI解決率などの運用指標を並べる画面）になったりする。</p>
+<p>以下は玄米茶サンプルでのナビゲーション例。自分の題材に読み替えて、各リンクの遷移先と購入導線を固める。各画面の中身は [2] の <code>SCREEN_SPEC.md</code> で書く。</p>
 </blockquote>
 
 <h3>ナビゲーション・ボタンの遷移先</h3>
@@ -613,7 +633,8 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 </blockquote>
 
 <h3>事前確認: モデルと Effort の設定・デザインシステムのリセット</h3>
-<p class="note">Claude Design を開くと「Make something new」の一覧が表示される。ここでは「Product prototype」を選ぶ（Slides・Document 等は使わない）。一覧の右上に「Design system: None」という表示がある。過去に使ったデザインシステム名が残っていることがあるので、<strong>「None」になっているか確認し、違えばリセットしてから始める</strong>。</p>
+<p class="note">Claude Design を開くと「Make something new」の一覧が表示される。ここでは「Product prototype」を選ぶ（Slides・Document 等は使わない）。</p>
+<p class="note">一覧の右上に「Design system: None」という表示がある。過去に使ったデザインシステム名が残っていることがあるので、<strong>「None」になっているか確認し、違えばリセットしてから始める</strong>。</p>
 <figure class="diagram">
 <img src="img/ClaudeDesignHomeReset.png" alt="Claude Design のホーム画面。「Make something new」の一覧で「Product prototype」を選択し、右上の「Design system: None」がリセットされていることを確認する">
 </figure>
@@ -621,7 +642,13 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 <figure class="diagram compact">
 <img src="img/ClaudeDesignPromptModelBar.png" alt="Claude Design のプロンプト入力画面。左上にデザインシステム／テンプレート名のドロップダウンが残っている例">
 </figure>
-<p>同じ画面にモデルと Effort（AI がどれだけ深く考えるかの設定）もある。<strong>Effort が高いほど品質は上がるがトークン消費も増える</strong>ので、トークン節約のため <strong>推奨は Effort: Medium</strong>（Team standard などトークンに余裕がないプラン向け。一周体験が目的なのでこれで十分）。<strong>Team Premium / Max などトークンに余裕があるプランの人は High 以上に上げてよい。</strong>モデルは、その時点で使える上位モデル（執筆時点 2026-07 は Opus 4.8）を選ぶ。</p>
+<p>同じ画面にモデルと <strong>Effort</strong>（AI がどれだけ深く考えるかの設定）もある。
+<strong>Effort が高いほど品質は上がるが、トークン消費も増える</strong>。</p>
+<ul>
+<li><strong>推奨は Effort: Medium</strong>。Team standard などトークンに余裕がないプラン向け。一周体験が目的なのでこれで十分</li>
+<li>Team Premium / Max などトークンに余裕があるプランの人は <strong>High 以上</strong>に上げてよい</li>
+<li>モデルは、その時点で使える上位モデルを選ぶ（執筆時点 2026-07 は Opus 4.8）</li>
+</ul>
 <p class="note">この画面の配置は Claude Design のバージョン更新で変わることがある（プラン・環境によって表示が異なる場合もある）。見当たらない場合は入力欄の周辺・設定メニューを探す。</p>
 
 <h3>流れ</h3>
@@ -694,7 +721,14 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 </ol>
 
 <blockquote>
-<p>💡 <strong>参考:</strong> 細部を数値で直接触りたい場合は「Edit」タブもある。要素を選択すると、リンク先・テキスト・フォント・サイズ・余白などをその場で編集できる。（デザインにこだわる人におすすめの機能）</p>
+<p>💡 <strong>参考:</strong> 細部を数値で直接触りたい場合は「Edit」タブもある。<br>
+要素を選択すると、その場で編集できる項目は次のとおり。デザインにこだわる人向けの機能。</p>
+<ul>
+<li>リンク先</li>
+<li>テキスト</li>
+<li>フォントとサイズ</li>
+<li>余白</li>
+</ul>
 <figure class="diagram">
 <img src="img/ClaudeDesign_Edit.png" alt="Claude Design の Edit タブ — 要素を選択し、Link（リンク先）・Text（フォント・サイズ・余白など）を直接編集する画面">
 </figure>
@@ -708,7 +742,12 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 <li><strong>言語化テキストを書くより、デザイン Project（zip）を丸ごと渡す</strong>のが [2] への一番の橋渡し</li>
 <li><strong>チャットは何度でも使える</strong>。「このボタンの色を変えて」「このセクションを上に移動して」など気になる点は遠慮なく伝える</li>
 <li><strong>他ページは指定しない</strong>。Claude Design はデザインシステム確定だけに使う</li>
-<li><strong>Claude Design の質問への回答の自由度</strong>: トーン・配色・キャッチコピーなどの見た目・言い回しは自由に決めてよい（Claude Design の質問にそのまま答えればよい）。一方、<strong>料金プランは「月額・年額の2プラン」を用意することを推奨する</strong>（後続の [2] フロント・[4] バックの実装がスムーズになるため）</li>
+<li><strong>Claude Design の質問への回答の自由度</strong>
+  <ul>
+  <li><strong>自由に決めてよいもの</strong>: トーン、配色、キャッチコピーなどの見た目と言い回し。Claude Design の質問にそのまま答えればよい</li>
+  <li><strong>推奨に従うもの</strong>: 料金プランは「月額・年額の2プラン」にする。後続の [2] フロントと [4] バックの実装がスムーズになる</li>
+  </ul>
+</li>
 </ul>
 
 <h3 class="done">✅ 完了の定義（これが満たせたら [2] へ）</h3>
@@ -779,15 +818,21 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 <p class="note">ページ自体を増減してもよい（例: マイページの代わりにダッシュボードにする、等）。書き換えたら、下の Claude Code へのプロンプトに「この <code>SCREEN_SPEC.md</code> を参考に実装して」と一言添えて渡す。</p>
 
 <blockquote class="key">
-<p><strong>大事な前提：フロントとバックは1つのリポジトリ（モノレポ）で管理する</strong><br>
-GitHub でリポジトリを1つ作成してローカルに clone し、<strong>リポジトリのルートで Claude Code を起動する</strong>（frontend/ と backend/ を跨ぐ作業があるため、サブディレクトリではなくルートで起動するのがコツ）。ルート直下に <code>frontend/</code>（React）と <code>backend/</code>（Hono）を並べるが、各ディレクトリは下の手順で Claude Code に作らせる（自分で <code>mkdir</code> しなくてよい）。最終的に配信は Worker 一本にまとめる（<a href="#s4-step5">[4] 手順5</a>）。</p>
+<p><strong>大事な前提：フロントとバックは1つのリポジトリ（モノレポ）で管理する</strong></p>
+<ul>
+<li>GitHub でリポジトリを1つ作成し、ローカルに clone する</li>
+<li><strong>Claude Code はリポジトリのルートで起動する</strong>。<code>frontend/</code> と <code>backend/</code> を跨ぐ作業があるため、サブディレクトリで起動すると片方に手が届かない</li>
+<li>ルート直下に <code>frontend/</code>（React）と <code>backend/</code>（Hono）を並べる。ディレクトリは下の手順で Claude Code に作らせるので、自分で <code>mkdir</code> しなくてよい</li>
+<li>最終的に配信は Worker 一本にまとめる（<a href="#s4-step5">[4] 手順5</a>）</li>
+</ul>
 </blockquote>
 
 <h3>流れ</h3>
 <ol>
 <li>リポジトリのルートで Claude Code を起動する</li>
-<li>[1] でエクスポートした Claude Design の Project（zip）をリポジトリ直下に置き（例: <code>design.zip</code>）、以下のプロンプトを<strong>自分の SaaS の内容に合わせて適宜書き換えて</strong>送る（zip のファイル名が違う場合はプロンプト中のパスも合わせる）
-  <p class="note">言語化テキストではなくデザインそのものを渡す。色・フォント・余白の指定はそこから AI が拾う。<code>wrangler.jsonc</code>（Cloudflare の CLI「wrangler」の設定ファイル。Worker 名や配信設定を書く）の <code>name</code> はデプロイ先 URL（<code>https://&lt;name&gt;.workers.dev</code>）になるので自分の名前に書き換えること。name に使えるのは<strong>小文字英数字とハイフンのみ</strong>（大文字・アンダースコア・日本語は不可）。</p>
+<li>[1] でエクスポートした Claude Design の Project（zip）を、<code>design.zip</code> という名前でリポジトリ直下に置く。以下のプロンプトを<strong>自分の SaaS の内容に合わせて適宜書き換えて</strong>送る。
+  <p class="note">言語化テキストではなくデザインそのものを渡す。色・フォント・余白の指定はそこから AI が拾う。ファイル名を <code>design.zip</code> 以外にした場合は、プロンプト中のパスも合わせる。</p>
+<p class="note"><code>wrangler.jsonc</code> は Cloudflare の CLI「wrangler」の設定ファイルで、Worker 名や配信設定を書く。その <code>name</code> がデプロイ先 URL <code>https://&lt;name&gt;.workers.dev</code> になるので、自分の名前に書き換えること。使えるのは<strong>小文字英数字とハイフンのみ</strong>で、大文字・アンダースコア・日本語は使えない。</p>
 <pre><code>frontend/ に Vite + React + TypeScript + Tailwind CSS v4 + shadcn/ui で SPA を作って。
 ルーティングは React Router を使って。
 wrangler.jsonc も作って（name は &lt;自分で決めた名前&gt; にして）。
@@ -1030,19 +1075,36 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
   （SPA は <code>/mypage</code> という実ファイルを持たず <code>index.html</code> の JavaScript が画面を出すため、サーバー側に「未知のパスは <code>index.html</code> に流す」設定が要る。404 になる場合は <code>wrangler.jsonc</code> の <code>assets.not_found_handling</code> に <code>"single-page-application"</code> を追加してから再起動）</li>
 <li><strong>未認証 API が弾かれる</strong>: ブラウザの DevTools（F12）→ Console タブで以下を貼り付けて実行し、<code>401</code> または認証エラーのレスポンスが返ること
 <pre><code>fetch('/api/me').then(r => console.log(r.status, r.url))</code></pre>
-  （API のパスは AI が生成したものに読み替える。ステータスが 200 のまま通ってしまう場合は認証ガードが機能していないので Claude Code に修正を依頼する）</li>
-<li><strong>バリデーション（入力チェック）が弾く</strong>: ブラウザで問い合わせフォームを開き、name・email・本文のどれかを空のまま送信する → エラーメッセージが表示されること（DevTools の Network タブで <code>400</code> が返っているか合わせて確認するとなお良い。ただしブラウザの必須チェック（<code>required</code>）で止まった場合はリクエスト自体が飛ばないので 400 は出ない——API 側の検証まで見るなら Console で <code>fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})</code> のように不正なボディを直接送る）</li>
+  <ul>
+  <li>API のパスは AI が生成したものに読み替える</li>
+  <li>200 のまま通ってしまう場合は認証ガードが効いていない。Claude Code に修正を依頼する</li>
+  </ul>
+</li>
+<li><strong>バリデーション（入力チェック）が弾く</strong>: ブラウザで問い合わせフォームを開き、name・email・本文のどれかを空のまま送信する → エラーメッセージが表示されること
+  <ul>
+  <li>DevTools の Network タブで <code>400</code> が返っていれば、API 側の検証も効いている</li>
+  <li>ブラウザの必須チェック（<code>required</code>）で止まった場合は、リクエスト自体が飛ばないので 400 は出ない。API 側だけを確かめるなら、Console から不正なボディを直接送る
+<pre><code>fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})</code></pre>
+  </li>
+  </ul>
+</li>
 <li><strong>正常系の動作</strong>: 問い合わせフォームに正しい値を入れて送信 → 成功レスポンスが返り、画面の表示が期待どおり変わること</li>
 </ol>
 
 <hr>
 
 <h2 id="s5">[5] レビューと自動テスト</h2>
-<p><strong>ゴール:</strong> AI で作成したコードの<strong>品質を向上させる</strong>。<strong>2段構え</strong>で進める：<strong>① レビュー</strong>（Claude Code のコマンドで差分を点検）→ <strong>② 自動テスト</strong>（<code>npm test</code> で「正しいリクエストは通る・壊れたリクエストは弾く・ログインなしで保護 API に入れない」を毎回自動確認）。② はバックの API に加え<strong>フロントの主要画面も1本</strong>テストする（どちらも同じ「方針 → レビュー → 実装」に乗せる）。デプロイ前にここまで通す。</p>
+<p><strong>ゴール:</strong> AI で作成したコードの<strong>品質を向上させる</strong>。<strong>2段構え</strong>で進める。</p>
+<ul>
+<li><strong>① レビュー</strong>: Claude Code のコマンドで差分を点検する</li>
+<li><strong>② 自動テスト</strong>: <code>npm test</code> で「正しいリクエストは通る・壊れたリクエストは弾く・ログインなしで保護 API に入れない」を毎回自動確認する</li>
+</ul>
+<p>② はバックの API に加え<strong>フロントの主要画面も1本</strong>テストする。どちらも同じ「方針 → レビュー → 実装」に乗せる。デプロイ前にここまで通す。</p>
 
 <h3>① レビュー: Claude Code のコマンドで点検する</h3>
 <p>ローカルの差分を、Claude Code の組み込みコマンド（最初から使える <code>/名前</code> のコマンド。スキルの自作は Section 3 [10] で扱う）で点検する。ローカルの差分に対して動くので <strong>git push は不要</strong>。</p>
-<p class="note">⚙️ <strong>Claude Code の Effort（どれだけ深く考えるか）はトークン消費に直結する。</strong>レビューはコード全体を読むため特に消費が大きい。<strong>既定の Medium で実行するのを推奨</strong>（Team standard などトークンに余裕がないプランで途中枯渇を防ぐため）。<strong>Team Premium / Max などトークンに余裕があるプランの人は High 以上に上げてよい。</strong></p>
+  <p class="note">⚙️ <strong>Claude Code の Effort（どれだけ深く考えるか）はトークン消費に直結する。</strong>レビューはコード全体を読むため特に消費が大きい。</p>
+  <p class="note"><strong>既定の Medium で実行するのを推奨</strong>（Team standard などトークンに余裕がないプランで途中枯渇を防ぐため）。Team Premium / Max などトークンに余裕があるプランの人は High 以上に上げてよい。</p>
 <ul>
 <li><code>/code-review</code> — コードの正しさ・簡潔さ・効率のレビュー。バグや冗長な実装を指摘してくれる</li>
 <li><code>/security-review</code> — セキュリティ観点のレビュー。SQL インジェクション等・認証の抜け・シークレットの扱いなどを確認してくれる</li>
@@ -1089,7 +1151,8 @@ SCREEN_SPEC.md に書いてある項目は、その記述を期待値の根拠�
 <pre><code>TEST.md に「未認証でログイン必須 API にアクセスしたとき拒否される」観点が抜けているので追記して。</code></pre>
   <p class="note">時間に余裕があれば、上の各観点のチェックだけでなく全文に目を通し、「これはテストしなくていい」という箇所の指摘まで行うのが本来のレビュー。</p>
 </li>
-<li>TEST.md が固まったらテストを実装させる。<strong>テストランナーはバック・フロントとも同じ Vitest</strong>だが<strong>実行環境が違う</strong>（バック＝Workers／フロント＝jsdom）ので、それぞれ用意させる:
+<li>TEST.md が固まったらテストを実装させる。それぞれの環境を用意させる:
+  <p class="note"><strong>ランナーはバック・フロントとも Vitest で共通、違うのは実行環境だけ</strong>（バックは Workers、フロントは jsdom）。新しいテストフレームワークは増えない。</p>
 <pre><code>docs/TEST.md の方針に従ってテストを実装してください。
 
 ・バックエンド（backend/）: @cloudflare/vitest-pool-workers を使い、設定は cloudflareTest プラグイン方式で書く
@@ -1098,7 +1161,7 @@ SCREEN_SPEC.md に書いてある項目は、その記述を期待値の根拠�
    frontend/package.json に test スクリプト（vitest run）も追加する）
 
 外部サービスへの fetch はすべてモックしてください。</code></pre>
-  <ul><li><code>@cloudflare/vitest-pool-workers</code>＝バックのテストを Workers と同じ実行環境で動かす公式アダプタ。<strong>新しいテストフレームワークは増えない</strong>——ランナーは Vitest で共通、違うのは実行環境（Workers／jsdom）だけ</li></ul>
+  <ul><li><code>@cloudflare/vitest-pool-workers</code>＝バックのテストを Workers と同じ実行環境で動かす公式アダプタ</li></ul>
 </li>
 <li><code>npm test</code> でグリーンを確認する。<strong>バックとフロントは別パッケージなので、それぞれのディレクトリで実行する</strong>（1回で両方は走らない）:
 <pre><code>cd backend  &amp;&amp; npm test   # API のテスト
@@ -1198,7 +1261,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 
 </section><!-- /ps-section2 -->
 <section class="page-section" id="ps-section3">
-<h1 id="section3">Section 3: 機能追加と運用（メール、決済、ID連携、自動デプロイ等）</h1>
+<h1 id="section3">Section 3: 機能追加と品質確保（メール、決済、ID連携、自動デプロイ等）</h1>
 
 <p>Section 3 最後の 30 分（1:30〜2:00）は最終発表会です。自分の公開 URL のデモを 1 人 3 分で発表します。詳細はページ末尾の「ラップアップ・発表会」を参照してください。</p>
 
@@ -1266,6 +1329,14 @@ npm run deploy               # ビルド → デプロイ</code></pre>
 <p><strong>お題</strong>: 問い合わせ通知メール／ライセンスキー送付メールを実装する<br>
 <strong>学び</strong>: 外部 API 連携の基本形・Secrets 管理</p>
 
+<h3>Resend とは</h3>
+<p>メールを送るための API を提供する SaaS。自分で SMTP サーバを用意する代わりに、HTTP リクエスト1本でメールを送れる。</p>
+<p>この課題で使う理由は、送信結果をダッシュボードのログで1件ずつ追えることにある。届かなかったときに、原因がアプリ側にあるのか送信側にあるのかを切り分けられる。</p>
+<figure class="diagram">
+<img src="img/ResendLP.png" alt="Resend の公式サイト。黒い背景に「Email for developers」の見出しと、The best way to reach humans instead of spam folders. Deliver transactional and marketing emails at scale. という説明、Get started と Documentation のボタンが並ぶ">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">公式サイト（<a target="_blank" rel="noopener" href="https://resend.com">resend.com</a>）。開発者向けのメール送信サービスであることを掲げている</figcaption>
+</figure>
+
 <h3>サービス側の準備</h3>
 <ol>
 <li><a target="_blank" rel="noopener" href="https://resend.com/login">https://resend.com/login</a> で <strong>Google SSO ログイン</strong></li>
@@ -1315,14 +1386,33 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <h2 id="s8">[8] 決済機能の実装（Stripe）<span class="diff">★★★</span></h2>
 <p><strong>お題</strong>: プラン購入（Stripe Checkout）→ Webhook でライセンス自動発行<br>
 <strong>実装ファイル（ここに作る）</strong>: <code>backend/src/stripe.ts</code> / <code>license.ts</code><br>
-<strong>学び</strong>: Webhook の二重発行防止（同じイベントが再送されてもライセンスを1件だけ出す）・署名検証（届いた Webhook が本当に Stripe から来たものかを確かめる仕組み）</p>
+<strong>学び</strong>: Webhook の扱いで外せない2点</p>
+<ul>
+<li><strong>二重発行防止</strong>: 同じイベントが再送されても、ライセンスは1件だけ出す</li>
+<li><strong>署名検証</strong>: 届いた Webhook が本当に Stripe から来たものかを確かめる</li>
+</ul>
+
+<h3>Stripe とは</h3>
+<p>オンライン決済を代行する SaaS。カード情報は Stripe がホストする決済画面で預かるので、自分のアプリはカード番号を受け取らない。決済が完了したことは <strong>Webhook</strong>（Stripe から自分のサーバへ送られてくる通知）で知る。</p>
+<p>この課題で使う理由は、テストモードがあることにある。本物の課金を発生させずに、購入からライセンス発行までを何度でも通せる。</p>
+<figure class="diagram">
+<img src="img/StripeLP.png" alt="Stripe の日本語公式サイト。「事業成長を支える金融インフラ。決済から組込み型金融、エージェンティックコマースまで、企業の収益最大化を支援。」の見出しと、始める・Google で登録のボタン。下部に amazon, NVIDIA, TOYOTA などの導入企業ロゴが並ぶ">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">公式サイト（<a target="_blank" rel="noopener" href="https://stripe.com/jp">stripe.com/jp</a>）。決済を含む金融インフラとして提供されている</figcaption>
+</figure>
 <p class="note">決済まで組み込んだ動くデモ（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://testai-payment.ha-toge.workers.dev/">https://testai-payment.ha-toge.workers.dev/</a><br>
 このデモでは、LP の「購入する」から Stripe Checkout（テストカード <code>4242 4242 4242 4242</code>）を通り、マイページにライセンスが表示されるところまでが動く（Stripe テストモード）。</p>
 <figure class="diagram">
 <img src="img/stripe_flow.svg" alt="Stripe 決済フロー: ブラウザ→Hono API→Stripe Checkout→Webhook→D1保存→/success→マイページ表示">
 </figure>
 <blockquote>
-<p>Section 2 で「自前発行」していたライセンスを、<strong>決済イベント起点の自動発行</strong>に置き換える課題。手順が多いので <strong>5 フェーズ</strong>に分けて進める（①アカウント準備 / ②プラン作成 / ③ローカルWebhook検証 / ④本番Webhook設定 / ⑤つなぎ込み）。</p>
+<p>Section 2 で「自前発行」していたライセンスを、<strong>決済イベント起点の自動発行</strong>に置き換える課題。手順が多いので <strong>5 フェーズ</strong>に分けて進める。</p>
+<ul>
+<li>① アカウント準備</li>
+<li>② プラン作成</li>
+<li>③ ローカル Webhook 検証</li>
+<li>④ 本番 Webhook 設定</li>
+<li>⑤ つなぎ込み</li>
+</ul>
 </blockquote>
 
 <h3>① アカウントとキーの準備</h3>
@@ -1358,7 +1448,10 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 </figure>
 <figure class="diagram">
 <img src="img/StripeCreateItem2.png" alt="Stripe の「商品を追加」ダイアログ。料金で「継続」を選び、金額に 3,000（JPY）、請求期間を「毎年」に設定した年額プランの入力例">
-<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">② 「商品を追加」ダイアログで、料金は <strong>継続</strong>／<strong>金額</strong>（通貨は JPY）／<strong>請求期間</strong>（月額プランは「毎月」・年額プランは「毎年」）を設定して <strong>商品を追加</strong>（上図は年額プランの例）</figcaption>
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">② 「商品を追加」ダイアログで料金を設定して <strong>商品を追加</strong>。上図は年額プランの例。<br>
+・<strong>継続</strong>を選ぶ<br>
+・<strong>金額</strong>を入れる（通貨は JPY）<br>
+・<strong>請求期間</strong>は月額プランなら「毎月」、年額プランなら「毎年」</figcaption>
 </figure>
 <p class="note">[1] Claude Design や LP の料金セクションで<strong>月額・年額以外のプラン（3つ目のプラン等）を追加した場合は、その分だけここでも Stripe の商品を追加で作る</strong>こと。LP 側の料金プランと Stripe 側の商品は数・内容を一致させる。</p>
 <ul>
@@ -1400,7 +1493,8 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 </ol>
 
 <h3>④ 本番（デプロイ後）に Webhook を設定する</h3>
-<p class="note">ここでの「本番」は<strong>デプロイ後の公開環境</strong>を指す（Stripe を live mode＝本物の課金に切り替えるわけではない）。Stripe は③④とも<strong>終始テストモード</strong>のまま。③（ローカル）と④（公開環境）で署名シークレットが別物になるのは、Webhook の転送先 URL が違うため。</p>
+<p class="note">ここでの「本番」は<strong>デプロイ後の公開環境</strong>を指す。Stripe を live mode（本物の課金）に切り替えるわけではなく、③と④のどちらも<strong>終始テストモード</strong>のままである。<br>
+③と④で署名シークレットが別物になるのは、Webhook の転送先 URL が違うため。</p>
 <ol>
 <li><strong>デプロイ前に</strong>、ローカルの <code>.dev.vars</code> に入れた値（<strong>Secret key・Price ID など</strong>）を<strong>本番側にも設定</strong>しておく（<code>wrangler secret put</code> / ダッシュボード）。※ Webhook 署名シークレットだけは本番用を後から（<a href="#s8-step6">手順6</a>）入れる</li>
 <li>本編 [6] の手順で <strong>Cloudflare にデプロイ</strong></li>
@@ -1452,7 +1546,16 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <h2 id="s9">[9] ID 連携機能の実装（Clerk）<span class="diff">★★☆</span></h2>
 <p><strong>お題</strong>: ログイン必須のマイページ（未ログイン → サインインへリダイレクト）<br>
 <strong>使うもの</strong>: <code>@clerk/clerk-react</code>（フロント）＋ Hono 側で Clerk の認証トークンを検証<br>
-<strong>学び</strong>: JWT（JSON Web Token＝ログイン済みであることを証明するトークン）の検証、つまりリクエストが本当にログイン済み本人からのものかの確認を、<strong>バックでやる理由</strong>（フロントの見た目だけの保護は無意味）</p>
+<strong>学び</strong>: トークンの検証を<strong>バックでやる理由</strong>。フロントの見た目だけの保護は意味がない</p>
+
+<h3>Clerk とは</h3>
+<p>ログインの仕組みをまるごと引き受ける SaaS。サインイン画面、Google などの外部アカウントとの連携、セッションの管理を用意してくれる。自分で書くのは、届いたトークンを検証する部分だけになる。</p>
+<p>このトークンは <strong>JWT</strong>（JSON Web Token）と呼ばれ、ログイン済みであることを証明する。検証すれば、そのリクエストが本当にログイン済み本人からのものかを確かめられる。</p>
+<p>この課題で使う理由は、認証を自作するとパスワードの保存やセッションの失効で間違えやすく、その間違いがそのまま脆弱性になることにある。</p>
+<figure class="diagram">
+<img src="img/ClerkLP.png" alt="Clerk の公式サイト。「More than authentication, Complete User Management」の見出しと、Need more than sign-in? Clerk gives you full stack auth and user management という説明が並ぶ">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">公式サイト（<a target="_blank" rel="noopener" href="https://clerk.com">clerk.com</a>）。サインインだけでなくユーザー管理まで引き受けることを掲げている</figcaption>
+</figure>
 <p class="note">ログイン（Clerk）まで組み込んだ動くデモ（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://testai-login.ha-toge.workers.dev/">https://testai-login.ha-toge.workers.dev/</a><br>
 このデモでは、未ログインで <code>/mypage</code> を開くとサインイン画面へリダイレクトされ、Google でログインするとマイページが表示される、というところまでが動く（Clerk 開発モード）。</p>
 <blockquote>
@@ -1512,15 +1615,19 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <ul>
 <li><strong>ローカル確認</strong>: 未ログインで <code>/mypage</code> を開くとサインイン画面に誘導される（入れない）</li>
 <li><strong>ローカル確認</strong>: 未ログイン状態で <code>GET /api/me</code> を叩くと <strong>401（未認証＝「ログインしていないので拒否した」という HTTP ステータス）</strong>が返る（AI に「未ログインで /api/me を叩いて 401 になるか確認して」と依頼すればよい）。サインイン後は <code>/mypage</code> に自分の情報が表示される</li>
-<li><strong>本番へのシークレット投入</strong>: <code>backend/.dev.vars</code> に記入済みのシークレットのみを <code>wrangler secret put</code> で本番側に投入（上の「置き場所を分ける」表を参照）。フロントの <code>VITE_CLERK_PUBLISHABLE_KEY</code> は <code>frontend/.env</code> からビルド時に埋め込まれるため、wrangler への投入は不要（<code>npm run deploy</code> のビルドで自動反映）</li>
-<li><strong>本番確認</strong>: <code>npm run deploy</code> 後、本番 URL（<code>https://&lt;name&gt;.workers.dev</code>）でサインイン → <code>/mypage</code> が表示される（サインインが弾かれる場合は上の⚠️ハマりどころ: 許可オリジン登録）</li>
+<li><strong>本番へのシークレット投入</strong>: <code>backend/.dev.vars</code> に記入済みのシークレットのみを <code>wrangler secret put</code> で本番側に投入する（上の「置き場所を分ける」表を参照）
+  <ul><li>フロントの <code>VITE_CLERK_PUBLISHABLE_KEY</code> は <code>frontend/.env</code> からビルド時に埋め込まれるため、wrangler への投入は不要。<code>npm run deploy</code> のビルドで自動反映される</li></ul>
+</li>
+<li><strong>本番確認</strong>: <code>npm run deploy</code> 後、本番 URL（<code>https://&lt;name&gt;.workers.dev</code>）でサインイン → <code>/mypage</code> が表示される
+  <ul><li>サインインが弾かれる場合は、上の⚠️ハマりどころにある許可オリジンの登録を行う</li></ul>
+</li>
 </ul>
 <pre><code>Clerk 認証実装の作業をコミットして dev ブランチに push して。</code></pre>
 
 <hr>
 
 <h2 id="s10">[10] 運用保守<span class="diff">★☆☆</span></h2>
-<p><strong>お題</strong>: 公開後の運用を体験する（監視・ログ・障害特定・対策・コスト）<br>
+<p><strong>お題</strong>: 公開後の運用を体験する。扱うのは監視、ログ、障害特定、対策、コストの5つ<br>
 <strong>実装先</strong>: <code>.claude/skills/</code>（運用スキルを Claude Code に作らせる）<br>
 <strong>学び</strong>: 公開後の「運用」を Claude Code のスキルで仕組み化する</p>
 
@@ -1551,7 +1658,8 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 </ol>
 <blockquote>
 <p><strong>このトークンは Worker が使うのではなく、運用スキルが shell からファイルを読んで使う</strong>（Cloudflare の集計 API（GraphQL）を叩くため）。</p>
-<p>ここで注意したいのが置き場所。<strong><code>.dev.vars</code> は Section 1 の設定で Read を拒否している</strong>ので、スキルが <code>cat</code> 等で読もうとすると<strong>ブロックされる</strong>。そこで運用トークンだけは deny 対象外の<strong>別ファイル（<code>.cf-ops.token</code>）</strong>に分離する。ここに入れるのは <strong>Analytics 読み取り専用</strong>の低権限トークンなので、Stripe/Clerk 等の高価値シークレット（<code>.dev.vars</code>）とは分けて扱ってよい。</p>
+<p>ここで注意したいのが置き場所。<strong><code>.dev.vars</code> は Section 1 の設定で Read を拒否している</strong>ので、スキルが <code>cat</code> 等で読もうとすると<strong>ブロックされる</strong>。</p>
+<p>そこで運用トークンだけは deny 対象外の<strong>別ファイル（<code>.cf-ops.token</code>）</strong>に分離する。ここに入れるのは <strong>Analytics 読み取り専用</strong>の低権限トークンなので、Stripe/Clerk 等の高価値シークレット（<code>.dev.vars</code>）とは分けて扱ってよい。</p>
 <p>なお<strong>本番 secret に入れる必要はない</strong>（ローカルにあれば十分）。また、トークンが無くても <strong><code>wrangler tail</code> のライブログ</strong>は見られる。トークンが必須なのは集計・コスト試算だけ。</p>
 </blockquote>
 
@@ -1620,7 +1728,8 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
   </ul>
 </li>
 <li><strong>SonarCloud（静的解析）</strong>
-  <blockquote><p>SonarCloud は、静的解析（コードを実際に動かさずに、書かれた内容を読むだけで問題を見つける手法）を GitHub と連携して行う SaaS。コードを push するたびにセキュリティ脆弱性・バグ・コード品質の問題を自動検出し、Claude Code の差分レビューでは気づきにくいパターンを補完する。<strong>初回のアカウント作成〜組織作成は手順が多い</strong>ので、以下は実際の画面ひとつずつに沿って説明する。</p></blockquote>
+  <blockquote><p>SonarCloud は、静的解析（コードを実際に動かさずに、書かれた内容を読むだけで問題を見つける手法）を GitHub と連携して行う SaaS。コードを push するたびにセキュリティ脆弱性・バグ・コード品質の問題を自動検出し、Claude Code の差分レビューでは気づきにくいパターンを補完する。</p>
+  <p><strong>初回のアカウント作成〜組織作成は手順が多い</strong>ので、以下は実際の画面ひとつずつに沿って説明する。</p></blockquote>
   <ol>
   <li>点検対象を <strong><code>main</code> ブランチに push</strong>（SonarCloud は <code>main</code> / PR を解析）
     <figure class="diagram">
@@ -1642,13 +1751,17 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
     <img src="img/SonarCloudWelcomeGetStarted.png" alt="SonarQube Cloud の Welcome 画面 — Get started with GitHub ボタンをクリック">
     </figure>
   </li>
-  <li>再び GitHub 側の画面に移り <strong>「Install &amp; Authorize SonarQubeCloud」</strong>が表示される。<strong>ここが一番の要注意ポイント</strong>: 必ず <strong>「Only select repositories」</strong> を選び、点検したいリポジトリ（例では <code>genmaichaLP</code>）だけにチェックを入れてから <strong>「Install &amp; Authorize」</strong> をクリックする
-    <blockquote class="warn"><p><strong>⚠️ GitHub App のアクセス範囲について</strong>: ここで「All repositories」を選ぶと、（将来作るものも含めて）GitHub 上のプライベートリポジトリすべてのコードが SonarCloud に見えるようになってしまう。必ず「Only select repositories」を選び、点検したいリポジトリだけを許可すること（詳細は下記ハマりどころ参照）。</p></blockquote>
+  <li>再び GitHub 側の画面に移り <strong>「Install &amp; Authorize SonarQubeCloud」</strong>が表示される。<strong>「Only select repositories」</strong>を選び、点検したいリポジトリだけにチェックを入れてから <strong>「Install &amp; Authorize」</strong> をクリックする
+    <blockquote class="warn"><p><strong>⚠️ ここが一番の要注意ポイント。</strong>「All repositories」を選ぶと、将来作るものも含めて GitHub 上のプライベートリポジトリすべてのコードが SonarCloud に見えるようになる（詳細は下記ハマりどころ参照）。</p></blockquote>
     <figure class="diagram">
     <img src="img/SonarCloudInstallAuthorizeApp.png" alt="GitHub の Install & Authorize SonarQubeCloud 画面 — Only select repositories を選び、対象リポジトリ（genmaichaLP）にチェックを入れて Install & Authorize をクリック">
     </figure>
   </li>
-  <li>SonarCloud に戻ると <strong>「Create an organization」画面</strong>が表示される。<strong>Name・Key</strong>（どちらも秘密情報ではない。GitHub のアカウント名をそのまま使ってよい）を入力する。<strong>「Automatically import new GitHub repositories」はチェックしない</strong>（チェックすると新規リポジトリが自動で解析対象に追加されてしまう。下記ハマりどころ参照）
+  <li>SonarCloud に戻ると <strong>「Create an organization」画面</strong>が表示される。
+    <ul>
+    <li><strong>Name・Key</strong> を入力する。どちらも秘密情報ではないので、GitHub のアカウント名をそのまま使ってよい</li>
+    <li><strong>「Automatically import new GitHub repositories」はチェックしない</strong>。チェックすると新規リポジトリが自動で解析対象に追加されてしまう（下記ハマりどころ参照）</li>
+    </ul>
     <figure class="diagram">
     <img src="img/SonarCloudCreateOrgNameKey.png" alt="SonarCloud の Create an organization 画面 — Name と Key を入力し、Automatically import new GitHub repositories はチェックしないでおく">
     </figure>
@@ -1701,7 +1814,11 @@ Resend の API キー作成画面では「Sending domain」を絞り込めます
 <h3>指摘の中身を見て、AI と一緒にレビューする</h3>
 <p>「Summary」画面の数字（例: Reliability 16 Open issues）はあくまで件数の集計。<strong>個別の指摘を開いて中身を見る</strong>のがレビューの本番。</p>
 <ol>
-<li>左サイドバーの <strong>「Issues」</strong>をクリックするか、<code>Summary</code> 画面の指摘件数（例: 「16 Open issues」）を直接クリックすると、個別の指摘一覧に移る。左側の「Filters」で Software quality（Security/Reliability/Maintainability）や <strong>Severity</strong>（Blocker〜Info。5段階の緊急度で、Blocker が最も重大・Info が参考程度）ごとの内訳も確認できる
+<li>左サイドバーの <strong>「Issues」</strong>をクリックするか、<code>Summary</code> 画面の指摘件数（例: 「16 Open issues」）を直接クリックすると、個別の指摘一覧に移る。
+  <ul>
+  <li>左側の「Filters」で Software quality（Security / Reliability / Maintainability）ごとの内訳が確認できる</li>
+  <li><strong>Severity</strong> でも絞れる。Blocker〜Info の5段階の緊急度で、Blocker が最も重大、Info が参考程度</li>
+  </ul>
   <figure class="diagram">
   <img src="img/SonarCloudIssuesList.png" alt="SonarCloud の Issues 画面 — 左に Software quality・Severity ごとの件数フィルタ、右に指摘一覧（例: UPDATE 文に WHERE 句がない・未使用 import など）が並ぶ">
   </figure>
@@ -1724,7 +1841,9 @@ Software quality / 重大度: ③をここに
 行番号: ④をここに
 ファイルパス: ⑤をここに</code></pre>
   <p class="note">Claude Code はリポジトリのコードを直接読めるので、この5項目さえ伝われば該当箇所を実際に開いて「なぜ指摘されたか」「どう直すべきか」を具体的に説明できる。</p>
-  <p>もう少し文脈を足したいときは、上図<strong>⑥の「Why is this an issue?」タブ</strong>（「Where is the issue?」の右隣のタブ）を開き、その説明文もあわせて伝えるとよい（SonarCloud 独自の解説と、Noncompliant／Compliant のコード例が載っている）。ただしこのタブは長くなりがちで1回のスクショに収まらないことがあるので、<strong>範囲選択してそのままコピー&amp;ペースト</strong>する方が確実（見切れる心配がない）。多くのルールはだいたい同じ構成（説明文 → Noncompliant code example → Compliant solution）で、今回の指摘なら:</p>
+  <p>もう少し文脈を足したいときは、上図<strong>⑥の「Why is this an issue?」タブ</strong>を開き、その説明文もあわせて伝えるとよい。「Where is the issue?」の右隣にある。</p>
+  <p>このタブには SonarCloud 独自の解説と、Noncompliant／Compliant のコード例が載っている。長くなりがちで1回のスクショに収まらないので、<strong>範囲選択してそのままコピー&amp;ペースト</strong>する方が確実。見切れる心配がない。</p>
+  <p>多くのルールは同じ構成（説明文 → Noncompliant code example → Compliant solution）で、今回の指摘ならこうなる:</p>
   <pre><code>UPDATE and DELETE statements should contain WHERE clauses to keep the modification of records under control. Otherwise unexpected data loss could result.
 
 Noncompliant code example
@@ -1759,7 +1878,12 @@ END;
   <p>この2つがそろうと、App から見えるすべてのリポジトリで、push のたびに SonarCloud が自動でプロジェクトを生成して解析する。プライベートリポジトリが含まれる場合はコードが外部に送られるため注意したい。</p>
   <p>誤って All repositories を選んでしまった場合は、次のどちらかで対処する。</p>
   <ul>
-  <li>GitHub → Settings → Integrations → Applications → SonarCloud → Configure（<a target="_blank" rel="noopener" href="https://github.com/settings/installations">https://github.com/settings/installations</a>）で <code>Only select repositories</code> に変更して対象を絞る</li>
+  <li>すでに「All repositories」で許可してしまった場合は、あとから絞れる
+    <ul>
+    <li>入口は <a target="_blank" rel="noopener" href="https://github.com/settings/installations">https://github.com/settings/installations</a>（メニューからたどるなら GitHub → Settings → Integrations → Applications → SonarCloud → Configure）</li>
+    <li>そこで <code>Only select repositories</code> に変更して対象を絞る</li>
+    </ul>
+  </li>
   <li>個別プロジェクトだけ止めたいなら、SonarCloud の対象プロジェクト → Administration → Analysis Method の「Automatic Analysis」を OFF、または Administration → Deletion で削除</li>
   </ul>
 </li>
@@ -1776,6 +1900,10 @@ END;
 <strong>ツール</strong>: Playwright（Codegen）＋ Claude Code<br>
 <strong>前提</strong>: <a href="#s6">[6]</a> まで完了していること／<strong>Node.js 22 以上</strong>（<code>node -v</code> で確認）<br>
 <strong>学び</strong>: AI が作ったものを鵜呑みにせず、<strong>画面を通して自分で確かめられる</strong>ようになる。決めたことが守られているかを見て、まだ決めていなかったことをその場で見つけて決める</p>
+
+<h3>Playwright とは</h3>
+<p>ブラウザを実際に動かしてアプリを操作するテストツール。付属の <strong>Codegen</strong> を使うと、自分が画面でやった操作がそのままテストコードとして書き出される。そのため、テストの書き始めでつまずかない。</p>
+<p><a href="#s5">[5]</a> の Vitest が関数や API を単体で確かめるのに対して、Playwright は画面を通した一連の流れを確かめる。外部サービスの画面（Google のログインや Stripe の決済画面）は自動操作できないので、そこは対象から外す。</p>
 
 <h3>流れ</h3>
 <ul>
@@ -1854,11 +1982,13 @@ npx playwright test --project=setup</code></pre>
 
 <blockquote class="warn">
 <p><strong>⚠️ 手動でログインして <code>--save-storage</code> に保存する方法は取らないこと。</strong></p>
-<p>Google の画面を通るため、保存されるファイルに<strong>自分の Google アカウントのセッションが丸ごと入る</strong>。<code>.google.com</code> や <code>.youtube.com</code> のクッキーが数十個まとめて書き出される。漏れたときの被害はアプリのアカウントではなく <strong>Google アカウントの乗っ取り</strong>。しかも数日で期限切れになり、<strong>アプリが壊れていないのにテストが赤くなる</strong>。</p>
+<p>Google の画面を通るため、保存されるファイルに<strong>自分の Google アカウントのセッションが丸ごと入る</strong>。<code>.google.com</code> や <code>.youtube.com</code> のクッキーが数十個まとめて書き出される。</p>
+<p>漏れたときの被害はアプリのアカウントではなく <strong>Google アカウントの乗っ取り</strong>。しかも数日で期限切れになり、<strong>アプリが壊れていないのにテストが赤くなる</strong>。</p>
 <p>上の方法なら保存されるのは<strong>このアプリと Clerk のクッキーだけ</strong>で、Google のものは入らない。</p>
 </blockquote>
 
-<p><strong>[8] 決済（Stripe）も実施済みの場合</strong>: 購入操作は Stripe の決済画面（外部ホスト）を通るので、②で「購入操作そのもの」を保証項目にすると書けない。<strong>前提条件を「購入済みのアカウント」に置き、購入後の表示を見る</strong>形に寄せる。購入済みのアカウントは、上の <code>--load-storage</code> で開いたブラウザから1回だけ手で購入して作っておけばよい（テストカード <code>4242 4242 4242 4242</code>）。</p>
+<p><strong>[8] 決済（Stripe）も実施済みの場合</strong>: 購入操作は Stripe の決済画面（外部ホスト）を通るので、②で「購入操作そのもの」を保証項目にすると書けない。</p>
+<p><strong>前提条件を「購入済みのアカウント」に置き、購入後の表示を見る</strong>形に寄せる。購入済みのアカウントは、上の <code>--load-storage</code> で開いたブラウザから1回だけ手で購入して作っておけばよい（テストカード <code>4242 4242 4242 4242</code>）。</p>
 <p>決済画面の中で起きた不具合は Stripe 側の設定や画面仕様に由来するため、直す先が自分のリポジトリにない。<strong>決済画面から先は E2E の対象外</strong>として②で ✕ を付け、備考に「Stripe の設定として確認する」と書く。</p>
 
 <table>
@@ -2192,14 +2322,12 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 
 <h2 id="s13">[13] 自動デプロイ（Workers Builds）<span class="diff">★★☆</span></h2>
 <p><strong>お題</strong>: <code>git push</code> するだけで Cloudflare へ自動的にビルド・デプロイされる状態にする（[6] の手動デプロイを卒業する）<br>
-<strong>ツール</strong>: Cloudflare ダッシュボード（Workers Builds＝Git 連携による CI/CD 機能）<br>
+<strong>ツール</strong>: Cloudflare ダッシュボードの <strong>Workers Builds</strong>（Git 連携によるビルド・デプロイの自動化機能）<br>
 <strong>前提</strong>: <a href="#s6">[6]</a> で <code>wrangler deploy</code> による手動デプロイまで完了していること<br>
-<strong>学び</strong>: CI/CD（コードを push するだけで自動的にビルド・デプロイされる仕組み）の初歩と、モノレポ構成でのビルド設定の考え方</p>
+<strong>学び</strong>: CI/CD の初歩と、モノレポ構成でのビルド設定の考え方</p>
 
 <blockquote>
-<p>他の Section 3 オプションと違い、<strong>ここでの作業はすべて Cloudflare ダッシュボード側の設定</strong>で完結する。
-リポジトリのコードに変更を加える必要は無く、Claude Code に実装を依頼する場面も無い。
-設定が一度終われば、あとは普段通り <code>git push</code> するだけで、Cloudflare 側が自動でビルド・デプロイを行ってくれる。</p>
+<p>他の Section 3 オプションと違い、<strong>ここでの作業はすべて Cloudflare ダッシュボード側の設定</strong>で完結する。リポジトリのコードに変更を加える必要は無く、Claude Code に実装を依頼する場面も無い。設定が一度終われば、あとは普段通り <code>git push</code> するだけで、Cloudflare 側が自動でビルド・デプロイを行ってくれる。</p>
 </blockquote>
 
 <h3>連携手順</h3>
@@ -2215,7 +2343,8 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
     </figure>
   </li>
   </ol>
-  <blockquote class="warn"><p><strong>⚠️ リポジトリのアクセス範囲について</strong>: GitHub ボタンを押すと GitHub 側で「Install &amp; Authorize Cloudflare Workers and Pages」という許可画面が出る。ここでも SonarCloud のときと同様に、必ず <strong>「Only select repositories」</strong> を選び、連携したいリポジトリだけを許可すること。「All repositories」を選ぶとプライベートリポジトリのコードすべてに Cloudflare がアクセスできる状態になってしまう。</p></blockquote>
+  <blockquote class="warn"><p><strong>⚠️ リポジトリのアクセス範囲について</strong>: GitHub ボタンを押すと GitHub 側で「Install &amp; Authorize Cloudflare Workers and Pages」という許可画面が出る。</p>
+  <p>ここでも SonarCloud のときと同様に、必ず <strong>「Only select repositories」</strong> を選び、連携したいリポジトリだけを許可すること。「All repositories」を選ぶとプライベートリポジトリのコードすべてに Cloudflare がアクセスできる状態になってしまう。</p></blockquote>
   <figure class="diagram">
   <img src="img/CloudflareGitHubInstallAuthorize.png" alt="GitHub の Install & Authorize Cloudflare Workers and Pages 画面 — Only select repositories を選び、対象リポジトリにチェックを入れて Install & Authorize をクリック">
   </figure>
@@ -2295,8 +2424,10 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 <tr><td>SonarCloud / GitHub App</td><td>継続解析するなら残す</td><td>不要なら SonarCloud のプロジェクトを削除し、GitHub の Installed App から権限を解除</td></tr>
 <tr><td>Cloudflare Workers Builds（Git 連携。<a href="#s13">[13]</a> を試した場合）</td><td>継続して自動デプロイを使うなら残す</td><td>不要なら Cloudflare の Worker → Settings → Build で「Disconnect」する。<br>
 そのうえで GitHub 側は<strong>2箇所</strong>の解除が必要で、片方だけでは不十分。<br>
-<strong>①</strong> GitHub 右上のアイコン → Settings（<strong>リポジトリ側の Settings ではなくアカウント側から入る</strong>。入口を間違えると同じ設定でも違う画面に見える）→ Applications → <strong>Installed GitHub Apps</strong> → Cloudflare Workers and Pages を <strong>Uninstall</strong>（リポジトリへのアクセスを削除）。<br>
-<strong>②</strong> 同じ Applications 内の <strong>Authorized GitHub Apps</strong> タブ → Cloudflare Workers and Pages を <strong>Revoke</strong>（ユーザー認可の取り消し。①の Uninstall だけでは残ってしまう）。<br>
+<strong>①</strong> GitHub 右上のアイコン → Settings → Applications → <strong>Installed GitHub Apps</strong> → Cloudflare Workers and Pages を <strong>Uninstall</strong>。これでリポジトリへのアクセスが消える。<br>
+　※ Settings は<strong>リポジトリ側ではなくアカウント側</strong>から入る。入口を間違えると同じ設定でも違う画面に見える。<br>
+<strong>②</strong> 同じ Applications 内の <strong>Authorized GitHub Apps</strong> タブ → Cloudflare Workers and Pages を <strong>Revoke</strong>。<br>
+　※ これはユーザー認可の取り消しで、①の Uninstall だけでは残ってしまう。<br>
 なお画面に出てくる <code>Suspend</code> は一時停止用の別ボタンなので、完全に片付ける場合は不要</td></tr>
 </tbody>
 </table></div>
@@ -2311,8 +2442,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 
 <blockquote class="key">
 <strong>これだけ覚える:</strong> どのキーを使うかは <code>~/.claude.json</code> の記録で決まる。
-<strong><code>rejected</code> にあるキーは無視され</strong>てサブスクが使われ、<strong><code>approved</code> にあるキーは使われる</strong>（サブスクより優先）。
-切り替えとは、この記録を <code>/config</code> や起動時プロンプトで書き換えること。
+<strong><code>rejected</code> にあるキーは無視され</strong>てサブスクが使われ、<strong><code>approved</code> にあるキーは使われる</strong>（サブスクより優先）。切り替えとは、この記録を <code>/config</code> や起動時プロンプトで書き換えること。
 </blockquote>
 
 <h3>認証の記録は <code>~/.claude.json</code> にある</h3>
@@ -2345,8 +2475,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 <pre><code>/status</code></pre>
 <figure class="diagram"><img src="img/ClaudeAPI-rejected.png" alt="切替後の customApiKeyResponses（rejected にキーが入った状態）"><figcaption>切替後: approved が空、rejected に API キー</figcaption></figure></li>
 </ol>
-<p class="note">環境変数の API キーは <strong>消さなくてよい</strong>（<code>/logout</code> が承認を外すのでサブスクが使われる）。
-ただし起動のたびに確認プロンプトが出るのが煩わしければ、そのシェルで <code>unset ANTHROPIC_API_KEY</code> しておくとプロンプトが出なくなる。</p>
+<p class="note">環境変数の API キーは <strong>消さなくてよい</strong>（<code>/logout</code> が承認を外すのでサブスクが使われる）。ただし起動のたびに確認プロンプトが出るのが煩わしければ、そのシェルで <code>unset ANTHROPIC_API_KEY</code> しておくとプロンプトが出なくなる。</p>
 
 <h2 id="auth-to-api">② サブスク → API: 普段の運用に戻す</h2>
 <p>サブスクの用が済んで、普段の API キーに戻すとき。ゴールはキーを <code>rejected</code> から外すこと。<code>/config</code> の ON で <code>rejected</code> から外れ、<code>approved</code> として記録される。</p>
@@ -2361,8 +2490,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 <pre><code>/status</code></pre></li>
 </ol>
 <p class="note">一度「使わない」を選んでいると、キーは <code>rejected</code> に入っている。
-<code>/config</code> の ON で自動的に <code>approved</code> へ移るので問題ない。
-手動でやるなら <code>~/.claude.json</code> の <code>customApiKeyResponses.rejected</code> から
+<code>/config</code> の ON で自動的に <code>approved</code> へ移るので問題ない。手動でやるなら <code>~/.claude.json</code> の <code>customApiKeyResponses.rejected</code> から
 <strong>該当キーの末尾20文字のエントリ</strong>を削除する（削除すると <code>new</code> に戻り、再度確認プロンプトが出る）。</p>
 
 <h2 id="auth-check">確認とトラブルシュート</h2>
@@ -2397,8 +2525,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 <tr><td>6</td><td>サブスクの OAuth（<code>/login</code> で保存）</td></tr>
 </tbody>
 </table>
-<p class="note"><code>ANTHROPIC_API_KEY</code> は承認ゲートがあり、未承認なら無視されてサブスクにフォールバックする。
-一方 <code>ANTHROPIC_AUTH_TOKEN</code> / <code>CLAUDE_CODE_OAUTH_TOKEN</code> はゲートが無く、セットされていれば効く。</p>
+<p class="note"><code>ANTHROPIC_API_KEY</code> は承認ゲートがあり、未承認なら無視されてサブスクにフォールバックする。一方 <code>ANTHROPIC_AUTH_TOKEN</code> / <code>CLAUDE_CODE_OAUTH_TOKEN</code> はゲートが無く、セットされていれば効く。</p>
 
 <h4><code>/logout</code> が実際にすること</h4>
 <ul>
@@ -2413,8 +2540,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 <li><strong>環境変数</strong> <code>ANTHROPIC_API_KEY</code> … 承認（<code>approved</code>/<code>rejected</code>）で制御。本ガイドの前提。</li>
 <li><strong>保存キー</strong> <code>primaryApiKey</code>（macOS Keychain）… <code>/login</code> でキーを直接入力した場合の保管先。<code>/logout</code> では消えない。env 運用なら基本使われない。</li>
 </ul>
-<p class="note">補足: <code>--bare</code> / <code>CLAUDE_CODE_SIMPLE</code> などの簡易モードや非対話実行（<code>claude -p</code>）では、
-確認プロンプトを出さずに env のキーを直接使う経路がある（＝承認ゲートを通らない）。通常の対話起動は承認ゲート経由。</p>
+<p class="note">補足: <code>--bare</code> / <code>CLAUDE_CODE_SIMPLE</code> などの簡易モードや非対話実行（<code>claude -p</code>）では、確認プロンプトを出さずに env のキーを直接使う経路がある（＝承認ゲートを通らない）。通常の対話起動は承認ゲート経由。</p>
 
 <p class="foot">出典: Claude Code 公式ドキュメント（authentication）＋ v2.1.216 の実挙動確認。動作確認時点: 2026-07。</p>
 </section><!-- /ps-auth -->
@@ -2447,7 +2573,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
     <li><a href="#s5">[5] レビューと自動テスト</a></li>
     <li><a href="#s6">[6] デプロイ</a></li>
   </ul>
-  <a class="toc-group-label toc-sec3" href="#section3">Section 3 ― 機能追加と運用</a>
+  <a class="toc-group-label toc-sec3" href="#section3">Section 3 ― 機能追加と品質確保</a>
   <ul>
     <li><a href="#common">[7][8][9] 共通</a></li>
     <li><a href="#s7">[7] メール</a></li>
