@@ -326,7 +326,7 @@ details.spec pre{margin:.5em 0 0;}
 <tr><td><strong>[2]</strong></td><td>フロント</td><td>Section 1</td><td></td><td><code>npm run dev</code> の表示 URL で表示崩れなし／React Router で4ページ遷移できる</td></tr>
 <tr><td><strong>[3]</strong></td><td>フロントデプロイ</td><td>Section 1</td><td></td><td><code>https://&lt;name&gt;.workers.dev</code> で LP が表示され、URL を他の参加者と共有できる</td></tr>
 <tr><td><strong>[4]</strong></td><td>バック</td><td>Section 2</td><td></td><td>フロントと API がつながりローカルで一通りの機能が動く。<code>/api/me</code> は未認証で弾かれ、<code>/api/contact</code> は不正入力で弾かれる</td></tr>
-<tr><td><strong>[5]</strong></td><td>自動テスト</td><td>Section 2</td><td></td><td><code>npm test</code> がバック・フロントともグリーン（それぞれで実行）。純粋関数・正常系・異常系・未認証テスト各1本以上＋フロントの画面テスト1本</td></tr>
+<tr><td><strong>[5]</strong></td><td>レビューと自動テスト</td><td>Section 2</td><td></td><td><code>docs/TEST.md</code> に要件と項目の表があり、<strong>結果列がすべて埋まっている</strong>。「通し」以外の行は緑（<code>backend/</code> と <code>frontend/</code> それぞれで実行）</td></tr>
 <tr><td><strong>[6]</strong></td><td>デプロイ</td><td>Section 2</td><td></td><td>自分の <code>https://&lt;name&gt;.workers.dev</code> で LP が表示され <code>/mypage</code> も 404 にならない</td></tr>
 <tr><td><strong>[7]</strong></td><td>メール（Resend）</td><td>Section 3</td><td>★☆☆</td><td>問い合わせ受付やライセンス送付などのメールを実装し、自分宛に届くことを確認できる</td></tr>
 <tr><td><strong>[8]</strong></td><td>決済（Stripe）</td><td>Section 3</td><td>★★★</td><td>Stripe Checkout → Webhook でライセンスキー自動発行。テスト用カードでマイページにライセンスキーが表示されること</td></tr>
@@ -363,7 +363,7 @@ details.spec pre{margin:.5em 0 0;}
 <tbody>
 <tr><td>0:00–0:10</td><td>前回振り返り・キャッチアップ</td></tr>
 <tr><td>0:10–1:05</td><td>[4] バック作成（API 実装 → フロント結合 → 配信一本化＝フロントと API を Worker 一本にまとめる）</td></tr>
-<tr><td>1:05–1:35</td><td>[5] 自動テスト（正常系・異常系・未認証テストを最低1本ずつ）</td></tr>
+<tr><td>1:05–1:35</td><td>[5] レビューと自動テスト（要件を決める → 項目の表 → 実装 → 実行 → 壊して赤の確認 → 結果を集計）</td></tr>
 <tr><td>1:35–1:55</td><td>[6] デプロイ（wrangler deploy + D1 マイグレーション → workers.dev URL で動作確認・再デプロイ） 🎉</td></tr>
 <tr><td>1:55–2:00</td><td>クロージング: 到達確認・Section 3 課題選択（やる人だけ）</td></tr>
 </tbody>
@@ -1094,12 +1094,12 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <hr>
 
 <h2 id="s5">[5] レビューと自動テスト</h2>
-<p><strong>ゴール:</strong> AI で作成したコードの<strong>品質を向上させる</strong>。<strong>2段構え</strong>で進める。</p>
+<p><strong>ゴール:</strong> AI が書いたコードが要件を守れているかを一つずつ確かめ、守れていない箇所を特定して直す。<strong>2段構え</strong>で進める。</p>
 <ul>
 <li><strong>① レビュー</strong>: Claude Code のコマンドで差分を点検する</li>
-<li><strong>② 自動テスト</strong>: <code>npm test</code> で「正しいリクエストは通る・壊れたリクエストは弾く・ログインなしで保護 API に入れない」を毎回自動確認する</li>
+<li><strong>②〜⑧ 自動テスト</strong>: 何を守るべきかを決めてから、それを確かめるテストを書いて回す</li>
 </ul>
-<p>② はバックの API に加え<strong>フロントの主要画面も1本</strong>テストする。どちらも同じ「方針 → レビュー → 実装」に乗せる。デプロイ前にここまで通す。</p>
+<p>デプロイ前にここまで通す。</p>
 
 <h3>① レビュー: Claude Code のコマンドで点検する</h3>
 <p>ローカルの差分を、Claude Code の組み込みコマンド（最初から使える <code>/名前</code> のコマンド。スキルの自作は Section 3 [10] で扱う）で点検する。ローカルの差分に対して動くので <strong>git push は不要</strong>。</p>
@@ -1120,78 +1120,352 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 </figure>
 <p class="note">指摘があれば修正してから進む。大きな問題がなければそのまま push してよい。この3つは Section 3 <a href="#s11">[11] セキュリティ</a>の点検でもそのまま使う。</p>
 
-<h3>② 自動テスト — 考え方（AI との壁打ち）</h3>
-<p>このワークショップでは<strong>3ステップの壁打ち</strong>でテストを作る:</p>
-<ol>
-<li><strong>AI にテスト要件を書かせる</strong> — コードを読んで「何を・なぜテストするか」を <code>docs/TEST.md</code> にまとめさせる</li>
-<li><strong>人間が TEST.md をレビューする</strong> — 観点の抜けや「これはテストしなくていい」という箇所をチャットで指摘する</li>
-<li><strong>AI にテストを実装させる</strong> — レビュー済みの TEST.md を元に実装させ、<code>npm test</code>（バック・フロントそれぞれ）でグリーンを確認する</li>
-</ol>
+<h3>②〜⑧ 自動テストの考え方</h3>
+<p>この工程は、テストを緑にすることを目標にしていない。
+テストは、何も検査していなくても緑になる。
+だから緑の本数を数えても、何を守れているかは分からない。</p>
+
+<p>守るべきことを決め、一つずつ確かめて結果を書き残すところまでが、この工程である。</p>
+
+<p>要件を決めるところから結果を判定するところまで、全部を AI に任せることはできない。
+アプリを誰が使うか、何が起きたら困るかを知っているのは人間だけである。
+そしてテストが落ちたとき、AI はアプリではなくテストのほうを緩めて通すことがある。</p>
+
+<p>だから工程ごとに、AI に書かせる部分と人間が決める部分を分けてある。</p>
 
 <h3>流れ</h3>
+<table>
+<thead><tr><th>工程</th><th>やること</th><th>できあがるもの</th></tr></thead>
+<tbody>
+<tr><td>②</td><td>AI と壁打ちして、守られるべきことを箇条書きにする</td><td><code>TEST.md</code> の「テスト要件」</td></tr>
+<tr><td>③</td><td>要件ごとに「どこが壊れていたら守られないか」を挙げ、表にする</td><td><code>TEST.md</code> の「テスト項目」</td></tr>
+<tr><td>④</td><td>表で指定した種類の分だけ実行環境を用意する</td><td>Vitest の設定</td></tr>
+<tr><td>⑤</td><td>表を渡してテストコードを書かせる</td><td>テストファイル</td></tr>
+<tr><td>⑥</td><td>バックとフロントそれぞれで実行する</td><td>実行結果</td></tr>
+<tr><td>⑦</td><td>緑になったテストを、実装を壊して赤にしてみる</td><td>赤を確認した記録（表の結果列）</td></tr>
+<tr><td>⑧</td><td>表の結果列を埋め、落ちた原因を切り分ける</td><td>結果入りの表</td></tr>
+</tbody>
+</table>
+<p>このうち<strong>人間がやるのは ② の壁打ち、③ の確認、⑥⑦ の目視、⑧ の判定</strong>。書く作業はすべて AI が進める。</p>
+
+<h3 id="s5-t2">② テスト要件を決める（Why）</h3>
+
+<blockquote class="key">
+<p><strong>大事な前提：② と ③ は新しいセッションで始める。</strong><br>
+実装を書いたセッションのまま続けると、コンテキストに実装が残った状態で要件と期待結果を書くことになる。</p>
+<p>このセッションに読ませるのは <code>SCREEN_SPEC.md</code> と、② で作る <code>docs/TEST.md</code> だけにして、実装コードは読ませない。「実装から推測しないこと」とプロンプトに書くだけでは、読める状態にある限り引きずられる。</p>
+</blockquote>
+
+<p><strong>やること</strong>: AI に質問させながら、守るべきことを箇条書きに落とす。</p>
+
 <ol>
-<li>以下のプロンプトで <strong>TEST.md（何をテストするかを決めた文書）だけ</strong>を作らせる。<strong>対象はバック（<code>backend/</code>）の API に加え、フロントの主要画面を1つ</strong>。ここで「画面も1本テストする」ことも決めておく:
-<pre><code>SCREEN_SPEC.md（要求）と backend/ のコード、frontend/ の主要画面（問い合わせフォーム）
-を対象に、テストの方針を docs/TEST.md にまとめてください。
+<li>Claude Code に壁打ちを頼む。前提を人間が先に整理しておく必要はない。
+<pre><code>このアプリのテスト要件を決めたい。壁打ちに付き合ってほしい。
 
-SCREEN_SPEC.md に書いてある項目は、その記述を期待値の根拠にすること（実装から推測しない）。
-「何を・なぜテストするか・しないか」の判断も含めること。
-画面テストはフロントの主要フロー1本でよい（全画面はやらない）。
-テストファイルの実装はまだしないでください。</code></pre>
+まず、要件を決めるために必要なことを私に質問して。
+わからないことは推測せず、必ず質問すること。
+
+決まったら docs/TEST.md の「## テスト要件」に箇条書きで書いて。
+各項目は「〜してはいけない」「〜は必ず」の形にすること。</code></pre>
+  <p>「わからないことは推測せず質問して」の一行がないと、AI は「一般利用者向けの公開サービスと仮定して」と書いて先に進む。前提を想像で埋めれば、そこから導く要件も想像になる。</p>
 </li>
-<li><strong>人間が TEST.md をレビューする</strong> — <code>docs/TEST.md</code> を自分で開き、最低限以下が含まれているかを確認する:
+
+<li>AI が出した候補を、載せる基準にかけて取捨する。基準は<strong>破られたら何が起きるかを1行で言えること</strong>。
+  <p>この判定はチャットの上でやる作業で、ファイルには残らない。残るのは、載せると決めた項目だけを並べた次の手順の箇条書きである。</p>
+  <p>「購入したキーが消えない」なら、破られたときに「金を受け取ってモノを渡していない状態になる」と言える。これは載せる。落ちるのは次のような候補である。</p>
   <ul>
-  <li>外部サービスに依存しない純粋な関数のテスト</li>
-  <li>正しい入力で API が成功レスポンスを返すテスト</li>
-  <li>不正な入力で API が適切にエラーを返すテスト</li>
-  <li>未認証でログインが必要な API にアクセスしたとき、拒否されるテスト</li>
-  <li>画面のテストが最低1本あること</li>
+  <li><strong>表示が速い</strong> — 何秒から問題なのかを決めていないので、破られたかどうかが言えない</li>
+  <li><strong>エラーが出ない</strong> — 何も起きていない状態と区別できないので、破られたかどうかが言えない</li>
   </ul>
-  <p>抜けている観点があれば Claude Code に伝えて追記させる:</p>
-<pre><code>TEST.md に「未認証でログイン必須 API にアクセスしたとき拒否される」観点が抜けているので追記して。</code></pre>
-  <p class="note">時間に余裕があれば、上の各観点のチェックだけでなく全文に目を通し、「これはテストしなくていい」という箇所の指摘まで行うのが本来のレビュー。</p>
+  <p>落とした候補は消して終わりでよい。期待結果が書けないので、③ で表の行にならない。</p>
 </li>
-<li>TEST.md が固まったらテストを実装させる。それぞれの環境を用意させる:
-  <p class="note"><strong>ランナーはバック・フロントとも Vitest で共通、違うのは実行環境だけ</strong>（バックは Workers、フロントは jsdom）。新しいテストフレームワークは増えない。</p>
-<pre><code>docs/TEST.md の方針に従ってテストを実装してください。
 
-・バックエンド（backend/）: @cloudflare/vitest-pool-workers を使い、設定は cloudflareTest プラグイン方式で書く
-・フロントの画面テスト（frontend/）: 同じ Vitest を jsdom 環境で使い、@testing-library/react で画面を描画・操作する
-  （frontend にはまだ Vitest が無いので、vitest 本体・@testing-library/react・jsdom を dev 依存に足し、
-   frontend/package.json に test スクリプト（vitest run）も追加する）
+<li><code>docs/TEST.md</code> がこの形になったら ② は終わり。載せると決めた5つが、そのまま並んでいる。
+<pre><code>## テスト要件
 
-外部サービスへの fetch はすべてモックしてください。</code></pre>
-  <ul><li><code>@cloudflare/vitest-pool-workers</code>＝バックのテストを Workers と同じ実行環境で動かす公式アダプタ</li></ul>
-</li>
-<li><code>npm test</code> でグリーンを確認する。<strong>バックとフロントは別パッケージなので、それぞれのディレクトリで実行する</strong>（1回で両方は走らない）:
-<pre><code>cd backend  &amp;&amp; npm test   # API のテスト
-cd ../frontend &amp;&amp; npm test   # 画面テスト</code></pre>
+- ライセンスキーとメールアドレスを本人以外に返さない
+- 購入が成立したらライセンスキーは必ず発行され、再読込しても消えない
+- 同じ購入で二重にライセンスキーが発行されない
+- 認証が必要な API は未認証のアクセスを拒否する
+- 必須項目が空の入力を受け付けない</code></pre>
+  <p class="note">「破られたら何が起きるか」を詰めると、どういうときに守られるべきかが決まるので、要件は条件つきの長い文になる。長さは気にしなくてよい。</p>
 </li>
 </ol>
 
-<h3>ポイント</h3>
+<p><strong>ポイント</strong>:</p>
 <ul>
-<li><strong>AI が書いたコードこそテストが要る</strong>（出力を鵜呑みにせず、テストで裏付ける）</li>
-<li><strong>TEST.md が先、実装が後</strong>（方針を固めてから書かせると精度が上がる）</li>
+<li>ここで出た要件が以降すべての土台になるので、モデルは<strong>高精度なもの（Fable / Opus）</strong>を使う。Effort は既定の Medium で足りる</li>
+<li>書き終えた「## テスト要件」は、③ 以降で AI に書き換えさせない。上書きされると、③ で項目を判定する根拠と、⑧ で原因を帰属させる根拠が消える</li>
+<li>要件を数え上げきることは目標にしない。数え上げたかどうかを確かめる手段がないので、いくら時間をかけても終わったと判断できない</li>
+</ul>
+
+<h3 id="s5-t3">③ 何をテストするかを決める（What）</h3>
+
+<p><strong>やること</strong>: 要件1つを「壊れる場所」に分け、場所ごとに表の1行を作らせる。</p>
+
+<ol>
+<li>Claude Code に表を書かせる。
+<pre><code>docs/TEST.md の「## テスト要件」と SCREEN_SPEC.md を読んで、
+同じファイルに「## テスト項目」として表を追記して。
+
+・要件1つについて「どこが壊れていたらこの要件が守られないか」を挙げ、
+  挙げた場所ごとに1行を作る
+・列は「番号 | 守る項目 | どこで確かめる | 前提条件 | やること | 期待結果 | 結果」
+・「どこで確かめる」は 関数 / API / 画面 / 通し のどれか
+・見る場所が違えば別の行にする（レスポンスを見る行と DB を見る行は分ける）
+・前提条件は空欄にしないこと
+・「結果」列は空欄のままにする
+・「## テスト要件」は読むだけ。書き換えないこと
+・期待値の根拠は要件と SCREEN_SPEC.md の記述に置き、実装コードから推測しないこと</code></pre>
+  <p>このプロンプトの中心は、<strong>どこが壊れていたらこの要件が守られないか</strong>を挙げさせるところにある。挙げるのは、自分が Section 1 と 2 で作った画面、API、DB の3層のどこかである。</p>
+  <p>「購入したキーが消えない」なら、画面が送信していない、API がリクエストを処理していない、DB に保存されていない、保存したものが読み出せない、の4か所が出る。このうち1か所でも壊れれば、利用者はキーを受け取れない。だから挙げた場所ごとに1行を作る。</p>
+  <p>API だけ確かめて済ませると、送信ボタンが繋がっていないことに気付けない。</p>
+  <p class="note">ここで書けるのは層までである。関数名や API のパスといった固有名は実装コードを見ないと分からないので、⑤ で埋まる。「発行 API を叩く」の粒度で止めてよい。</p>
+</li>
+
+<li>こういう表になる（玄米茶サンプル。自分のアプリでは中身が変わる。ここでは要件2つ分だけ抜粋しており、実際は ② の要件すべてについて行が続く）。
+<table>
+<thead><tr><th>番号</th><th>守る項目</th><th>どこで確かめる</th><th>前提条件</th><th>やること</th><th>期待結果</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td>T-001</td><td>購入したキーが消えない</td><td>画面</td><td>購入フォームを表示</td><td>有効なメールで送信</td><td>発行 API が呼ばれる</td><td></td></tr>
+<tr><td>T-002</td><td>購入したキーが消えない</td><td>API</td><td>そのメールの記録が DB にない</td><td>発行 API を叩く</td><td>成功レスポンスにキーが入る</td><td></td></tr>
+<tr><td>T-003</td><td>購入したキーが消えない</td><td>API</td><td>同上</td><td>発行後に DB を直接見る</td><td>キーが1件保存されている</td><td></td></tr>
+<tr><td>T-004</td><td>購入したキーが消えない</td><td>API</td><td>T-003 の状態</td><td>そのメールで取得 API を叩く</td><td>保存したキーが返る</td><td></td></tr>
+<tr><td>T-005</td><td>キーを本人以外に返さない</td><td>API</td><td>A 購入済み、B 未購入</td><td>B でライセンス取得 API</td><td>A のキーが返らない</td><td></td></tr>
+<tr><td>T-006</td><td>キーを本人以外に返さない</td><td>画面</td><td>同上</td><td>B でマイページを開く</td><td>A のキーが出ない</td><td></td></tr>
+</tbody>
+</table>
+</li>
+
+<li>人間が確認する。見るものが2つあるので、順番に見る。
+<table>
+<thead><tr><th>順</th><th>見るもの</th><th>やること</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>観点の抜け</td><td>挙げた場所が足りているか。「購入したキーが消えない」に DB の行がない等</td></tr>
+<tr><td>2</td><td>テストしなくていい箇所</td><td>挙げた場所のうち、確かめるコストに見合わないものを落とす</td></tr>
+</tbody>
+</table>
+  <p>抜けを探す作業と、要らない行を落とす作業は、同時にやらない。抜けを探すのは行を増やす作業で、落とすのは減らす作業である。同時にやると、足りない行を思いつく前に「もう行が多い」と感じて、探すのをやめてしまう。</p>
+  <p>抜けを埋めきってから、落とす作業に入る。落とすと決めた行は、表から消す。</p>
+</li>
+</ol>
+
+<p><strong>「どこで確かめる」の4種</strong>: コマンドに <code>npm test</code> が3つ並ぶのは、テストを走らせるランナーが同じで、その下の実行環境だけが違うからである。環境と必要なパッケージは ④ で用意する。</p>
+
+<table>
+<thead><tr><th>語</th><th>叩く場所</th><th>見る場所</th><th>コマンド</th></tr></thead>
+<tbody>
+<tr><td>関数</td><td>関数を直接呼ぶ</td><td>戻り値</td><td><code>npm test</code></td></tr>
+<tr><td>API</td><td>HTTP リクエストを投げる</td><td>レスポンスと DB</td><td><code>npm test</code></td></tr>
+<tr><td>画面</td><td>React を描画して操作</td><td>描画された内容</td><td><code>npm test</code></td></tr>
+<tr><td>通し</td><td>本物のブラウザで操作</td><td>実際の画面</td><td><code>npx playwright test</code></td></tr>
+</tbody>
+</table>
+
+<p>同じ「API」でも、T-002 と T-003 は別の行になる。T-002 はレスポンスを見て、T-003 は DB を見る。API が成功を返しても、DB に書けていないことはある。</p>
+
+<p class="note">この工程で決めるのは、どの要件を「通し」で確かめるかまでである。Playwright の導入と操作の録画は、Section 3 の <a href="#s12">[12] E2E テスト</a>で扱う。</p>
+
+<p><strong>ポイント</strong>:</p>
+<ul>
+<li><strong>前提条件の列を空欄のまま ⑤ に進めない。</strong>空欄だと、AI は初期状態を用意するコードを書かない。前のテストが残したデータがそのまま残り、テストはそれを見て通ってしまう</li>
+<li><strong>「どこで確かめる」は人間が決める。</strong>画面を操作すれば何でも確かめられるように見えるため、AI に任せると「通し」に寄る</li>
+<li>同じことを確かめられるなら、軽いほうを選ぶ。関数がいちばん軽く、API、画面、通しの順に、実行時間も書く手間も増える</li>
+<li>番号は、AI にテスト名の先頭へ入れさせる。⑧ で表の行とテストコードを番号で照合するために使う</li>
+</ul>
+
+<h3 id="s5-t4">④ テストスイートを用意する</h3>
+
+<p><strong>やること</strong>: ③ の表の「どこで確かめる」列に出てきた種類だけ、実行環境を作らせる。</p>
+
+<p class="note">ここから実装のセッションに戻る。④ 以降は実装コードを読ませてよい。</p>
+
+<p>「関数」の行しかなければ、画面テスト用のパッケージは入れない。「通し」の行があっても、Playwright はここでは入れない（<a href="#s12">[12]</a> で扱う）。</p>
+
+<pre><code>docs/TEST.md の「## テスト項目」の「どこで確かめる」列を見て、
+必要なテスト環境だけを用意して。
+
+・関数・API のテスト（backend/）: @cloudflare/vitest-pool-workers を使い、
+  設定は cloudflareTest プラグイン方式で書く
+・画面のテスト（frontend/）: 同じ Vitest を jsdom 環境で使い、
+  @testing-library/react で描画・操作する
+・表に出てこない種類の環境は入れないこと</code></pre>
+
+<ul>
+<li><strong>ランナーはバック・フロントとも Vitest で共通、違うのは実行環境だけ</strong>（バックは Workers、フロントは jsdom）。新しいテストフレームワークは増えない</li>
+<li><code>@cloudflare/vitest-pool-workers</code>＝バックのテストを Workers と同じ実行環境で動かす公式アダプタ</li>
+</ul>
+
+<h3 id="s5-t5">⑤ テストコードを書かせる（How）</h3>
+
+<p><strong>やること</strong>: 表をそのまま渡して実装させる。表にないことはさせない。</p>
+
+<pre><code>docs/TEST.md の「## テスト項目」の表に従ってテストを実装して。
+
+・テスト名の先頭に表の番号を入れる（例: test('T-003 発行後に DB にキーが1件保存されている', ...)）
+・「期待結果」列の値をそのまま使い、実装コードから推測しないこと
+・表にない項目を勝手に足さないこと
+・「どこで確かめる」が「通し」の行は実装しないこと
+・test.skip / it.todo / it.only を使わないこと
+・固定待ち（waitForTimeout）を入れないこと
+・モックしてよいのは外部サービス（メール送信、決済）だけ
+・DB はモックしないこと。DB を見る行は実物の中身を確かめること</code></pre>
+
+<p>番号をテスト名の先頭に入れておくと、⑧ で表とテストコードを <code>grep</code> だけで突き合わせられる。</p>
+
+<h3 id="s5-t6">⑥ 実行する</h3>
+
+<p><strong>やること</strong>: バックとフロントは別パッケージなので、それぞれのディレクトリで実行する。</p>
+
+<pre><code>cd backend  &amp;&amp; npm test   # 関数・API のテスト
+cd ../frontend &amp;&amp; npm test   # 画面テスト</code></pre>
+
+<p class="warn"><strong>出力の skipped が0件であることを、人間が自分で見る。</strong>
+skipped があってもテスト全体は成功として扱われるので、画面は緑のまま、確かめた本数だけが足りなくなる。</p>
+
+<p class="note">skipped は <code>test.skip</code> や <code>it.todo</code> と書いてあるときに出る。⑤ で禁止したのに出ていたら、AI がテストを通せずに逃げ道を使ったということである。</p>
+
+<p><strong>ここでコミットする</strong>: ⑦ では壊した実装が元に戻ったことを、⑧ ではテストファイルが変わっていないことを、git の差分で確かめる。git に追跡されていないファイルは差分が出ないので、先にコミットしておかないと、テストが改変されていても気付けない。</p>
+
+<pre><code>docs/TEST.md とテストコードとテストの設定をコミットして。
+このあと git で確認するので、私が言うまで追加のコミットはしないこと。</code></pre>
+
+<h3 id="s5-t7">⑦ 壊して赤になるか確認する</h3>
+
+<p><strong>やること</strong>: 緑になったテストについて、実装をわざと壊させて、赤くなることを確かめる。</p>
+
+<p>緑になったテストが、実は何も検査していないことがある。期待値が緩い、<code>try/catch</code> で例外を握り潰している、要素が現れるのを待たずに次へ進んでいる、といった書き方をしたときに起きる。⑥ の出力ではどちらも緑なので、見分けがつかない。</p>
+
+<p>こうした書き方に寄るのは、AI にとっての成功条件が「緑になること」だからである。渡した目標が「要件を満たすこと」であっても、AI が直接観測できるのは緑かどうかだけで、最適化はそちらに向かう。評価指標そのものを攻略してしまうこの現象を <strong>Reward Hacking</strong> という。</p>
+
+<p>極端には、テストに出てくる値だけを返す実装でも緑になる。実装と検証を同じ AI が同じ流れで回すと、この歪みは中から見えない。</p>
+
+<p>見分けるには、実装をわざと壊してみる。検査しているテストだけが赤くなる。実装を1箇所変えてテストが落ちるかを見るこの確認を、ミューテーションテストと呼ぶ。</p>
+
+<p class="note">出典: <a href="https://qiita.com/y0us91/items/2feffd2cc6c672717973">AIが実装し、AIがテストし、AIが「問題ありません」と言う時代の品質保証</a>（@y0us91, 2026-08-11）</p>
+
+<ol>
+<li>壊す前に、作業ツリーがきれいなことを確認する。壊した実装が元に戻ったかを後で判定するために使う。⑥ でコミットしてあれば、何も出力されない。
+<pre><code>git status --porcelain</code></pre>
+</li>
+
+<li>壊す場所を指定して頼む。<strong>壊し方を AI に任せない。</strong>
+<pre><code>T-003 が本当に何かを守っているか確認したい。
+
+・T-003 が守ると主張している振る舞いだけを壊して
+  （期待結果の値が変わるように、保存処理の1行を変えるなど）
+・import を消す、構文を壊す、といった壊し方はしないこと
+  （無関係なテストまで赤くなり、T-003 が検査している証明にならない）
+・テストを実行して、T-003 だけが赤くなったところを見せて
+・確認できたら git restore で元に戻して</code></pre>
+  <p>壊し方を指定しないと、AI はファイルごと壊すような手軽な方法を選ぶ。それだと全部のテストが赤くなるので、T-003 が何を検査しているかは分からない。</p>
+</li>
+
+<li>判定する。
+  <ul>
+  <li>そのテストだけが赤くなった → 検査している</li>
+  <li>緑のまま → <strong>何も検査していない</strong>。⑤ に戻って期待結果を書き直す</li>
+  <li>無関係なテストまで赤くなった → 壊し方が乱暴。壊す場所を変えてやり直す</li>
+  </ul>
+</li>
+
+<li><strong>元に戻ったことを人間が確認する。</strong>AI に「戻して」と頼むだけでは、戻ったかどうかは分からない。壊した側のディレクトリ（<code>backend</code> または <code>frontend</code>）で実行する。
+<pre><code>git status --porcelain   # 何も出力されないこと
+npm test                 # 壊す前と同じ結果になること</code></pre>
+  <p>ここを飛ばすと、壊した実装がそのまま残った状態で ⑧ とデプロイに進むことになる。</p>
+</li>
+
+<li>確認できた行の結果列に、そのことを書き足す。
+<pre><code>| T-003 | 購入したキーが消えない | API | … | 緑（壊して赤を確認） |</code></pre>
+</li>
+</ol>
+
+<p>すでに落ちているテストは対象にならない。赤いものをさらに壊しても色が変わらない。</p>
+
+<p class="note">全部の行でやると時間が足りない。<strong>「守る項目」ごとに1本を選んで確かめる</strong>のを基準にする。1本も壊さずに ⑧ へ進むと、この工程を置いた意味がなくなる。</p>
+
+<h3 id="s5-t8">⑧ 集計して原因を切り分ける</h3>
+
+<p><strong>やること</strong>: 表とコードを突き合わせ、落ちた原因を切り分けてから直す。</p>
+
+<ol>
+<li>表とテストコードを番号で突き合わせる。
+<pre><code>docs/TEST.md の表にある番号と、テストコードのテスト名に入っている番号を
+grep で抽出して diff で突き合わせて。
+
+実行したコマンドと出力をそのまま見せること。要約しないこと。
+判定はこちらでする。</code></pre>
+  <ul>
+  <li>表にあってコードにない → ③ の項目が ⑤ で落ちている（「通し」の行はここに出るのが正常）</li>
+  <li>コードにあって表にない → AI が勝手に足している</li>
+  </ul>
+</li>
+
+<li>落ちた原因を切り分けさせる。<strong>この時点では直させない。</strong>
+<pre><code>落ちているテストの原因を切り分けて。次の3つのどれかで判定して。
+
+・実装が要件を満たしていない
+・テストの書き方が悪い
+・要件そのものが間違っている（実装もテストも正しいが、要件の記述がずれている）
+
+判定だけ報告して。まだ何も直さないこと。</code></pre>
+  <p>診断と修正を1回のやりとりでまとめて頼むと、AI は実装を直すより手数の少ない道、つまりテストの期待値を緩めて緑にする道を選べる。判定だけを先に受け取り、何を直すかは人間が決める。</p>
+  <p>「要件そのものが間違っている」と判定された行は、人間が要件を直す。そのうえで表の期待結果も直し、⑤ からやり直す。② で「AI に書き換えさせない」としているのは AI に対する制限で、人間が直すのはここだけである。</p>
+</li>
+
+<li>判定に応じて表の「結果」列を埋める（③ の抜粋に無い行も含めた例）。
+<table>
+<thead><tr><th>番号</th><th>守る項目</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td>T-002</td><td>購入したキーが消えない</td><td>緑（壊して赤を確認）</td></tr>
+<tr><td>T-003</td><td>購入したキーが消えない</td><td>落ちた → 保存処理が未対応 → 実装を直して緑</td></tr>
+<tr><td>T-005</td><td>キーを本人以外に返さない</td><td>落ちた → 認可の抜け（バグ）→ 実装を直して緑</td></tr>
+<tr><td>T-007</td><td>必須項目が空の入力を受け付けない</td><td>落ちた → 要件の書き間違い（名前は任意でよかった）→ 要件と期待結果を直して緑</td></tr>
+<tr><td>T-009</td><td>同じ購入で二重に発行されない</td><td>未修理 → 二重発行のガードが無い（時間切れ・持ち帰り）</td></tr>
+<tr><td>T-008</td><td>キーを本人以外に返さない</td><td><a href="#s12">[12]</a> で確認予定（通しの行）</td></tr>
+</tbody>
+</table>
+  <p>要件を壊れる場所ごとに分けて行にしてあるので、落ちた行がそのまま原因の場所を指す。T-001 が落ちたなら画面、T-003 が落ちたなら保存処理である。</p>
+  <p>結果列は、落ちた時点で止めずに、直したところまで書く。「落ちた」で終わっている行は、まだ作業が残っている行である。</p>
+  <p>「通し」の行は ⑤ で実装していないので、結果列に「<a href="#s12">[12]</a> で確認予定」と書く。空欄のままにしない。空欄は「まだ判断していない」を意味するので、確かめていないことが記録から消える。</p>
+</li>
+
+<li>直す対象を指示する。テストファイルは変更禁止だと明示する。
+<pre><code>T-005 の原因は認可の抜けなので、backend の実装を直して。
+テストファイルは変更しないこと。</code></pre>
+</li>
+
+<li>修正後に、テストファイルが変わっていないことを人間が見る。
+<pre><code>git diff --stat -- '*.test.ts' '*.test.tsx'</code></pre>
+  <p>ここに差分が出ていたら、直されたのはアプリではなくテストである。</p>
+</li>
+
+<li>修正して新しく緑になったテストは、まだ ⑦ を通っていない。その分だけ戻って、壊して確認する。</li>
+</ol>
+
+<p><strong>ポイント</strong>:</p>
+<ul>
+<li><strong>「通し」以外の行は、最後には全部緑にする。</strong>要件を正として進めているので、赤い行は「自分で決めた要件にアプリが違反している」状態である。赤のままデプロイするなら、それは要件を取り下げたのと同じで、その場合は手順2の「要件そのものが間違っている」で処理する話になる</li>
+<li>落ちた行が出ること自体は成果である。「作ったつもりが作られていなかった」という発見だからである。ただし成果になるのは直したときで、見つけて止めた状態は途中でしかない</li>
+<li>時間内に直しきれない行が残ったら、結果列に「未修理」と理由を書いて持ち帰る。これは完了ではなく、要件を満たしていない状態の記録である</li>
 <li>Section 3 でオプション機能を追加するとき、<strong>このテストが安全網になる</strong></li>
 </ul>
 
 <h3>完了したら push する</h3>
-<pre><code>自動テスト実装の作業をコミットして dev ブランチに push して。</code></pre>
+<p>手順5 の差分確認が終わってから push する。ここまで追加のコミットを止めていたので、残っている変更をまとめる。</p>
+<pre><code>テスト工程の作業をコミットして dev ブランチに push して。</code></pre>
 
 <h3 class="done">✅ 完了の定義（Section 2 の到達点・前半）</h3>
 <ul>
-<li><code>npm test</code> が<strong>バック・フロントともグリーン</strong>（全ケース pass。<code>backend/</code> と <code>frontend/</code> それぞれで実行する）</li>
-<li>最低限カバーできている：
-  <ul>
-  <li>ライセンスキーの生成や文字列のマスクのように、外部サービスに依存しない関数のテストが1つ以上</li>
-  <li>正しい入力で API が成功レスポンスを返すことを確認するテスト（例: 問い合わせフォームに正しい内容を入れて送ったとき、受付完了が返る）</li>
-  <li>不正な入力で API が適切にエラーを返すことを確認するテスト（例: 必須項目が空のまま送信したとき、入力エラーとして弾かれる）</li>
-  <li>未認証でログインが必要な API にアクセスしたとき、アクセスが拒否されることを確認するテスト（例: ログインせずにマイページ API を叩いたら弾かれる）</li>
-  </ul>
-</li>
-<li>フロントの主要画面1つに、表示＋正常系操作を確認する<strong>画面テストが1本</strong>ある（Vitest + <code>@testing-library/react</code>）</li>
-<li>→ これが緑になったら [6] デプロイへ</li>
+<li><code>docs/TEST.md</code> に「テスト要件」と「テスト項目」の表があり、各行の<strong>「前提条件」が埋まっている</strong></li>
+<li>表の番号とテストコードのテスト名が一致している（どちらか片方にしかない番号がない）</li>
+<li><code>npm test</code> の出力に <strong>skipped が0件</strong>（<code>backend/</code> と <code>frontend/</code> それぞれで実行する）</li>
+<li>「守る項目」ごとに1本以上、実装を壊すと赤になることを確認した</li>
+<li>壊した実装が元に戻っている（<code>git status --porcelain</code> が空）</li>
+<li>表の「結果」列がすべて埋まっている（緑／未修理＋理由／<a href="#s12">[12]</a> で確認予定）</li>
+<li><strong>「通し」以外の行が全部緑になっている</strong>（未修理で残した行は、理由が結果列に書かれている）</li>
+<li>落ちた項目を直したとき、テストファイルに差分が入っていない</li>
+<li>→ ここまで埋まったら <a href="#s6">[6] デプロイ</a>へ</li>
 </ul>
 
 <hr>
@@ -1225,7 +1499,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 
 <h3>ポイント</h3>
 <ul>
-<li><strong>[5] のテストが緑なのを確認してから公開する</strong>（テスト → デプロイ の順）</li>
+<li><strong>[5] の表の結果列が埋まっているのを確認してから公開する</strong>（テスト → デプロイ の順）</li>
 <li>ローカル（<code>--local</code> の D1）と本番（リモート D1）はデータが別物</li>
 <li>Cloudflare の<strong>無料枠の範囲で完結</strong>する</li>
 <li><strong>Section 2 本編では Secrets 投入は不要</strong>（Stripe/Clerk/Resend を使う [7][8][9] で初めて要る。手順は <a href="#common">Section 3 の共通手順</a>参照）</li>
@@ -1251,7 +1525,7 @@ npm run deploy   # フロントのビルド → wrangler deploy まで一発</co
 
 <h3>Section 2 クロージング</h3>
 <ul>
-<li>全員が「<code>npm test</code> グリーン + <code>workers.dev</code> 公開 URL」に到達しているか確認</li>
+<li>全員が「<code>docs/TEST.md</code> の結果列が埋まっている + <code>workers.dev</code> 公開 URL」に到達しているか確認</li>
 <li>Section 1 と同じ <code>workers.dev</code> URL への<strong>再デプロイ完了</strong>を確認（バック API が繋がっていること）</li>
 <li><strong>dev に push 済みかを確認</strong>（必要なら <code>dev</code> → <code>main</code> にマージして安定版を残す）</li>
 <li>Section 3 のオプション課題から興味のあるものを選ぶ（Stripe / Clerk / Resend のアカウントを事前に作っておくとスムーズ）</li>
@@ -1896,30 +2170,30 @@ END;
 <hr>
 
 <h2 id="s12">[12] E2E テスト（画面を通して確かめる）<span class="diff">★★☆</span></h2>
-<p><strong>お題</strong>: 「これが起きたら困る」ことを3〜5個書き、そのうち<strong>2個</strong>をブラウザ操作のテストにする<br>
+<p><strong>お題</strong>: <a href="#s5-t3">[5] ③</a> の表から<strong>2本</strong>を選び、ブラウザ操作のテストにする<br>
 <strong>ツール</strong>: Playwright（Codegen）＋ Claude Code<br>
-<strong>前提</strong>: <a href="#s6">[6]</a> まで完了していること／<strong>Node.js 22 以上</strong>（<code>node -v</code> で確認）<br>
+<strong>前提</strong>: <a href="#s6">[6]</a> まで完了していること（<a href="#s5">[5]</a> の「## テスト項目」の表があること）／<strong>Node.js 22 以上</strong>（<code>node -v</code> で確認）<br>
 <strong>学び</strong>: AI が作ったものを鵜呑みにせず、<strong>画面を通して自分で確かめられる</strong>ようになる。決めたことが守られているかを見て、まだ決めていなかったことをその場で見つけて決める</p>
 
 <h3>Playwright とは</h3>
 <p>ブラウザを実際に動かしてアプリを操作するテストツール。付属の <strong>Codegen</strong> を使うと、自分が画面でやった操作がそのままテストコードとして書き出される。そのため、テストの書き始めでつまずかない。</p>
-<p><a href="#s5">[5]</a> の Vitest が関数や API を単体で確かめるのに対して、Playwright は画面を通した一連の流れを確かめる。外部サービスの画面（Google のログインや Stripe の決済画面）は自動操作できないので、そこは対象から外す。</p>
+<p><a href="#s5">[5]</a> の Vitest が関数や API を単体で確かめるのに対して、Playwright は画面を通した一連の流れを確かめる。</p>
 
 <h3>流れ</h3>
 <ul>
 <li>⓪ 準備</li>
-<li>① 起きたら困ることを3〜5個書く</li>
-<li>② E2E で書くものを2つ選ぶ</li>
-<li>③ 操作を録画する</li>
-<li>④ 検証を足して実行する</li>
-<li>⑤ 赤の原因を決める（赤が出たときだけ）</li>
-<li>⑥ 壊して赤になるか確かめる</li>
-<li>⑦ コミットする</li>
+<li>① テストする行を2本決める</li>
+<li>② 操作を録画する</li>
+<li>③ 検証を足して実行する</li>
+<li>④ 赤の原因を決める（赤が出たときだけ）</li>
+<li>⑤ 壊して赤になるか確かめる</li>
+<li>⑥ push する</li>
 </ul>
-<p>このうち<strong>自分で考えるのは①②⑤</strong>。ほかは Codegen と AI が進める。</p>
+<p>このうち<strong>自分で考えるのは①④</strong>。ほかは Codegen と AI が進める。</p>
+<p class="note">「何をテストするか」は <a href="#s5-t3">[5] ③</a> で決めてある。この章はそれを Playwright で実行に移す工程なので、決め直さない。</p>
 
 <details class="spec">
-<summary>⚠️ [9] ID 連携（Clerk）を実施済みの人は、⓪の前にここを読む</summary>
+<summary>⚠️ [8] 決済 / [9] ID 連携 を実施済みの人は、⓪の前にここを読む</summary>
 
 <p>[9] を入れるとログインが <strong>Google の画面</strong>に移る。<strong>Playwright は Google のログイン画面を自動操作できない</strong>ので、そのままでは認証が要る画面のテストが1本も書けない。</p>
 
@@ -1974,7 +2248,7 @@ export E2E_CLERK_USER_EMAIL='e2e+clerk_test@example.com'
 npx playwright test --project=setup</code></pre>
 <p class="note"><strong>これが緑になれば設定は正しい。</strong>ログイン画面を操作するコードが混ざっていれば、ここで止まる。</p>
 
-<p><strong>4. ③の録画はこう起動する</strong> — <strong>開いた瞬間からログイン済み</strong>になる。サインイン画面は出ない。</p>
+<p><strong>4. ②の録画はこう起動する</strong> — <strong>開いた瞬間からログイン済み</strong>になる。サインイン画面は出ない。</p>
 <pre><code>npx playwright codegen --load-storage=playwright/.clerk/user.json \
   -o tests/01-xxx.spec.ts http://localhost:8787/mypage</code></pre>
 
@@ -1987,9 +2261,7 @@ npx playwright test --project=setup</code></pre>
 <p>上の方法なら保存されるのは<strong>このアプリと Clerk のクッキーだけ</strong>で、Google のものは入らない。</p>
 </blockquote>
 
-<p><strong>[8] 決済（Stripe）も実施済みの場合</strong>: 購入操作は Stripe の決済画面（外部ホスト）を通るので、②で「購入操作そのもの」を保証項目にすると書けない。</p>
-<p><strong>前提条件を「購入済みのアカウント」に置き、購入後の表示を見る</strong>形に寄せる。購入済みのアカウントは、上の <code>--load-storage</code> で開いたブラウザから1回だけ手で購入して作っておけばよい（テストカード <code>4242 4242 4242 4242</code>）。</p>
-<p>決済画面の中で起きた不具合は Stripe 側の設定や画面仕様に由来するため、直す先が自分のリポジトリにない。<strong>決済画面から先は E2E の対象外</strong>として②で ✕ を付け、備考に「Stripe の設定として確認する」と書く。</p>
+<p><strong>[8] 決済（Stripe）も実施済みの場合</strong>: 行の選び方は①に書いた。ここで用意しておくのは<strong>購入済みのアカウント</strong>で、上の <code>--load-storage</code> で開いたブラウザから1回だけ手で購入すればよい（テストカード <code>4242 4242 4242 4242</code>）。</p>
 
 <table>
 <thead><tr><th>保証項目</th><th>[8][9] 実施前</th><th>実施後</th></tr></thead>
@@ -2018,115 +2290,44 @@ npx playwright test --project=setup</code></pre>
 
 <p class="note"><strong>完了</strong>: ブラウザで <code>http://localhost:8787</code> が開き、購入もマイページも動く。</p>
 
-<h3>① 起きたら困ることを3〜5個書く</h3>
+<h3 id="s12-t1">① テストする行を2本決める</h3>
 
-<p><strong>やること</strong>:</p>
-<ol>
-<li><code>http://localhost:8787</code> を開き、<strong>自分のサービスに月300円払った人のつもりで</strong>、購入 → マイページ → 問い合わせを一通り操作する</li>
-<li><code>backend/docs/TEST.md</code> の末尾に、<strong>自分のアプリについて</strong>3〜5行書く</li>
-</ol>
+<p><strong>やること</strong>: <a href="#s5-t3">[5] ③</a> の「## テスト項目」の表から、ブラウザで確かめる行を<strong>2本</strong>選ぶ。選んだ行の番号は、②で作るファイルの名前になる。</p>
 
-<p><strong>書き方</strong>: <strong>「〜すると、〜してしまう」</strong>の形で、<strong>困る人の言葉</strong>で書く。機能名や技術用語は使わない。</p>
+<p><strong>「どこで確かめる」が「通し」の行があれば、それを使う。</strong>前提条件と期待結果は <a href="#s5-t3">[5] ③</a> で埋めてあるので、そのまま使える。選ばなかった行は結果列を「[12] で確認予定」のままにしておき、時間が余ったら足す。</p>
 
-<p class="note">下は玄米茶サンプルの場合の例。<strong>写し取らず、自分のアプリで考えて書くこと。</strong></p>
-<pre><code>## [12] 起きたら困ること
-
-- 他人のメールを指定すると、他人のライセンスキーが見えてしまう
-- 購入したのに、ライセンスキーが保存されていない
-- ライセンスキーが末尾4桁以外も表示されてしまう
-- 問い合わせを送ったのに、届いていない</code></pre>
-
-<p><strong>判定</strong>: 書いたら1行ずつ、この質問に答える。</p>
-<blockquote class="key"><p>この行が NG のとき、<strong>画面のどこを見れば分かるか？</strong></p></blockquote>
-<table>
-<thead><tr><th>答え</th><th>例</th><th>どうするか</th></tr></thead>
-<tbody>
-<tr><td>具体的な場所が言える</td><td>「マイページに A のキー文字列が出ているか」</td><td><strong>そのまま残す</strong>（②で使う）</td></tr>
-<tr><td>場所が言えない</td><td>「エラーが出ない」「ちゃんと表示される」</td><td><strong>書き直す。</strong>直せなければ消す</td></tr>
-</tbody>
-</table>
-<p class="note">「エラーが出ない」が使えないのは、<strong>何も起きていない状態と区別がつかない</strong>から。</p>
+<p><strong>通しの行が無い場合は、ここで2本作る。</strong><a href="#s5-t2">[5] ②</a> の「## テスト要件」から、<strong>画面から DB までを通らないと破れないもの</strong>を2つ選び、表に「通し」の行を足す。前提条件と期待結果は、同じ要件の「画面」の行を見れば書ける。足した行の結果列には「[12] で確認予定」と書いておく（③ で上書きする）。</p>
 
 <blockquote class="warn">
-<p><strong>⚠️ <code>backend/</code> <code>frontend/</code> のコードは開かないこと。</strong></p>
-<p>開くと「今こうなっている」に引きずられる。ここで書くのは<strong>「どうあるべきか」</strong>であって、「今どうなっているか」ではない。</p>
+<p><strong>⚠️ 外部サービスの画面を通る行は、ここで外す。</strong></p>
+<p>Playwright は Google のログイン画面や Stripe の決済画面を自動操作できない。<a href="#s8">[8]</a> や <a href="#s9">[9]</a> を実施した人は、その画面を通らないと再現できない行が出てくる。</p>
+<p><a href="#s9">[9]</a>（Clerk）の分は下の <code>@clerk/testing</code> で回避できる。<a href="#s8">[8]</a>（Stripe）の購入操作そのものは回避できないので、<strong>前提条件を「購入済みのアカウント」に置き、購入後の表示を見る</strong>行に振り替える。振り替えられない行は選ばず、結果列に「決済画面の内側なので E2E 対象外。Stripe の設定として確認する」と書く。決済画面の中の不具合は Stripe 側の設定に由来するので、直す先が自分のリポジトリにない。</p>
 </blockquote>
 
-<p class="note"><strong>完了</strong>: 3〜5行あり、<strong>全部について「画面のどこを見るか」が言える</strong>。</p>
+<p class="note"><strong>完了</strong>: 表の行を2つ選べていて、それぞれ前提条件と期待結果が埋まっている。</p>
 
-<h3>② E2E で書くものを2つ選ぶ</h3>
+<h3>② 操作を録画する</h3>
 
-<p><strong>やること</strong>: ①の各行を3つの問いにかけ、表にする。</p>
-
-<table>
-<thead><tr><th>#</th><th>問い</th><th>No なら</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>画面のどこを見れば分かるか言えるか</td><td>E2E では書けない</td></tr>
-<tr><td>2</td><td>部品1つのテストでは言えないことか</td><td><a href="#s5">[5]</a> の領分</td></tr>
-<tr><td>3</td><td>壊れるのは自分のアプリの中か</td><td>外部サービスの中なら無理</td></tr>
-</tbody>
-</table>
-<p><strong>3問すべて Yes のものだけが E2E。</strong> 表は Claude Code に作らせる。</p>
-<pre><code>backend/docs/TEST.md の「[12] 起きたら困ること」に私が書いた項目を、
-同じファイルに表として書き直して。
-列は「起きたら困ること | E2E | 前提条件 | 期待結果 | 書く | 備考」。
-中身は全部空欄にしておくこと。そこは私が埋める。
-実装コードは読まないこと。</code></pre>
-
-<p><strong>埋め方</strong>: 空欄になった各列を、自分で埋める。</p>
-<table>
-<thead><tr><th>列</th><th>何を書くか</th></tr></thead>
-<tbody>
-<tr><td>E2E</td><td>3問すべて Yes なら ⭕、1つでも No なら ✕</td></tr>
-<tr><td>前提条件</td><td><strong>テストを始めるときの状態</strong>（例: A は購入済み・B は未購入）</td></tr>
-<tr><td>期待結果</td><td><strong>画面のどこがどうなっていれば OK か</strong>（①で答えた「見る場所」をそのまま書く）</td></tr>
-<tr><td>書く</td><td>今日テストする<strong>2行だけ</strong>に ◎</td></tr>
-<tr><td>備考</td><td>✕ を付けた行に、<strong>なぜ ✕ にしたか</strong></td></tr>
-</tbody>
-</table>
-
-<details class="spec">
-<summary>記入例を見る（玄米茶サンプル。自分のアプリでは中身が変わる）</summary>
-<table>
-<thead><tr><th>起きたら困ること</th><th>E2E</th><th>前提条件</th><th>期待結果</th><th>書く</th><th>備考</th></tr></thead>
-<tbody>
-<tr><td>他人のライセンスキーが見えてしまう</td><td>⭕</td><td>A購入済み<br>B未購入</td><td>Bの画面にAのキーが出ない</td><td><strong>◎</strong></td><td></td></tr>
-<tr><td>購入したのに、キーが保存されていない</td><td>⭕</td><td>新しいメール</td><td>開き直しても出ている</td><td><strong>◎</strong></td><td></td></tr>
-<tr><td>キーが末尾4桁以外も表示されてしまう</td><td>⭕</td><td>購入済み</td><td>全桁が出ない</td><td></td><td>余ったら</td></tr>
-<tr><td>問い合わせを送ったのに、届いていない</td><td>✕</td><td>なし</td><td>なし</td><td></td><td>外部の内側。画面で確認できない</td></tr>
-</tbody>
-</table>
-</details>
-
-<blockquote class="key">
-<p><strong>◎ は2つまで。</strong></p>
-<p>1つだと全部緑で終わって⑤に進めない。3つ以上は時間内に終わらない。</p>
-</blockquote>
-
-<p class="note"><strong>完了</strong>: ◎ が2つあり、✕ の行すべてに理由が書いてある。</p>
-
-<h3>③ 操作を録画する</h3>
-
-<p><strong>やること</strong>: ◎ の2行それぞれについて、1回ずつ録画する。<strong>必ずリポジトリのルートで実行する。</strong></p>
+<p><strong>やること</strong>: ①で選んだ2行それぞれについて、1回ずつ録画する。<strong>必ずリポジトリのルートで実行する。</strong></p>
 <pre><code>cd &lt;リポジトリのルート&gt;
 npx playwright codegen http://localhost:8787/ -o tests/&lt;ファイル名&gt;.spec.ts</code></pre>
 
-<p><strong>末尾のファイル名は自分で決める。</strong> <code>-o</code> は「録画した結果をどこに書き出すか」の指定。②の表で ◎ を2つ付けたので、名前も2つ要る。</p>
+<p><strong>末尾のファイル名は自分で決める。</strong> <code>-o</code> は「録画した結果をどこに書き出すか」の指定。①で2本選んだので、名前も2つ要る。</p>
 
-<p><strong>名前の付け方</strong>: <code>tests/&lt;番号&gt;-&lt;何を守るか分かる短い名前&gt;.spec.ts</code></p>
+<p><strong>名前の付け方</strong>: <code>tests/&lt;表の番号&gt;-&lt;何を守るか分かる短い名前&gt;.spec.ts</code></p>
 <details class="spec">
 <summary>名前の例を見る（玄米茶サンプル）</summary>
 <table>
-<thead><tr><th>②の表で ◎ を付けた行</th><th>ファイル名</th></tr></thead>
+<thead><tr><th>①で選んだ行</th><th>ファイル名</th></tr></thead>
 <tbody>
-<tr><td>他人のキーが見えない</td><td><code>tests/01-other-user.spec.ts</code></td></tr>
-<tr><td>購入するとキーが保存される</td><td><code>tests/02-purchase-saved.spec.ts</code></td></tr>
+<tr><td>T-008 他人のキーが見えない</td><td><code>tests/T-008-other-user.spec.ts</code></td></tr>
+<tr><td>T-009 購入するとキーが保存される</td><td><code>tests/T-009-purchase-saved.spec.ts</code></td></tr>
 </tbody>
 </table>
 </details>
 <ul>
 <li>置き場所は <code>tests/</code>。⓪で生成された <code>playwright.config.ts</code> に <code>testDir: './tests'</code> という行があり、<strong>この場所だけがテストの探索対象</strong>になっている。別の場所に置くと実行されない</li>
-<li>番号は②の表の上から順に振る。そうしておくと、テストが落ちたとき<strong>表のどの行のことか</strong>すぐ分かる</li>
+<li>番号は表の行番号（<code>T-005</code> など）に合わせる。そうしておくと、テストが落ちたとき<strong>表のどの行のことか</strong>すぐ分かる</li>
 <li>拡張子は <code>.spec.ts</code>。<strong>この拡張子で終わるファイルだけがテストとして拾われる</strong>（<code>.test.ts</code> も可。<code>.ts</code> だけだと無視される）</li>
 </ul>
 
@@ -2140,7 +2341,7 @@ npx playwright codegen http://localhost:8787/ -o tests/&lt;ファイル名&gt;.s
 <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">起動すると<strong>ブラウザ</strong>と<strong>コード生成ウィンドウ（Playwright Inspector）</strong>が並んで開く。左を操作すると右にコードが溜まっていく</figcaption>
 </figure>
 
-<p><strong>録画中にやること</strong>: ②の表に書いた「前提条件」を、画面を操作して自分で作る。そのうえで「期待結果」を見る画面まで進む。</p>
+<p><strong>録画中にやること</strong>: 表の「前提条件」列に書いた状態を、画面を操作して自分で作る。そのうえで「期待結果」を見る画面まで進む。</p>
 <p>たとえば前提条件が「A は購入済み、B は未購入」なら、1回の録画の中で A として購入し、続けて B としてマイページを開くところまでを通しで操作する。前提条件を作る操作も録画に含める。</p>
 <figure class="diagram">
 <img src="img/PlaywrightCodegenLocator.png" alt="Codegen 録画中のブラウザ — 「← トップへ戻る」リンクにカーソルを乗せると、その要素を指す getByRole('link', { name: '← トップへ戻る' }) がツールチップで表示されている">
@@ -2159,7 +2360,7 @@ npx playwright codegen http://localhost:8787/ -o tests/&lt;ファイル名&gt;.s
 <p>Codegen が書く <code>goto</code> は<strong>開いた URL ではなく、移動が終わったあとの URL</strong> になる。未ログインで <code>/mypage</code> を開くとサインイン画面に飛ぶが、そのとき生成されるのはこうなる。</p>
 <pre><code>// 開いたのは http://localhost:8787/mypage なのに…
 await page.goto('https://&lt;認証サービスのホスト&gt;/sign-in?redirect_url=...');</code></pre>
-<p>このまま実行すると<strong>サインイン画面を開いてサインイン画面が出た</strong>だけのテストになり、確かめたかったことが消える。自分のアプリの URL に戻すのは④でやる。</p>
+<p>このまま実行すると<strong>サインイン画面を開いてサインイン画面が出た</strong>だけのテストになり、確かめたかったことが消える。自分のアプリの URL に戻すのは③でやる。</p>
 </blockquote>
 
 <p><strong>検証（目玉マーク）は押さなくてよい。</strong> 検証は次の工程で AI に書かせる。</p>
@@ -2174,12 +2375,12 @@ await page.goto('https://&lt;認証サービスのホスト&gt;/sign-in?redirect
 
 <p class="note"><strong>完了</strong>: <code>tests/</code> に <code>.spec.ts</code> が2本できている（中身は操作だけで <code>expect</code> はゼロ）。</p>
 
-<h3>④ 検証を足して実行する</h3>
+<h3>③ 検証を足して実行する</h3>
 
 <p><strong>やること</strong>: 録画したファイル1本ずつ、AI に検証を足させる。</p>
-<p><strong>埋めるのは <code>&lt; &gt;</code> の2箇所だけ。</strong>あとの3行はそのままコピーする。</p>
-<pre><code>tests/&lt;録画したファイル名&gt; を backend/docs/TEST.md の表で
-「&lt;②で ◎ を付けた行&gt;」に合わせて仕上げて。
+<p><strong>埋めるのは <code>&lt; &gt;</code> の1箇所だけ。</strong>ファイル名に表の番号が入っているので、どの行かはそれで伝わる。あとの3行はそのままコピーする。</p>
+<pre><code>tests/&lt;録画したファイル名&gt; を、docs/TEST.md の「## テスト項目」の
+同じ番号の行に合わせて仕上げて。
 
 ・表の「前提条件」から始めて、「期待結果」を確かめて終わる形にする
 ・期待結果は表の文言だけを根拠にする。実装コードは読まないこと
@@ -2209,22 +2410,22 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
 <pre><code>npx playwright test
 npx playwright test --ui        # 落ちたらこれ。ステップごとの画面が見える</code></pre>
 
-<p class="note"><strong>完了</strong>: 2本とも実行し、それぞれ緑か赤かが分かっている。</p>
-<p class="note"><strong>赤でも問題ない。</strong>原因は次の工程で判定する。</p>
+<p><strong>結果を表に書く</strong>: 2本それぞれについて、<code>docs/TEST.md</code> の結果列の「[12] で確認予定」を実際の結果（緑／落ちた）で上書きする。</p>
+<p class="note"><strong>完了</strong>: 2本とも実行し、結果列が書き換わっている。<strong>赤でも問題ない。</strong>原因は次の工程で判定する。</p>
 
-<h3>⑤ 赤の原因を決める（赤が出たときだけ）</h3>
+<h3>④ 赤の原因を決める（赤が出たときだけ）</h3>
 
-<p><strong>やること</strong>: まず AI に原因を切り分けさせる。</p>
+<p><strong>やること</strong>: まず AI に原因を切り分けさせる。<strong>この時点では直させない</strong>（理由は <a href="#s5-t8">[5] ⑧</a> と同じ。まとめて頼むと、AI はテストの期待値を緩めて緑にする道を選べる）。</p>
 <pre><code>tests/&lt;落ちたファイル名&gt; が落ちた。
-テストの書き方が悪いのか、実装が保証を満たしていないのか判定して。
-実装が原因なら実装のほうを直して。テストの期待値は変えないこと。</code></pre>
+テストの書き方が悪いのか、実装が要件を満たしていないのか、
+判定だけ報告して。まだ何も直さないこと。</code></pre>
 
-<p><strong>判定</strong>: 返ってきた答えで対応が変わる。</p>
+<p><strong>判定</strong>: 返ってきた答えで対応が変わる。直させるときは「テストファイルは変更しないこと」を添える。</p>
 <table>
 <thead><tr><th>原因</th><th>どうするか</th></tr></thead>
 <tbody>
 <tr><td>テストの書き方が悪い（要素の指定が曖昧など）</td><td>AI にテストを直させる</td></tr>
-<tr><td>実装が保証を満たしていない</td><td>AI に<strong>実装</strong>を直させる。再実行して緑を確認する</td></tr>
+<tr><td>実装が要件を満たしていない</td><td>AI に<strong>実装</strong>を直させる。再実行して緑を確認する</td></tr>
 <tr><td><strong>どちらとも言えない</strong>（仕様が決まっていない）</td><td><strong>自分で決める</strong>（下記）</td></tr>
 </tbody>
 </table>
@@ -2233,7 +2434,7 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 <table>
 <thead><tr><th>自分の判断</th><th>やること</th></tr></thead>
 <tbody>
-<tr><td>今の動きで正しい</td><td>①②に戻って<strong>書いた内容のほうを直す</strong></td></tr>
+<tr><td>今の動きで正しい</td><td><a href="#s5-t2">[5] ②</a> の要件と <a href="#s5-t3">[5] ③</a> の期待結果のほうを直す</td></tr>
 <tr><td>今の動きは直すべき</td><td>AI に<strong>実装を直させる</strong></td></tr>
 </tbody>
 </table>
@@ -2243,35 +2444,53 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 <p>テストは AI への発注書にあたる。発注書のほうを書き換えてしまったら、何も確かめていないのと同じになる。</p>
 </blockquote>
 
-<p class="note"><strong>完了</strong>: 赤だった行について、直したか・仕様として認めたかが決まっている。</p>
+<p class="note"><strong>完了</strong>: 赤だった行について、直したか・仕様として認めたかが決まっていて、結果列がそこまで書き換わっている（例:「落ちた → 実装を直して緑」）。</p>
 
-<h3>⑥ 壊して赤になるか確かめる</h3>
+<h3>⑤ 壊して赤になるか確かめる</h3>
 
-<p><strong>やること</strong>: <strong>緑になっているテスト</strong>について、AI にわざと壊させる。</p>
-<pre><code>このテストが効いているか確認したい。
-該当箇所を1箇所だけ一時的に壊して、テストが赤くなることを見せて。
-確認できたら必ず元に戻して。</code></pre>
+<p><strong>やること</strong>: <strong>緑になっているテスト</strong>について、実装をわざと壊させ、そのテストだけが赤くなることを確かめる。</p>
 
-<table>
-<thead><tr><th>結果</th><th>意味</th><th>どうするか</th></tr></thead>
-<tbody>
-<tr><td>赤くなった</td><td>そのテストは機能している</td><td>次へ</td></tr>
-<tr><td><strong>緑のまま</strong></td><td><strong>そのテストは何も確認していない</strong></td><td>④に戻って <code>expect</code> を書き直す</td></tr>
-</tbody>
-</table>
+<p>この章のテストは、②の録画では <code>expect</code> がゼロの状態で生まれる。検証を足したのは③の AI なので、緑は「操作が最後まで通った」だけでも出る。この確認が要る理由は <a href="#s5-t7">[5] ⑦</a> に書いた。</p>
 
-<p class="note"><strong>完了</strong>: 1本以上で「壊すと赤・戻すと緑」を確認した。</p>
-
-<h3>⑦ コミットする</h3>
-
-<p><strong>やること</strong>: <code>.gitignore</code> に次の4行があるか確認する。無ければ足す。</p>
+<p><strong>壊す前に、ここまでの作業をコミットする。</strong>元に戻ったかを git の差分で判定するためで、コミットしていないと差分が出ず、確認にならない。</p>
+<p>先に <code>.gitignore</code> に次の4行があるか確認する。無ければ足す。</p>
 <pre><code>/test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.clerk/     # [9] 実施済みで @clerk/testing を使った場合のみ</code></pre>
-<p>確認できたらコミットさせる。</p>
-<pre><code>E2E テストの追加をコミットして push して。</code></pre>
+<pre><code>ここまでの E2E テストの作業をコミットして
+（④で実装を直した場合はその分も含める）。
+このあと git で確認するので、私が言うまで追加のコミットはしないこと。</code></pre>
+<p>コミットできたら、作業ツリーがきれいなことを確認する。</p>
+<pre><code>git status --porcelain   # 何も出力されないこと</code></pre>
+
+<pre><code>tests/&lt;確かめたいファイル名&gt; が本当に何かを守っているか確認したい。
+
+・このテストの期待結果が変わるように、実装を1箇所だけ壊して
+・API を止める、ビルドを壊すといった共通の経路には触らないこと
+  （2本とも真っ白な画面で落ちるだけで、このテストが何を見ているかは分からない）
+・テストを実行して、このテストだけが赤くなったところを見せて
+・確認できたら git restore で元に戻して</code></pre>
+
+<table>
+<thead><tr><th>結果</th><th>意味</th><th>どうするか</th></tr></thead>
+<tbody>
+<tr><td>そのテストだけが赤くなった</td><td>そのテストは機能している</td><td>次へ</td></tr>
+<tr><td><strong>緑のまま</strong></td><td><strong>そのテストは何も確認していない</strong></td><td>③に戻って <code>expect</code> を書き直す</td></tr>
+<tr><td>2本とも赤くなった</td><td>壊し方が乱暴</td><td>壊す場所を変えてやり直す</td></tr>
+</tbody>
+</table>
+
+<p><strong>元に戻ったことを自分で見る。</strong>AI に「戻して」と頼むだけでは、戻ったかどうかは分からない。</p>
+<pre><code>git status --porcelain   # 何も出力されないこと</code></pre>
+
+<p class="note"><strong>完了</strong>: 1本以上で「壊すと赤」を確認し、作業ツリーが元に戻っている。</p>
+
+<h3>⑥ push する</h3>
+
+<p><strong>やること</strong>: ⑤の確認が終わってから push する。⑤で追加のコミットを止めていたので、結果列の更新など残っている変更をまとめる。</p>
+<pre><code>E2E テストの作業をコミットして push して。</code></pre>
 <p class="note"><strong>完了</strong>: <code>test-results/</code> <code>playwright-report/</code> が入っていない状態で push できている。</p>
 
 <h3 class="warn">⚠️ ハマりどころ</h3>
@@ -2280,21 +2499,23 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 <li><strong><code>tests/</code> の中で <code>codegen -o tests/...</code> を実行する</strong>: 保存先が見つからずに落ちて、録画が消える</li>
 <li><strong><code>npm run build:front</code> を忘れる</strong>: 画面が古いまま配信される。しかも [5] のテストは全部緑になるので、E2E 以外では気づけない</li>
 <li><strong>同じメールアドレスを使い回す</strong>: テストは並列で走るので、互いのデータを踏む</li>
-<li><strong><code>expect</code> が弱い</strong>: 「見出しが見える」だけだと壊しても赤にならない。これは⑥で必ず露見する</li>
+<li><strong><code>expect</code> が弱い</strong>: 「見出しが見える」だけだと壊しても赤にならない。これは⑤で必ず露見する</li>
 </ul>
 
 <h3 class="done">✅ 完了の定義</h3>
 <ul>
-<li>①を自分の言葉で3〜5行書き、<strong>全部について「画面のどこを見るか」を言える</strong></li>
-<li>②の表に ◎ が2つあり、<strong>✕ の行には理由が書いてある</strong></li>
-<li>テストを2本実行し、<strong>それぞれ緑か赤かが表に記録されている</strong></li>
+<li>ブラウザで確かめる行を<strong>2本</strong>選び、それぞれ <code>tests/</code> に spec ファイルがある</li>
+<li>その2本を実行し、<strong>結果列が「[12] で確認予定」から実際の結果に書き換わっている</strong></li>
 <li>赤が出た行について、<strong>直したか・仕様として認めたかを自分で決めた</strong></li>
 <li>1本以上で<strong>「壊すと赤」</strong>を確認した</li>
+<li>壊した実装が元に戻っている（<code>git status --porcelain</code> が空）</li>
+<li>選ばなかった通しの行は、結果列が「[12] で確認予定」のまま残っている（空欄にしない）</li>
 </ul>
 <blockquote class="key">
-<p>全部を緑にすることは目標ではない。</p>
+<p>この2本を緑にすることが目標ではない。</p>
 <p><strong>決めていなかったことを1つ見つけて決めたら、それが成果。</strong></p>
 </blockquote>
+<p class="note"><a href="#s5">[5]</a> は「通し」以外の行を全部緑にするところまでを完了条件にしている。通しの行だけがこの章に回されているので、ここで結果列が埋まると <code>TEST.md</code> の表に空欄がなくなる。</p>
 
 <details class="spec">
 <summary>なぜ [5] の自動テストとは別にやるのか（部品検査と試乗）</summary>
@@ -2316,7 +2537,7 @@ npx playwright test --ui        # 落ちたらこれ。ステップごとの画�
 <tr><td>連投時のレート制限が効かない</td><td>気づける</td><td><strong>見逃す</strong></td></tr>
 </tbody>
 </table>
-<p>E2E は [5] の置き換えではなく<strong>補完</strong>。だから②で ✕ を付けた行は [5] のテストが引き取る。</p>
+<p>E2E は [5] の置き換えではなく<strong>補完</strong>。だから「通し」にしなかった行は [5] の関数・API・画面のテストが引き取る。</p>
 </details>
 <hr>
 
