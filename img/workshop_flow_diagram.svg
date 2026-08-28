@@ -56,10 +56,10 @@
 
   <line x1="534" y1="82" x2="552" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
 
-  <!-- [6] 自動テスト: x=552, center=594 -->
+  <!-- [6] 機能テスト: x=552, center=594 -->
   <g>
     <rect x="552" y="54" width="84" height="56" rx="8" fill="rgb(250,238,218)" stroke="rgb(133,79,11)" stroke-width="0.5"/>
-    <text x="594" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(99,56,6);font-family:-apple-system,system-ui,sans-serif">[6] 自動テスト</text>
+    <text x="594" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(99,56,6);font-family:-apple-system,system-ui,sans-serif">[6] 機能テスト</text>
     <text x="594" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:10px;fill:rgb(133,79,11);font-family:-apple-system,system-ui,sans-serif">npm test 緑</text>
   </g>
 

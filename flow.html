@@ -369,14 +369,14 @@ details.spec pre{margin:.5em 0 0;}
 <h2 id="s-map">全体マップ</h2>
 
 <figure class="diagram keep-light">
-<img src="img/workshop_flow_diagram.svg" alt="ワークショップフロー図: Core（[1]デザイン→[2]フロント→[3]フロントデプロイ→[4]バックエンド→[5]レビュー→[6]自動テスト→[7]デプロイ）と Option（[8]メール/[9]決済/[10]ID連携/[11]運用保守/[12]セキュリティ/[13]E2Eテスト/[14]自動デプロイ）">
+<img src="img/workshop_flow_diagram.svg" alt="ワークショップフロー図: Core（[1]デザイン→[2]フロント→[3]フロントデプロイ→[4]バックエンド→[5]レビュー→[6]機能テスト→[7]デプロイ）と Option（[8]メール/[9]決済/[10]ID連携/[11]運用保守/[12]セキュリティ/[13]E2Eテスト/[14]自動デプロイ）">
 </figure>
 
 <table>
 <thead><tr><th>Section</th><th>テーマ</th><th>内容</th></tr></thead>
 <tbody>
 <tr><td><strong>Section 1</strong></td><td>UI設計（Claude Design）とフロント実装（Claude Code）</td><td>目的・技術紹介 / 環境確認 / [1] デザイン / [2] フロント / [3] フロントデプロイ</td></tr>
-<tr><td><strong>Section 2</strong></td><td>バックエンド実装（Claude Code）と品質担保</td><td>[4] バックエンド / [5] レビュー / [6] 自動テスト / [7] 再デプロイ（Section 1 と同じ URL に API を統合）</td></tr>
+<tr><td><strong>Section 2</strong></td><td>バックエンド実装（Claude Code）と品質担保</td><td>[4] バックエンド / [5] レビュー / [6] 機能テスト / [7] 再デプロイ（Section 1 と同じ URL に API を統合）</td></tr>
 <tr><td><strong>Section 3</strong></td><td>機能追加と品質確保（メール、決済、ID連携、自動デプロイ等）</td><td>オプション課題 [8]〜[14] / ラップアップ・発表会</td></tr>
 </tbody>
 </table>
@@ -390,7 +390,7 @@ details.spec pre{margin:.5em 0 0;}
 <tr><td><strong>[3]</strong></td><td>フロントデプロイ</td><td>Section 1</td><td></td><td><code>https://&lt;name&gt;.workers.dev</code> で LP が表示され、URL を他の参加者と共有できる</td></tr>
 <tr><td><strong>[4]</strong></td><td>バックエンド</td><td>Section 2</td><td></td><td>フロントと API がつながりローカルで一通りの機能が動く。問い合わせ API は不正入力で弾かれる</td></tr>
 <tr><td><strong>[5]</strong></td><td>レビュー</td><td>Section 2</td><td></td><td><code>/code-review</code> と <code>/security-review</code> を実行し、指摘を直したうえで dev に push できている</td></tr>
-<tr><td><strong>[6]</strong></td><td>自動テスト</td><td>Section 2</td><td></td><td><code>docs/TEST.md</code> に要件と項目の表があり、<strong>結果列がすべて埋まっている</strong>。「通し」以外の行は緑（<code>backend/</code> と <code>frontend/</code> それぞれで実行）</td></tr>
+<tr><td><strong>[6]</strong></td><td>機能テスト</td><td>Section 2</td><td></td><td><code>docs/TEST.md</code> に要件と項目の表があり、<strong>結果列がすべて埋まっている</strong>。「通し」以外の行は緑（<code>backend/</code> と <code>frontend/</code> それぞれで実行）</td></tr>
 <tr><td><strong>[7]</strong></td><td>デプロイ</td><td>Section 2</td><td></td><td>自分の <code>https://&lt;name&gt;.workers.dev</code> で LP が表示され <code>/mypage</code> も 404 にならない</td></tr>
 <tr><td><strong>[8]</strong></td><td>メール（Resend）</td><td>Section 3</td><td>★☆☆</td><td>問い合わせ受付やライセンス送付などのメールを実装し、自分宛に届くことを確認できる</td></tr>
 <tr><td><strong>[9]</strong></td><td>決済（Stripe）</td><td>Section 3</td><td>★★★</td><td>Stripe Checkout → Webhook でライセンスキー自動発行。テスト用カードでマイページにライセンスキーが表示されること</td></tr>
@@ -428,7 +428,7 @@ details.spec pre{margin:.5em 0 0;}
 <tr><td>0:00–0:10</td><td>前回振り返り・キャッチアップ</td></tr>
 <tr><td>0:10–1:05</td><td>[4] バックエンド作成（API 実装 → フロント結合 → 配信一本化＝フロントと API を Worker 一本にまとめる）</td></tr>
 <tr><td>1:05–1:15</td><td>[5] レビュー（<code>/code-review</code>・<code>/security-review</code> → 指摘を直して push）</td></tr>
-<tr><td>1:15–1:35</td><td>[6] 自動テスト（テスト要件 → テスト設計 → 環境準備 → 項目作成 → 実施 → 結果 → コード修正）</td></tr>
+<tr><td>1:15–1:35</td><td>[6] 機能テスト（テスト要件 → テスト設計 → 環境準備 → 項目作成 → 実施 → 結果 → コード修正）</td></tr>
 <tr><td>1:35–1:55</td><td>[7] デプロイ（wrangler deploy + D1 マイグレーション → workers.dev URL で動作確認・再デプロイ） 🎉</td></tr>
 <tr><td>1:55–2:00</td><td>クロージング: 到達確認・Section 3 課題選択（やる人だけ）</td></tr>
 </tbody>
@@ -1060,10 +1060,10 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 
 <hr>
 
-<h2 id="s6">[6] 自動テスト</h2>
+<h2 id="s6">[6] 機能テスト</h2>
 <p><strong>ゴール:</strong> アプリが要件を守れているかを一つずつ確かめ、守れていない箇所を特定して直す。</p>
 
-<h3>自動テストの考え方</h3>
+<h3>機能テストの考え方</h3>
 <p>この工程は、テストを緑にすることを目標にしていない。
 テストは、何も検査していなくても緑になる。
 だから緑の本数を数えても、何を守れているかは分からない。</p>
@@ -1615,7 +1615,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 <h3>① アカウントとキーの準備</h3>
 <ol>
 <li><a target="_blank" rel="noopener" href="https://dashboard.stripe.com/login">https://dashboard.stripe.com/login</a> で <strong>Google SSO ログイン</strong>する</li>
-<li><strong>サンドボックス（テストモード）</strong>はデフォルトで有効（ワークショップは終始これ）。テストモード＝本物の課金が発生しない Stripe の練習環境のことで、[6] の「自動テスト」とは別物である</li>
+<li><strong>サンドボックス（テストモード）</strong>はデフォルトで有効（ワークショップは終始これ）。テストモード＝本物の課金が発生しない Stripe の練習環境のことで、[6] の「機能テスト」とは別物である</li>
 <li>必要な環境変数を AI に聞き、<code>.dev.vars.sample</code> に雛形を作る</li>
 <li>検索窓で「API」と検索 →「開発者 > API キー」→ 標準キーの<strong>シークレットキー（<code>sk_test_...</code>）</strong>をコピーし、<code>.dev.vars</code> にセットする
 <figure class="diagram">
@@ -2407,7 +2407,7 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
 <p class="note"><a href="#s6">[6]</a> は「通し」以外の行を全部緑にするところまでを完了条件にしている。通しの行だけがこの章に回されているので、ここで結果列が埋まると <code>TEST.md</code> の表に空欄がなくなる。</p>
 
 <details class="spec">
-<summary>なぜ [6] の自動テストとは別にやるのか（部品検査と試乗）</summary>
+<summary>なぜ [6] の機能テストとは別にやるのか（部品検査と試乗）</summary>
 <p>[6] のテストは<strong>部品を1つずつ台の上で検査する</strong>。E2E は<strong>組み上がったものに実際に乗ってみる</strong>。守っている場所が違う。</p>
 <pre><code>         画面(React) ─── HTTP ─── Worker(Hono) ── D1
 [6]    ├────┤                   ├────────┤
@@ -2681,7 +2681,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
   <ul>
     <li><a href="#s4">[4] バックエンド作成</a></li>
     <li><a href="#s5">[5] レビュー</a></li>
-    <li><a href="#s6">[6] 自動テスト</a></li>
+    <li><a href="#s6">[6] 機能テスト</a></li>
     <li><a href="#s7">[7] デプロイ</a></li>
   </ul>
   <a class="toc-group-label toc-sec3" href="#section3">Section 3 ― 機能追加と品質確保</a>
