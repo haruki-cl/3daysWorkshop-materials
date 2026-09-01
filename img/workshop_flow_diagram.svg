@@ -1,4 +1,4 @@
-<svg width="100%" viewBox="0 0 780 344" role="img" xmlns="http://www.w3.org/2000/svg">
+<svg width="100%" viewBox="0 0 820 344" role="img" xmlns="http://www.w3.org/2000/svg">
   <title style="fill:rgb(0,0,0)">ワークショップフロー図</title>
   <desc style="fill:rgb(0,0,0)">Core（全員必達）7ステージとOption（選択式）7テーマのフローチャート</desc>
   <defs>
@@ -8,115 +8,115 @@
   </defs>
 
   <!-- Core area -->
-  <rect x="30" y="18" width="720" height="108" rx="14" fill="none" stroke="rgba(31,30,29,0.3)" stroke-width="1" stroke-dasharray="6 4"/>
-  <text x="50" y="38" style="font-size:12px;font-weight:500;fill:rgb(61,61,58);font-family:-apple-system,system-ui,sans-serif">Core — Section 1〜2・全員必達</text>
+  <rect x="20" y="18" width="780" height="108" rx="14" fill="none" stroke="rgba(31,30,29,0.3)" stroke-width="1" stroke-dasharray="6 4"/>
+  <text x="40" y="38" style="font-size:12px;font-weight:500;fill:rgb(61,61,58);font-family:-apple-system,system-ui,sans-serif">Core — Section 1〜2・全員必達</text>
 
-  <!-- [1] デザイン: x=42, center=84 -->
+  <!-- [1] デザイン: x=52, center=98 -->
   <g>
-    <rect x="42" y="54" width="84" height="56" rx="8" fill="rgb(238,237,254)" stroke="rgb(83,74,183)" stroke-width="0.5"/>
-    <text x="84" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(60,52,137);font-family:-apple-system,system-ui,sans-serif">[1] デザイン</text>
-    <text x="84" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:10px;fill:rgb(83,74,183);font-family:-apple-system,system-ui,sans-serif">Claude Design</text>
+    <rect x="52" y="54" width="92" height="56" rx="8" fill="rgb(238,237,254)" stroke="rgb(83,74,183)" stroke-width="0.5"/>
+    <text x="98" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:10.5px;font-weight:500;fill:rgb(60,52,137);font-family:-apple-system,system-ui,sans-serif">[1] デザイン</text>
+    <text x="98" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:9.5px;fill:rgb(83,74,183);font-family:-apple-system,system-ui,sans-serif">Claude Design</text>
   </g>
 
-  <line x1="126" y1="82" x2="144" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+  <line x1="144" y1="82" x2="156" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
 
-  <!-- [2] フロント: x=144, center=186 -->
+  <!-- [2] フロント: x=156, center=202 -->
   <g>
-    <rect x="144" y="54" width="84" height="56" rx="8" fill="rgb(225,245,238)" stroke="rgb(15,110,86)" stroke-width="0.5"/>
-    <text x="186" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(8,80,65);font-family:-apple-system,system-ui,sans-serif">[2] フロント</text>
-    <text x="186" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:10px;fill:rgb(15,110,86);font-family:-apple-system,system-ui,sans-serif">SPA</text>
+    <rect x="156" y="54" width="92" height="56" rx="8" fill="rgb(225,245,238)" stroke="rgb(15,110,86)" stroke-width="0.5"/>
+    <text x="202" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:10.5px;font-weight:500;fill:rgb(8,80,65);font-family:-apple-system,system-ui,sans-serif">[2] フロント</text>
+    <text x="202" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:9.5px;fill:rgb(15,110,86);font-family:-apple-system,system-ui,sans-serif">SPA</text>
   </g>
 
-  <line x1="228" y1="82" x2="246" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+  <line x1="248" y1="82" x2="260" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
 
-  <!-- [3] フロントデプロイ: x=246, center=288 -->
+  <!-- [3] デプロイ: x=260, center=306 -->
   <g>
-    <rect x="246" y="54" width="84" height="56" rx="8" fill="rgb(225,245,238)" stroke="rgb(15,110,86)" stroke-width="0.5"/>
-    <text x="288" y="75" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(8,80,65);font-family:-apple-system,system-ui,sans-serif">[3] フロント</text>
-    <text x="288" y="93" text-anchor="middle" dominant-baseline="central" style="font-size:10px;fill:rgb(15,110,86);font-family:-apple-system,system-ui,sans-serif">デプロイ</text>
+    <rect x="260" y="54" width="92" height="56" rx="8" fill="rgb(225,245,238)" stroke="rgb(15,110,86)" stroke-width="0.5"/>
+    <text x="306" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:10.5px;font-weight:500;fill:rgb(8,80,65);font-family:-apple-system,system-ui,sans-serif">[3] デプロイ</text>
+    <text x="306" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:9.5px;fill:rgb(15,110,86);font-family:-apple-system,system-ui,sans-serif">フロントのみ</text>
   </g>
 
-  <line x1="330" y1="82" x2="348" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+  <line x1="352" y1="82" x2="364" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
 
-  <!-- [4] バックエンド: x=348, center=390 -->
+  <!-- [4] バックエンド: x=364, center=410 -->
   <g>
-    <rect x="348" y="54" width="84" height="56" rx="8" fill="rgb(225,245,238)" stroke="rgb(15,110,86)" stroke-width="0.5"/>
-    <text x="390" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(8,80,65);font-family:-apple-system,system-ui,sans-serif">[4] バックエンド</text>
-    <text x="390" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:10px;fill:rgb(15,110,86);font-family:-apple-system,system-ui,sans-serif">API＋ライセンス</text>
+    <rect x="364" y="54" width="92" height="56" rx="8" fill="rgb(225,245,238)" stroke="rgb(15,110,86)" stroke-width="0.5"/>
+    <text x="410" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:10.5px;font-weight:500;fill:rgb(8,80,65);font-family:-apple-system,system-ui,sans-serif">[4] バックエンド</text>
+    <text x="410" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:9.5px;fill:rgb(15,110,86);font-family:-apple-system,system-ui,sans-serif">API＋DB</text>
   </g>
 
-  <line x1="432" y1="82" x2="450" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+  <line x1="456" y1="82" x2="468" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
 
-  <!-- [5] レビュー: x=450, center=492 -->
+  <!-- [5] レビュー: x=468, center=514 -->
   <g>
-    <rect x="450" y="54" width="84" height="56" rx="8" fill="rgb(250,238,218)" stroke="rgb(133,79,11)" stroke-width="0.5"/>
-    <text x="492" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(99,56,6);font-family:-apple-system,system-ui,sans-serif">[5] レビュー</text>
-    <text x="492" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:10px;fill:rgb(133,79,11);font-family:-apple-system,system-ui,sans-serif">code / security</text>
+    <rect x="468" y="54" width="92" height="56" rx="8" fill="rgb(250,238,218)" stroke="rgb(133,79,11)" stroke-width="0.5"/>
+    <text x="514" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:10.5px;font-weight:500;fill:rgb(99,56,6);font-family:-apple-system,system-ui,sans-serif">[5] レビュー</text>
+    <text x="514" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:9.5px;fill:rgb(133,79,11);font-family:-apple-system,system-ui,sans-serif">code / security</text>
   </g>
 
-  <line x1="534" y1="82" x2="552" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+  <line x1="560" y1="82" x2="572" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
 
-  <!-- [6] 機能テスト: x=552, center=594 -->
+  <!-- [6] 機能テスト: x=572, center=618 -->
   <g>
-    <rect x="552" y="54" width="84" height="56" rx="8" fill="rgb(250,238,218)" stroke="rgb(133,79,11)" stroke-width="0.5"/>
-    <text x="594" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(99,56,6);font-family:-apple-system,system-ui,sans-serif">[6] 機能テスト</text>
-    <text x="594" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:10px;fill:rgb(133,79,11);font-family:-apple-system,system-ui,sans-serif">npm test 緑</text>
+    <rect x="572" y="54" width="92" height="56" rx="8" fill="rgb(250,238,218)" stroke="rgb(133,79,11)" stroke-width="0.5"/>
+    <text x="618" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:10.5px;font-weight:500;fill:rgb(99,56,6);font-family:-apple-system,system-ui,sans-serif">[6] 機能テスト</text>
+    <text x="618" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:9.5px;fill:rgb(133,79,11);font-family:-apple-system,system-ui,sans-serif">npm test 緑</text>
   </g>
 
-  <line x1="636" y1="82" x2="654" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+  <line x1="664" y1="82" x2="676" y2="82" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
 
-  <!-- [7] デプロイ: x=654, center=696 -->
+  <!-- [7] デプロイ: x=676, center=722 -->
   <g>
-    <rect x="654" y="54" width="84" height="56" rx="8" fill="rgb(234,243,222)" stroke="rgb(59,109,17)" stroke-width="0.5"/>
-    <text x="696" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(39,80,10);font-family:-apple-system,system-ui,sans-serif">[7] デプロイ</text>
-    <text x="696" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:10px;fill:rgb(59,109,17);font-family:-apple-system,system-ui,sans-serif">公開 🎉</text>
+    <rect x="676" y="54" width="92" height="56" rx="8" fill="rgb(234,243,222)" stroke="rgb(59,109,17)" stroke-width="0.5"/>
+    <text x="722" y="78" text-anchor="middle" dominant-baseline="central" style="font-size:10.5px;font-weight:500;fill:rgb(39,80,10);font-family:-apple-system,system-ui,sans-serif">[7] デプロイ</text>
+    <text x="722" y="96" text-anchor="middle" dominant-baseline="central" style="font-size:9.5px;fill:rgb(59,109,17);font-family:-apple-system,system-ui,sans-serif">バックエンドも 🎉</text>
   </g>
   <!-- Single connector from Core area down to Option area -->
-  <line x1="390" y1="126" x2="390" y2="146" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
+  <line x1="410" y1="126" x2="410" y2="146" marker-end="url(#arrow)" stroke="rgb(115,114,108)" stroke-width="1.5" fill="none"/>
 
   <!-- Option area -->
-  <rect x="30" y="146" width="720" height="170" rx="14" fill="none" stroke="rgba(31,30,29,0.3)" stroke-width="1" stroke-dasharray="6 4"/>
-  <text x="50" y="166" style="font-size:12px;font-weight:500;fill:rgb(61,61,58);font-family:-apple-system,system-ui,sans-serif">Option — Section 3・選択式・必須ではない</text>
+  <rect x="20" y="146" width="780" height="170" rx="14" fill="none" stroke="rgba(31,30,29,0.3)" stroke-width="1" stroke-dasharray="6 4"/>
+  <text x="40" y="166" style="font-size:12px;font-weight:500;fill:rgb(61,61,58);font-family:-apple-system,system-ui,sans-serif">Option — Section 3・選択式・必須ではない</text>
 
   <g>
-    <rect x="130" y="176" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
-    <text x="192" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[8] メール</text>
-    <text x="192" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Resend</text>
+    <rect x="150" y="176" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="212" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[8] メール</text>
+    <text x="212" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Resend</text>
   </g>
 
   <g>
-    <rect x="262" y="176" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
-    <text x="324" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[9] 決済</text>
-    <text x="324" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Stripe</text>
+    <rect x="282" y="176" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="344" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[9] 決済</text>
+    <text x="344" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Stripe</text>
   </g>
 
   <g>
-    <rect x="394" y="176" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
-    <text x="456" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[10] ID連携</text>
-    <text x="456" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Clerk</text>
+    <rect x="414" y="176" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="476" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[10] ID連携</text>
+    <text x="476" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Clerk</text>
   </g>
 
   <g>
-    <rect x="526" y="176" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
-    <text x="588" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[11] 運用保守</text>
-    <text x="588" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif"> </text>
+    <rect x="546" y="176" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="608" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[11] 運用保守</text>
+    <text x="608" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif"> </text>
   </g>
 
   <g>
-    <rect x="196" y="244" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
-    <text x="258" y="268" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[12] セキュリティ</text>
-    <text x="258" y="286" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif"> </text>
+    <rect x="216" y="244" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="278" y="268" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[12] セキュリティ</text>
+    <text x="278" y="286" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif"> </text>
   </g>
 
   <g>
-    <rect x="328" y="244" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
-    <text x="390" y="268" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[13] E2E テスト</text>
-    <text x="390" y="286" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Playwright</text>
+    <rect x="348" y="244" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="410" y="268" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[13] E2E テスト</text>
+    <text x="410" y="286" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Playwright</text>
   </g>
 
   <g>
-    <rect x="460" y="244" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
-    <text x="522" y="268" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[14] 自動デプロイ</text>
-    <text x="522" y="286" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Workers Builds</text>
+    <rect x="480" y="244" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="542" y="268" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[14] 自動デプロイ</text>
+    <text x="542" y="286" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Workers Builds</text>
   </g>
 </svg>
