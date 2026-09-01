@@ -397,7 +397,7 @@ details.spec pre{margin:.5em 0 0;}
 <tr><td><strong>[10]</strong></td><td>ID 連携（Clerk）</td><td>Section 3</td><td>★★☆</td><td>未ログインで <code>/mypage</code> に入れない・<code>/api/me</code> がログイン必須になっている</td></tr>
 <tr><td><strong>[11]</strong></td><td>運用保守（Cloudflare ログ確認・スキル化）</td><td>Section 3</td><td>★☆☆</td><td><code>wrangler tail</code> でログ確認できる・運用スキルが1つ動作する</td></tr>
 <tr><td><strong>[12]</strong></td><td>セキュリティ（SonarCloud 静的解析・脆弱性レビュー）</td><td>Section 3</td><td>★★★</td><td>認証境界・IDOR・機密マスクを点検し、問題を最低1つ修正（余裕があれば回帰テストを追加）</td></tr>
-<tr><td><strong>[13]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>Section 3</td><td>★★☆</td><td>「お金を返せと言われる事態」を自分で書き、ブラウザ操作のテストにする。AI が作った MVP について「自分が決めていなかったこと」を見つけて決められる</td></tr>
+<tr><td><strong>[13]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>Section 3</td><td>★★☆</td><td>ブラウザで確かめる行を2本選んで <code>tests/</code> に spec を書き、実行して <code>docs/TEST.md</code> の結果列を埋める。赤が出た行は、直すか仕様として認めるかを自分で決める</td></tr>
 <tr><td><strong>[14]</strong></td><td>自動デプロイ（Cloudflare Workers Builds）</td><td>Section 3</td><td>★★☆</td><td>git push だけで自動デプロイされる設定を完了し、軽微な変更の push で Cloudflare ダッシュボードに新しいビルドが自動で現れることを確認できる</td></tr>
 </tbody>
 </table>
@@ -907,7 +907,7 @@ wrangler whoami</code></pre>
   </li>
   </ul>
   <blockquote>
-  <p>なぜローカルで使わないのに先に作るのか？ — <code>wrangler.jsonc</code> に実在の <code>database_id</code> が書かれていないと、[7] のリモートデプロイが失敗するからである。ローカル開発自体はクラウドの D1 に触れないので、ローカルとクラウドのデータは別物（詳細は手順4）。</p>
+  <p>なぜ、ローカル開発では使わないクラウドの D1 を先に作るのか？ — <code>wrangler.jsonc</code> に実在の <code>database_id</code> が書かれていないと、[7] のリモートデプロイが失敗するからである。ローカル開発自体はクラウドの D1 に触れないので、ローカルとクラウドのデータは別物（詳細は手順4）。</p>
   </blockquote>
 </li>
 <li id="s4-step3"><strong>API をまとめて実装させる</strong>
@@ -1096,7 +1096,6 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <blockquote class="key">
 <p><strong>大事な前提：① テスト要件と ② テスト設計は、新しいセッションで始める。</strong><br>
 実装を書いたセッションのまま続けると、コンテキストに実装が残った状態で要件と期待結果を書くことになる。</p>
-<p>このセッションに読ませるのは <code>SCREEN_SPEC.md</code> と、この ① テスト要件 で作る <code>docs/TEST.md</code> だけにして、実装コードは読ませない。</p>
 </blockquote>
 
 <p><strong>やること</strong>: AI に質問させながら、守るべきことを箇条書きに落とす。</p>
@@ -1104,6 +1103,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <ol>
 <li>Claude Code に壁打ちを頼む。前提を人間が先に整理しておく必要はない。
 <pre><code>このアプリのテスト要件を決めたい。壁打ちに付き合ってほしい。
+読むのは SCREEN_SPEC.md だけにする。frontend/ と backend/ の実装コードは読まないこと。
 
 まず、要件を決めるために必要なことを私に質問して。
 わからないことは推測せず、必ず質問すること。
@@ -1119,7 +1119,8 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 ・テストの書き方、モックの方針、どこまでテストするかの範囲は書かない
 
 決まったら docs/TEST.md の「## テスト要件」に箇条書きで書いて。
-各項目は「〜してはいけない」「〜は必ず」の形にすること。</code></pre>
+各項目は「〜してはいけない」「〜は必ず」の形にすること。
+・小見出しで分類しない</code></pre>
   <p>「わからないことは推測せず質問して」の一行がないと、AI は「一般利用者向けの公開サービスと仮定して」のように、<strong>わからないことを推測で埋めて先に進む</strong>。推測で置いた前提から導いた要件も、やはり推測である。</p>
 
   <p><strong>主語を縛る3行がこのプロンプトの要である。</strong>「〜してはいけない」「〜は必ず」はコーディング規約の言い回しでもあるので、形だけ指定すると AI は<strong>開発者が守るルール</strong>を書く。「新しい API にはテストを必ず書く」「<code>fetch</code> は必ずモックに差し替える」といった項目が並び、② テスト設計で「どこが壊れていたら守られないか」を問うても答えられない。壊れる場所がアプリの中にないからである。</p>
@@ -1142,7 +1143,6 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 - 同じ購入で二重にライセンスキーが発行されない
 - 認証が必要な API は未認証のアクセスを拒否する
 - 必須項目が空の入力を受け付けない</code></pre>
-  <p class="note">「破られたら何が起きるか」を詰めると、どういうときに守られるべきかが決まるので、要件は条件つきの長い文になる。長さは気にしなくてよい。</p>
 </li>
 </ol>
 
@@ -1209,7 +1209,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 </li>
 </ol>
 
-<p><strong>「どこで確かめる」の4種</strong>: 環境と必要なパッケージは ③ テスト環境準備で入れる。</p>
+<p><strong>「どこで確かめる」列に書けるのは、次の4種である。</strong>環境と必要なパッケージは ③ テスト環境準備 で入れる。</p>
 
 <table>
 <thead><tr><th>語</th><th>叩く場所</th><th>見る場所</th><th>コマンド</th></tr></thead>
@@ -1327,9 +1327,23 @@ skipped があってもテスト全体は成功として扱われるので、画
 <p><strong>やること</strong>: ⑥ テスト結果 の判定にもとづいてフロント／バックエンドを直し、再度テストを実施して、結果を表に書き残す。</p>
 
 <ol>
-<li>直す対象を指示する。テストファイルは変更禁止だと明示する。
+<li>⑥ テスト結果 の判定ごとに、直す対象を指示する。<strong>直してよいのは片側だけである。</strong>もう片方は変更禁止だと必ず明示する。
+<table>
+<thead><tr><th>⑥ の判定</th><th>直す対象</th></tr></thead>
+<tbody>
+<tr><td>実装が要件を満たしていない</td><td><strong>実装</strong>を直させる（テストファイルは変更禁止）</td></tr>
+<tr><td>テストの書き方が悪い（前提条件を作っていない、要素の指定が違う、など）</td><td><strong>テスト</strong>を直させる（実装は変更禁止）</td></tr>
+<tr><td>テストの書き方が悪い（そもそも確かめる必要のない項目だった）</td><td>直さない。結果列に判定と理由を書いて閉じる</td></tr>
+<tr><td>要件そのものが間違っている</td><td>⑥ テスト結果 で処理済み（④ テスト項目作成 からやり直す）</td></tr>
+</tbody>
+</table>
+  <p>実装を直させるとき:</p>
 <pre><code>T-005 の原因は認可の抜けなので、backend の実装を直して。
 テストファイルは変更しないこと。</code></pre>
+  <p>テストを直させるとき:</p>
+<pre><code>T-005 の原因は前提条件を用意していないことなので、テストを直して。
+実装は変更しないこと。期待結果は docs/TEST.md の表の文言から変えないこと。</code></pre>
+  <p><strong>テストを直させるときに「期待結果を変えるな」と添えるのが要である。</strong>これを言わないと、AI は期待結果を実装の出力に合わせて緑にできる。それは <a href="#s6-t2">② テスト設計</a> で決めた発注内容を書き換えたのと同じで、何も確かめていないことになる。</p>
   <p>直させたら再実行し、赤だった行が緑に変わったことを確認する。</p>
 </li>
 
@@ -1360,25 +1374,22 @@ skipped があってもテスト全体は成功として扱われるので、画
   <p>「通し」の行は ④ テスト項目作成 で除外しているので、結果列に「<a href="#s13">[13]</a> で確認予定」と書く。空欄のままにしない。空欄は「まだ判断していない」を意味するので、確かめていないことが記録から消える。</p>
 </li>
 
-<li>実装を直したら、テストファイルが変わっていないことを人間が見る。
+<li>テストファイルの差分を人間が見る。
 <pre><code>git diff --stat -- '*.test.ts' '*.test.tsx'</code></pre>
-  <p>ここに差分が出ていたら、直されたのはアプリではなくテストである。</p>
-</li>
-
-<li>差分の確認が済んだら、ここまでをコミットする。
-<pre><code>テスト工程の修正と docs/TEST.md の更新をコミットして。</code></pre>
+  <p>見るのは<strong>差分が出た／出ないではなく、出た場所が自分で指示したテストだけかどうか</strong>である。実装を直させただけの行のテストが書き換わっていたら、直されたのはアプリではなくテストである。</p>
+  <p>テストを直させた行については、<code>git diff</code> で中身も見る。<strong>期待結果の値が変わっていたら差し戻す。</strong></p>
 </li>
 
 </ol>
 
 <p><strong>ポイント</strong>:</p>
 <ul>
-<li><strong>この工程のゴールは「全部緑にすること」ではなく「結果列を埋めきること」である。</strong>⑥ テスト結果 で「テストの書き方が悪い」と判定された行——使われていない機能を検証している、検証する必要のない項目を挙げている——は緑にしようがない。そういう行は判定と理由を結果列に書いて閉じる</li>
+<li><strong>この工程のゴールは「全部緑にすること」ではなく「結果列を埋めきること」である。</strong>「テストの書き方が悪い」のうち、<strong>そもそも確かめる必要のない項目だった</strong>行（使われていない機能を検証している、など）は緑にしようがない。そういう行は判定と理由を結果列に書いて閉じる</li>
 <li>「実装が要件を満たしていない」と判定された行は直して緑にする。時間内に直しきれない行が残ったら、結果列に「未修理」と理由を書いて持ち帰る。これは完了ではなく、要件を満たしていない状態の記録である</li>
 </ul>
 
 <h3>完了したら push する</h3>
-<p>⑦ コード修正 まで終えたら push する。</p>
+<p>⑦ コード修正 まで終えたら、ここまでの修正と <code>docs/TEST.md</code> の更新をまとめて push する。</p>
 <pre><code>テスト工程の作業をコミットして dev ブランチに push して。</code></pre>
 
 <h3 class="done">✅ 完了の定義（Section 2 の到達点・前半）</h3>
@@ -1470,7 +1481,7 @@ npm run deploy</code></pre>
 <tr><td><strong>[10]</strong></td><td>ID 連携（Clerk）</td><td>「メール入力の簡易ログイン」→ <strong>本物のログイン</strong>（未ログインはサインインへ）</td><td>★★☆</td><td><a href="#s10">→ [10] ID 連携</a></td></tr>
 <tr><td><strong>[11]</strong></td><td>運用保守</td><td>「運用チェックして」で<strong>監視・ログ・コストが見られる</strong>ように</td><td>★☆☆</td><td><a href="#s11">→ [11] 運用保守</a></td></tr>
 <tr><td><strong>[12]</strong></td><td>セキュリティ</td><td>自分のアプリの<strong>脆弱性を点検して1つ直す</strong>（＋回帰テスト）</td><td>★★★</td><td><a href="#s12">→ [12] セキュリティ</a></td></tr>
-<tr><td><strong>[13]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>[6] の与えられた観点を卒業し、<strong>何を保証すべきかを自分で決める</strong>。画面を通したテストで<strong>「決めていなかったこと」</strong>が見つかる</td><td>★★☆</td><td><a href="#s13">→ [13] E2E テスト</a></td></tr>
+<tr><td><strong>[13]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>[6] の部品ごとのテストに加えて、<strong>画面から DB までを通したテスト</strong>が入る。部品どうしが噛み合っていない箇所や<strong>「決めていなかったこと」</strong>が見つかる</td><td>★★☆</td><td><a href="#s13">→ [13] E2E テスト</a></td></tr>
 <tr><td><strong>[14]</strong></td><td>自動デプロイ（Workers Builds）</td><td><code>git push</code> するだけで<strong>Cloudflare へ自動的にビルド・デプロイ</strong>されるようになる（手動の <code>wrangler deploy</code> から卒業）</td><td>★★☆</td><td><a href="#s14">→ [14] 自動デプロイ</a></td></tr>
 </tbody>
 </table>
@@ -1857,7 +1868,8 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 
 <h3>運用チェックを「スキル」にする</h3>
 <p>Claude Code のスキルとは、<code>.claude/skills/&lt;名前&gt;/</code> ディレクトリに必要なファイルを置くことで、「運用チェックして」のような自然言語で呼び出せる専用コマンドを登録できる機能である。</p>
-<p>なお [5] で使った <code>/code-review</code> などの「組み込みスキル」は最初から入っているスキルで、Section 1 で入れた security-guidance のような「プラグイン」は、スキルなどをまとめて配布するパッケージにあたる。</p>
+<p><a href="#s5">[5]</a> で使った <code>/code-review</code> のように、<strong>インストールなしで最初から使えるものを「組み込みスキル」</strong>と呼ぶ。<br>
+一方、Section 1 で入れた security-guidance のような<strong>「プラグイン」は、スキルなどをまとめて配布するパッケージ</strong>である。</p>
 <p>毎回同じ確認を<strong>スキル（<code>.claude/skills/</code>）</strong>にしておけば、「<strong>運用チェックして</strong>」の一言で再利用できる。ここで作ってもらうスキルは次の5つ。</p>
 <table>
 <thead><tr><th>#</th><th>スキル</th><th>やること</th><th>置き場所</th></tr></thead>
@@ -1901,7 +1913,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 <h2 id="s12">[12] セキュリティ<span class="diff">★★★</span></h2>
 <p><strong>お題</strong>: 自分のアプリをセキュリティ観点で点検し、最低1つ直す<br>
 <strong>ツール</strong>: Claude Code（<code>/security-review</code>・常時の <code>security-guidance</code>）＋ <strong>SonarCloud</strong><br>
-<strong>参考</strong>: [6] で作った <code>docs/TEST.md</code> の認証境界まわりのテスト（回帰テスト＝直した問題が再発していないかを毎回確かめるテスト。その土台にする）<br>
+<strong>参考</strong>: [6] で作った <code>docs/TEST.md</code> の認証境界まわりのテスト。これを回帰テスト（直した問題が再発していないかを毎回確かめるテスト）の土台にする<br>
 <strong>学び</strong>: 「AI が書いたコード」を自分で点検できるようになる</p>
 
 <h3>見る観点</h3>
@@ -2208,7 +2220,7 @@ npx playwright test --project=setup</code></pre>
 
 <p><strong>「どこで確かめる」が「通し」の行があれば、それを使う。</strong>前提条件と期待結果は <a href="#s6-t2">[6] ②</a> で埋めてあるので、そのまま使える。選ばなかった行は結果列を「[13] で確認予定」のままにしておき、時間が余ったら足す。</p>
 
-<p><strong>通しの行が無い場合は、ここで2本作る。</strong><a href="#s6-t1">[6] ①</a> の「## テスト要件」から、<strong>画面から DB までを通らないと破れないもの</strong>を2つ選び、表に「通し」の行を足す。前提条件と期待結果は、同じ要件の「画面」の行を見れば書ける。足した行の結果列には「[13] で確認予定」と書いておく（③ の実行で上書きする）。</p>
+<p><strong>通しの行が無い場合は、ここで2本作る。</strong><a href="#s6-t1">[6] ①</a> の「## テスト要件」から、<strong>画面から DB まで通して初めて破れが見えるもの</strong>を2つ選び、表に「通し」の行を足す。前提条件と期待結果は、同じ要件の「画面」の行を見れば書ける。足した行の結果列には「[13] で確認予定」と書いておく（③ の実行で上書きする）。</p>
 
 <blockquote class="warn">
 <p><strong>⚠️ 外部サービスの画面を通る行は、ここで外す。</strong></p>
@@ -2520,7 +2532,7 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 <tr><td>Cloudflare Workers Builds（Git 連携。<a href="#s14">[14]</a> を試した場合）</td><td>継続して自動デプロイを使うなら残す</td><td>不要なら Cloudflare の Worker → Settings → Build で「Disconnect」する。<br>
 そのうえで GitHub 側は<strong>2箇所</strong>の解除が必要で、片方だけでは不十分。<br>
 <strong>①</strong> GitHub 右上のアイコン → Settings → Applications → <strong>Installed GitHub Apps</strong> → Cloudflare Workers and Pages を <strong>Uninstall</strong>。これでリポジトリへのアクセスが消える。<br>
-　※ Settings は<strong>リポジトリ側ではなくアカウント側</strong>から入る。入口を間違えると同じ設定でも違う画面に見える。<br>
+　※ Settings は<strong>リポジトリ側ではなくアカウント側</strong>から入る。<br>
 <strong>②</strong> 同じ Applications 内の <strong>Authorized GitHub Apps</strong> タブ → Cloudflare Workers and Pages を <strong>Revoke</strong>。<br>
 　※ これはユーザー認可の取り消しで、①の Uninstall だけでは残ってしまう。<br>
 なお画面に出てくる <code>Suspend</code> は一時停止用の別ボタンなので、完全に片付ける場合は不要</td></tr>
