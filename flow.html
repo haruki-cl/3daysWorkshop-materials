@@ -1491,7 +1491,8 @@ npm run deploy</code></pre>
 <tr><td>本番</td><td><code>wrangler secret put &lt;NAME&gt;</code>（常に暗号化される）、または <strong>Cloudflare ダッシュボードの環境変数</strong>。※ダッシュボードで追加するときは必ず <strong>Secret（暗号化）タイプ</strong>を選ぶ。テキストタイプのままだと値が画面に表示され続ける</td></tr>
 </tbody>
 </table>
-<p class="note">ダッシュボードで追加する場合（Worker の <strong>Settings → Variables and secrets → Add</strong> → <strong>Type を Secret</strong> に）:</p>
+<details class="spec"><summary>ダッシュボードで追加する場合</summary>
+<p>Worker の <strong>Settings → Variables and secrets → Add</strong> → <strong>Type を Secret</strong> に設定する。</p>
 <figure class="diagram">
 <img src="img/CloudflareAddSecret1.png" alt="Cloudflare Workers の Worker 設定画面。上部タブの Settings を選び、Variables and secrets セクション右の「+ Add」ボタンをクリックする">
 <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">① Worker の <strong>Settings</strong> タブ → <strong>Variables and secrets</strong> の <strong>「+ Add」</strong>をクリック</figcaption>
@@ -1500,12 +1501,11 @@ npm run deploy</code></pre>
 <img src="img/CloudflareAddSecret2.png" class="portrait" alt="Variables and secrets の追加ダイアログ。Type のドロップダウンで Secret を選択している状態。Variable name と Value の入力欄があり、保存後は値が表示されなくなる旨の注記がある">
 <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">② <strong>Type</strong> で <strong>Secret</strong> を選ぶ（テキストのままだと値が残る）→ Variable name と Value を入れて保存。保存後は値が見えなくなる（"This value will no longer be viewable once saved"）</figcaption>
 </figure>
-<p>API キー等の秘密情報は<strong>コードにも AI への指示にも貼らない</strong>。かならず <code>.dev.vars</code> に入れて、そこから参照させる。</p></li>
+</details>
+<p>API キー等の秘密情報は<strong>コードにも AI への指示にも貼らない</strong>。かならず <code>.dev.vars</code> に入れておき、<strong>Worker のコードがそこから読み出す</strong>形にする。</p></li>
 <li><strong>必要な環境変数は、まず AI に聞く</strong> →「この機能に要る環境変数を <code>.dev.vars.sample</code> に追記して」</li>
 <li><code>.dev.vars.sample</code> を <code>.dev.vars</code> にコピーして実際の値を入力する（<code>cp .dev.vars.sample .dev.vars</code>）。<code>.dev.vars</code> が既にある場合は必要な行だけ追記する</li>
 <li><strong><code>.dev.vars</code> を書き換えたら <code>npm run dev</code> を再起動</strong>（読み込みは起動時）</li>
-<li>各サービスの <strong>SDK（そのサービスを呼び出すための公式 npm パッケージ）も AI が入れてくれる</strong>（Resend / Stripe / <code>@clerk/*</code> など）。自分で調べて入れる必要はない</li>
-<li>各サービスのログインは基本 <strong>Google SSO</strong>（シングルサインオン＝Google アカウントでそのままログインする方式。電話番号不要）。Stripe はメールアドレス登録（Google SSO ログイン後、リダイレクト先で設定）</li>
 <li><strong>どの課題も流れは共通</strong>:
   <ol>
   <li>外部サービスで API キー（と必要なら ID）を取得する</li>
@@ -1517,7 +1517,6 @@ npm run deploy</code></pre>
   </li>
   </ol>
 </li>
-<li><strong>オプションは必須ではない</strong>。興味のあるものから着手してよい（やらない／1つだけ、も可）。Section 2 が未了なら、その続きを優先しても構わない</li>
 </ul>
 
 <hr>
@@ -1575,14 +1574,13 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 </ul>
 
 <h3 class="done">✅ 完了の定義</h3>
-<p>自分宛にメールが届けば完了である。余裕があれば: 連投対策（短時間に何度も送ると Resend がレート制限エラーを返す）まで実装する。ローカルで動作確認できたら、<code>wrangler secret put</code> でシークレットを本番に投入して <code>npm run deploy</code> までを完了とする。</p>
+<p>自分宛にメールが届けば完了である。ローカルで動作確認できたら、<code>wrangler secret put</code> でシークレットを本番に投入して <code>npm run deploy</code> までを完了とする。</p>
 <pre><code>メール機能実装の作業をコミットして dev ブランチに push して。</code></pre>
 
 <hr>
 
 <h2 id="s9">[9] 決済機能の実装（Stripe）<span class="diff">★★★</span></h2>
 <p><strong>お題</strong>: プラン購入（Stripe Checkout）→ Webhook でライセンス自動発行<br>
-<strong>実装ファイル（ここに作る）</strong>: <code>backend/src/stripe.ts</code> / <code>license.ts</code><br>
 <strong>学び</strong>: Webhook の扱いで外せない2点</p>
 <ul>
 <li><strong>二重発行防止</strong>: 同じイベントが再送されても、ライセンスは1件だけ出す</li>
@@ -1667,11 +1665,11 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
   </figure>
 </li>
 <li>2つの <strong>Price ID を <code>.dev.vars</code> にセット</strong>（例 <code>PRICE_MONTHLY=price_...</code> / <code>PRICE_YEARLY=price_...</code>）</li>
-<li><strong>実装</strong>: 「Checkout セッションを作成する API エンドポイント（<code>stripe.ts</code>）とライセンス発行ロジック（<code>license.ts</code>）を実装して」と Claude Code に依頼する（Checkout セッション＝1回分の決済手続きの情報。API で作成すると Stripe の決済ページの URL が返る）</li>
+<li><strong>実装</strong>: 「Checkout セッションを作成する API エンドポイントとライセンス発行ロジックを実装して」と Claude Code に依頼する</li>
 </ul>
 
 <h3>③ ローカルで Webhook を検証する</h3>
-<p><strong>前提:</strong> <code>stripe.ts</code> / <code>license.ts</code> の実装（AI への依頼）が完了してから進む。実装が未完了の場合は先に「Checkout セッションを作成する API エンドポイントと Webhook 受信エンドポイントを実装して」と AI に依頼する。</p>
+<p><strong>前提:</strong> ② の実装（AI への依頼）が完了してから進む。未完了の場合は先に「Checkout セッションを作成する API エンドポイントと Webhook 受信エンドポイントを実装して」と AI に依頼する。</p>
 <blockquote>
 <p><strong>ローカル環境では Stripe から直接 Webhook が届かない</strong>（インターネットに公開されていないため）。Stripe CLI の <code>stripe listen</code> を使って、Stripe のイベントを手元のバックエンド（<code>npm run dev</code> の出力に表示されているポート）に転送する必要がある。</p>
 <p>ターミナルを<strong>2つ</strong>使う。<strong>バックエンド（<code>npm run dev</code>）を起動したまま</strong>、別ターミナルで <code>stripe listen</code> を動かす。</p>
@@ -1742,8 +1740,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 
 <h2 id="s10">[10] ID 連携機能の実装（Clerk）<span class="diff">★★☆</span></h2>
 <p><strong>お題</strong>: ログイン必須のマイページ（未ログイン → サインインへリダイレクト）<br>
-<strong>使うもの</strong>: <code>@clerk/clerk-react</code>（フロント）＋ Hono 側で Clerk の認証トークンを検証<br>
-<strong>学び</strong>: トークンの検証を<strong>バックエンドでやる理由</strong>。フロントの見た目だけの保護は意味がない</p>
+<strong>使うもの</strong>: <code>@clerk/clerk-react</code>（フロント）＋ Hono 側で Clerk の認証トークンを検証</p>
 
 <h3>Clerk とは</h3>
 <p>ログインの仕組みをまるごと引き受ける SaaS である。サインイン画面、Google などの外部アカウントとの連携、セッションの管理を用意してくれる。自分で書くのは、届いたトークンを検証する部分だけになる。</p>
@@ -1756,7 +1753,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 <p class="note">ログイン（Clerk）まで組み込んだ動くデモ（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://testai-login.ha-toge.workers.dev/">https://testai-login.ha-toge.workers.dev/</a><br>
 このデモでは、未ログインで <code>/mypage</code> を開くとサインイン画面へリダイレクトされ、Google でログインするとマイページが表示される、というところまでが動く（Clerk 開発モード）。</p>
 <blockquote>
-<p>Section 2 で<strong>モック認証</strong>にしておいた <code>GET /api/me</code>（ハンドラ＝リクエストを受けて処理する関数。<code>backend/src/routes/me.ts</code> など）を、<strong>本物の Clerk 認証に差し替える</strong>課題である。Claude Code に『Section 2 のモック認証を Clerk トークン検証に差し替えて』と指示するだけで進められる。</p>
+<p>Section 2 で<strong>モック認証</strong>にしておいた API を、<strong>本物の Clerk 認証に差し替える</strong>課題である。Claude Code に『Section 2 のモック認証を Clerk トークン検証に差し替えて』と指示するだけで進められる。</p>
 </blockquote>
 
 <figure class="diagram">
@@ -1791,11 +1788,9 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 <h3>実装メモ</h3>
 <ul>
 <li>必要なパッケージ（フロント <code>@clerk/clerk-react</code> ／ バックエンド <code>@hono/clerk-auth</code>）も <strong>AI が導入してくれる</strong>。導入できたら、サービス側の準備でコピーした2つのキーを<strong>上表のとおり env にセット</strong>して <code>npm run dev</code> を（再）起動する</li>
-<li>フロントはアプリを <strong><code>&lt;ClerkProvider&gt;</code></strong> で包み、サインイン UI を置く。<strong>未ログインなら <code>/mypage</code> に入れない</strong>ようガードする</li>
 <li><strong>JWT 検証は <code>@hono/clerk-auth</code> が推奨</strong>（バックエンドでのトークン検証が一気に楽になる）</li>
 <li>バックエンドは<strong>必ずトークンを検証</strong>してから保護 API を返す（フロントの出し分けだけでは保護にならない）</li>
 <li>Section 2 のモック認証（ヘッダ <code>x-user-email</code> を信頼）を、<strong>この Clerk トークン検証に差し替える</strong>のがゴール</li>
-<li><strong>余裕があれば</strong>: マイページだけでなく<strong>購入（ライセンス発行）系の API も認証必須</strong>にし、購入者の email をクライアント入力ではなく<strong>検証済みトークンから取得</strong>する（認証なしだと他人の email を名乗ってライセンスを発行できてしまい、[12] セキュリティで指摘される穴になる）</li>
 </ul>
 
 <blockquote class="key">
@@ -2075,12 +2070,7 @@ END;
   <p>この2つがそろうと、App から見えるすべてのリポジトリで、push のたびに SonarCloud が自動でプロジェクトを生成して解析する。プライベートリポジトリが含まれる場合はコードが外部に送られるため注意したい。</p>
   <p>誤って All repositories を選んでしまった場合は、次のどちらかで対処する。</p>
   <ul>
-  <li>すでに「All repositories」で許可してしまった場合は、あとから絞れる
-    <ul>
-    <li>入口は <a target="_blank" rel="noopener" href="https://github.com/settings/installations">https://github.com/settings/installations</a>（メニューからたどるなら GitHub → Settings → Integrations → Applications → SonarCloud → Configure）</li>
-    <li>そこで <code>Only select repositories</code> に変更して対象を絞る</li>
-    </ul>
-  </li>
+  <li>入口は <a target="_blank" rel="noopener" href="https://github.com/settings/installations">https://github.com/settings/installations</a>（メニューからたどるなら GitHub → Settings → Integrations → Applications → SonarCloud → Configure）。そこで <code>Only select repositories</code> に変更して対象を絞る</li>
   <li>個別プロジェクトだけ止めたいなら、SonarCloud の対象プロジェクト → Administration → Analysis Method の「Automatic Analysis」を OFF、または Administration → Deletion で削除</li>
   </ul>
 </li>
@@ -2204,13 +2194,13 @@ npx playwright test --project=setup</code></pre>
 <p>省略すると Chrome 以外に Firefox と Safari のエンジンもダウンロードされる。数分待たされたうえ、以降のテストの実行時間も3倍になる。</p>
 </blockquote>
 
-<p>生成された <code>playwright.config.ts</code> の <code>use:</code> に1行足す。ポートは <code>wrangler dev</code> が使っているものに合わせる（フロント開発サーバーの <code>5173</code> ではない）。</p>
-<pre><code>use: { baseURL: 'http://localhost:8787' },</code></pre>
-
 <p>別のターミナルでアプリを起動しておく。作業中はずっと立ち上げたままにする。</p>
 <pre><code>cd backend &amp;&amp; npm run build:front &amp;&amp; npm run dev</code></pre>
 
-<p class="note"><strong>完了</strong>: ブラウザで <code>http://localhost:8787</code> が開き、購入もマイページも動く。</p>
+<p>生成された <code>playwright.config.ts</code> の <code>use:</code> に1行足す。<strong>ポートは <code>npm run dev</code> の出力に表示されたものに合わせる</strong>（既定は 8787 だが、使用中なら別のポートが割り当てられる）。以降このページに出てくる <code>8787</code> も、自分の環境のポートに読み替えること。</p>
+<pre><code>use: { baseURL: 'http://localhost:8787' },</code></pre>
+
+<p class="note"><strong>完了</strong>: ブラウザで <code>npm run dev</code> が表示した URL が開き、購入もマイページも動く。</p>
 
 <h3 id="s13-t1">① テストする行を2本決める</h3>
 
@@ -2365,11 +2355,6 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
 <tr><td>今の動きは直すべき</td><td>AI に<strong>実装を直させる</strong></td></tr>
 </tbody>
 </table>
-
-<blockquote class="warn">
-<p><strong>⚠️ 期待値を書き換えて緑にするのは禁じ手である。</strong></p>
-<p>テストは AI への発注書にあたる。発注書のほうを書き換えてしまったら、何も確かめていないのと同じになる。</p>
-</blockquote>
 
 <p><strong>結果列を書き換える</strong>: 決まったら、AI に <code>docs/TEST.md</code> の該当行を書き換えさせる。</p>
 <pre><code>docs/TEST.md の「## テスト項目」の &lt;番号&gt; の行の結果列を
