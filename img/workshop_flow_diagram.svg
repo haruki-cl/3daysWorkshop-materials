@@ -79,44 +79,44 @@
   <text x="40" y="166" style="font-size:12px;font-weight:500;fill:rgb(61,61,58);font-family:-apple-system,system-ui,sans-serif">Option — Section 3・選択式・必須ではない</text>
 
   <g>
-    <rect x="150" y="176" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
-    <text x="212" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[8] メール</text>
-    <text x="212" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Resend</text>
+    <rect x="55" y="176" width="170" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="140" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[8] メール</text>
+    <text x="140" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Resend</text>
   </g>
 
   <g>
-    <rect x="282" y="176" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
-    <text x="344" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[9] 決済</text>
-    <text x="344" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Stripe</text>
+    <rect x="235" y="176" width="170" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="320" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[9] 決済</text>
+    <text x="320" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Stripe</text>
   </g>
 
   <g>
-    <rect x="414" y="176" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
-    <text x="476" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[10] ID連携</text>
-    <text x="476" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Clerk</text>
+    <rect x="415" y="176" width="170" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="500" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[10] ID連携</text>
+    <text x="500" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Clerk</text>
   </g>
 
   <g>
-    <rect x="546" y="176" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
-    <text x="608" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[11] 運用保守</text>
-    <text x="608" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif"> </text>
+    <rect x="595" y="176" width="170" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="680" y="200" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[11] セキュリティレビュー</text>
+    <text x="680" y="218" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">SonarCloud</text>
   </g>
 
   <g>
-    <rect x="216" y="244" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
-    <text x="278" y="268" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[12] セキュリティ</text>
-    <text x="278" y="286" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif"> </text>
+    <rect x="145" y="244" width="170" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="230" y="268" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[12] E2E テスト</text>
+    <text x="230" y="286" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Playwright</text>
   </g>
 
   <g>
-    <rect x="348" y="244" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
-    <text x="410" y="268" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[13] E2E テスト</text>
-    <text x="410" y="286" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Playwright</text>
+    <rect x="325" y="244" width="170" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="410" y="268" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[13] 自動デプロイ</text>
+    <text x="410" y="286" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Workers Builds</text>
   </g>
 
   <g>
-    <rect x="480" y="244" width="124" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
-    <text x="542" y="268" text-anchor="middle" dominant-baseline="central" style="font-size:14px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[14] 自動デプロイ</text>
-    <text x="542" y="286" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Workers Builds</text>
+    <rect x="505" y="244" width="170" height="56" rx="8" fill="rgb(230,241,251)" stroke="rgb(24,95,165)" stroke-width="0.5"/>
+    <text x="590" y="268" text-anchor="middle" dominant-baseline="central" style="font-size:12px;font-weight:500;fill:rgb(12,68,124);font-family:-apple-system,system-ui,sans-serif">[14] 運用保守の自動化</text>
+    <text x="590" y="286" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:rgb(24,95,165);font-family:-apple-system,system-ui,sans-serif">Claude Code スキル</text>
   </g>
 </svg>

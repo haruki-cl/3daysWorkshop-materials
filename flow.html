@@ -128,7 +128,7 @@ details.spec pre{margin:.5em 0 0;}
   background:var(--paper); border-right:1px solid var(--line);
   z-index:300; overflow-y:auto; padding:24px 20px; padding-top:3.4em;
 }
-@media(max-width:900px){
+media(max-width:900px){
   #toc-btn{display:flex;}
   #toc-panel{box-shadow:4px 0 24px rgba(0,0,0,.15); transform:translateX(-100%); transition:transform .28s ease;}
   #toc-panel.show{transform:translateX(0);}
@@ -232,7 +232,7 @@ details.spec pre{margin:.5em 0 0;}
 #lightbox.show{display:flex;}
 #lightbox img{max-width:94vw;max-height:94vh;border-radius:10px;
   box-shadow:0 8px 60px rgba(0,0,0,.6);object-fit:contain;}
-@media(max-width:640px){
+media(max-width:640px){
   article{padding:30px 20px}
   h1[id^="section"]{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px;}
   .toc ul{columns:1}
@@ -338,7 +338,7 @@ details.spec pre{margin:.5em 0 0;}
 <li><strong>Resend</strong> — メール課題 [8] で使用する</li>
 <li><strong>Stripe</strong> — 決済課題 [9] で使用する</li>
 <li><strong>Clerk</strong>（ユーザー認証 SaaS）— 認証課題 [10] で使用する</li>
-<li><strong>SonarCloud</strong> — セキュリティ課題 [12] で使用する。GitHub アカウントでログインできる</li>
+<li><strong>SonarCloud</strong> — セキュリティレビュー課題 [11] で使用する。GitHub アカウントでログインできる</li>
 </ul>
 
 <h3>④ 当日インストールするツール</h3>
@@ -369,7 +369,7 @@ details.spec pre{margin:.5em 0 0;}
 <h2 id="s-map">全体マップ</h2>
 
 <figure class="diagram keep-light">
-<img src="img/workshop_flow_diagram.svg" alt="ワークショップフロー図: Core（[1]デザイン→[2]フロント→[3]デプロイ（フロントのみ）→[4]バックエンド（API＋DB）→[5]レビュー→[6]機能テスト→[7]デプロイ（バックエンドも公開））と Option（[8]メール/[9]決済/[10]ID連携/[11]運用保守/[12]セキュリティ/[13]E2Eテスト/[14]自動デプロイ）">
+<img src="img/workshop_flow_diagram.svg" alt="ワークショップフロー図: Core（[1]デザイン→[2]フロント→[3]デプロイ（フロントのみ）→[4]バックエンド（API＋DB）→[5]レビュー→[6]機能テスト→[7]デプロイ（バックエンドも公開））と Option（[8]メール/[9]決済/[10]ID連携/[11]セキュリティレビュー/[12]E2Eテスト/[13]自動デプロイ/[14]運用保守の自動化）">
 </figure>
 
 <table>
@@ -377,7 +377,7 @@ details.spec pre{margin:.5em 0 0;}
 <tbody>
 <tr><td><strong>Section 1</strong></td><td>UI設計（Claude Design）とフロント実装（Claude Code）</td><td>目的・技術紹介 / 環境確認 / [1] デザイン / [2] フロント / [3] フロントデプロイ</td></tr>
 <tr><td><strong>Section 2</strong></td><td>バックエンド実装（Claude Code）と品質担保</td><td>[4] バックエンド / [5] レビュー / [6] 機能テスト / [7] 再デプロイ（Section 1 と同じ URL に API を統合）</td></tr>
-<tr><td><strong>Section 3</strong></td><td>機能追加と品質確保（メール、決済、ID連携、自動デプロイ等）</td><td>オプション課題 [8]〜[14] / ラップアップ・発表会</td></tr>
+<tr><td><strong>Section 3</strong></td><td>機能追加と品質確保（メール、決済、ID連携、自動デプロイ等）</td><td>オプション課題 [8]〜[13] / ラップアップ・発表会</td></tr>
 </tbody>
 </table>
 
@@ -395,14 +395,14 @@ details.spec pre{margin:.5em 0 0;}
 <tr><td><strong>[8]</strong></td><td>メール（Resend）</td><td>Section 3</td><td>★☆☆</td><td>問い合わせ受付やライセンス送付などのメールを実装し、自分宛に届くことを確認できる</td></tr>
 <tr><td><strong>[9]</strong></td><td>決済（Stripe）</td><td>Section 3</td><td>★★★</td><td>Stripe Checkout → Webhook でライセンスキー自動発行。テスト用カードでマイページにライセンスキーが表示されること</td></tr>
 <tr><td><strong>[10]</strong></td><td>ID 連携（Clerk）</td><td>Section 3</td><td>★★☆</td><td>未ログインで <code>/mypage</code> に入れない・<code>/api/me</code> がログイン必須になっている</td></tr>
-<tr><td><strong>[11]</strong></td><td>運用保守（Cloudflare ログ確認・スキル化）</td><td>Section 3</td><td>★☆☆</td><td><code>wrangler tail</code> でログ確認できる・運用スキルが1つ動作する</td></tr>
-<tr><td><strong>[12]</strong></td><td>セキュリティ（SonarCloud 静的解析・脆弱性レビュー）</td><td>Section 3</td><td>★★★</td><td>認証境界・IDOR・機密マスクを点検し、問題を最低1つ修正（余裕があれば回帰テストを追加）</td></tr>
-<tr><td><strong>[13]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>Section 3</td><td>★★☆</td><td>ブラウザで確かめる行を2本選んで <code>tests/</code> に spec を書き、実行して <code>docs/TEST.md</code> の結果列を埋める。赤が出た行は、直すか仕様として認めるかを自分で決める</td></tr>
-<tr><td><strong>[14]</strong></td><td>自動デプロイ（Cloudflare Workers Builds）</td><td>Section 3</td><td>★★☆</td><td>git push だけで自動デプロイされる設定を完了し、軽微な変更の push で Cloudflare ダッシュボードに新しいビルドが自動で現れることを確認できる</td></tr>
+<tr><td><strong>[11]</strong></td><td>セキュリティレビュー（SonarCloud 静的解析・脆弱性レビュー）</td><td>Section 3</td><td>★★★</td><td>認証境界・IDOR・機密マスクを点検し、問題を最低1つ修正（余裕があれば回帰テストを追加）</td></tr>
+<tr><td><strong>[12]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>Section 3</td><td>★★☆</td><td>ブラウザで確かめる行を2本選んで <code>tests/</code> に spec を書き、実行して <code>docs/TEST.md</code> の結果列を埋める。赤が出た行は、直すか仕様として認めるかを自分で決める</td></tr>
+<tr><td><strong>[13]</strong></td><td>自動デプロイ（Cloudflare Workers Builds）</td><td>Section 3</td><td>★★☆</td><td>git push だけで自動デプロイされる設定を完了し、軽微な変更の push で Cloudflare ダッシュボードに新しいビルドが自動で現れることを確認できる</td></tr>
+<tr><td><strong>[14]</strong></td><td>運用保守の自動化（Cloudflare ログ確認・スキル化）</td><td>Section 3</td><td>★☆☆</td><td><code>wrangler tail</code> でログ確認できる・運用スキルが1つ動作する</td></tr>
 </tbody>
 </table>
 <blockquote class="key">
-<p><strong>必達は [1]〜[7]（Section 1〜2 全員）</strong>。<br><strong>Section 3 の [8]〜[14] は任意である</strong>（やらない／1つだけ、も可）。</p>
+<p><strong>必達は [1]〜[7]（Section 1〜2 全員）</strong>。<br><strong>Section 3 の [8]〜[13] は任意である</strong>（やらない／1つだけ、も可）。</p>
 </blockquote>
 
 <hr>
@@ -439,12 +439,12 @@ details.spec pre{margin:.5em 0 0;}
 <thead><tr><th>経過</th><th>内容</th></tr></thead>
 <tbody>
 <tr><td>0:00–0:10</td><td>オプション課題のガイダンス（必須ではない・やらない・1つだけ、も可）</td></tr>
-<tr><td>0:10–1:30</td><td>自由作業: Section 1〜2 の残タスクを続ける、またはオプション課題（[8]〜[14] から1つ）——どちらでも可</td></tr>
+<tr><td>0:10–1:30</td><td>自由作業: Section 1〜2 の残タスクを続ける、またはオプション課題（[8]〜[13] から1つ）——どちらでも可</td></tr>
 <tr><td>1:30–2:00</td><td><strong>最終発表会（1人3分）＋ ラップアップ・アンケート</strong></td></tr>
 </tbody>
 </table>
 <p class="note">各セクションとも、固定の休憩枠は設けない。<strong>AI の生成待ち（[1] の3案生成・[4] の実装生成など数分かかる場面）を小休止・雑談に充てる</strong>。長い生成中は席を立ってよい。</p>
-<p class="note">進み方は各自のペースでよく、予定より早く終わった人はそのまま次の実装に進んでよい。また <strong>Section 3 の [8]〜[14] はオプション課題</strong>で、この時間は各自が資料を読みながら選んで進める形になる。わからないことがあれば、講師にチャット等で質問してほしい。</p>
+<p class="note">進み方は各自のペースでよく、予定より早く終わった人はそのまま次の実装に進んでよい。また <strong>Section 3 の [8]〜[13] はオプション課題</strong>で、この時間は各自が資料を読みながら選んで進める形になる。わからないことがあれば、講師にチャット等で質問してほしい。</p>
 <hr>
 
 <h2 id="s05">使う技術の紹介</h2>
@@ -465,8 +465,8 @@ details.spec pre{margin:.5em 0 0;}
 <tr><td>メール（Section 3）</td><td>Resend（[8]）</td><td>メール送信 API。無料枠で自分宛の送信をすぐ試せる</td></tr>
 <tr><td>決済（Section 3）</td><td>Stripe（[9]）</td><td>決済のデファクト。テストモードで本物の課金なしに一周できる</td></tr>
 <tr><td>認証（Section 3）</td><td>Clerk（[10]）</td><td>ユーザー認証 SaaS。ログイン UI とトークン検証をまとめて任せられる</td></tr>
-<tr><td>静的解析（Section 3）</td><td>SonarCloud（[12]）</td><td>GitHub 連携。push ごとに脆弱性・バグを自動検出</td></tr>
-<tr><td>E2E テスト（Section 3）</td><td>Playwright（[13]）</td><td>ブラウザ操作を録画してテストコードにできる</td></tr>
+<tr><td>静的解析（Section 3）</td><td>SonarCloud（[11]）</td><td>GitHub 連携。push ごとに脆弱性・バグを自動検出</td></tr>
+<tr><td>E2E テスト（Section 3）</td><td>Playwright（[12]）</td><td>ブラウザ操作を録画してテストコードにできる</td></tr>
 </tbody>
 </table>
 
@@ -474,11 +474,11 @@ details.spec pre{margin:.5em 0 0;}
 <table>
 <thead><tr><th>対象</th><th>パッケージ＠バージョン</th></tr></thead>
 <tbody>
-<tr><td>フロント基盤</td><td><code>vite@8.1.3</code> / <code>@vitejs/plugin-react@6.0.3</code> / <code>react@19.2.7</code> / <code>react-dom@19.2.7</code> / <code>typescript@6.0.3</code></td></tr>
-<tr><td>ルーティング</td><td><code>react-router-dom@7.18.1</code></td></tr>
-<tr><td>スタイル</td><td><code>tailwindcss@4.3.2</code> / <code>@tailwindcss/vite@4.3.2</code></td></tr>
-<tr><td>shadcn/ui 関連</td><td><code>class-variance-authority@0.7.1</code> / <code>clsx@2.1.1</code> / <code>tailwind-merge@3.6.0</code> / <code>lucide-react@1.23.0</code> / <code>tw-animate-css@1.4.0</code> / <code>@radix-ui/react-slot@1.3.0</code> / <code>@radix-ui/react-label@2.1.11</code> / <code>@radix-ui/react-accordion@1.2.16</code></td></tr>
-<tr><td>テスト（[6]）</td><td><code>vitest@4.1.10</code> / <code>@cloudflare/vitest-pool-workers@0.18.0</code></td></tr>
+<tr><td>フロント基盤</td><td><code>vite8.1.3</code> / <code>vitejs/plugin-react6.0.3</code> / <code>react19.2.7</code> / <code>react-dom19.2.7</code> / <code>typescript6.0.3</code></td></tr>
+<tr><td>ルーティング</td><td><code>react-router-dom7.18.1</code></td></tr>
+<tr><td>スタイル</td><td><code>tailwindcss4.3.2</code> / <code>tailwindcss/vite4.3.2</code></td></tr>
+<tr><td>shadcn/ui 関連</td><td><code>class-variance-authority0.7.1</code> / <code>clsx2.1.1</code> / <code>tailwind-merge3.6.0</code> / <code>lucide-react1.23.0</code> / <code>tw-animate-css1.4.0</code> / <code>radix-ui/react-slot1.3.0</code> / <code>radix-ui/react-label2.1.11</code> / <code>radix-ui/react-accordion1.2.16</code></td></tr>
+<tr><td>テスト（[6]）</td><td><code>vitest4.1.10</code> / <code>cloudflare/vitest-pool-workers0.18.0</code></td></tr>
 </tbody>
 </table>
 
@@ -1044,7 +1044,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <img src="img/SecurityReviewSample.png" alt="/security-review の実行例 — 新設の GET /api/contacts エンドポイントに認証チェックがない Broken Access Control / IDOR（Severity: High）を検出し、Exploit Scenario と修正の推奨（認証済み identity でゲートし結果を本人分に絞る）まで提示している">
 <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">/security-review の実行例: 認証チェックのないエンドポイント（IDOR）を Severity・攻撃シナリオ・修正案つきで検出している</figcaption>
 </figure>
-<p class="note">この3つは Section 3 <a href="#s12">[12] セキュリティ</a>の点検でもそのまま使う。</p>
+<p class="note">この3つは Section 3 <a href="#s11">[11] セキュリティレビュー</a>の点検でもそのまま使う。</p>
 
 <h3>レビュー後に push する</h3>
 <p>指摘があれば直してから push する。大きな問題がなければそのまま push してよい。</p>
@@ -1236,15 +1236,15 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <pre><code>docs/TEST.md の「## テスト項目」の「どこで確かめる」列を見て、
 必要なテスト環境だけを用意して。
 
-・関数・API のテスト（backend/）: @cloudflare/vitest-pool-workers を使い、
+・関数・API のテスト（backend/）: cloudflare/vitest-pool-workers を使い、
   設定は cloudflareTest プラグイン方式で書く
 ・画面のテスト（frontend/）: 同じ Vitest を jsdom 環境で使い、
-  @testing-library/react で描画・操作する
+  testing-library/react で描画・操作する
 ・表に出てこない種類の環境は入れないこと</code></pre>
 
 <ul>
 <li>実行環境は<strong>バックエンドは Workers、フロントは jsdom</strong> を用いる</li>
-<li><code>@cloudflare/vitest-pool-workers</code>＝バックエンドのテストを Workers と同じ実行環境で動かす公式アダプタである</li>
+<li><code>cloudflare/vitest-pool-workers</code>＝バックエンドのテストを Workers と同じ実行環境で動かす公式アダプタである</li>
 </ul>
 
 <h3 id="s6-t4">④ テスト項目作成</h3>
@@ -1351,7 +1351,7 @@ skipped があってもテスト全体は成功として扱われるので、画
 
 ・緑だった行は「緑」
 ・落ちた行は「落ちた → 原因 → どう直したか」
-・「どこで確かめる」が「通し」の行は「[13] で確認予定」
+・「どこで確かめる」が「通し」の行は「[12] で確認予定」
 ・空欄を残さないこと
 ・「結果」列以外は書き換えないこと</code></pre>
   <p>書かせたあと、判定が自分の見立てと合っているかを人間が読む。結果列を埋めると、次のような表となる（② テスト設計 に載せた抜粋には無い行も含めた例）。</p>
@@ -1364,13 +1364,13 @@ skipped があってもテスト全体は成功として扱われるので、画
 <tr><td>T-005</td><td>キーを本人以外に返さない</td><td>落ちた → 認可の抜け（バグ）→ 実装を直して緑</td></tr>
 <tr><td>T-007</td><td>必須項目が空の入力を受け付けない</td><td>落ちた → 要件の書き間違い（名前は任意でよかった）→ 要件と期待結果を直して緑</td></tr>
 <tr><td>T-009</td><td>同じ購入で二重に発行されない</td><td>未修理 → 二重発行のガードが無い（時間切れ・持ち帰り）</td></tr>
-<tr><td>T-008</td><td>キーを本人以外に返さない</td><td><a href="#s13">[13]</a> で確認予定（通しの行）</td></tr>
+<tr><td>T-008</td><td>キーを本人以外に返さない</td><td><a href="#s12">[12]</a> で確認予定（通しの行）</td></tr>
 </tbody>
 </table>
   </details>
   <p>要件を壊れる場所ごとに分けて行にしてあるので、落ちた行がそのまま原因の場所を指す。T-001 が落ちたなら画面、T-003 が落ちたなら保存処理である。</p>
   <p>結果列は、落ちた時点で止めずに、直したところまで書く。「落ちた」で終わっている行は、まだ作業が残っている行である。</p>
-  <p>「通し」の行は ④ テスト項目作成 で除外しているので、結果列に「<a href="#s13">[13]</a> で確認予定」と書く。空欄のままにしない。空欄は「まだ判断していない」を意味するので、確かめていないことが記録から消える。</p>
+  <p>「通し」の行は ④ テスト項目作成 で除外しているので、結果列に「<a href="#s12">[12]</a> で確認予定」と書く。空欄のままにしない。空欄は「まだ判断していない」を意味するので、確かめていないことが記録から消える。</p>
 </li>
 
 <li>テストファイルの差分を人間が見る。
@@ -1396,7 +1396,7 @@ skipped があってもテスト全体は成功として扱われるので、画
 <li><code>docs/TEST.md</code> に「テスト要件」と「テスト項目」の表があり、各行の<strong>「前提条件」が埋まっている</strong></li>
 <li>表の番号とテストコードのテスト名が一致している（「通し」の行を除き、どちらか片方にしかない番号がない）</li>
 <li><code>npm test</code> の出力に <strong>skipped が0件</strong>（<code>backend/</code> と <code>frontend/</code> それぞれで実行する）</li>
-<li>表の「結果」列がすべて埋まっている（緑／未修理＋理由／<a href="#s13">[13]</a> で確認予定）</li>
+<li>表の「結果」列がすべて埋まっている（緑／未修理＋理由／<a href="#s12">[12]</a> で確認予定）</li>
 <li><strong>「通し」以外の行は、緑になっているか、緑にしない／できない理由が結果列に書かれている</strong></li>
 <li>落ちた項目を直したとき、テストファイルに差分が入っていない</li>
 </ul>
@@ -1435,7 +1435,7 @@ npm run deploy</code></pre>
 <ul>
 <li><strong>[6] の表の結果列が埋まっているのを確認してから公開する</strong>（テスト → デプロイ の順）</li>
 <li><strong>Section 2 本編では Secrets 投入は不要</strong>（Stripe/Clerk/Resend を使う [8][9][10] で初めて要る。手順は <a href="#common">Section 3 の共通手順</a>参照）</li>
-<li>ここまでは手元で <code>wrangler deploy</code> を叩く<strong>手動デプロイ</strong>である。<code>git push</code> するだけで自動デプロイしたい場合は、Section 3 オプション <a href="#s14">[14] 自動デプロイ</a> で扱う</li>
+<li>ここまでは手元で <code>wrangler deploy</code> を叩く<strong>手動デプロイ</strong>である。<code>git push</code> するだけで自動デプロイしたい場合は、Section 3 オプション <a href="#s13">[13] 自動デプロイ</a> で扱う</li>
 </ul>
 
 <h3 class="warn">⚠️ ハマりどころ: Workers デプロイ</h3>
@@ -1478,18 +1478,18 @@ npm run deploy</code></pre>
 <tr><td><strong>[8]</strong></td><td>メール（Resend）</td><td>問い合わせが<strong>実際にメールで届く</strong>ようになる（今は D1 に保存だけ）</td><td>★☆☆</td><td><a href="#s8">→ [8] メール</a></td></tr>
 <tr><td><strong>[9]</strong></td><td>決済（Stripe）</td><td>「メール入力で自前発行」→ <strong>本物の決済（Stripe）で買える</strong>ように</td><td>★★★</td><td><a href="#s9">→ [9] 決済</a></td></tr>
 <tr><td><strong>[10]</strong></td><td>ID 連携（Clerk）</td><td>「メール入力の簡易ログイン」→ <strong>本物のログイン</strong>（未ログインはサインインへ）</td><td>★★☆</td><td><a href="#s10">→ [10] ID 連携</a></td></tr>
-<tr><td><strong>[11]</strong></td><td>運用保守</td><td>「運用チェックして」で<strong>監視・ログ・コストが見られる</strong>ように</td><td>★☆☆</td><td><a href="#s11">→ [11] 運用保守</a></td></tr>
-<tr><td><strong>[12]</strong></td><td>セキュリティ</td><td>自分のアプリの<strong>脆弱性を点検して1つ直す</strong>（＋回帰テスト）</td><td>★★★</td><td><a href="#s12">→ [12] セキュリティ</a></td></tr>
-<tr><td><strong>[13]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>[6] の部品ごとのテストに加えて、<strong>画面から DB までを通したテスト</strong>が入る。部品どうしが噛み合っていない箇所や<strong>「決めていなかったこと」</strong>が見つかる</td><td>★★☆</td><td><a href="#s13">→ [13] E2E テスト</a></td></tr>
-<tr><td><strong>[14]</strong></td><td>自動デプロイ（Workers Builds）</td><td><code>git push</code> するだけで<strong>Cloudflare へ自動的にビルド・デプロイ</strong>されるようになる（手動の <code>wrangler deploy</code> から卒業）</td><td>★★☆</td><td><a href="#s14">→ [14] 自動デプロイ</a></td></tr>
+<tr><td><strong>[11]</strong></td><td>セキュリティレビュー</td><td>自分のアプリの<strong>脆弱性を点検して1つ直す</strong>（＋回帰テスト）</td><td>★★★</td><td><a href="#s11">→ [11] セキュリティレビュー</a></td></tr>
+<tr><td><strong>[12]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>[6] の部品ごとのテストに加えて、<strong>画面から DB までを通したテスト</strong>が入る。部品どうしが噛み合っていない箇所や<strong>「決めていなかったこと」</strong>が見つかる</td><td>★★☆</td><td><a href="#s12">→ [12] E2E テスト</a></td></tr>
+<tr><td><strong>[13]</strong></td><td>自動デプロイ（Workers Builds）</td><td><code>git push</code> するだけで<strong>Cloudflare へ自動的にビルド・デプロイ</strong>されるようになる（手動の <code>wrangler deploy</code> から卒業）</td><td>★★☆</td><td><a href="#s13">→ [13] 自動デプロイ</a></td></tr>
+<tr><td><strong>[14]</strong></td><td>運用保守の自動化</td><td>「運用チェックして」で<strong>監視・ログ・コストが見られる</strong>ように</td><td>★☆☆</td><td><a href="#s14">→ [14] 運用保守の自動化</a></td></tr>
 </tbody>
 </table>
-<p class="note"><strong>選び方</strong>: 上の表の「追加すると制作物がどう変わるか」を見て、自分が作りたい変化で選ぶ。1つだけやるなら、軽い [8]・[11] から始めるとよい。<br>
+<p class="note"><strong>選び方</strong>: 上の表の「追加すると制作物がどう変わるか」を見て、自分が作りたい変化で選ぶ。1つだけやるなら、軽い [8]・[14] から始めるとよい。<br>
 <strong>所要時間の目安</strong>: ★の数がそのまま重さの目安になっている。★☆☆ でおよそ 30〜45分、★★☆ でおよそ 45〜60分、★★★ で 60分以上である。<br>
 <strong>課題どうしの依存</strong>: 次の3つは順番に注意する。<br>
-・[12] は [10]（本物の認証）まで終えていると効果が高い。というのも、偽造トークンの検証はモック認証では試せないためである。<br>
-・[13] は逆に <strong>[9][10] より先にやる</strong>。決済とログインを外部サービスに置き換えると、購入フローも他人のアカウントも画面から追えなくなり、E2E で書ける項目が激減するためである。<br>
-・[14] は [7] の手動デプロイが完了していることが前提である。ただし作業は Cloudflare ダッシュボードでの連携設定が中心で、コードの追加はほぼ無い。</p>
+・[11] は [10]（本物の認証）まで終えていると効果が高い。というのも、偽造トークンの検証はモック認証では試せないためである。<br>
+・[12] は逆に <strong>[9][10] より先にやる</strong>。決済とログインを外部サービスに置き換えると、購入フローも他人のアカウントも画面から追えなくなり、E2E で書ける項目が激減するためである。<br>
+・[13] は [7] の手動デプロイが完了していることが前提である。ただし作業は Cloudflare ダッシュボードでの連携設定が中心で、コードの追加はほぼ無い。</p>
 
 <h2 id="common">[8][9][10] 共通：シークレット管理</h2>
 <ul>
@@ -1560,7 +1560,7 @@ npm run deploy</code></pre>
 <h3>送信ドメインはどうする？（ここがつまずきやすい）</h3>
 <p>独自ドメインから送るには <strong>DNS 検証</strong>（ドメインの所有者であることを DNS レコードの設置で証明する作業）が必要で、それは自分のドメインが決まる<strong>公開後</strong>の話である。ワークショップでは次の方針を推奨：</p>
 <ul>
-<li><strong>動作確認は Resend のテスト用アドレス <code>onboarding@resend.dev</code> を From に使う</strong>
+<li><strong>動作確認は Resend のテスト用アドレス <code>onboardingresend.dev</code> を From に使う</strong>
   <ul>
   <li>「自分宛に届く」を確認するには十分である</li>
   </ul>
@@ -1729,7 +1729,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
   <ul>
   <li>Webhook で発行したライセンスは<strong>購入者の email</strong>に紐づく。マイページはログイン中ユーザーの email でライセンスを引く</li>
   <li>[10] Clerk をやらない場合は、Section 2 の<strong>モック認証の email</strong>（ヘッダ <code>x-user-email</code>）と<strong>購入時の email を一致させる</strong>こと。ここがズレると「購入したのにマイページに出ない（別人扱い）」になる。<br>
-具体的には、フロントのリクエストヘッダ <code>X-User-Email</code> に固定値（例: <code>test@example.com</code>）をセットし、Stripe Checkout の <code>customer_email</code> にも同じ値を渡せば一致する</li>
+具体的には、フロントのリクエストヘッダ <code>X-User-Email</code> に固定値（例: <code>testexample.com</code>）をセットし、Stripe Checkout の <code>customer_email</code> にも同じ値を渡せば一致する</li>
   </ul>
 </li>
 </ul>
@@ -1750,7 +1750,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 
 <h2 id="s10">[10] ID 連携機能の実装（Clerk）<span class="diff">★★☆</span></h2>
 <p><strong>お題</strong>: ログイン必須のマイページ（未ログイン → サインインへリダイレクト）<br>
-<strong>使うもの</strong>: <code>@clerk/clerk-react</code>（フロント）＋ Hono 側で Clerk の認証トークンを検証</p>
+<strong>使うもの</strong>: <code>clerk/clerk-react</code>（フロント）＋ Hono 側で Clerk の認証トークンを検証</p>
 
 <h3>Clerk とは</h3>
 <p>ログインの仕組みをまるごと引き受ける SaaS である。サインイン画面、Google などの外部アカウントとの連携、セッションの管理を用意してくれる。自分で書くのは、届いたトークンを検証する部分だけになる。</p>
@@ -1767,7 +1767,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 </blockquote>
 
 <figure class="diagram">
-<img src="img/clerk_auth_flow.svg" alt="ID 連携（Clerk）のしくみ: 未ログインで /mypage → Clerk サインイン画面（Google SSO）→ トークン（JWT）発行 → API 呼び出しにトークン添付 → Hono バックエンドで @hono/clerk-auth がトークン検証 → OK ならユーザー情報・NG なら 401 を返す6ステップ。Section 2 のモック認証をトークン検証に差し替えるのがゴール">
+<img src="img/clerk_auth_flow.svg" alt="ID 連携（Clerk）のしくみ: 未ログインで /mypage → Clerk サインイン画面（Google SSO）→ トークン（JWT）発行 → API 呼び出しにトークン添付 → Hono バックエンドで hono/clerk-auth がトークン検証 → OK ならユーザー情報・NG なら 401 を返す6ステップ。Section 2 のモック認証をトークン検証に差し替えるのがゴール">
 </figure>
 
 <h3>サービス側の準備</h3>
@@ -1781,11 +1781,11 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
   </figure>
 </li>
 <li><strong>Configure → Instance → API keys</strong> から2つのキーを<strong>手元にコピーしておく</strong>。ただし env への<strong>投入は、次の「実装メモ」で AI にパッケージを導入させたあと</strong>に行う。<br>
-変数名は <code>@clerk/*</code> の規約で下表のとおりに固定されている。そして<strong>2つのキーで置き場所が違う</strong>のがポイントで、ここを間違えやすい。
+変数名は <code>clerk/*</code> の規約で下表のとおりに固定されている。そして<strong>2つのキーで置き場所が違う</strong>のがポイントで、ここを間違えやすい。
 <table>
 <thead><tr><th>キー</th><th>置き場所</th><th>性質</th></tr></thead>
 <tbody>
-<tr><td><strong>Publishable key</strong></td><td><strong>フロント</strong>の env（Vite なら <code>frontend/.env</code> に <code>VITE_CLERK_PUBLISHABLE_KEY=...</code>）。<strong>加えてバックエンドの <code>backend/.dev.vars</code> にも同じ値を <code>CLERK_PUBLISHABLE_KEY=...</code> で置く</strong>（<code>@hono/clerk-auth</code> がバックエンド側でもこのキーを要求するため。本番も同様に投入）</td><td>公開してよい</td></tr>
+<tr><td><strong>Publishable key</strong></td><td><strong>フロント</strong>の env（Vite なら <code>frontend/.env</code> に <code>VITE_CLERK_PUBLISHABLE_KEY=...</code>）。<strong>加えてバックエンドの <code>backend/.dev.vars</code> にも同じ値を <code>CLERK_PUBLISHABLE_KEY=...</code> で置く</strong>（<code>hono/clerk-auth</code> がバックエンド側でもこのキーを要求するため。本番も同様に投入）</td><td>公開してよい</td></tr>
 <tr><td><strong>Secret key</strong></td><td>ローカル: <strong>バックエンド</strong>の <code>backend/.dev.vars</code> / 本番: Cloudflare ダッシュボードの環境変数（<strong>Secret タイプ</strong>）または <code>wrangler secret put CLERK_SECRET_KEY</code></td><td>秘密。漏らさない</td></tr>
 </tbody>
 </table>
@@ -1797,8 +1797,8 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 
 <h3>実装メモ</h3>
 <ul>
-<li>必要なパッケージ（フロント <code>@clerk/clerk-react</code> ／ バックエンド <code>@hono/clerk-auth</code>）も <strong>AI が導入してくれる</strong>。導入できたら、サービス側の準備でコピーした2つのキーを<strong>上表のとおり env にセット</strong>して <code>npm run dev</code> を（再）起動する</li>
-<li><strong>JWT 検証は <code>@hono/clerk-auth</code> が推奨</strong>（バックエンドでのトークン検証が一気に楽になる）</li>
+<li>必要なパッケージ（フロント <code>clerk/clerk-react</code> ／ バックエンド <code>hono/clerk-auth</code>）も <strong>AI が導入してくれる</strong>。導入できたら、サービス側の準備でコピーした2つのキーを<strong>上表のとおり env にセット</strong>して <code>npm run dev</code> を（再）起動する</li>
+<li><strong>JWT 検証は <code>hono/clerk-auth</code> が推奨</strong>（バックエンドでのトークン検証が一気に楽になる）</li>
 <li>バックエンドは<strong>必ずトークンを検証</strong>してから保護 API を返す（フロントの出し分けだけでは保護にならない）</li>
 <li>Section 2 のモック認証（ヘッダ <code>x-user-email</code> を信頼）を、<strong>この Clerk トークン検証に差し替える</strong>のがゴール</li>
 </ul>
@@ -1828,88 +1828,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 
 <hr>
 
-<h2 id="s11">[11] 運用保守<span class="diff">★☆☆</span></h2>
-<p><strong>お題</strong>: 公開後の運用を体験する。扱うのは監視、ログ、障害特定、対策、コストの5つ<br>
-<strong>実装先</strong>: <code>.claude/skills/</code>（運用スキルを Claude Code に作らせる）<br>
-<strong>学び</strong>: 公開後の「運用」を Claude Code のスキルで仕組み化する</p>
-
-<h3>まず: Cloudflare API トークンを用意する</h3>
-<p><code>wrangler</code> だけだと取得できる情報に制限がある。ログ集計やコスト試算には <strong>API トークン</strong>が要る。</p>
-<ol>
-<li>Cloudflare ダッシュボード右上のアイコン → <strong>Profile</strong> を選択する
-<figure class="diagram">
-<img src="img/CloudflareGetAPIKEY1.png" alt="Cloudflare ダッシュボード右上のアイコンをクリックし「Profile」を選択">
-</figure>
-</li>
-<li>左メニューの <strong>API Tokens → Create Token</strong> をクリックする
-<figure class="diagram">
-<img src="img/CloudflareGetAPIKEY2.png" alt="Cloudflare の User API Tokens 画面 — 右上「+ Create Token」ボタン">
-</figure>
-</li>
-<li><strong>「Create Custom Token」の Get started</strong> をクリックする
-<figure class="diagram">
-<img src="img/CloudflareGetAPIKEY3.png" alt="Create API Token 画面 — 「Create Custom Token」の「Get started」をクリック">
-</figure>
-</li>
-<li>Token name を入力し、Permissions を <strong>Account / Account Analytics / Read</strong> にして作成する
-<figure class="diagram">
-<img src="img/CloudflareGetAPIKEY4.png" alt="Create Custom Token 画面 — Token name と Permissions（Account Analytics / Read）を設定する">
-</figure>
-</li>
-<li>取得したトークンを <strong><code>backend/.cf-ops.token</code> に保存</strong>（例 <code>CLOUDFLARE_API_TOKEN=...</code> の1行）。<code>.dev.vars</code> とは<strong>別ファイル</strong>にする（理由は下記）。<code>.gitignore</code> に <code>.cf-ops.token</code> を追加しておく</li>
-</ol>
-<blockquote>
-<p><strong>このトークンは Worker が使うのではなく、運用スキルが shell からファイルを読んで使う</strong>（Cloudflare の集計 API（GraphQL）を叩くため）。</p>
-<p>ここで注意したいのが置き場所である。<strong><code>.dev.vars</code> は Section 1 の設定で Read を拒否している</strong>ので、スキルが <code>cat</code> 等で読もうとすると<strong>ブロックされる</strong>。</p>
-<p>そこで運用トークンだけは deny 対象外の<strong>別ファイル（<code>.cf-ops.token</code>）</strong>に分離する。ここに入れるのは <strong>Analytics 読み取り専用</strong>の低権限トークンなので、Stripe/Clerk 等の高価値シークレット（<code>.dev.vars</code>）とは分けて扱ってよい。</p>
-<p>なお<strong>本番 secret に入れる必要はない</strong>（ローカルにあれば十分）。また、トークンが無くても <strong><code>wrangler tail</code> のライブログ</strong>は見られる。トークンが必須なのは集計・コスト試算だけである。</p>
-</blockquote>
-
-<h3>運用チェックを「スキル」にする</h3>
-<p>Claude Code のスキルとは、<code>.claude/skills/&lt;名前&gt;/</code> ディレクトリに必要なファイルを置くことで、「運用チェックして」のような自然言語で呼び出せる専用コマンドを登録できる機能である。</p>
-<p><a href="#s5">[5]</a> で使った <code>/code-review</code> のように、<strong>インストールなしで最初から使えるものを「組み込みスキル」</strong>と呼ぶ。<br>
-一方、Section 1 で入れた security-guidance のような<strong>「プラグイン」は、スキルなどをまとめて配布するパッケージ</strong>である。</p>
-<p>毎回同じ確認を<strong>スキル（<code>.claude/skills/</code>）</strong>にしておけば、「<strong>運用チェックして</strong>」の一言で再利用できる。ここで作ってもらうスキルは次の5つ。</p>
-<table>
-<thead><tr><th>#</th><th>スキル</th><th>やること</th><th>置き場所</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>インフラ障害確認</td><td>依存サービス（Cloudflare/Clerk/Stripe/Resend）の公開ステータスを確認</td><td><code>.claude/skills/infra-status/</code></td></tr>
-<tr><td>2</td><td>ログ取得</td><td>Cloudflare のログ／エラーを取得して問題がないか確認</td><td><code>.claude/skills/cf-log-check/</code></td></tr>
-<tr><td>3</td><td>障害箇所の特定</td><td>ログ・直近デプロイをソースと突き合わせて原因を絞る</td><td><code>.claude/skills/fault-localize/</code></td></tr>
-<tr><td>4</td><td>対策・回避策</td><td>ログ内容から恒久対策・暫定ワークアラウンドを出す</td><td><code>.claude/skills/remediate/</code></td></tr>
-<tr><td>5</td><td>コストモニタリング</td><td>requests / CPU 時間からコストを試算</td><td><code>.claude/skills/cost-monitor/</code></td></tr>
-</tbody>
-</table>
-<blockquote>
-<p>5つを一気通貫で回す<strong>統合スキル <code>ops-check</code></strong> にまとめてもよい（<code>.claude/skills/ops-check/</code>）。いずれも Claude Code に作らせ、<strong>自分のサービス向けに調整する</strong>。</p>
-</blockquote>
-
-<h3>手順</h3>
-<ol>
-<li>上記の手順で API トークンを作成し、<code>backend/.cf-ops.token</code> に保存する（<code>.dev.vars</code> とは別ファイル。理由は上記）</li>
-<li>スキルを Claude Code に作ってもらう → <strong>「運用チェックして」で実際に動くか確認する</strong>
-<pre><code>.claude/skills/ 以下に、本番運用チェック用のスキルを5つ作って。
-1. infra-status: Cloudflare/Clerk/Stripe/Resend の公開ステータスページを確認して障害有無をまとめる
-2. cf-log-check: wrangler tail で本番 Worker のログ・エラーを取得して問題がないか確認する
-3. fault-localize: ログと直近のデプロイ差分をソースと突き合わせて障害箇所を絞り込む
-4. remediate: 特定した原因への恒久対策と暫定ワークアラウンドを提案する
-5. cost-monitor: Cloudflare の GraphQL Analytics API で requests / CPU 時間を集計してコストを試算する
-
-共通の前提:
-- Cloudflare API トークンは backend/.cf-ops.token に CLOUDFLARE_API_TOKEN=... の形式で置いてある。
-  集計が必要なスキルはこのファイルを読んで使う（.dev.vars は読まない）
-- 使っていないサービス（Stripe/Clerk/Resend など）があれば対象から外して
-- 5つを順に実行して結果をまとめる統合スキル ops-check も作って。「運用チェックして」で ops-check が動くようにして</code></pre>
-</li>
-</ol>
-
-<h3 class="done">✅ 完了の定義</h3>
-<p>5つのうち<strong>最低1つ</strong>の運用スキルが動作する（「運用チェックして」で応答が返ること）。残りは持ち帰りで作ってよい。</p>
-<pre><code>運用保守実装の作業をコミットして dev ブランチに push して。</code></pre>
-
-<hr>
-
-<h2 id="s12">[12] セキュリティ<span class="diff">★★★</span></h2>
+<h2 id="s11">[11] セキュリティレビュー<span class="diff">★★★</span></h2>
 <p><strong>お題</strong>: 自分のアプリをセキュリティ観点で点検し、最低1つ直す<br>
 <strong>ツール</strong>: Claude Code（<code>/security-review</code>・常時の <code>security-guidance</code>）＋ <strong>SonarCloud</strong><br>
 <strong>参考</strong>: [6] で作った <code>docs/TEST.md</code> の認証境界まわりのテスト。これを回帰テスト（直した問題が再発していないかを毎回確かめるテスト）の土台にする<br>
@@ -2067,7 +1986,7 @@ END;
 </li>
 <li>説明を踏まえて<strong>直すか・誤検知として無視するかを判断</strong>する（鵜呑みにしない。下記ハマりどころ参照）</li>
 </ol>
-<p class="note">Security の指摘が 0 件でも異常ではない。認証境界・IDOR・機密マスクなどの典型的な穴が既に塞がれていれば Security 分類の指摘は出ない。[12] の完了条件（1つ以上修正）は、Reliability・Maintainability の指摘から選んでも構わない。</p>
+<p class="note">Security の指摘が 0 件でも異常ではない。認証境界・IDOR・機密マスクなどの典型的な穴が既に塞がれていれば Security 分類の指摘は出ない。[11] の完了条件（1つ以上修正）は、Reliability・Maintainability の指摘から選んでも構わない。</p>
 
 <h3 class="warn">⚠️ ハマりどころ</h3>
 <ul>
@@ -2093,7 +2012,7 @@ END;
 
 <hr>
 
-<h2 id="s13">[13] E2E テスト（画面を通して確かめる）<span class="diff">★★☆</span></h2>
+<h2 id="s12">[12] E2E テスト（画面を通して確かめる）<span class="diff">★★☆</span></h2>
 <p><strong>お題</strong>: <a href="#s6-t2">[6] ②</a> の表から<strong>2本</strong>を選び、ブラウザ操作のテストにする<br>
 <strong>ツール</strong>: Playwright（Codegen）＋ Claude Code<br>
 <strong>前提</strong>: <a href="#s7">[7]</a> まで完了していること（<a href="#s6">[6]</a> の「## テスト項目」の表があること）／<strong>Node.js 22 以上</strong>（<code>node -v</code> で確認）<br>
@@ -2120,9 +2039,9 @@ END;
 
 <p>[10] を入れるとログインが <strong>Google の画面</strong>に移る。<strong>Playwright は Google のログイン画面を自動操作できない</strong>ので、そのままでは認証が要る画面のテストが1本も書けない。</p>
 
-<p>解決策は <code>@clerk/testing</code> である。<strong>ログイン画面を通らずに</strong>認証済みの状態を作る。</p>
+<p>解決策は <code>clerk/testing</code> である。<strong>ログイン画面を通らずに</strong>認証済みの状態を作る。</p>
 
-<pre><code>npm i -D @clerk/testing</code></pre>
+<pre><code>npm i -D clerk/testing</code></pre>
 
 <p><strong>1. テスト用ユーザを1人作る</strong> — Clerk ダッシュボードで作る。手順は4ステップである。</p>
 
@@ -2140,11 +2059,11 @@ END;
 
 <p><strong>(3) メールとパスワードを入れて作る</strong></p>
 <figure class="diagram">
-<img src="img/ClerkCreateTestUser.png" alt="Clerk の Create new user ダイアログ。Email 欄に e2e+clerk_test@example.com、Password 欄に任意のパスワードを入力し、Ignore password policies にチェックを入れた状態">
+<img src="img/ClerkCreateTestUser.png" alt="Clerk の Create new user ダイアログ。Email 欄に e2e+clerk_testexample.com、Password 欄に任意のパスワードを入力し、Ignore password policies にチェックを入れた状態">
 <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">(3) メールは <strong><code>+clerk_test</code> 付き</strong>にする。パスワードは<strong>この場だけ</strong>で以降使わない</figcaption>
 </figure>
 <ul>
-<li>メールは <code>e2e+clerk_test@example.com</code> のように <strong><code>+clerk_test</code> を付ける</strong>。付けないと「Enter a valid email address」で弾かれる</li>
+<li>メールは <code>e2e+clerk_testexample.com</code> のように <strong><code>+clerk_test</code> を付ける</strong>。付けないと「Enter a valid email address」で弾かれる</li>
 <li>パスワードは任意である。通らなければ <strong>Ignore password policies</strong> にチェックを入れる。<strong>このパスワードは以降使わない</strong>（テストはログイン画面を通らないため）ので、どこにも保存しなくてよい</li>
 </ul>
 
@@ -2155,7 +2074,7 @@ END;
 </figure>
 
 <p><strong>2. 設定は AI に作らせる</strong></p>
-<pre><code>@clerk/testing を使って、Playwright のテストを Clerk 認証済みの状態で走らせたい。
+<pre><code>clerk/testing を使って、Playwright のテストを Clerk 認証済みの状態で走らせたい。
 
 ・テスト用ユーザのメールは環境変数 E2E_CLERK_USER_EMAIL から読む
 ・サインイン画面は操作しないこと（Google ログインなので自動操作できない）
@@ -2167,7 +2086,7 @@ END;
 
 <p><strong>3. 認証状態を作る</strong> — 環境変数を渡して実行する。</p>
 <pre><code>set -a; . ./backend/.dev.vars; set +a
-export E2E_CLERK_USER_EMAIL='e2e+clerk_test@example.com'
+export E2E_CLERK_USER_EMAIL='e2e+clerk_testexample.com'
 npx playwright test --project=setup</code></pre>
 <p class="note"><strong>これが緑になれば設定は正しい。</strong>ログイン画面を操作するコードが混ざっていれば、ここで止まる。</p>
 
@@ -2198,7 +2117,7 @@ npx playwright test --project=setup</code></pre>
 </details>
 <h3>⓪ 準備</h3>
 <p><strong>やること</strong>: リポジトリのルートで Playwright を入れる。</p>
-<pre><code>npm init playwright@latest -- --browser=chromium</code></pre>
+<pre><code>npm init playwrightlatest -- --browser=chromium</code></pre>
 <p>実行するといくつか質問が出る（言語・テストの置き場所・GitHub Actions を作るか）。<strong>すべてそのまま Enter でよい。</strong></p>
 <blockquote class="warn">
 <p><strong>⚠️ <code>-- --browser=chromium</code> を省略しないこと。</strong></p>
@@ -2213,18 +2132,18 @@ npx playwright test --project=setup</code></pre>
 
 <p class="note"><strong>完了</strong>: ブラウザで <code>npm run dev</code> が表示した URL が開き、購入もマイページも動く。</p>
 
-<h3 id="s13-t1">① テストする行を2本決める</h3>
+<h3 id="s12-t1">① テストする行を2本決める</h3>
 
 <p><strong>やること</strong>: <a href="#s6-t2">[6] ②</a> の「## テスト項目」の表から、ブラウザで確かめる行を<strong>2本</strong>選ぶ。選んだ行の番号は、② で作る録画ファイルの名前になる。</p>
 
-<p><strong>「どこで確かめる」が「通し」の行があれば、それを使う。</strong>前提条件と期待結果は <a href="#s6-t2">[6] ②</a> で埋めてあるので、そのまま使える。選ばなかった行は結果列を「[13] で確認予定」のままにしておき、時間が余ったら足す。</p>
+<p><strong>「どこで確かめる」が「通し」の行があれば、それを使う。</strong>前提条件と期待結果は <a href="#s6-t2">[6] ②</a> で埋めてあるので、そのまま使える。選ばなかった行は結果列を「[12] で確認予定」のままにしておき、時間が余ったら足す。</p>
 
-<p><strong>通しの行が無い場合は、ここで2本作る。</strong><a href="#s6-t1">[6] ①</a> の「## テスト要件」から、<strong>画面から DB まで通して初めて破れが見えるもの</strong>を2つ選び、表に「通し」の行を足す。前提条件と期待結果は、同じ要件の「画面」の行を見れば書ける。足した行の結果列には「[13] で確認予定」と書いておく（③ の実行で上書きする）。</p>
+<p><strong>通しの行が無い場合は、ここで2本作る。</strong><a href="#s6-t1">[6] ①</a> の「## テスト要件」から、<strong>画面から DB まで通して初めて破れが見えるもの</strong>を2つ選び、表に「通し」の行を足す。前提条件と期待結果は、同じ要件の「画面」の行を見れば書ける。足した行の結果列には「[12] で確認予定」と書いておく（③ の実行で上書きする）。</p>
 
 <blockquote class="warn">
 <p><strong>⚠️ 外部サービスの画面を通る行は、ここで外す。</strong></p>
 <p>Playwright は Google のログイン画面や Stripe の決済画面を自動操作できない。<a href="#s9">[9]</a> や <a href="#s10">[10]</a> を実施した人は、その画面を通らないと再現できない行が出てくる。</p>
-<p><a href="#s10">[10]</a>（Clerk）の分は、⓪ 準備の前に置いた折りたたみ（[9][10] 実施済みの人向け）の <code>@clerk/testing</code> で回避できる。<a href="#s9">[9]</a>（Stripe）の購入操作そのものは回避できないので、<strong>前提条件を「購入済みのアカウント」に置き、購入後の表示を見る</strong>行に振り替える。振り替えられない行は選ばず、結果列に「決済画面の内側なので E2E 対象外。Stripe の設定として確認する」と書く。決済画面の中の不具合は Stripe 側の設定に由来するので、直す先が自分のリポジトリにない。</p>
+<p><a href="#s10">[10]</a>（Clerk）の分は、⓪ 準備の前に置いた折りたたみ（[9][10] 実施済みの人向け）の <code>clerk/testing</code> で回避できる。<a href="#s9">[9]</a>（Stripe）の購入操作そのものは回避できないので、<strong>前提条件を「購入済みのアカウント」に置き、購入後の表示を見る</strong>行に振り替える。振り替えられない行は選ばず、結果列に「決済画面の内側なので E2E 対象外。Stripe の設定として確認する」と書く。決済画面の中の不具合は Stripe 側の設定に由来するので、直す先が自分のリポジトリにない。</p>
 </blockquote>
 
 <p class="note"><strong>完了</strong>: 表の行を2つ選べていて、それぞれ前提条件と期待結果が埋まっている。</p>
@@ -2291,7 +2210,7 @@ await page.goto('https://&lt;認証サービスのホスト&gt;/sign-in?redirect
 <table>
 <thead><tr><th>録画中の注意</th><th>理由</th></tr></thead>
 <tbody>
-<tr><td><strong>実名・実メールを入れない</strong></td><td>入力値がテストコードに残り Git に入る。<code>test@example.com</code> を使う</td></tr>
+<tr><td><strong>実名・実メールを入れない</strong></td><td>入力値がテストコードに残り Git に入る。<code>testexample.com</code> を使う</td></tr>
 <tr><td>迷ってクリックしない</td><td>押した操作がすべてコードになる</td></tr>
 </tbody>
 </table>
@@ -2334,7 +2253,7 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
 <p>落ちたら <code>--ui</code> を付けて実行し直す。ステップごとの画面が見える。</p>
 <pre><code>npx playwright test --ui</code></pre>
 
-<p><strong>結果を表に書く</strong>: 2本それぞれについて、<code>docs/TEST.md</code> の結果列の「[13] で確認予定」を実際の結果（緑／落ちた）で上書きする。</p>
+<p><strong>結果を表に書く</strong>: 2本それぞれについて、<code>docs/TEST.md</code> の結果列の「[12] で確認予定」を実際の結果（緑／落ちた）で上書きする。</p>
 <p class="note"><strong>完了</strong>: 2本とも実行し、結果列が書き換わっている。<strong>赤でも問題ない。</strong>原因は次の工程で判定する。</p>
 
 <h3>④ 赤の原因を決める（赤が出たときだけ）</h3>
@@ -2376,7 +2295,7 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
 <h3>⑤ push する</h3>
 
 <p><strong>やること</strong>: ④ まで終えたら push する。</p>
-<p>先に <code>.gitignore</code> に次の5行があるか確認する。無ければ足す。最後の行は [10] 実施済みで <code>@clerk/testing</code> を使った場合の認証状態の保存先である。使っていなければ該当ディレクトリ自体が無いので、入れたままで害はない。</p>
+<p>先に <code>.gitignore</code> に次の5行があるか確認する。無ければ足す。最後の行は [10] 実施済みで <code>clerk/testing</code> を使った場合の認証状態の保存先である。使っていなければ該当ディレクトリ自体が無いので、入れたままで害はない。</p>
 <pre><code>/test-results/
 /playwright-report/
 /blob-report/
@@ -2396,9 +2315,9 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
 <h3 class="done">✅ 完了の定義</h3>
 <ul>
 <li>ブラウザで確かめる行を<strong>2本</strong>選び、それぞれ <code>tests/</code> に spec ファイルがある</li>
-<li>その2本を実行し、<strong>結果列が「[13] で確認予定」から実際の結果に書き換わっている</strong></li>
+<li>その2本を実行し、<strong>結果列が「[12] で確認予定」から実際の結果に書き換わっている</strong></li>
 <li>赤が出た行について、<strong>直したか・仕様として認めたかを自分で決めた</strong></li>
-<li>選ばなかった通しの行は、結果列が「[13] で確認予定」のまま残っている（空欄にしない）</li>
+<li>選ばなかった通しの行は、結果列が「[12] で確認予定」のまま残っている（空欄にしない）</li>
 </ul>
 <p class="note"><a href="#s6">[6]</a> は「通し」以外の行を全部緑にするところまでを完了条件にしている。通しの行だけがこの章に回されているので、ここで結果列が埋まると <code>TEST.md</code> の表に空欄がなくなる。</p>
 
@@ -2407,13 +2326,13 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
 <p>[6] のテストは<strong>部品を1つずつ台の上で検査する</strong>。E2E は<strong>組み上がったものに実際に乗ってみる</strong>。守っている場所が違う。</p>
 <pre><code>         画面(React) ─── HTTP ─── Worker(Hono) ── D1
 [6]    ├────┤                   ├────────┤
-[13]     ├───────────────────────────────────┤
+[12]     ├───────────────────────────────────┤
                         ↑
               [6] はここを見ていない</code></pre>
 <p>[6] は経路の<strong>左半分と右半分を別々に固める</strong>（画面テストは HTTP をモック、API テストは外部 API をモック）。</p>
 <p>ところが<strong>その2つが噛み合っているかは誰も見ていない</strong>。バックエンドが <code>licenseMasked</code> を返しフロントが <code>license_masked</code> を読んでいても、両方とも緑になる。</p>
 <table>
-<thead><tr><th>実際に起きうるバグ</th><th>[6] のテスト</th><th>[13] の E2E</th></tr></thead>
+<thead><tr><th>実際に起きうるバグ</th><th>[6] のテスト</th><th>[12] の E2E</th></tr></thead>
 <tbody>
 <tr><td>フロントが項目名を綴り間違えて画面が空欄</td><td><strong>見逃す</strong></td><td>気づける</td></tr>
 <tr><td><code>npm run build:front</code> を忘れて古い画面が配信されている</td><td><strong>見逃す</strong></td><td>気づける</td></tr>
@@ -2426,7 +2345,7 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
 </details>
 <hr>
 
-<h2 id="s14">[14] 自動デプロイ（Workers Builds）<span class="diff">★★☆</span></h2>
+<h2 id="s13">[13] 自動デプロイ（Workers Builds）<span class="diff">★★☆</span></h2>
 <p><strong>お題</strong>: <code>git push</code> するだけで Cloudflare へ自動的にビルド・デプロイされる状態にする（[7] の手動デプロイを卒業する）<br>
 <strong>ツール</strong>: Cloudflare ダッシュボードの <strong>Workers Builds</strong>（Git 連携によるビルド・デプロイの自動化機能）<br>
 <strong>前提</strong>: <a href="#s7">[7]</a> で <code>wrangler deploy</code> による手動デプロイまで完了していること<br>
@@ -2487,6 +2406,87 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 
 <hr>
 
+<h2 id="s14">[14] 運用保守の自動化<span class="diff">★☆☆</span></h2>
+<p><strong>お題</strong>: 公開後の運用を体験する。扱うのは監視、ログ、障害特定、対策、コストの5つ<br>
+<strong>実装先</strong>: <code>.claude/skills/</code>（運用スキルを Claude Code に作らせる）<br>
+<strong>学び</strong>: 公開後の「運用」を Claude Code のスキルで仕組み化する</p>
+
+<h3>まず: Cloudflare API トークンを用意する</h3>
+<p><code>wrangler</code> だけだと取得できる情報に制限がある。ログ集計やコスト試算には <strong>API トークン</strong>が要る。</p>
+<ol>
+<li>Cloudflare ダッシュボード右上のアイコン → <strong>Profile</strong> を選択する
+<figure class="diagram">
+<img src="img/CloudflareGetAPIKEY1.png" alt="Cloudflare ダッシュボード右上のアイコンをクリックし「Profile」を選択">
+</figure>
+</li>
+<li>左メニューの <strong>API Tokens → Create Token</strong> をクリックする
+<figure class="diagram">
+<img src="img/CloudflareGetAPIKEY2.png" alt="Cloudflare の User API Tokens 画面 — 右上「+ Create Token」ボタン">
+</figure>
+</li>
+<li><strong>「Create Custom Token」の Get started</strong> をクリックする
+<figure class="diagram">
+<img src="img/CloudflareGetAPIKEY3.png" alt="Create API Token 画面 — 「Create Custom Token」の「Get started」をクリック">
+</figure>
+</li>
+<li>Token name を入力し、Permissions を <strong>Account / Account Analytics / Read</strong> にして作成する
+<figure class="diagram">
+<img src="img/CloudflareGetAPIKEY4.png" alt="Create Custom Token 画面 — Token name と Permissions（Account Analytics / Read）を設定する">
+</figure>
+</li>
+<li>取得したトークンを <strong><code>backend/.cf-ops.token</code> に保存</strong>（例 <code>CLOUDFLARE_API_TOKEN=...</code> の1行）。<code>.dev.vars</code> とは<strong>別ファイル</strong>にする（理由は下記）。<code>.gitignore</code> に <code>.cf-ops.token</code> を追加しておく</li>
+</ol>
+<blockquote>
+<p><strong>このトークンは Worker が使うのではなく、運用スキルが shell からファイルを読んで使う</strong>（Cloudflare の集計 API（GraphQL）を叩くため）。</p>
+<p>ここで注意したいのが置き場所である。<strong><code>.dev.vars</code> は Section 1 の設定で Read を拒否している</strong>ので、スキルが <code>cat</code> 等で読もうとすると<strong>ブロックされる</strong>。</p>
+<p>そこで運用トークンだけは deny 対象外の<strong>別ファイル（<code>.cf-ops.token</code>）</strong>に分離する。ここに入れるのは <strong>Analytics 読み取り専用</strong>の低権限トークンなので、Stripe/Clerk 等の高価値シークレット（<code>.dev.vars</code>）とは分けて扱ってよい。</p>
+<p>なお<strong>本番 secret に入れる必要はない</strong>（ローカルにあれば十分）。また、トークンが無くても <strong><code>wrangler tail</code> のライブログ</strong>は見られる。トークンが必須なのは集計・コスト試算だけである。</p>
+</blockquote>
+
+<h3>運用チェックを「スキル」にする</h3>
+<p>Claude Code のスキルとは、<code>.claude/skills/&lt;名前&gt;/</code> ディレクトリに必要なファイルを置くことで、「運用チェックして」のような自然言語で呼び出せる専用コマンドを登録できる機能である。</p>
+<p><a href="#s5">[5]</a> で使った <code>/code-review</code> のように、<strong>インストールなしで最初から使えるものを「組み込みスキル」</strong>と呼ぶ。<br>
+一方、Section 1 で入れた security-guidance のような<strong>「プラグイン」は、スキルなどをまとめて配布するパッケージ</strong>である。</p>
+<p>毎回同じ確認を<strong>スキル（<code>.claude/skills/</code>）</strong>にしておけば、「<strong>運用チェックして</strong>」の一言で再利用できる。ここで作ってもらうスキルは次の5つ。</p>
+<table>
+<thead><tr><th>#</th><th>スキル</th><th>やること</th><th>置き場所</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>インフラ障害確認</td><td>依存サービス（Cloudflare/Clerk/Stripe/Resend）の公開ステータスを確認</td><td><code>.claude/skills/infra-status/</code></td></tr>
+<tr><td>2</td><td>ログ取得</td><td>Cloudflare のログ／エラーを取得して問題がないか確認</td><td><code>.claude/skills/cf-log-check/</code></td></tr>
+<tr><td>3</td><td>障害箇所の特定</td><td>ログ・直近デプロイをソースと突き合わせて原因を絞る</td><td><code>.claude/skills/fault-localize/</code></td></tr>
+<tr><td>4</td><td>対策・回避策</td><td>ログ内容から恒久対策・暫定ワークアラウンドを出す</td><td><code>.claude/skills/remediate/</code></td></tr>
+<tr><td>5</td><td>コストモニタリング</td><td>requests / CPU 時間からコストを試算</td><td><code>.claude/skills/cost-monitor/</code></td></tr>
+</tbody>
+</table>
+<blockquote>
+<p>5つを一気通貫で回す<strong>統合スキル <code>ops-check</code></strong> にまとめてもよい（<code>.claude/skills/ops-check/</code>）。いずれも Claude Code に作らせ、<strong>自分のサービス向けに調整する</strong>。</p>
+</blockquote>
+
+<h3>手順</h3>
+<ol>
+<li>上記の手順で API トークンを作成し、<code>backend/.cf-ops.token</code> に保存する（<code>.dev.vars</code> とは別ファイル。理由は上記）</li>
+<li>スキルを Claude Code に作ってもらう → <strong>「運用チェックして」で実際に動くか確認する</strong>
+<pre><code>.claude/skills/ 以下に、本番運用チェック用のスキルを5つ作って。
+1. infra-status: Cloudflare/Clerk/Stripe/Resend の公開ステータスページを確認して障害有無をまとめる
+2. cf-log-check: wrangler tail で本番 Worker のログ・エラーを取得して問題がないか確認する
+3. fault-localize: ログと直近のデプロイ差分をソースと突き合わせて障害箇所を絞り込む
+4. remediate: 特定した原因への恒久対策と暫定ワークアラウンドを提案する
+5. cost-monitor: Cloudflare の GraphQL Analytics API で requests / CPU 時間を集計してコストを試算する
+
+共通の前提:
+- Cloudflare API トークンは backend/.cf-ops.token に CLOUDFLARE_API_TOKEN=... の形式で置いてある。
+  集計が必要なスキルはこのファイルを読んで使う（.dev.vars は読まない）
+- 使っていないサービス（Stripe/Clerk/Resend など）があれば対象から外して
+- 5つを順に実行して結果をまとめる統合スキル ops-check も作って。「運用チェックして」で ops-check が動くようにして</code></pre>
+</li>
+</ol>
+
+<h3 class="done">✅ 完了の定義</h3>
+<p>5つのうち<strong>最低1つ</strong>の運用スキルが動作する（「運用チェックして」で応答が返ること）。残りは持ち帰りで作ってよい。</p>
+<pre><code>運用保守の自動化の作業をコミットして dev ブランチに push して。</code></pre>
+
+<hr>
+
 <h2 id="wrap">ラップアップ・発表会（Section 3 の最後 30 分）</h2>
 
 <h3>最終発表会（<strong>1人3分</strong>）</h3>
@@ -2523,12 +2523,12 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
 <thead><tr><th>リソース</th><th>残す場合</th><th>片付ける場合</th></tr></thead>
 <tbody>
 <tr><td>Cloudflare Worker / D1</td><td>ポートフォリオとして公開したままでよい（無料枠内）</td><td>ダッシュボードで Worker を削除（D1 も個別に削除）</td></tr>
-<tr><td>Cloudflare API トークン（<code>.cf-ops.token</code>）</td><td>[11] の運用チェックを続けるなら残す（低権限の Analytics 読み取り専用）</td><td>ダッシュボードで<strong>トークンを Revoke（無効化）</strong>し、手元の <code>.cf-ops.token</code> も削除</td></tr>
+<tr><td>Cloudflare API トークン（<code>.cf-ops.token</code>）</td><td>[14] の運用チェックを続けるなら残す（低権限の Analytics 読み取り専用）</td><td>ダッシュボードで<strong>トークンを Revoke（無効化）</strong>し、手元の <code>.cf-ops.token</code> も削除</td></tr>
 <tr><td>Stripe（テストモード）</td><td>そのまま放置で害はない（テストモードは課金されない）</td><td>不要なら Webhook エンドポイントを削除（live mode には切り替えていないので実害なし）</td></tr>
 <tr><td>Clerk アプリ</td><td>残すならそのまま</td><td>不要ならアプリを削除。<code>frontend/.env</code> の鍵も消す</td></tr>
 <tr><td>Resend API キー</td><td>公開アプリでメール送信（[8]）を使い続けるなら残す</td><td><strong>ダッシュボードで API キーを Revoke（無効化）</strong></td></tr>
 <tr><td>SonarCloud / GitHub App</td><td>継続解析するなら残す</td><td>不要なら SonarCloud のプロジェクトを削除し、GitHub の Installed App から権限を解除</td></tr>
-<tr><td>Cloudflare Workers Builds（Git 連携。<a href="#s14">[14]</a> を試した場合）</td><td>継続して自動デプロイを使うなら残す</td><td>不要なら Cloudflare の Worker → Settings → Build で「Disconnect」する。<br>
+<tr><td>Cloudflare Workers Builds（Git 連携。<a href="#s13">[13]</a> を試した場合）</td><td>継続して自動デプロイを使うなら残す</td><td>不要なら Cloudflare の Worker → Settings → Build で「Disconnect」する。<br>
 そのうえで GitHub 側は<strong>2箇所</strong>の解除が必要で、片方だけでは不十分。<br>
 <strong>①</strong> GitHub 右上のアイコン → Settings → Applications → <strong>Installed GitHub Apps</strong> → Cloudflare Workers and Pages を <strong>Uninstall</strong>。これでリポジトリへのアクセスが消える。<br>
 　※ Settings は<strong>リポジトリ側ではなくアカウント側</strong>から入る。<br>
@@ -2686,10 +2686,10 @@ Cloudflare が自動生成した誤った設定でデプロイされてしまう
     <li><a href="#s8">[8] メール</a></li>
     <li><a href="#s9">[9] 決済</a></li>
     <li><a href="#s10">[10] ID 連携</a></li>
-    <li><a href="#s11">[11] 運用保守</a></li>
-    <li><a href="#s12">[12] セキュリティ</a></li>
-    <li><a href="#s13">[13] E2E テスト</a></li>
-    <li><a href="#s14">[14] 自動デプロイ</a></li>
+    <li><a href="#s11">[11] セキュリティレビュー</a></li>
+    <li><a href="#s12">[12] E2E テスト</a></li>
+    <li><a href="#s13">[13] 自動デプロイ</a></li>
+    <li><a href="#s14">[14] 運用保守の自動化</a></li>
     <li><a href="#wrap">ラップアップ</a></li>
     <li><a href="#cleanup">後片付け</a></li>
   </ul>
