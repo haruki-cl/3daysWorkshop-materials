@@ -281,7 +281,8 @@ media(max-width:640px){
 </ul>
 
 <h3>必須機能（Section 2 までに作るものの最低ライン）</h3>
-<p><strong>ライセンスキー（購入の証として発行する一意の文字列）の配布は、題材によらず全員共通の実装要件である。</strong></p>
+<p><strong>購入の証（購入ごとに1つ発行する一意の文字列）の発行は、題材によらず全員共通の実装要件である。</strong></p>
+<p>呼び名は題材に合わせて決めてよい。ライセンスキー（アプリ・bot）／ API キー（開発者向け）／ ダウンロードコード（成果物配布）／ 契約番号・注文番号（それ以外）など。<strong>購入ごとに1つ発行し、保存して、<code>/success</code> とマイページに出す</strong>という形だけが共通である。</p>
 <p>参加前に、自分が作りたい SaaS の MVP をざっくり考えてくること。どんなサービスか、下の5機能をどう満たすかを決めておく。迷う場合は「玄米茶」をそのまま自分の題材にしてもよい。</p>
 <p class="note">Section 2 到達時点の見本（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://testai-genmaicha.ha-toge.workers.dev/">https://testai-genmaicha.ha-toge.workers.dev/</a> — 下の5機能が動く状態がゴールである。</p>
 <table>
@@ -290,12 +291,12 @@ media(max-width:640px){
 <tr><td>1</td><td><strong>LP</strong></td><td>サービス紹介と料金を掲載し、公開 URL で表示できる</td></tr>
 <tr><td>2</td><td><strong>価格表示</strong></td><td>料金プラン（月額／年額など）を見せ、行動を促すボタン（CTA）から購入フロー（メールアドレス入力）に進める</td></tr>
 <tr><td>3</td><td><strong>お問い合わせフォーム</strong></td><td>入力 → 送信 → 受付（<code>POST /api/contact</code>）が通る</td></tr>
-<tr><td>4</td><td><strong>マイページ</strong></td><td>メールアドレス入力の簡易ログインで購入情報・ライセンスを表示（本物のログインは Section 3 Clerk [10]）</td></tr>
-<tr><td>5</td><td><strong>ライセンスキーの配布</strong></td><td>メールアドレスのみ入力 → ライセンスキーを発行 → 完了画面で表示（決済なしの簡易版）</td></tr>
+<tr><td>4</td><td><strong>マイページ</strong></td><td>メールアドレス入力の簡易ログインで購入情報・購入の証を表示（本物のログインは Section 3 Clerk [10]）</td></tr>
+<tr><td>5</td><td><strong>購入の証の発行</strong></td><td>メールアドレスのみ入力 → 購入の証を発行 → 完了画面とマイページで表示（決済なしの簡易版）</td></tr>
 </tbody>
 </table>
 <ul>
-<li>5 は Section 2 では<strong>決済なし・メールアドレス入力のみ</strong>でキーを発行する流れまでを実装する。「Stripe 購入 → Webhook（決済完了などのイベントを、外部サービスが自分の API の URL に通知してくる仕組み）で自動発行」への差し替えは Section 3 オプション [9] で扱う。</li>
+<li>5 は Section 2 では<strong>決済なし・メールアドレス入力のみ</strong>で証を発行する流れまでを実装する。「Stripe 購入 → Webhook（決済完了などのイベントを、外部サービスが自分の API の URL に通知してくる仕組み）で自動発行」への差し替えは Section 3 オプション [9] で扱う。</li>
 </ul>
 
 <hr>
@@ -392,11 +393,11 @@ media(max-width:640px){
 <tr><td><strong>[5]</strong></td><td>レビュー</td><td>Section 2</td><td></td><td><code>/code-review</code> と <code>/security-review</code> を実行し、指摘を直したうえで dev に push できている</td></tr>
 <tr><td><strong>[6]</strong></td><td>機能テスト</td><td>Section 2</td><td></td><td><code>docs/TEST.md</code> に要件と項目の表があり、<strong>結果列がすべて埋まっている</strong>。「通し」以外の行は緑（<code>backend/</code> と <code>frontend/</code> それぞれで実行）</td></tr>
 <tr><td><strong>[7]</strong></td><td>デプロイ</td><td>Section 2</td><td></td><td>自分の <code>https://&lt;name&gt;.workers.dev</code> で LP が表示され <code>/mypage</code> も 404 にならない</td></tr>
-<tr><td><strong>[8]</strong></td><td>メール（Resend）</td><td>Section 3</td><td>★☆☆</td><td>問い合わせ受付やライセンス送付などのメールを実装し、自分宛に届くことを確認できる</td></tr>
-<tr><td><strong>[9]</strong></td><td>決済（Stripe）</td><td>Section 3</td><td>★★★</td><td>Stripe Checkout → Webhook でライセンスキー自動発行。テスト用カードでマイページにライセンスキーが表示されること</td></tr>
+<tr><td><strong>[8]</strong></td><td>メール（Resend）</td><td>Section 3</td><td>★☆☆</td><td>問い合わせ受付や購入の証の送付などのメールを実装し、自分宛に届くことを確認できる</td></tr>
+<tr><td><strong>[9]</strong></td><td>決済（Stripe）</td><td>Section 3</td><td>★★★</td><td>Stripe Checkout → Webhook で購入の証を自動発行。テスト用カードでマイページに購入の証が表示されること</td></tr>
 <tr><td><strong>[10]</strong></td><td>ID 連携（Clerk）</td><td>Section 3</td><td>★★☆</td><td>未ログインで <code>/mypage</code> に入れない・<code>/api/me</code> がログイン必須になっている</td></tr>
-<tr><td><strong>[11]</strong></td><td>セキュリティレビュー（SonarCloud 静的解析・脆弱性レビュー）</td><td>Section 3</td><td>★★★</td><td>認証境界・IDOR・機密マスクを点検し、問題を最低1つ修正（余裕があれば回帰テストを追加）</td></tr>
-<tr><td><strong>[12]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>Section 3</td><td>★★☆</td><td>ブラウザで確かめる行を2本選んで <code>tests/</code> に spec を書き、実行して <code>docs/TEST.md</code> の結果列を埋める。赤が出た行は、直すか仕様として認めるかを自分で決める</td></tr>
+<tr><td><strong>[11]</strong></td><td>セキュリティレビュー（SonarCloud 静的解析・脆弱性レビュー）</td><td>Section 3</td><td>★★☆</td><td>認証境界・IDOR・過剰な情報の返却を点検し、問題を最低1つ修正（余裕があれば回帰テストを追加）</td></tr>
+<tr><td><strong>[12]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>Section 3</td><td>★★★</td><td>ブラウザで確かめる行を2本選んで <code>tests/</code> に spec を書き、実行して <code>docs/TEST.md</code> の結果列を埋める。赤が出た行は、直すか仕様として認めるかを自分で決める</td></tr>
 <tr><td><strong>[13]</strong></td><td>自動デプロイ（Cloudflare Workers Builds）</td><td>Section 3</td><td>★★☆</td><td>git push だけで自動デプロイされる設定を完了し、軽微な変更の push で Cloudflare ダッシュボードに新しいビルドが自動で現れることを確認できる</td></tr>
 <tr><td><strong>[14]</strong></td><td>運用保守の自動化（Cloudflare ログ確認・スキル化）</td><td>Section 3</td><td>★☆☆</td><td><code>wrangler tail</code> でログ確認できる・運用スキルが1つ動作する</td></tr>
 </tbody>
@@ -742,7 +743,7 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 - 名前・メール・本文
 
 ## /mypage (マイページ)
-- アカウント情報・ライセンスキー・サブスクリプション状況
+- アカウント情報・購入の証・サブスクリプション状況
 
 ## /success (購入完了)
 - 購入完了メッセージ＋マイページへのリンク</code></pre>
@@ -867,7 +868,7 @@ wrangler whoami</code></pre>
 
 <p><strong>このステップでやること（全体像）</strong> — Section 1 で作った「見た目だけ動くフロント」に、中身（API とデータ）をつなぐ。やることは大きく4つ:</p>
 <ol>
-<li><strong>API を作る</strong> — <code>backend/</code> に問い合わせ受付・ライセンス発行などの API を実装する</li>
+<li><strong>API を作る</strong> — <code>backend/</code> に問い合わせ受付・購入の証の発行などの API を実装する</li>
 <li><strong>データの入れ物を用意</strong> — 保存用の DB（D1）を作る</li>
 <li><strong>フロントと API を1つにまとめる</strong> — 別々に動いていた2つを Worker 一本に統合し、フロントのモック表示を本物の API 呼び出しに差し替える</li>
 <li><strong>ログインは今は簡易版</strong> — メールアドレスを信じるだけの「モック認証」で進める（本物のログインは Section 3 [10] で差し替え）</li>
@@ -900,7 +901,7 @@ wrangler whoami</code></pre>
 <li><strong>クラウド資源（DB）を作って <code>wrangler.jsonc</code> に登録する</strong>
   <ul>
   <li>
-    <strong>D1</strong> … Cloudflare の SQLite データベースである。問い合わせ・ライセンスなど<strong>ずっと残したいデータ</strong>を保存する
+    <strong>D1</strong> … Cloudflare の SQLite データベースである。問い合わせ・購入の証など<strong>ずっと残したいデータ</strong>を保存する
   </li>
   <li>Claude Code に任せる:
 <pre><code>Cloudflare の D1 を作成して、wrangler.jsonc に書き込んで。</code></pre>
@@ -916,7 +917,7 @@ wrangler whoami</code></pre>
   <li>この題材で要る機能の例:
     <ul>
     <li>問い合わせを受け付けて D1 に保存する</li>
-    <li>メールアドレスを受け取ってライセンスキーを発行する（決済なし・Section 2 の簡易版。Section 3 [9] で Stripe 購入 → Webhook 発行に差し替え）</li>
+    <li>メールアドレスを受け取って購入の証を発行する（決済なし・Section 2 の簡易版。Section 3 [9] で Stripe 購入 → Webhook 発行に差し替え）</li>
     <li>メールアドレスに紐づく情報を D1 から返す</li>
     </ul>
   </li>
@@ -927,7 +928,7 @@ frontend/ のコードを見て、それに対応する API を backend/ に実�
 
 必要な機能:
 - 問い合わせを受け付けて D1 に保存する
-- メールアドレスを受け取ってライセンスキーを発行する（決済なしの簡易版）
+- メールアドレスを受け取って購入の証を発行する（決済なしの簡易版）
 - メールアドレスに紐づく情報を D1 から返す</code></pre>
 </li>
 <li><strong>ローカル用の DB を用意する（マイグレーション）</strong>
@@ -1464,8 +1465,8 @@ npm run deploy</code></pre>
 <tr><td><strong>[8]</strong></td><td>メール（Resend）</td><td>問い合わせが<strong>実際にメールで届く</strong>ようになる（今は D1 に保存だけ）</td><td>★☆☆</td><td><a href="#s8">→ [8] メール</a></td></tr>
 <tr><td><strong>[9]</strong></td><td>決済（Stripe）</td><td>「メール入力で自前発行」→ <strong>本物の決済（Stripe）で買える</strong>ように</td><td>★★★</td><td><a href="#s9">→ [9] 決済</a></td></tr>
 <tr><td><strong>[10]</strong></td><td>ID 連携（Clerk）</td><td>「メール入力の簡易ログイン」→ <strong>本物のログイン</strong>（未ログインはサインインへ）</td><td>★★☆</td><td><a href="#s10">→ [10] ID 連携</a></td></tr>
-<tr><td><strong>[11]</strong></td><td>セキュリティレビュー</td><td>自分のアプリの<strong>脆弱性を点検して1つ直す</strong>（＋回帰テスト）</td><td>★★★</td><td><a href="#s11">→ [11] セキュリティレビュー</a></td></tr>
-<tr><td><strong>[12]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>[6] の部品ごとのテストに加えて、<strong>画面から DB までを通したテスト</strong>が入る。部品どうしが噛み合っていない箇所や<strong>「決めていなかったこと」</strong>が見つかる</td><td>★★☆</td><td><a href="#s12">→ [12] E2E テスト</a></td></tr>
+<tr><td><strong>[11]</strong></td><td>セキュリティレビュー</td><td>自分のアプリの<strong>脆弱性を点検して1つ直す</strong>（＋回帰テスト）</td><td>★★☆</td><td><a href="#s11">→ [11] セキュリティレビュー</a></td></tr>
+<tr><td><strong>[12]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>[6] の部品ごとのテストに加えて、<strong>画面から DB までを通したテスト</strong>が入る。部品どうしが噛み合っていない箇所や<strong>「決めていなかったこと」</strong>が見つかる</td><td>★★★</td><td><a href="#s12">→ [12] E2E テスト</a></td></tr>
 <tr><td><strong>[13]</strong></td><td>自動デプロイ（Workers Builds）</td><td><code>git push</code> するだけで<strong>Cloudflare へ自動的にビルド・デプロイ</strong>されるようになる（手動の <code>wrangler deploy</code> から卒業）</td><td>★★☆</td><td><a href="#s13">→ [13] 自動デプロイ</a></td></tr>
 <tr><td><strong>[14]</strong></td><td>運用保守の自動化</td><td>「運用チェックして」で<strong>監視・ログ・コストが見られる</strong>ように</td><td>★☆☆</td><td><a href="#s14">→ [14] 運用保守の自動化</a></td></tr>
 </tbody>
@@ -1518,7 +1519,7 @@ npm run deploy</code></pre>
 <hr>
 
 <h2 id="s8">[8] メール機能の実装（Resend）<span class="diff">★☆☆</span></h2>
-<p><strong>お題</strong>: 問い合わせ通知メール／ライセンスキー送付メールを実装する<br>
+<p><strong>お題</strong>: 問い合わせ通知メール／購入の証の送付メールを実装する<br>
 <strong>学び</strong>: 外部 API 連携の基本形・Secrets 管理</p>
 
 <h3>Resend とは</h3>
@@ -1576,16 +1577,16 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 <hr>
 
 <h2 id="s9">[9] 決済機能の実装（Stripe）<span class="diff">★★★</span></h2>
-<p><strong>お題</strong>: プラン購入（Stripe Checkout）→ Webhook でライセンス自動発行<br>
+<p><strong>お題</strong>: プラン購入（Stripe Checkout）→ Webhook で購入の証を自動発行<br>
 <strong>学び</strong>: Webhook の扱いで外せない2点</p>
 <ul>
-<li><strong>二重発行防止</strong>: 同じイベントが再送されても、ライセンスは1件だけ出す</li>
+<li><strong>二重発行防止</strong>: 同じイベントが再送されても、購入の証は1件だけ出す</li>
 <li><strong>署名検証</strong>: 届いた Webhook が本当に Stripe から来たものかを確かめる</li>
 </ul>
 
 <h3>Stripe とは</h3>
 <p>オンライン決済を代行する SaaS である。カード情報は Stripe がホストする決済画面で預かるので、自分のアプリはカード番号を受け取らない。決済が完了したことは <strong>Webhook</strong>（Stripe から自分のサーバへ送られてくる通知）で知る。</p>
-<p>この課題で使う理由は、テストモードがあることにある。本物の課金を発生させずに、購入からライセンス発行までを何度でも通せる。</p>
+<p>この課題で使う理由は、テストモードがあることにある。本物の課金を発生させずに、購入から購入の証の発行までを何度でも通せる。</p>
 <figure class="diagram">
 <img src="img/StripeLP.png" alt="Stripe の日本語公式サイト。「事業成長を支える金融インフラ。決済から組込み型金融、エージェンティックコマースまで、企業の収益最大化を支援。」の見出しと、始める・Google で登録のボタン。下部に amazon, NVIDIA, TOYOTA などの導入企業ロゴが並ぶ">
 <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">公式サイト（<a target="_blank" rel="noopener" href="https://stripe.com/jp">stripe.com/jp</a>）。決済を含む金融インフラとして提供されている</figcaption>
@@ -1596,7 +1597,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 <img src="img/stripe_flow.svg" alt="Stripe 決済フロー: ブラウザ→Hono API→Stripe Checkout→Webhook→D1保存→/success→マイページ表示">
 </figure>
 <blockquote>
-<p>Section 2 で「自前発行」していたライセンスを、<strong>決済イベント起点の自動発行</strong>に置き換える課題である。手順が多いので <strong>5 フェーズ</strong>に分けて進める。</p>
+<p>Section 2 で「自前発行」していた購入の証を、<strong>決済イベント起点の自動発行</strong>に置き換える課題である。手順が多いので <strong>5 フェーズ</strong>に分けて進める。</p>
 <ul>
 <li>① アカウント準備</li>
 <li>② プラン作成</li>
@@ -1661,7 +1662,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
   </figure>
 </li>
 <li>2つの <strong>Price ID を <code>.dev.vars</code> にセット</strong>（例 <code>PRICE_MONTHLY=price_...</code> / <code>PRICE_YEARLY=price_...</code>）</li>
-<li><strong>実装</strong>: 「Checkout セッションを作成する API エンドポイントとライセンス発行ロジックを実装して」と Claude Code に依頼する</li>
+<li><strong>実装</strong>: 「Checkout セッションを作成する API エンドポイントと購入の証の発行ロジックを実装して」と Claude Code に依頼する</li>
 </ul>
 
 <h3>③ ローカルで Webhook を検証する</h3>
@@ -1675,7 +1676,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 <pre><code>stripe listen --forward-to localhost:&lt;バックエンドのポート&gt;/webhook/stripe</code></pre>
 </li>
 <li>listen 開始時に表示される <strong>Webhook 署名シークレット（<code>whsec_...</code>）を <code>.dev.vars</code> にセット</strong>（例: <code>STRIPE_WEBHOOK_SECRET=whsec_...</code>）して <code>npm run dev</code> を再起動（<code>stripe listen</code> は止めなくてよい。バックエンドのターミナルだけ Ctrl+C → 再起動）</li>
-<li><strong>テストカードで購入</strong>して、購入 → Webhook 受信 → ライセンス発行までローカルで通す
+<li><strong>テストカードで購入</strong>して、購入 → Webhook 受信 → 購入の証の発行までローカルで通す
   <ul>
   <li>テストカード番号は <strong><code>4242 4242 4242 4242</code></strong>（有効期限＝未来の任意の日付／CVC＝任意の3桁）</li>
   <li><strong>テストモードのため実際の課金は行われない</strong>。ただし本物のカード番号は受け付けられずエラーになるため、<strong>必ず上記のテストカード <code>4242 4242 4242 4242</code> を使う</strong></li>
@@ -1711,9 +1712,9 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 <h3>⑤ 購入後の戻り先とマイページ表示（つなぎ込み）</h3>
 <ul>
 <li>Checkout には決済後の戻り先 URL（<code>success_url</code> / <code>cancel_url</code>）が要る。成功時は Section 2 で作った <code>/success</code> ページにつなぐ（AI に「購入後 <code>/success</code> に戻して」と頼めばよい）</li>
-<li>「マイページにライセンスが出る」ための<strong>紐付け</strong>に注意:
+<li>「マイページに購入の証が出る」ための<strong>紐付け</strong>に注意:
   <ul>
-  <li>Webhook で発行したライセンスは<strong>購入者の email</strong>に紐づく。マイページはログイン中ユーザーの email でライセンスを引く</li>
+  <li>Webhook で発行した購入の証は<strong>購入者の email</strong>に紐づく。マイページはログイン中ユーザーの email で証を引く</li>
   <li>[10] Clerk をやらない場合は、Section 2 の<strong>モック認証の email</strong>（ヘッダ <code>x-user-email</code>）と<strong>購入時の email を一致させる</strong>こと。ここがズレると「購入したのにマイページに出ない（別人扱い）」になる。<br>
 具体的には、フロントのリクエストヘッダ <code>X-User-Email</code> に固定値（例: <code>testexample.com</code>）をセットし、Stripe Checkout の <code>customer_email</code> にも同じ値を渡せば一致する</li>
   </ul>
@@ -1724,12 +1725,12 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 <ul>
 <li><strong>署名シークレットはローカル（③）と本番（④）で別物である</strong>（転送先 URL が違うため。Stripe をテストモードから切り替えるわけではない）。混同しない</li>
 <li><strong>署名検証</strong>は実装の細部（「生のリクエストボディ」で検証する等）でつまずきやすい。自分でコードを追わず、<strong>「Stripe の署名検証が公式推奨の方法（生のリクエストボディでの検証）で実装されているか確認して」と AI に点検させる</strong></li>
-<li><strong>二重発行防止</strong>: Stripe は同じイベントを複数回送ってくることがある。同じ購入イベントが2回届いても<strong>ライセンスを1件だけ発行</strong>するように実装する（処理済みのイベント ID を記録して、既に処理済みなら無視する）</li>
+<li><strong>二重発行防止</strong>: Stripe は同じイベントを複数回送ってくることがある。同じ購入イベントが2回届いても<strong>購入の証を1件だけ発行</strong>するように実装する（処理済みのイベント ID を記録して、既に処理済みなら無視する）</li>
 <li><strong>email の不一致</strong>で「マイページに出ない」が起きやすい（上記の紐付けを参照）</li>
 </ul>
 
 <h3 class="done">✅ 完了の定義</h3>
-<p>テストカードで購入 → <strong>マイページにライセンスが表示</strong>されれば完了である。余裕があれば二重発行防止まで確認する。ローカルで動作確認できたら、<code>wrangler secret put</code> でシークレットを本番に投入して <code>npm run deploy</code> までを完了とする。</p>
+<p>テストカードで購入 → <strong>マイページに購入の証が表示</strong>されれば完了である。余裕があれば二重発行防止まで確認する。ローカルで動作確認できたら、<code>wrangler secret put</code> でシークレットを本番に投入して <code>npm run deploy</code> までを完了とする。</p>
 <pre><code>決済機能実装の作業をコミットして dev ブランチに push して。</code></pre>
 
 <hr>
@@ -1814,7 +1815,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 
 <hr>
 
-<h2 id="s11">[11] セキュリティレビュー<span class="diff">★★★</span></h2>
+<h2 id="s11">[11] セキュリティレビュー<span class="diff">★★☆</span></h2>
 <p><strong>お題</strong>: 自分のアプリをセキュリティ観点で点検し、最低1つ直す<br>
 <strong>ツール</strong>: Claude Code（<code>/security-review</code>・常時の <code>security-guidance</code>）＋ <strong>SonarCloud</strong><br>
 <strong>参考</strong>: [6] で作った <code>docs/TEST.md</code> の認証境界まわりのテスト。これを回帰テスト（直した問題が再発していないかを毎回確かめるテスト）の土台にする<br>
@@ -1824,7 +1825,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 <ul>
 <li><strong>認証境界（ログインなしで入れる範囲と、ログイン必須の範囲の境目）</strong>: 未認証／偽造 JWT で <strong>401</strong> になるか</li>
 <li><strong>IDOR（Insecure Direct Object Reference：権限のない他人のデータを横断参照できてしまう脆弱性）</strong>: 他人の email を body に入れても<strong>無視される</strong>か（他人のデータを引けないか）</li>
-<li><strong>機密のマスク</strong>: API レスポンスに<strong>フルのライセンスキー</strong>が含まれていないか</li>
+<li><strong>過剰な情報の返却</strong>: API レスポンスに、<strong>その画面で見せる必要のない情報</strong>まで載っていないか（内部の顧客 ID、他人の集計値、テーブルの行をそのまま返している等）</li>
 </ul>
 
 <h3>2通りの点検を併用する</h3>
@@ -1972,7 +1973,7 @@ END;
 </li>
 <li>説明を踏まえて<strong>直すか・誤検知として無視するかを判断</strong>する（鵜呑みにしない。下記ハマりどころ参照）</li>
 </ol>
-<p class="note">Security の指摘が 0 件でも異常ではない。認証境界・IDOR・機密マスクなどの典型的な穴が既に塞がれていれば Security 分類の指摘は出ない。[11] の完了条件（1つ以上修正）は、Reliability・Maintainability の指摘から選んでも構わない。</p>
+<p class="note">Security の指摘が 0 件でも異常ではない。認証境界・IDOR・過剰な情報の返却などの典型的な穴が既に塞がれていれば Security 分類の指摘は出ない。[11] の完了条件（1つ以上修正）は、Reliability・Maintainability の指摘から選んでも構わない。</p>
 
 <h3 class="warn">⚠️ ハマりどころ</h3>
 <ul>
@@ -1998,7 +1999,7 @@ END;
 
 <hr>
 
-<h2 id="s12">[12] E2E テスト（画面を通して確かめる）<span class="diff">★★☆</span></h2>
+<h2 id="s12">[12] E2E テスト（画面を通して確かめる）<span class="diff">★★★</span></h2>
 <p><strong>お題</strong>: <a href="#s6-t2">[6] ②</a> の表から<strong>2本</strong>を選び、ブラウザ操作のテストにする<br>
 <strong>ツール</strong>: Playwright（Codegen）＋ Claude Code<br>
 <strong>前提</strong>: <a href="#s7">[7]</a> まで完了していること（<a href="#s6">[6]</a> の「## テスト項目」の表があること）／<strong>Node.js 22 以上</strong>（<code>node -v</code> で確認）<br>
