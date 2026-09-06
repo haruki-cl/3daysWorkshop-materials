@@ -264,11 +264,16 @@ media(max-width:640px){
 <li>デザイン → フロント → バックエンド → テスト → デプロイ → 機能拡張 という<strong>実務に近い開発サイクル</strong>を、AI を駆動しながら一通り体験する</li>
 </ul>
 
-<h3>題材: 各自が作りたい SaaS の MVP（<strong>事前に考えてきてもらう</strong>）</h3>
+<h3>題材: 各自が作りたい SaaS の MVP（<strong>事前に考えてくる</strong>）</h3>
 <ul>
-<li>題材は各自が作りたい SaaS を持ち寄る。「流れを体験するのが目的」なので題材は自由だが、<strong>サブスクリプション（月額/年額課金）を必須</strong>とする</li>
-<li>ただし全3セクションで一周できるよう、<strong>MVP</strong>（Minimum Viable Product＝必要最小限の機能に絞った最初の製品版）に落とし込んでおく</li>
-<li>資料中の例「玄米茶」は<strong>説明用の共通サンプル</strong>である。自分の題材では、このページ構成・機能を<strong>自分のサービスに読み替える</strong>
+<li>題材は各自が作りたい SaaS を持ち寄る。「流れを体験するのが目的」なので題材は自由だが、次の2つを満たすこと
+  <ul>
+  <li><strong>サブスクリプション（月額／年額課金）</strong>であること</li>
+  <li><strong>購入すると利用者に「購入の証」が1つ渡る</strong>こと。呼び名は題材に合わせて決めてよい（ライセンスキー／API キー／ダウンロードコード／契約番号・注文番号など）</li>
+  </ul>
+</li>
+<li>全3セクションで一周できるよう、<strong>MVP</strong>（Minimum Viable Product＝必要最小限の機能に絞った最初の製品版）に落とし込んでおく。<strong>Section 2 までは構成を盛りすぎない</strong>（拡張は Section 3 のオプションで）</li>
+<li>迷う場合は「玄米茶」をそのまま自分の題材にしてもよい。資料中の「玄米茶」は<strong>説明用の共通サンプル</strong>で、自分の題材ではこのページ構成・機能を<strong>自分のサービスに読み替える</strong>
   <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;">
     <figure class="diagram" style="margin:0;flex:1 1 220px;"><img src="img/sample_lp.png" alt="玄米茶サンプル: LP（/）"><figcaption style="text-align:center;font-size:12px;">/（LP）</figcaption></figure>
     <figure class="diagram" style="margin:0;flex:1 1 220px;"><img src="img/sample_price.png" alt="玄米茶サンプル: 価格ページ"><figcaption style="text-align:center;font-size:12px;">価格</figcaption></figure>
@@ -277,13 +282,9 @@ media(max-width:640px){
     <figure class="diagram" style="margin:0;flex:1 1 220px;"><img src="img/sample_success.png" alt="玄米茶サンプル: 購入完了（/success）"><figcaption style="text-align:center;font-size:12px;">/success</figcaption></figure>
   </div>
 </li>
-<li>全3セクションで一周するため、<strong>Section 2 までは構成を盛りすぎない</strong>（拡張は Section 3 のオプションで）</li>
 </ul>
 
-<h3>必須機能（Section 2 までに作るものの最低ライン）</h3>
-<p><strong>購入の証（購入ごとに1つ発行する一意の文字列）の発行は、題材によらず全員共通の実装要件である。</strong></p>
-<p>呼び名は題材に合わせて決めてよい。ライセンスキー（アプリ・bot）／ API キー（開発者向け）／ ダウンロードコード（成果物配布）／ 契約番号・注文番号（それ以外）など。<strong>購入ごとに1つ発行し、保存して、<code>/success</code> とマイページに出す</strong>という形だけが共通である。</p>
-<p>参加前に、自分が作りたい SaaS の MVP をざっくり考えてくること。どんなサービスか、下の5機能をどう満たすかを決めておく。迷う場合は「玄米茶」をそのまま自分の題材にしてもよい。</p>
+<p><strong>Section 2 までに作るものの最低ライン</strong> — 下の5機能をどう満たすかを、題材と一緒に事前に決めておく。</p>
 <p class="note">Section 2 到達時点の見本（玄米茶サンプル）: <a target="_blank" rel="noopener" href="https://testai-genmaicha.ha-toge.workers.dev/">https://testai-genmaicha.ha-toge.workers.dev/</a> — 下の5機能が動く状態がゴールである。</p>
 <table>
 <thead><tr><th>#</th><th>機能</th><th>Section 2 までの完成ライン</th></tr></thead>
