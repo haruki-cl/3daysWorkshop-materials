@@ -1783,8 +1783,11 @@ npm run deploy</code></pre>
 <ul>
 <li><strong>ローカル確認</strong>: 未ログインで <code>/mypage</code> を開くとサインイン画面に誘導される（入れない）</li>
 <li><strong>ローカル確認</strong>: 未ログイン状態で <code>GET /api/me</code> を叩くと <strong>401（未認証＝「ログインしていないので拒否した」という HTTP ステータス）</strong>が返る（AI に「未ログインで /api/me を叩いて 401 になるか確認して」と依頼すればよい）。サインイン後は <code>/mypage</code> に自分の情報が表示される</li>
-<li><strong>本番へのシークレット投入</strong>: <code>backend/.dev.vars</code> に記入済みのシークレットのみを <code>wrangler secret put</code> で本番側に投入する（上の「置き場所を分ける」表を参照）
-  <ul><li>フロントの <code>VITE_CLERK_PUBLISHABLE_KEY</code> は <code>frontend/.env</code> からビルド時に埋め込まれるため、wrangler への投入は不要。<code>npm run deploy</code> のビルドで自動反映される</li></ul>
+<li><strong>本番への環境変数の投入</strong>: <code>backend/.dev.vars</code> に書いた <code>CLERK_SECRET_KEY</code> と <code>CLERK_PUBLISHABLE_KEY</code> の<strong>両方</strong>を <code>wrangler secret put</code> で本番側に投入する（上の「置き場所を分ける」表を参照）
+  <ul>
+  <li>Publishable key は公開してよい値だが、<code>@hono/clerk-auth</code> がバックエンド側で要求するので、本番の Worker にも入れないとトークン検証が動かない</li>
+  <li>フロント側の <code>VITE_CLERK_PUBLISHABLE_KEY</code>（<code>frontend/.env</code> の方）は、ビルド時に埋め込まれるため wrangler への投入は不要。<code>npm run deploy</code> のビルドで自動反映される</li>
+  </ul>
 </li>
 <li><strong>本番確認</strong>: <code>npm run deploy</code> 後、本番 URL（<code>https://&lt;name&gt;.workers.dev</code>）でサインイン → <code>/mypage</code> が表示される
   <ul><li>サインインが弾かれる場合は、上の⚠️ハマりどころにある許可オリジンの登録を行う</li></ul>
