@@ -128,7 +128,7 @@ details.spec pre{margin:.5em 0 0;}
   background:var(--paper); border-right:1px solid var(--line);
   z-index:300; overflow-y:auto; padding:24px 20px; padding-top:3.4em;
 }
-media(max-width:900px){
+@media(max-width:900px){
   #toc-btn{display:flex;}
   #toc-panel{box-shadow:4px 0 24px rgba(0,0,0,.15); transform:translateX(-100%); transition:transform .28s ease;}
   #toc-panel.show{transform:translateX(0);}
@@ -232,7 +232,7 @@ media(max-width:900px){
 #lightbox.show{display:flex;}
 #lightbox img{max-width:94vw;max-height:94vh;border-radius:10px;
   box-shadow:0 8px 60px rgba(0,0,0,.6);object-fit:contain;}
-media(max-width:640px){
+@media(max-width:640px){
   article{padding:30px 20px}
   h1[id^="section"]{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px;}
   .toc ul{columns:1}
@@ -476,11 +476,11 @@ media(max-width:640px){
 <table>
 <thead><tr><th>対象</th><th>パッケージ＠バージョン</th></tr></thead>
 <tbody>
-<tr><td>フロント基盤</td><td><code>vite8.1.3</code> / <code>vitejs/plugin-react6.0.3</code> / <code>react19.2.7</code> / <code>react-dom19.2.7</code> / <code>typescript6.0.3</code></td></tr>
-<tr><td>ルーティング</td><td><code>react-router-dom7.18.1</code></td></tr>
-<tr><td>スタイル</td><td><code>tailwindcss4.3.2</code> / <code>tailwindcss/vite4.3.2</code></td></tr>
-<tr><td>shadcn/ui 関連</td><td><code>class-variance-authority0.7.1</code> / <code>clsx2.1.1</code> / <code>tailwind-merge3.6.0</code> / <code>lucide-react1.23.0</code> / <code>tw-animate-css1.4.0</code> / <code>radix-ui/react-slot1.3.0</code> / <code>radix-ui/react-label2.1.11</code> / <code>radix-ui/react-accordion1.2.16</code></td></tr>
-<tr><td>テスト（[6]）</td><td><code>vitest4.1.10</code> / <code>cloudflare/vitest-pool-workers0.18.0</code></td></tr>
+<tr><td>フロント基盤</td><td><code>vite@8.1.3</code> / <code>@vitejs/plugin-react@6.0.3</code> / <code>react@19.2.7</code> / <code>react-dom@19.2.7</code> / <code>typescript@6.0.3</code></td></tr>
+<tr><td>ルーティング</td><td><code>react-router-dom@7.18.1</code></td></tr>
+<tr><td>スタイル</td><td><code>tailwindcss@4.3.2</code> / <code>@tailwindcss/vite@4.3.2</code></td></tr>
+<tr><td>shadcn/ui 関連</td><td><code>class-variance-authority@0.7.1</code> / <code>clsx@2.1.1</code> / <code>tailwind-merge@3.6.0</code> / <code>lucide-react@1.23.0</code> / <code>tw-animate-css@1.4.0</code> / <code>@radix-ui/react-slot@1.3.0</code> / <code>@radix-ui/react-label@2.1.11</code> / <code>@radix-ui/react-accordion@1.2.16</code></td></tr>
+<tr><td>テスト（[6]）</td><td><code>vitest@4.1.10</code> / <code>@cloudflare/vitest-pool-workers@0.18.0</code></td></tr>
 </tbody>
 </table>
 
@@ -1217,15 +1217,15 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <pre><code>docs/TEST.md の「## テスト項目」の「どこで確かめる」列を見て、
 必要なテスト環境だけを用意して。
 
-・関数・API のテスト（backend/）: cloudflare/vitest-pool-workers を使い、
+・関数・API のテスト（backend/）: @cloudflare/vitest-pool-workers を使い、
   設定は cloudflareTest プラグイン方式で書く
 ・画面のテスト（frontend/）: 同じ Vitest を jsdom 環境で使い、
-  testing-library/react で描画・操作する
+  @testing-library/react で描画・操作する
 ・表に出てこない種類の環境は入れないこと</code></pre>
 
 <ul>
 <li><strong>バックエンドは Workers、フロントは jsdom</strong> を実行環境に用いる</li>
-<li><code>cloudflare/vitest-pool-workers</code>＝バックエンドのテストを Workers と同じ実行環境で動かす公式アダプタである</li>
+<li><code>@cloudflare/vitest-pool-workers</code>＝バックエンドのテストを Workers と同じ実行環境で動かす公式アダプタである</li>
 </ul>
 
 <h3 id="s6-t4">④ テスト項目作成</h3>
@@ -1529,7 +1529,7 @@ npm run deploy</code></pre>
 <h3>送信ドメインはどうする？（ここがつまずきやすい）</h3>
 <p>独自ドメインから送るには <strong>DNS 検証</strong>（ドメインの所有者であることを DNS レコードの設置で証明する作業）が必要で、それは自分のドメインが決まる<strong>公開後</strong>の話である。ワークショップでは次の方針を推奨：</p>
 <ul>
-<li><strong>動作確認は Resend のテスト用アドレス <code>onboardingresend.dev</code> を From に使う</strong>
+<li><strong>動作確認は Resend のテスト用アドレス <code>onboarding@resend.dev</code> を From に使う</strong>
   <ul>
   <li>「自分宛に届く」を確認するには十分である</li>
   </ul>
@@ -1698,7 +1698,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
   <ul>
   <li>Webhook で発行した購入の証は<strong>購入者の email</strong>に紐づく。マイページはログイン中ユーザーの email で証を引く</li>
   <li>[10] Clerk をやらない場合は、Section 2 の<strong>モック認証の email</strong>（ヘッダ <code>x-user-email</code>）と<strong>購入時の email を一致させる</strong>こと。ここがズレると「購入したのにマイページに出ない（別人扱い）」になる。<br>
-具体的には、フロントのリクエストヘッダ <code>X-User-Email</code> に固定値（例: <code>testexample.com</code>）をセットし、Stripe Checkout の <code>customer_email</code> にも同じ値を渡せば一致する</li>
+具体的には、フロントのリクエストヘッダ <code>X-User-Email</code> に固定値（例: <code>test@example.com</code>）をセットし、Stripe Checkout の <code>customer_email</code> にも同じ値を渡せば一致する</li>
   </ul>
 </li>
 </ul>
@@ -1719,7 +1719,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 
 <h2 id="s10">[10] ID 連携機能の実装（Clerk）<span class="diff">★★☆</span></h2>
 <p><strong>お題</strong>: ログイン必須のマイページ（未ログイン → サインインへリダイレクト）<br>
-<strong>使うもの</strong>: <code>clerk/clerk-react</code>（フロント）＋ Hono 側で Clerk の認証トークンを検証</p>
+<strong>使うもの</strong>: <code>@clerk/clerk-react</code>（フロント）＋ Hono 側で Clerk の認証トークンを検証</p>
 
 <h3>Clerk とは</h3>
 <p>ログインの仕組みをまるごと引き受ける SaaS である。サインイン画面、Google などの外部アカウントとの連携、セッションの管理を用意してくれる。自分で書くのは、届いたトークンを検証する部分だけになる。</p>
@@ -1736,7 +1736,7 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 </blockquote>
 
 <figure class="diagram">
-<img src="img/clerk_auth_flow.svg" alt="ID 連携（Clerk）のしくみ: 未ログインで /mypage → Clerk サインイン画面（Google SSO）→ トークン（JWT）発行 → API 呼び出しにトークン添付 → Hono バックエンドで hono/clerk-auth がトークン検証 → OK ならユーザー情報・NG なら 401 を返す6ステップ。Section 2 のモック認証をトークン検証に差し替えるのがゴール">
+<img src="img/clerk_auth_flow.svg" alt="ID 連携（Clerk）のしくみ: 未ログインで /mypage → Clerk サインイン画面（Google SSO）→ トークン（JWT）発行 → API 呼び出しにトークン添付 → Hono バックエンドで @hono/clerk-auth がトークン検証 → OK ならユーザー情報・NG なら 401 を返す6ステップ。Section 2 のモック認証をトークン検証に差し替えるのがゴール">
 </figure>
 
 <h3>サービス側の準備</h3>
@@ -1750,11 +1750,11 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
   </figure>
 </li>
 <li><strong>Configure → Instance → API keys</strong> から2つのキーを<strong>手元にコピーしておく</strong>。ただし env への<strong>投入は、次の「実装メモ」で AI にパッケージを導入させたあと</strong>に行う。<br>
-変数名は <code>clerk/*</code> の規約で下表のとおりに固定されている。そして<strong>2つのキーで置き場所が違う</strong>のがポイントで、ここを間違えやすい。
+変数名は <code>@clerk/*</code> の規約で下表のとおりに固定されている。そして<strong>2つのキーで置き場所が違う</strong>のがポイントで、ここを間違えやすい。
 <table>
 <thead><tr><th>キー</th><th>置き場所</th><th>性質</th></tr></thead>
 <tbody>
-<tr><td><strong>Publishable key</strong></td><td><strong>フロント</strong>の env（Vite なら <code>frontend/.env</code> に <code>VITE_CLERK_PUBLISHABLE_KEY=...</code>）。<strong>加えてバックエンドの <code>backend/.dev.vars</code> にも同じ値を <code>CLERK_PUBLISHABLE_KEY=...</code> で置く</strong>（<code>hono/clerk-auth</code> がバックエンド側でもこのキーを要求するため。本番も同様に投入）</td><td>公開してよい</td></tr>
+<tr><td><strong>Publishable key</strong></td><td><strong>フロント</strong>の env（Vite なら <code>frontend/.env</code> に <code>VITE_CLERK_PUBLISHABLE_KEY=...</code>）。<strong>加えてバックエンドの <code>backend/.dev.vars</code> にも同じ値を <code>CLERK_PUBLISHABLE_KEY=...</code> で置く</strong>（<code>@hono/clerk-auth</code> がバックエンド側でもこのキーを要求するため。本番も同様に投入）</td><td>公開してよい</td></tr>
 <tr><td><strong>Secret key</strong></td><td>ローカル: <strong>バックエンド</strong>の <code>backend/.dev.vars</code> / 本番: Cloudflare ダッシュボードの環境変数（<strong>Secret タイプ</strong>）または <code>wrangler secret put CLERK_SECRET_KEY</code></td><td>秘密。漏らさない</td></tr>
 </tbody>
 </table>
@@ -1766,8 +1766,8 @@ Resend の API キー作成画面では「Sending domain」を絞り込めるが
 
 <h3>実装メモ</h3>
 <ul>
-<li>必要なパッケージ（フロント <code>clerk/clerk-react</code> ／ バックエンド <code>hono/clerk-auth</code>）も <strong>AI が導入してくれる</strong>。導入できたら、サービス側の準備でコピーした2つのキーを<strong>上表のとおり env にセット</strong>して <code>npm run dev</code> を（再）起動する</li>
-<li><strong>JWT 検証は <code>hono/clerk-auth</code> が推奨</strong>（バックエンドでのトークン検証が一気に楽になる）</li>
+<li>必要なパッケージ（フロント <code>@clerk/clerk-react</code> ／ バックエンド <code>@hono/clerk-auth</code>）も <strong>AI が導入してくれる</strong>。導入できたら、サービス側の準備でコピーした2つのキーを<strong>上表のとおり env にセット</strong>して <code>npm run dev</code> を（再）起動する</li>
+<li><strong>JWT 検証は <code>@hono/clerk-auth</code> が推奨</strong>（バックエンドでのトークン検証が一気に楽になる）</li>
 <li>バックエンドは<strong>必ずトークンを検証</strong>してから保護 API を返す（フロントの出し分けだけでは保護にならない）</li>
 <li>Section 2 のモック認証（ヘッダ <code>x-user-email</code> を信頼）を、<strong>この Clerk トークン検証に差し替える</strong>のがゴール</li>
 </ul>
@@ -2008,9 +2008,9 @@ END;
 
 <p>[10] を入れるとログインが <strong>Google の画面</strong>に移る。<strong>Playwright は Google のログイン画面を自動操作できない</strong>ので、そのままでは認証が要る画面のテストが1本も書けない。</p>
 
-<p>解決策は <code>clerk/testing</code> である。<strong>ログイン画面を通らずに</strong>認証済みの状態を作る。</p>
+<p>解決策は <code>@clerk/testing</code> である。<strong>ログイン画面を通らずに</strong>認証済みの状態を作る。</p>
 
-<pre><code>npm i -D clerk/testing</code></pre>
+<pre><code>npm i -D @clerk/testing</code></pre>
 
 <p><strong>1. テスト用ユーザを1人作る</strong> — Clerk ダッシュボードで作る。手順は4ステップである。</p>
 
@@ -2028,11 +2028,11 @@ END;
 
 <p><strong>(3) メールとパスワードを入れて作る</strong></p>
 <figure class="diagram">
-<img src="img/ClerkCreateTestUser.png" alt="Clerk の Create new user ダイアログ。Email 欄に e2e+clerk_testexample.com、Password 欄に任意のパスワードを入力し、Ignore password policies にチェックを入れた状態">
+<img src="img/ClerkCreateTestUser.png" alt="Clerk の Create new user ダイアログ。Email 欄に e2e+clerk_test@example.com、Password 欄に任意のパスワードを入力し、Ignore password policies にチェックを入れた状態">
 <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">(3) メールは <strong><code>+clerk_test</code> 付き</strong>にする。パスワードは<strong>この場だけ</strong>で以降使わない</figcaption>
 </figure>
 <ul>
-<li>メールは <code>e2e+clerk_testexample.com</code> のように <strong><code>+clerk_test</code> を付ける</strong>。付けないと「Enter a valid email address」で弾かれる</li>
+<li>メールは <code>e2e+clerk_test@example.com</code> のように <strong><code>+clerk_test</code> を付ける</strong>。付けないと「Enter a valid email address」で弾かれる</li>
 <li>パスワードは任意である。通らなければ <strong>Ignore password policies</strong> にチェックを入れる。<strong>このパスワードは以降使わない</strong>（テストはログイン画面を通らないため）ので、どこにも保存しなくてよい</li>
 </ul>
 
@@ -2043,7 +2043,7 @@ END;
 </figure>
 
 <p><strong>2. 設定は AI に作らせる</strong></p>
-<pre><code>clerk/testing を使って、Playwright のテストを Clerk 認証済みの状態で走らせたい。
+<pre><code>@clerk/testing を使って、Playwright のテストを Clerk 認証済みの状態で走らせたい。
 
 ・テスト用ユーザのメールは環境変数 E2E_CLERK_USER_EMAIL から読む
 ・サインイン画面は操作しないこと（Google ログインなので自動操作できない）
@@ -2055,7 +2055,7 @@ END;
 
 <p><strong>3. 認証状態を作る</strong> — 環境変数を渡して実行する。</p>
 <pre><code>set -a; . ./backend/.dev.vars; set +a
-export E2E_CLERK_USER_EMAIL='e2e+clerk_testexample.com'
+export E2E_CLERK_USER_EMAIL='e2e+clerk_test@example.com'
 npx playwright test --project=setup</code></pre>
 <p class="note"><strong>これが緑になれば設定は正しい。</strong>ログイン画面を操作するコードが混ざっていれば、ここで止まる。</p>
 
@@ -2086,7 +2086,7 @@ npx playwright test --project=setup</code></pre>
 </details>
 <h3>⓪ 準備</h3>
 <p><strong>やること</strong>: リポジトリのルートで Playwright を入れる。</p>
-<pre><code>npm init playwrightlatest -- --browser=chromium</code></pre>
+<pre><code>npm init playwright@latest -- --browser=chromium</code></pre>
 <p>実行するといくつか質問が出る（言語・テストの置き場所・GitHub Actions を作るか）。<strong>すべてそのまま Enter でよい。</strong></p>
 <blockquote class="warn">
 <p><strong>⚠️ <code>-- --browser=chromium</code> を省略しないこと。</strong></p>
@@ -2112,7 +2112,7 @@ npx playwright test --project=setup</code></pre>
 <blockquote class="warn">
 <p><strong>⚠️ 外部サービスの画面を通る行は、ここで外す。</strong></p>
 <p>Playwright は Google のログイン画面や Stripe の決済画面を自動操作できない。<a href="#s9">[9]</a> や <a href="#s10">[10]</a> を実施した人は、その画面を通らないと再現できない行が出てくる。</p>
-<p><a href="#s10">[10]</a>（Clerk）の分は、⓪ 準備の前に置いた折りたたみ（[9][10] 実施済みの人向け）の <code>clerk/testing</code> で回避できる。<a href="#s9">[9]</a>（Stripe）の購入操作そのものは回避できないので、<strong>前提条件を「購入済みのアカウント」に置き、購入後の表示を見る</strong>行に振り替える。振り替えられない行は選ばず、結果列に「決済画面の内側なので E2E 対象外。Stripe の設定として確認する」と書く。決済画面の中の不具合は Stripe 側の設定に由来するので、直す先が自分のリポジトリにない。</p>
+<p><a href="#s10">[10]</a>（Clerk）の分は、⓪ 準備の前に置いた折りたたみ（[9][10] 実施済みの人向け）の <code>@clerk/testing</code> で回避できる。<a href="#s9">[9]</a>（Stripe）の購入操作そのものは回避できないので、<strong>前提条件を「購入済みのアカウント」に置き、購入後の表示を見る</strong>行に振り替える。振り替えられない行は選ばず、結果列に「決済画面の内側なので E2E 対象外。Stripe の設定として確認する」と書く。決済画面の中の不具合は Stripe 側の設定に由来するので、直す先が自分のリポジトリにない。</p>
 </blockquote>
 
 <p class="note"><strong>完了</strong>: 表の行を2つ選べていて、それぞれ前提条件と期待結果が埋まっている。</p>
@@ -2179,7 +2179,7 @@ await page.goto('https://&lt;認証サービスのホスト&gt;/sign-in?redirect
 <table>
 <thead><tr><th>録画中の注意</th><th>理由</th></tr></thead>
 <tbody>
-<tr><td><strong>実名・実メールを入れない</strong></td><td>入力値がテストコードに残り Git に入る。<code>testexample.com</code> を使う</td></tr>
+<tr><td><strong>実名・実メールを入れない</strong></td><td>入力値がテストコードに残り Git に入る。<code>test@example.com</code> を使う</td></tr>
 <tr><td>迷ってクリックしない</td><td>押した操作がすべてコードになる</td></tr>
 </tbody>
 </table>
@@ -2264,7 +2264,7 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
 <h3>⑤ push する</h3>
 
 <p><strong>やること</strong>: ④ まで終えたら push する。</p>
-<p>先に <code>.gitignore</code> に次の5行があるか確認する。無ければ足す。最後の行は [10] 実施済みで <code>clerk/testing</code> を使った場合の認証状態の保存先である。使っていなければ該当ディレクトリ自体が無いので、入れたままで害はない。</p>
+<p>先に <code>.gitignore</code> に次の5行があるか確認する。無ければ足す。最後の行は [10] 実施済みで <code>@clerk/testing</code> を使った場合の認証状態の保存先である。使っていなければ該当ディレクトリ自体が無いので、入れたままで害はない。</p>
 <pre><code>/test-results/
 /playwright-report/
 /blob-report/
