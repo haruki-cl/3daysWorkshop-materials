@@ -872,7 +872,7 @@ wrangler whoami</code></pre>
 <li><strong>API を作る</strong> — <code>backend/</code> に問い合わせ受付・購入の証の発行などの API を実装する</li>
 <li><strong>データの入れ物を用意</strong> — 保存用の DB（D1）を作る</li>
 <li><strong>フロントと API を1つにまとめる</strong> — 別々に動いていた2つを Worker 一本に統合し、フロントのモック表示を本物の API 呼び出しに差し替える</li>
-<li><strong>ログインは今は簡易版</strong> — メールアドレスを信じるだけの「モック認証」で進める（本物のログインは Section 3 [10] で差し替え）</li>
+<li><strong>ログインは今は簡易版</strong> — リクエストヘッダ <code>x-user-email</code> のメールアドレスをそのまま本人とみなす「モック認証」で進める（本物のログインは Section 3 <a href="#s10">[10]</a> で差し替え）</li>
 </ol>
 
 <figure class="diagram">
@@ -894,7 +894,8 @@ wrangler whoami</code></pre>
 - .gitignore も作って（node_modules / dist / .dev.vars を除外）</code></pre>
     <blockquote>
     <p>name をフロントと同じにする理由: 手順5 で<strong>フロントのビルド結果を <code>backend/</code> の Worker から配信する形に統合する</strong>ので、Section 2 以降のデプロイは <code>backend/</code> の <code>wrangler.jsonc</code> だけを見て走る。<br>
-    このとき name が Section 1 と同じであれば<strong>同じ名前の Worker を上書き</strong>する形になり、Section 1 で手に入れた URL（<code>https://&lt;name&gt;.workers.dev</code>）がそのまま引き継がれる。name が違うと別の Worker が新しく作られ、URL も別物になってしまう。</p>
+    name が Section 1 と同じなら<strong>同じ名前の Worker を上書き</strong>することになり、Section 1 で手に入れた URL（<code>https://&lt;name&gt;.workers.dev</code>）をそのまま引き継ぐ。<br>
+    name が違うと別の Worker が新しく作られ、URL も別物になる。</p>
     </blockquote>
   </li>
   </ul>
@@ -909,19 +910,13 @@ wrangler whoami</code></pre>
   </li>
   </ul>
   <blockquote>
-  <p>なぜ、ローカル開発では使わないクラウドの D1 を先に作るのか？ — <code>wrangler.jsonc</code> に実在の <code>database_id</code> が書かれていないと、[7] のリモートデプロイが失敗するからである。ローカル開発自体はクラウドの D1 に触れないので、ローカルとクラウドのデータは別物（詳細は手順4）。</p>
+  <p>なぜ、ローカル開発では使わないクラウドの D1 を先に作るのか？ — <code>wrangler.jsonc</code> に実在の <code>database_id</code> が書かれていないと、[7] のリモートデプロイが失敗するからである。ローカル開発自体はクラウドの D1 に触れないので、ローカルとクラウドのデータは別物である。</p>
   </blockquote>
 </li>
 <li id="s4-step3"><strong>API をまとめて実装させる</strong>
   <ul>
   <li>必要な機能を日本語でまとめて伝え、Claude にいっぺんに実装させてよい。API のパス・入出力の設計は AI に任せる</li>
-  <li>この題材で要る機能の例:
-    <ul>
-    <li>問い合わせを受け付けて D1 に保存する</li>
-    <li>メールアドレスを受け取って購入の証を発行する（決済なし・Section 2 の簡易版。Section 3 [9] で Stripe 購入 → Webhook 発行に差し替え）</li>
-    <li>メールアドレスに紐づく情報を D1 から返す</li>
-    </ul>
-  </li>
+  <li>購入の証の発行は決済なしの簡易版でよい（<a href="#s9">[9]</a> で Stripe 購入 → Webhook 発行に差し替える）</li>
   </ul>
 <pre><code>Hono + Cloudflare Workers + TypeScript でバックエンドを実装して。
 D1（SQLite）を使うこと。マイグレーションファイルは migrations/ 以下に作って。
@@ -933,7 +928,7 @@ frontend/ のコードを見て、それに対応する API を backend/ に実�
 - メールアドレスに紐づく情報を D1 から返す</code></pre>
 </li>
 <li><strong>ローカル用の DB を用意する（マイグレーション）</strong>
-  <blockquote>
+  <details class="spec"><summary>マイグレーションとは・ローカルと本番の使い分けを見る</summary>
   <p>マイグレーション＝テーブル定義の SQL ファイル（<code>migrations/</code> 以下）を順に適用して、DB を作る・変える仕組みである。ここではローカル用の D1（<code>--local</code>）を用意する。開発中はローカル D1 を使用し、クラウドの D1 への反映は [7] デプロイ時に行う。</p>
   <table>
   <thead><tr><th>タイミング</th><th>コマンド</th><th>対象</th></tr></thead>
@@ -945,7 +940,7 @@ frontend/ のコードを見て、それに対応する API を backend/ に実�
   <figure class="diagram">
   <img src="img/arch_local_vs_prod.svg" alt="ローカル vs 本番 アーキテクチャ図: 開発時も本番も Cloudflare Worker 一本で配信（ローカルは wrangler dev、本番は Cloudflare）。データはローカルと本番で別物">
   </figure>
-  </blockquote>
+  </details>
 Claude Code に依頼する:
 <pre><code>npm run db:migrate:local を実行してローカルの D1 にテーブルを作って。</code></pre>
 </li>
@@ -962,9 +957,6 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <li><strong>フロントのモック表示を実 API 呼び出しに差し替える</strong>
   Claude Code への指示例:
 <pre><code>モックを実 API 呼び出しに変えて。フロントと API は同一オリジンなので /api/... の相対パスで呼ぶ。</code></pre>
-  <ul>
-  <li>差し替え後は npm run dev で表示された URL でブラウザ確認する</li>
-  </ul>
 </li>
 </ol>
 
@@ -1000,12 +992,11 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <ul>
 <li>認証（Clerk）・決済（Stripe）・メール（Resend）は Section 2 では深追いしない → Section 3 のオプション課題 [8][9][10] で扱う</li>
 <li>Section 2 のログイン周りはモック認証でよい（<a href="#s4-step3">手順3</a>）。後から Clerk に差し替えやすい作りにしておくと [10] が楽になる</li>
-<li>秘密情報は <code>.dev.vars</code>（ローカル）/ <code>wrangler secret put</code>（本番）で管理する。コードへのハードコードや AI への指示文への貼り付けは禁止である</li>
 <li>Section 2 本編は<strong>環境変数・シークレット無しで動く</strong>（Stripe / Clerk / Resend のキーが要るのは Section 3 のオプションから）</li>
 </ul>
 
 <h3 class="done">✅ 完了の定義（<a href="#s5">[5]</a> へ進む条件）</h3>
-<p><code>npm run build:front &amp;&amp; npm run dev</code> でサーバーを起動し、以下を<strong>ブラウザで目視確認</strong>する（⚠️ コマンドの結果だけで満足しない。表示・遷移・状態管理などはブラウザでしか確認できない）：</p>
+<p><code>npm run build:front &amp;&amp; npm run dev</code> でサーバーを起動し、以下を<strong>ブラウザで目視確認</strong>する（⚠️ コマンドの結果だけで満足しない。表示と遷移はブラウザでしか確認できない）：</p>
 <ol>
 <li><strong>LP 表示</strong>: ブラウザで表示された URL のトップ（<code>/</code>）を開き、LP が崩れずに表示されること</li>
 <li><strong>SPA ルーティング</strong>: ブラウザで <code>/mypage</code> を開き、404 にならず画面が表示されること
@@ -1016,7 +1007,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <li><strong>バリデーション（入力チェック）が弾く</strong>: ブラウザで問い合わせフォームを開き、name・email・本文のどれかを空のまま送信する → エラーメッセージが表示されること
   <ul>
   <li>DevTools の Network タブで <code>400</code> が返っていれば、API 側の検証も効いている</li>
-  <li>ブラウザの必須チェック（<code>required</code>）で止まった場合は、リクエスト自体が飛ばないので 400 は出ない。API 側だけを確かめるなら、Console から不正なボディを直接送る
+  <li>ブラウザの必須チェック（<code>required</code>）で止まった場合は、リクエスト自体が飛ばないので 400 は出ない。API 側だけを確かめるなら、Console から不正なボディを直接送る（パスは AI が決めたものに読み替える）
 <pre><code>fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})</code></pre>
   </li>
   </ul>
@@ -1027,7 +1018,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <hr>
 
 <h2 id="s5">[5] レビュー</h2>
-<p><strong>ゴール:</strong> AI が書いたコードをデプロイ前に点検し、指摘を直してから push する。</p>
+<p><strong>ゴール:</strong> AI が書いたコードをデプロイ前に点検し、指摘を直してから push する</p>
 
 <h3>Claude Code のコマンドで点検する</h3>
 <p>ローカルの差分を、Claude Code の組み込みコマンドで点検する。</p>
@@ -1036,17 +1027,17 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <ul>
 <li><code>/code-review</code> — コードの正しさ・簡潔さ・効率を見るレビューである。バグや冗長な実装を指摘してくれる</li>
 <li><code>/security-review</code> — セキュリティ観点のレビューである。SQL インジェクション等・認証の抜け・シークレットの扱いなどを確認してくれる</li>
-<li><strong>security-guidance</strong>（Section 1 で導入したプラグイン）— 編集・コミットのたびに<strong>自動で</strong>セキュリティ点検が走っているため、自分で実行する必要はない</li>
 </ul>
+<p class="note"><strong>security-guidance</strong>（Section 1 で導入したプラグイン）は、編集・コミットのたびに<strong>自動で</strong>セキュリティ点検が走っている。自分で実行する必要はない。</p>
 <figure class="diagram">
-<img src="img/CodeReviewSample.png" alt="/code-review の実行例 — 新設の未認証エンドポイント backend/src/routes/contacts.ts に対し、他人の連絡先 PII を誰でも取得できる IDOR / PII 漏洩・レート制限なし・SELECT に LIMIT なし・認証設計の誤り（モック認証の流儀を無視）の4点を、それぞれ失敗シナリオ付きで検出している">
+<img src="img/CodeReviewSample.png" alt="/code-review の実行例。未認証エンドポイントに対する指摘が4件、失敗シナリオ付きで表示されている">
 <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">/code-review の実行例: 未認証で他人の連絡先 PII を返す重大バグ（IDOR/PII 漏洩）などを、根拠となる失敗シナリオ付きで指摘している（欠陥のないファイルは「問題なし」と判定）</figcaption>
 </figure>
 <figure class="diagram">
-<img src="img/SecurityReviewSample.png" alt="/security-review の実行例 — 新設の GET /api/contacts エンドポイントに認証チェックがない Broken Access Control / IDOR（Severity: High）を検出し、Exploit Scenario と修正の推奨（認証済み identity でゲートし結果を本人分に絞る）まで提示している">
+<img src="img/SecurityReviewSample.png" alt="/security-review の実行例。認証チェックのないエンドポイントの指摘が Severity 付きで表示されている">
 <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">/security-review の実行例: 認証チェックのないエンドポイント（IDOR）を Severity・攻撃シナリオ・修正案つきで検出している</figcaption>
 </figure>
-<p class="note">この3つは Section 3 <a href="#s11">[11] セキュリティレビュー</a>の点検でもそのまま使う。</p>
+<p class="note">この2つのコマンドは Section 3 <a href="#s11">[11] セキュリティレビュー</a>の点検でもそのまま使う。</p>
 
 <h3>レビュー後に push する</h3>
 <p>指摘があれば直してから push する。大きな問題がなければそのまま push してよい。</p>
@@ -1079,7 +1070,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <tr><td>③ テスト環境準備</td><td>Vitest 設定など、テストのための実行環境を用意する</td></tr>
 <tr><td>④ テスト項目作成</td><td>表を渡してテストコードを作成する</td></tr>
 <tr><td>⑤ テスト結果</td><td>テストを実行し、通っていない項目の原因を切り分けする</td></tr>
-<tr><td>⑥ コード修正</td><td>フロント／バックエンドの不具合の場合、AI でコードを修正して再度テストを実施する</td></tr>
+<tr><td>⑥ コード修正</td><td>⑤ の判定ごとに実装かテストを直し、再実行して、結果を表に書き残す</td></tr>
 </tbody>
 </table>
 
@@ -1093,7 +1084,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <p><strong>やること</strong>: AI に質問させながら、守るべきことを箇条書きに落とす。</p>
 
 <ol>
-<li>Claude Code に壁打ちを頼む。前提を人間が先に整理しておく必要はない。
+<li>Claude Code に壁打ちを頼む。前提を人間が先に整理しておく必要はない。読ませる <code>SCREEN_SPEC.md</code> は <a href="#s2-spec">[2]</a> で作ったものである。
 <pre><code>このアプリのテスト要件を決めたい。壁打ちに付き合ってほしい。
 読むのは SCREEN_SPEC.md だけにする。frontend/ と backend/ の実装コードは読まないこと。
 
@@ -1105,7 +1096,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 
 書くのは「アプリが守るべきこと」だけにする。
 ・主語はアプリか利用者にする。開発者やテストコードを主語にしない
-  ○「他人のライセンスキーを返さない」
+  ○「他人の購入の証を返さない」
   ✕「新しい API にはテストを必ず書く」
 ・破られたときに利用者に何が起きるかを、1行で言えるものだけ
 ・テストの書き方、モックの方針、どこまでテストするかの範囲は書かない
@@ -1119,7 +1110,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 </li>
 
 <li>AI との壁打ちによって出た候補を、<strong>破られたら何が起きるかを1行で言えるか</strong>という基準にかけて取捨する。
-  <p>「購入したキーが消えない」なら、破られたときに「金を受け取ってモノを渡していない状態になる」と言えるため、これは載せる。落ちるのは次のような候補である。</p>
+  <p>「発行した購入の証が消えない」なら、破られたときに「金を受け取ってモノを渡していない状態になる」と言えるため、これは載せる。落ちるのは次のような候補である。</p>
   <ul>
   <li><strong>表示が速い</strong> — 何秒から問題なのかを決めていないので、破られたかどうかが言えない</li>
   <li><strong>エラーが出ない</strong> — 何も起きていない状態と区別できないので、破られたかどうかが言えない</li>
@@ -1130,9 +1121,9 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <li><code>docs/TEST.md</code> がこの形になったら ① テスト要件 は終わりである。
 <pre><code>## テスト要件
 
-- ライセンスキーとメールアドレスを本人以外に返さない
-- 購入が成立したらライセンスキーは必ず発行され、再読込しても消えない
-- 同じ購入で二重にライセンスキーが発行されない
+- 購入の証とメールアドレスを本人以外に返さない
+- 購入が成立したら購入の証は必ず発行され、再読込しても消えない
+- 同じ購入で二重に購入の証が発行されない
 - 認証が必要な API は未認証のアクセスを拒否する
 - 必須項目が空の入力を受け付けない</code></pre>
 </li>
@@ -1165,42 +1156,40 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 ・「## テスト要件」は読むだけ。書き換えないこと
 ・期待値の根拠は要件と SCREEN_SPEC.md の記述に置き、実装コードから推測しないこと</code></pre>
   <p>このプロンプトの中心は、<strong>どこが壊れていたらこの要件が守られないか</strong>を挙げさせるところにある。</p>
-  <p>「購入したキーが消えない」というテスト要件は、</p>
+  <p>「発行した購入の証が消えない」というテスト要件は、</p>
   <ul>
   <li>画面が送信していない</li>
   <li>API がリクエストを処理していない</li>
   <li>DB に保存されていない</li>
   <li>保存したものが読み出せない</li>
   </ul>
-  <p>という4箇所がテスト項目として挙がり、このテストのすべてが緑となる場合に「購入したキーが消えない」と推定することができる。</p>
-  <p>また、例えば「API がリクエストを処理している」ことのみしかテスト項目に挙げないで検証をすると、「テストを緑にしたにもかかわらず正しく動作しない」ということになりかねない。</p>
+  <p>という4箇所がテスト項目として挙がる。この4行がすべて緑になって初めて「発行した購入の証が消えない」と言える。</p>
+  <p>逆に「API がリクエストを処理している」ことだけを確かめると、テストは緑になるのに実際には動かない、ということが起こる。</p>
   <details class="spec"><summary>テスト項目の表の例を見る</summary>
 <table>
 <thead><tr><th>番号</th><th>守る項目</th><th>どこで確かめる</th><th>前提条件</th><th>やること</th><th>期待結果</th><th>結果</th></tr></thead>
 <tbody>
-<tr><td>T-001</td><td>購入したキーが消えない</td><td>画面</td><td>購入フォームを表示</td><td>有効なメールで送信</td><td>発行 API が呼ばれる</td><td></td></tr>
-<tr><td>T-002</td><td>購入したキーが消えない</td><td>API</td><td>そのメールの記録が DB にない</td><td>発行 API を叩く</td><td>成功レスポンスにキーが入る</td><td></td></tr>
-<tr><td>T-003</td><td>購入したキーが消えない</td><td>API</td><td>同上</td><td>発行後に DB を直接見る</td><td>キーが1件保存されている</td><td></td></tr>
-<tr><td>T-004</td><td>購入したキーが消えない</td><td>API</td><td>T-003 の状態</td><td>そのメールで取得 API を叩く</td><td>保存したキーが返る</td><td></td></tr>
-<tr><td>T-005</td><td>キーを本人以外に返さない</td><td>API</td><td>A 購入済み、B 未購入</td><td>B でライセンス取得 API</td><td>A のキーが返らない</td><td></td></tr>
-<tr><td>T-006</td><td>キーを本人以外に返さない</td><td>画面</td><td>同上</td><td>B でマイページを開く</td><td>A のキーが出ない</td><td></td></tr>
+<tr><td>T-001</td><td>発行した購入の証が消えない</td><td>画面</td><td>購入フォームを表示</td><td>有効なメールで送信</td><td>発行 API が呼ばれる</td><td></td></tr>
+<tr><td>T-002</td><td>発行した購入の証が消えない</td><td>API</td><td>そのメールの記録が DB にない</td><td>発行 API を叩く</td><td>成功レスポンスに購入の証が入る</td><td></td></tr>
+<tr><td>T-003</td><td>発行した購入の証が消えない</td><td>API</td><td>同上</td><td>発行後に DB を直接見る</td><td>購入の証が1件保存されている</td><td></td></tr>
+<tr><td>T-004</td><td>発行した購入の証が消えない</td><td>API</td><td>T-003 の状態</td><td>そのメールで取得 API を叩く</td><td>保存した購入の証が返る</td><td></td></tr>
+<tr><td>T-005</td><td>購入の証を本人以外に返さない</td><td>API</td><td>A 購入済み、B 未購入</td><td>B で購入の証の取得 API</td><td>A の購入の証が返らない</td><td></td></tr>
+<tr><td>T-006</td><td>購入の証を本人以外に返さない</td><td>画面</td><td>同上</td><td>B でマイページを開く</td><td>A の購入の証が出ない</td><td></td></tr>
 </tbody>
 </table>
   </details>
 </li>
 
 <li>人間が確認する。見るものが2つあるので、順番に見る。
-<table>
-<thead><tr><th>順</th><th>見るもの</th><th>やること</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>観点の抜け</td><td>挙げた場所が足りているか。「購入したキーが消えない」に DB の行がない等</td></tr>
-<tr><td>2</td><td>テストしなくていい箇所</td><td>挙げた場所のうち、確かめるコストに見合わないものを落とす</td></tr>
-</tbody>
-</table>
+  <ol>
+  <li><strong>観点の抜け</strong> — ① テスト要件 で挙げた要件の範囲で、壊れる場所が足りているか。「発行した購入の証が消えない」に DB の行がない等</li>
+  <li><strong>テストしなくていい箇所</strong> — 挙げた場所のうち、確かめるコストに見合わないものを落とす</li>
+  </ol>
 </li>
 </ol>
 
-<p><strong>「どこで確かめる」列に書けるのは、次の4種である。</strong>環境と必要なパッケージは ③ テスト環境準備 で入れる。</p>
+<p><strong>「どこで確かめる」列に書けるのは、次の4種である。</strong></p>
+<p>環境と必要なパッケージは ③ テスト環境準備 で入れる。</p>
 
 <table>
 <thead><tr><th>語</th><th>叩く場所</th><th>見る場所</th><th>コマンド</th></tr></thead>
@@ -1221,7 +1210,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 
 <h3 id="s6-t3">③ テスト環境準備</h3>
 
-<p><strong>やること</strong>: ② テスト設計 で作った表の「どこで確かめる」列に出てきた種類（通しについては今は除外）だけ、実行環境を作らせる。</p>
+<p><strong>やること</strong>: ② テスト設計 で作った表の「どこで確かめる」列に出てきた種類だけ、実行環境を作らせる。ただし「通し」は <a href="#s12">[12]</a> で扱うので、ここでは除外する。</p>
 
 <p class="note">ここから実装のセッションに戻る。この ③ テスト環境準備 以降は実装コードを読ませてよい。</p>
 
@@ -1235,7 +1224,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 ・表に出てこない種類の環境は入れないこと</code></pre>
 
 <ul>
-<li>実行環境は<strong>バックエンドは Workers、フロントは jsdom</strong> を用いる</li>
+<li><strong>バックエンドは Workers、フロントは jsdom</strong> を実行環境に用いる</li>
 <li><code>cloudflare/vitest-pool-workers</code>＝バックエンドのテストを Workers と同じ実行環境で動かす公式アダプタである</li>
 </ul>
 
@@ -1245,7 +1234,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 
 <pre><code>docs/TEST.md の「## テスト項目」の表に従ってテストを実装して。
 
-・テスト名の先頭に表の番号を入れる（例: test('T-003 発行後に DB にキーが1件保存されている', ...)）
+・テスト名の先頭に表の番号を入れる（例: test('T-003 発行後に DB に購入の証が1件保存されている', ...)）
 ・「期待結果」列の値をそのまま使い、実装コードから推測しないこと
 ・表にない項目を勝手に足さないこと
 ・「どこで確かめる」が「通し」の行は実装しないこと
@@ -1273,7 +1262,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
   </ul>
 </li>
 
-<li><strong>赤が出たときだけ</strong>、落ちた原因を切り分けさせる。全部緑ならこの手順と次の修正は飛ばして、結果列の記入へ進む。<strong>この時点では直させない。</strong>
+<li><strong>赤が出たときだけ</strong>、落ちた原因を切り分けさせる。全部緑ならこの手順を飛ばし、⑥ コード修正 の手順1 へ進む（不要になるのは ⑥ 手順2 の修正だけである）。<strong>この時点では直させない。</strong>
 <pre><code>落ちているテストの原因を切り分けて。次の4つのどれかで判定して。
 
 ・実装が要件を満たしていない
@@ -1282,14 +1271,13 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 ・要件そのものが間違っている（実装もテストも正しいが、要件の記述がずれている）
 
 判定だけ報告して。まだ何も直さないこと。</code></pre>
-  <p>診断と修正を1回のやりとりでまとめて頼むと、AI は実装を直すより手数の少ない道、つまりテストの期待値を緩めて緑にする道を選べる。判定だけを先に受け取り、何を直すかは人間が決める。</p>
+  <p>診断と修正を1回のやりとりでまとめて頼むと、AI は実装を直すより手数の少ない道、つまりテストの期待値を緩めて緑にする道を選ぶ。判定だけを先に受け取り、何を直すかは人間が決める。</p>
 </li>
 
 </ol>
 
 <p><strong>ポイント</strong>:</p>
 <ul>
-<li><strong>「どこで確かめる」が「通し」の行は、ここでは赤にも緑にもならない。</strong>④ テスト項目作成 で除外しているためである</li>
 <li>落ちた行が出ること自体は成果である。「作ったつもりが作られていなかった」という発見だからである</li>
 </ul>
 
@@ -1298,7 +1286,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <p><strong>やること</strong>: ⑤ テスト結果 の判定にもとづいてフロント／バックエンドを直し、再度テストを実施して、結果を表に書き残す。</p>
 
 <ol>
-<li><strong>直させる前にコミットする。</strong>この工程では、テストファイルが意図した箇所以外で変わっていないことを手順4 で git の差分から確かめる。<strong>その差分の起点をここで作る。</strong>git に追跡されていないファイルは差分が出ないので、先にコミットしておかないと、テストが改変されていても気付けない。
+<li><strong>直させる前にコミットする。</strong>この工程では、テストファイルが意図した箇所以外で変わっていないことを手順4 で git の差分から確かめる。<strong>その差分の起点をここで作る。</strong>④ テスト項目作成 で新しく作られたテストファイルは、まだ git に追跡されておらず差分が出ない。先にコミットしておかないと、テストが改変されていても気付けない。
 <pre><code>docs/TEST.md とテストコードとテストの設定をコミットして。
 このあと git で確認するので、私が言うまで追加のコミットはしないこと。</code></pre>
 </li>
@@ -1310,7 +1298,7 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <tr><td>実装が要件を満たしていない</td><td><strong>実装</strong>を直させる（テストファイルは変更禁止）</td></tr>
 <tr><td>テストの書き方が悪い</td><td><strong>テスト</strong>を直させる（実装は変更禁止）</td></tr>
 <tr><td>テスト設計が誤っている</td><td>その行は<strong>直さない</strong>。結果列に判定と理由を書いて閉じる</td></tr>
-<tr><td>要件そのものが間違っている</td><td>人間が要件と表の期待結果を直し、④ テスト項目作成 に戻ってテストを作り直させる</td></tr>
+<tr><td>要件そのものが間違っている</td><td>人間が要件と表の期待結果を直し、<strong>その行だけ</strong> ④ テスト項目作成 → ⑤ テスト結果 をやり直す</td></tr>
 </tbody>
 </table>
   <p>実装を直させるとき:</p>
@@ -1325,7 +1313,7 @@ test.skip / it.todo / it.only を使わないこと。</code></pre>
   <p>直させたら再実行し、赤だった行が緑に変わったことを確認する。</p>
 </li>
 
-<li>判定と修正の結果を、表の「結果」列に埋めさせる。行数が多いので人が手で書かない。
+<li>判定と修正の結果を、表の「結果」列に埋めさせる。
 <pre><code>docs/TEST.md の「## テスト項目」の表の「結果」列を埋めて。
 
 ・緑だった行は「緑」
@@ -1333,17 +1321,18 @@ test.skip / it.todo / it.only を使わないこと。</code></pre>
 ・「どこで確かめる」が「通し」の行は「[12] で確認予定」
 ・空欄を残さないこと
 ・「結果」列以外は書き換えないこと</code></pre>
-  <p>書かせたあと、判定が自分の見立てと合っているかを人間が読む。結果列を埋めると、次のような表となる（② テスト設計 に載せた抜粋には無い行も含めた例）。</p>
+  <p>書かせたあと、判定が自分の見立てと合っているかを人間が読む。</p>
+  <p>結果列を埋めると、次のような表となる。② テスト設計 に載せた抜粋には無い行も含めている。</p>
   <details class="spec"><summary>結果列を埋めた表の例を見る</summary>
 <table>
 <thead><tr><th>番号</th><th>守る項目</th><th>結果</th></tr></thead>
 <tbody>
-<tr><td>T-002</td><td>購入したキーが消えない</td><td>緑</td></tr>
-<tr><td>T-003</td><td>購入したキーが消えない</td><td>落ちた → 保存処理が未対応 → 実装を直して緑</td></tr>
-<tr><td>T-005</td><td>キーを本人以外に返さない</td><td>落ちた → 認可の抜け（バグ）→ 実装を直して緑</td></tr>
+<tr><td>T-002</td><td>発行した購入の証が消えない</td><td>緑</td></tr>
+<tr><td>T-003</td><td>発行した購入の証が消えない</td><td>落ちた → 保存処理が未対応 → 実装を直して緑</td></tr>
+<tr><td>T-005</td><td>購入の証を本人以外に返さない</td><td>落ちた → 認可の抜け（バグ）→ 実装を直して緑</td></tr>
 <tr><td>T-007</td><td>必須項目が空の入力を受け付けない</td><td>落ちた → 要件の書き間違い（名前は任意でよかった）→ 要件と期待結果を直して緑</td></tr>
+<tr><td>T-008</td><td>購入の証を本人以外に返さない</td><td><a href="#s12">[12]</a> で確認予定（通しの行）</td></tr>
 <tr><td>T-009</td><td>同じ購入で二重に発行されない</td><td>未修理 → 二重発行のガードが無い（時間切れ・持ち帰り）</td></tr>
-<tr><td>T-008</td><td>キーを本人以外に返さない</td><td><a href="#s12">[12]</a> で確認予定（通しの行）</td></tr>
 </tbody>
 </table>
   </details>
@@ -1357,21 +1346,20 @@ test.skip / it.todo / it.only を使わないこと。</code></pre>
   <p>テストを直させた行は、変更の中身まで見る。<strong>期待結果の値が変わっていたら差し戻す。</strong></p>
 </li>
 
-<li><strong>最後に自分でテストを実行する。</strong>AI の「緑になりました」で終わらせず、出力を自分の目で見る。
-<pre><code>cd backend  &amp;&amp; npm test
+<li><strong>最後に自分でテストを実行する。</strong>ここは「コマンドは Claude Code に依頼する」の例外である。AI の「緑になりました」で終わらせず、出力を自分の目で見る。
+<pre><code>cd backend &amp;&amp; npm test
 cd ../frontend &amp;&amp; npm test</code></pre>
   <p class="warn"><strong>出力末尾の <code>Tests</code> の行を見て、skipped が0件であることを確かめる。</strong>
 skipped があってもテスト全体は成功として扱われるので、画面は緑のまま、確かめた本数だけが足りなくなる。AI に実行させて結果を要約させると、この数字は要約から落ちる。</p>
   <p>skipped は <code>test.skip</code> や <code>it.todo</code> と書いてあるときに出る。<strong>AI が skip に逃げる動機がいちばん強いのはこの工程である。</strong>「直して」と言われて通せなかったとき、skip はもっとも安く緑にできる手段になる。</p>
   <p>出ていた場合は、手順4 の <code>git diff</code> で<strong>どこで入ったかが分かる</strong>。差分に出ていればこの工程の修正で入ったもの、出ていなければ ④ テスト項目作成 の時点から入っていたものである。</p>
-  <p>赤が残っていてよいのは、結果列に「未修理」と理由を書いた行だけである。</p>
 </li>
 
 </ol>
 
 <p><strong>ポイント</strong>:</p>
 <ul>
-<li><strong>この工程のゴールは「全部緑にすること」ではなく「結果列を埋めきること」である。</strong>「テスト設計が誤っている」と判定された行（使われていない機能を検証している、など）は緑にしようがない。そういう行は判定と理由を結果列に書いて閉じる</li>
+<li>「テスト設計が誤っている」と判定された行（使われていない機能を検証している、など）は緑にしようがない。そういう行は判定と理由を結果列に書いて閉じる</li>
 <li>「実装が要件を満たしていない」と判定された行は直して緑にする。時間内に直しきれない行が残ったら、結果列に「未修理」と理由を書いて持ち帰る。これは完了ではなく、要件を満たしていない状態の記録である</li>
 </ul>
 
@@ -1379,30 +1367,30 @@ skipped があってもテスト全体は成功として扱われるので、画
 <p>⑥ コード修正 まで終えたら、ここまでの修正と <code>docs/TEST.md</code> の更新をまとめて push する。</p>
 <pre><code>テスト工程の作業をコミットして dev ブランチに push して。</code></pre>
 
-<h3 class="done">✅ 完了の定義（Section 2 の到達点・前半）</h3>
+<h3 class="done">✅ 完了の定義（<a href="#s7">[7]</a> へ進む条件）</h3>
 <ul>
 <li><code>docs/TEST.md</code> に「テスト要件」と「テスト項目」の表があり、各行の<strong>「前提条件」が埋まっている</strong></li>
 <li>表の番号とテストコードのテスト名が一致している（「通し」の行を除き、どちらか片方にしかない番号がない）</li>
 <li><code>npm test</code> の出力に <strong>skipped が0件</strong>（<code>backend/</code> と <code>frontend/</code> それぞれで実行する）</li>
 <li>表の「結果」列がすべて埋まっている（緑／未修理＋理由／<a href="#s12">[12]</a> で確認予定）</li>
 <li><strong>「通し」以外の行は、緑になっているか、緑にしない／できない理由が結果列に書かれている</strong></li>
-<li>落ちた項目を直したとき、テストファイルに差分が入っていない</li>
+<li>テストファイルの差分が、自分で指示したテストの範囲に収まっている（期待結果の値が変わっていない）</li>
 </ul>
 
 <hr>
 
 <h2 id="s7">[7] Cloudflare にデプロイ</h2>
-<p><strong>ゴール:</strong> 自分の URL（<code>https://&lt;name&gt;.workers.dev</code>）で世界に公開（Section 2 のフィナーレ）</p>
+<p><strong>ゴール:</strong> 自分の URL（<code>https://&lt;name&gt;.workers.dev</code>）で世界に公開する</p>
 
 <h3>流れ</h3>
 <ol>
 <li><code>wrangler.jsonc</code> を確認・修正する
   <ul>
   <li><code>assets.directory</code> は配信する静的ファイルの場所（フロントのビルド結果）、<code>assets.not_found_handling</code> は存在しないパスへのアクセスを <code>index.html</code> に流す SPA 用の設定である</li>
-  <li>binding＝Worker のコードから D1 を呼ぶための紐付け設定（[4] 手順2 で <code>wrangler.jsonc</code> に書き込んだ <code>database_id</code> のこと）</li>
+  <li>binding＝Worker のコードから D1 を呼ぶための名前（<code>DB</code> など）。<code>database_id</code> は [4] 手順2 で作った D1 そのものの識別子であり、binding とは別物である</li>
   </ul>
 <pre><code>wrangler.jsonc を確認して。
-・D1 の binding id が実際に作成したリソースと一致しているか
+・D1 の database_id が実際に作成したリソースと一致しているか
 ・assets.directory がフロントのビルド結果を正しく指しているか
 ・assets.not_found_handling が "single-page-application" になっているか
 問題があれば修正して。</code></pre>
@@ -1410,44 +1398,37 @@ skipped があってもテスト全体は成功として扱われるので、画
 <li>リモート DB にマイグレーションを適用する
 <pre><code>npm run db:migrate:remote を実行して本番の D1 にテーブルを作って。</code></pre>
 </li>
-<li>デプロイは<strong>必ず <code>backend/</code> から</strong>行う。<code>frontend/</code> で <code>wrangler deploy</code> すると、フロントのみデプロイされ、バックエンドはデプロイされていないという事態になる:
+<li>デプロイは<strong>必ず <code>backend/</code> から</strong>行う。<code>frontend/</code> で <code>wrangler deploy</code> すると、フロントだけが上がり、API が繋がらない:
 <pre><code>cd backend
 npm run deploy</code></pre>
-<ul><li><code>npm run deploy</code> はフロントのビルド → <code>wrangler deploy</code> まで一発で走る</li></ul>
 </li>
-<li>発行された URL にアクセスして動作確認する 🎉</li>
+<li>発行された URL にアクセスして動作確認する</li>
 <li>発行された URL をチャットに貼って共有する</li>
 </ol>
 
 <h3>ポイント</h3>
 <ul>
-<li><strong>[6] の表の結果列が埋まっているのを確認してから公開する</strong>（テスト → デプロイ の順）</li>
-<li><strong>Section 2 本編では Secrets 投入は不要</strong>（Stripe/Clerk/Resend を使う [8][9][10] で初めて要る。手順は <a href="#common">Section 3 の共通手順</a>参照）</li>
+<li><strong>[6] の表の結果列が埋まっているのを確認してから公開する</strong></li>
 <li>ここまでは手元で <code>wrangler deploy</code> を叩く<strong>手動デプロイ</strong>である。<code>git push</code> するだけで自動デプロイしたい場合は、Section 3 オプション <a href="#s13">[13] 自動デプロイ</a> で扱う</li>
-</ul>
-
-<h3 class="warn">⚠️ ハマりどころ: Workers デプロイ</h3>
-<ul>
-<li><code>npm run deploy</code> が「フロントのビルド込み」なので、<strong>ビルドが通らないとデプロイも止まる</strong> → デプロイ前にローカルで <code>npm run build:front</code> が成功するか確認しておくと安全である</li>
+<li><strong>ビルドが通らないとデプロイも止まる。</strong>デプロイ前にローカルで <code>npm run build:front</code> が成功するか確認しておくと安全である</li>
 <li>リモート D1 のマイグレーション（<code>db:migrate:remote</code>）を忘れると、API が「テーブルが無い」で失敗する</li>
 </ul>
 
 <h3>完了したら push する</h3>
 <pre><code>デプロイ完了の作業をコミットして dev ブランチに push して。必要なら dev を main にマージして。</code></pre>
 
-<h3 class="done">✅ 完了の定義（Section 2 の到達点・後半）</h3>
+<h3 class="done">✅ 完了の定義（Section 2 の到達点）</h3>
 <ul>
 <li>自分の <strong><code>https://&lt;name&gt;.workers.dev</code> にブラウザでアクセスして LP が表示</strong>される</li>
-<li>本番 URL で <code>/mypage</code> 等のルーティングも 404 にならず動く（404 になる場合は wrangler.jsonc の <code>assets.not_found_handling</code> に <code>"single-page-application"</code> を追記してから再デプロイ）</li>
+<li>本番 URL で <code>/mypage</code> 等のルーティングも 404 にならず動く</li>
 <li>API を使う画面が本番でも動作する</li>
-<li>（余裕があれば）公開した本番 URL で<strong>トップページ・<code>/mypage</code>・API を1つ</strong>ブラウザで開き、ローカルと同じ挙動か目視確認する</li>
 </ul>
 
 <h3>Section 2 クロージング</h3>
 <ul>
 <li>全員が「<code>docs/TEST.md</code> の結果列が埋まっている + <code>workers.dev</code> 公開 URL」に到達しているか確認する</li>
 <li>Section 1 と同じ <code>workers.dev</code> URL への<strong>再デプロイ完了</strong>を確認（バックエンド API が繋がっていること）</li>
-<li><strong>dev に push 済みかを確認</strong>（必要なら <code>dev</code> → <code>main</code> にマージして安定版を残す）</li>
+<li><strong>dev に push 済みかを確認</strong></li>
 <li>Section 3 のオプション課題から興味のあるものを選ぶ（Stripe / Clerk / Resend のアカウントを事前に作っておくとスムーズ）</li>
 </ul>
 
