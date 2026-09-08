@@ -1,0 +1,57 @@
+<svg width="100%" viewBox="0 0 720 295" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>もし項目名が食い違っていたら</title>
+  <desc>画面は項目名 A を読み、Worker は項目名 B で返している。[6] の画面テストはモックを A で書き、API テストは期待値を B で書くので、どちらも緑のまま食い違いは誰も見ない。実際に通信する [12] の E2E だけが、画面の空欄として気づく</desc>
+
+  <defs>
+    <marker id="ar-red3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M1,0 L7,4 L1,8" fill="none" stroke="#b91c1c" stroke-width="1.4"/>
+    </marker>
+  </defs>
+
+  <rect width="720" height="295" rx="16" fill="#faf8f2"/>
+
+  <text x="360" y="32" text-anchor="middle" font-family="Hiragino Mincho ProN,Yu Mincho,serif" font-size="17" font-weight="700" fill="#0f766e">もし項目名が食い違っていたら</text>
+  <line x1="200" y1="42" x2="520" y2="42" stroke="#c8a96a" stroke-width="1.5"/>
+
+  <g font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif">
+    <!-- ===== 経路（チェーン） ===== -->
+    <rect x="60" y="58" width="150" height="52" rx="8" fill="#eeeefe" stroke="#534ab7" stroke-width="1.2"/>
+    <text x="135" y="79" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3c3489">画面（React）</text>
+    <text x="135" y="97" text-anchor="middle" font-size="11" fill="#3c3489">項目名 <tspan font-weight="700" fill="#534ab7">A</tspan> を読む</text>
+
+    <line x1="210" y1="84" x2="375" y2="84" stroke="#8a8272" stroke-width="1.5"/>
+    <text x="292" y="76" text-anchor="middle" font-size="11.5" font-weight="700" fill="#6b6355">HTTP</text>
+
+    <rect x="375" y="58" width="160" height="52" rx="8" fill="#e6fafa" stroke="#0d9488" stroke-width="1.2"/>
+    <text x="455" y="79" text-anchor="middle" font-size="12.5" font-weight="700" fill="#085450">Worker（Hono）</text>
+    <text x="455" y="97" text-anchor="middle" font-size="11" fill="#085450">項目名 <tspan font-weight="700" fill="#b45309">B</tspan> で返す</text>
+
+    <line x1="535" y1="84" x2="580" y2="84" stroke="#8a8272" stroke-width="1.5"/>
+
+    <rect x="580" y="58" width="80" height="52" rx="8" fill="#fff3dd" stroke="#b58a2a" stroke-width="1.2"/>
+    <text x="620" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#7d5e17">D1</text>
+
+    <!-- ===== [6] の行 ===== -->
+    <text x="48" y="163" text-anchor="end" font-size="14" font-weight="700" fill="#0f766e">[6]</text>
+    <rect x="60" y="150" width="150" height="17" rx="4" fill="#9ad6cd" stroke="#0d9488" stroke-width="1"/>
+    <text x="135" y="163" text-anchor="middle" font-size="11" font-weight="700" fill="#085450">画面テスト ✓ 緑</text>
+    <rect x="375" y="150" width="285" height="17" rx="4" fill="#9ad6cd" stroke="#0d9488" stroke-width="1"/>
+    <text x="517" y="163" text-anchor="middle" font-size="11" font-weight="700" fill="#085450">API テスト ✓ 緑</text>
+
+    <rect x="216" y="147" width="153" height="23" rx="4" fill="none" stroke="#b91c1c" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <line x1="292" y1="147" x2="292" y2="94" stroke="#b91c1c" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#ar-red3)"/>
+    <text x="292" y="163" text-anchor="middle" font-size="11.5" font-weight="700" fill="#b91c1c">食い違いは誰も見ない</text>
+
+    <text x="60" y="190" font-size="11" fill="#6b6355">モックは <tspan font-weight="700" fill="#534ab7">A</tspan>、期待値は <tspan font-weight="700" fill="#b45309">B</tspan> と、どちらも自分の側の想定で書くので、食い違っていても両方とも緑になる</text>
+
+    <!-- ===== [12] の行 ===== -->
+    <text x="48" y="235" text-anchor="end" font-size="14" font-weight="700" fill="#9a6b1f">[12]</text>
+    <rect x="60" y="222" width="600" height="17" rx="4" fill="#f2d49b" stroke="#b58a2a" stroke-width="1"/>
+    <text x="490" y="235" text-anchor="middle" font-size="11" font-weight="700" fill="#7d5e17">E2E（実際に通信する）</text>
+
+    <rect x="234" y="218" width="117" height="25" rx="12" fill="#fdeaea" stroke="#b91c1c" stroke-width="1.2"/>
+    <text x="292" y="235" text-anchor="middle" font-size="11.5" font-weight="700" fill="#b91c1c">✕ ここで発覚</text>
+
+    <text x="60" y="265" font-size="11" fill="#6b6355"><tspan font-weight="700" fill="#b45309">B</tspan> で返ってきたデータに、画面が探す <tspan font-weight="700" fill="#534ab7">A</tspan> が無い。画面が空欄になり、ここで初めて赤が出る</text>
+  </g>
+</svg>

@@ -1,0 +1,61 @@
+<svg width="100%" viewBox="0 0 720 285" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>[6] と [12] の守備範囲</title>
+  <desc>画面(React)—HTTP—Worker(Hono)—D1 の経路のうち、[6] は画面と Worker〜D1 を別々にカバーし、あいだの HTTP のつなぎ目を見ていない。[12] は画面から D1 までを1本でカバーする</desc>
+
+  <defs>
+    <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M1,0 L7,4 L1,8" fill="none" stroke="#b91c1c" stroke-width="1.4"/>
+    </marker>
+  </defs>
+
+  <rect width="720" height="285" rx="16" fill="#faf8f2"/>
+
+  <!-- title -->
+  <text x="360" y="32" text-anchor="middle" font-family="Hiragino Mincho ProN,Yu Mincho,serif" font-size="17" font-weight="700" fill="#0f766e">[6] と [12] の守備範囲</text>
+  <line x1="220" y1="42" x2="500" y2="42" stroke="#c8a96a" stroke-width="1.5"/>
+
+  <!-- ===== 経路（チェーン） ===== -->
+  <g font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif">
+    <!-- 画面(React) -->
+    <rect x="60" y="60" width="150" height="44" rx="8" fill="#eeeefe" stroke="#534ab7" stroke-width="1.2"/>
+    <text x="135" y="87" text-anchor="middle" font-size="13" font-weight="700" fill="#3c3489">画面（React）</text>
+
+    <!-- HTTP connector -->
+    <line x1="210" y1="82" x2="375" y2="82" stroke="#8a8272" stroke-width="1.5"/>
+    <text x="292" y="74" text-anchor="middle" font-size="11.5" font-weight="700" fill="#6b6355">HTTP</text>
+
+    <!-- Worker(Hono) -->
+    <rect x="375" y="60" width="160" height="44" rx="8" fill="#e6fafa" stroke="#0d9488" stroke-width="1.2"/>
+    <text x="455" y="87" text-anchor="middle" font-size="13" font-weight="700" fill="#085450">Worker（Hono）</text>
+
+    <!-- connector -->
+    <line x1="535" y1="82" x2="580" y2="82" stroke="#8a8272" stroke-width="1.5"/>
+
+    <!-- D1 -->
+    <rect x="580" y="60" width="80" height="44" rx="8" fill="#fff3dd" stroke="#b58a2a" stroke-width="1.2"/>
+    <text x="620" y="87" text-anchor="middle" font-size="13" font-weight="700" fill="#7d5e17">D1</text>
+  </g>
+
+  <!-- ===== [6] の行 ===== -->
+  <g font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif">
+    <text x="48" y="160" text-anchor="end" font-size="14" font-weight="700" fill="#0f766e">[6]</text>
+    <rect x="60" y="147" width="150" height="17" rx="4" fill="#9ad6cd" stroke="#0d9488" stroke-width="1"/>
+    <text x="135" y="160" text-anchor="middle" font-size="11" font-weight="700" fill="#085450">画面テスト</text>
+    <rect x="375" y="147" width="285" height="17" rx="4" fill="#9ad6cd" stroke="#0d9488" stroke-width="1"/>
+    <text x="517" y="160" text-anchor="middle" font-size="11" font-weight="700" fill="#085450">API テスト</text>
+
+    <!-- gap -->
+    <rect x="216" y="144" width="153" height="23" rx="4" fill="none" stroke="#b91c1c" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <line x1="292" y1="144" x2="292" y2="92" stroke="#b91c1c" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrow-red)"/>
+    <text x="292" y="160" text-anchor="middle" font-size="11.5" font-weight="700" fill="#b91c1c">つなぎ目を通らない</text>
+
+    <text x="60" y="185" font-size="11" fill="#6b6355">画面テストは HTTP をモックし、API テストは HTTP から先を直接叩く（フロントを通らない）</text>
+  </g>
+
+  <!-- ===== [12] の行 ===== -->
+  <g font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif">
+    <text x="48" y="228" text-anchor="end" font-size="14" font-weight="700" fill="#9a6b1f">[12]</text>
+    <rect x="60" y="215" width="600" height="17" rx="4" fill="#f2d49b" stroke="#b58a2a" stroke-width="1"/>
+    <text x="60" y="253" font-size="11" fill="#6b6355">画面から DB までを1本で通す（つなぎ目の噛み合わせを確かめられる）</text>
+  </g>
+</svg>

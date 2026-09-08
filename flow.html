@@ -224,9 +224,12 @@ details.spec pre{margin:.5em 0 0;}
 .copy-btn:hover{background:rgba(255,255,255,.24);}
 .copy-btn.copied{background:var(--accent); color:#fff; border-color:var(--accent);}
 .diagram{margin:1.4em 0;padding:18px 16px;background:#fff;border:1px solid var(--line);border-radius:10px;text-align:center;}
-.diagram img{display:block;width:100%;max-width:800px;height:auto;margin:0 auto;cursor:zoom-in;}
-.diagram img.portrait{max-width:360px;}
-.diagram.compact img{max-width:480px;}
+.diagram img{display:block;width:auto;max-width:min(100%,800px);height:auto;margin:0 auto;cursor:zoom-in;}
+.diagram img[src$=".svg"]{width:100%;}
+.diagram img.portrait{max-width:min(100%,360px);}
+.diagram img.w500{max-width:min(100%,500px);}
+.diagram img.w600{max-width:min(100%,600px);}
+.diagram.compact img{max-width:min(100%,480px);}
 #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:2000;
   cursor:zoom-out;align-items:center;justify-content:center;padding:16px;}
 #lightbox.show{display:flex;}
@@ -609,84 +612,102 @@ audit=true</code></pre>
 Claude Design はトークン消費量が多く、標準的なプランでは全ページ分を作り込む余裕がないため、今回は LP のデザインシステムに絞る（機能ページは <code>SCREEN_SPEC.md</code> で決めた仕様を Claude Code に実装させる）。トークンに余裕があれば全ページを Claude Design で作ることも可能である。</p>
 </blockquote>
 
-<h3>事前確認: モデルと Effort の設定・デザインシステムのリセット</h3>
-<p>Claude Design を開くと「Make something new」の一覧が表示される。ここでは「Product prototype」を選ぶ（Slides・Document 等は使わない）。</p>
-<p>一覧の右上に「Design system: None」という表示がある。過去に使ったデザインシステム名が残っていることがあるので、<strong>「None」になっているか確認し、違えばリセットしてから始める</strong>。</p>
+<h3>事前確認: 作るものの種類・デザインシステムのリセット・モデルと Effort</h3>
+<p>Claude Design を開くと「What should we create?」の画面になり、中央にプロンプト入力欄、その下に作るものの種類がアイコンで並ぶ。ここでは <strong>「UI mockups」</strong> を選ぶ（Slides・Document・Wireframe 等は使わない）。</p>
+<p>選ぶと入力欄の先頭に <code>Make UI mockups for</code> が入り、その続きにプロンプトを書く形になる。</p>
+<p>入力欄の下のバーに <strong>「Design system」</strong> のドロップダウンがある。過去に使ったデザインシステム名が残っていることがあるので、<strong>「None」になっているか確認し、違えばリセットしてから始める</strong>。アイコン一覧の上段にも保存済みのデザインシステムが並ぶが、新規に作る場合はどれも選ばない。</p>
 <figure class="diagram">
-<img src="img/ClaudeDesignHomeReset.png" alt="Claude Design のホーム画面。「Make something new」の一覧で「Product prototype」を選択し、右上の「Design system: None」がリセットされていることを確認する">
+<img src="img/CD-setup.png" alt="Claude Design のホーム画面「What should we create?」。アイコン一覧から「UI mockups」を選択し、プロンプト入力欄の下のバーで「Design system: None」を確認する">
 </figure>
-<p>「Product prototype」を選ぶと、プロンプト入力欄の画面に移る。ここにも<strong>リセット確認ポイントが1つ</strong>: 入力欄の左上のドロップダウンに以前のデザインシステム名（例「White base mono tone page…」）が残っていることがある。新規に作る場合はこの欄を「None」相当に戻してからプロンプトを入力する。</p>
-<figure class="diagram compact">
-<img src="img/ClaudeDesignPromptModelBar.png" alt="Claude Design のプロンプト入力画面。左上にデザインシステム／テンプレート名のドロップダウンが残っている例">
-</figure>
-<p>同じ画面にモデルと <strong>Effort</strong>（AI がどれだけ深く考えるかの設定）もある。
+<p>同じバー右側の <strong>「Model」</strong> を押すとモデル一覧が開き、その下に <strong>Effort</strong>（AI がどれだけ深く考えるかの設定）の項目がある。
 <strong>Effort が高いほど品質は上がるが、トークン消費も増える</strong>。</p>
 <ul>
+<li>モデルは <strong>Opus 5</strong> を選ぶ</li>
 <li><strong>推奨は Effort: Medium</strong>。Team standard などトークンに余裕がないプラン向けである。一周体験が目的なのでこれで十分である</li>
 <li>Team Premium / Max などトークンに余裕があるプランの人は <strong>High 以上</strong>に上げてよい</li>
-<li>モデルは、その時点で使える上位モデルを選ぶ（執筆時点 2026-07 は Opus 4.8）</li>
 </ul>
-<p class="note">この画面の配置は Claude Design のバージョン更新で変わることがある（プラン・環境によって表示が異なる場合もある）。見当たらない場合は入力欄の周辺・設定メニューを探す。</p>
+<figure class="diagram">
+<img src="img/CD-modelAndEffort.png" alt="Claude Design の Model ドロップダウン。Fable 5.1・Opus 5（選択中）・Sonnet 5・Haiku 4.5 が並び、その下に Effort の設定項目がある">
+</figure>
+<p class="note">上の画像は Effort を High にした例である。生成が始まったあとは画面左下に <code>Opus 5　Medium</code> のようにモデル名と Effort が表示され、そこからも変更できる。</p>
+<p class="note">Claude Design は Beta であり、画面の配置・名称・機能はバージョン更新で変わる（プラン・環境によって表示が異なる場合もある）。この資料のスクリーンショットと違っていても、<strong>やること自体（種類を選ぶ／デザインシステムを None にする／プロンプトを送る）は変わらない</strong>。見当たらない場合は入力欄の周辺・設定メニューを探す。</p>
 
 <h3>流れ</h3>
 <ol>
 <li>Claude Design に「何を・誰に向けて作るか／何を売るか／欲しい機能」を伝えて <strong>LP だけ</strong>デザインを生成する
   <ul>
-  <li>Claude Design は、トーンや配色など方向性を決める質問を自分から出してくれる。だから最初から「和モダンで緑系で…」と細かく指定する必要はない。むしろ<strong>サービスの中身（何のサービスか・売りたいもの・載せたい機能）</strong>を伝える方が効く</li>
+  <li>プロンプトを送ると、Claude Design は<strong>確認フォーム（6問程度）</strong>を返してくる。だから最初から「和モダンで緑系で…」と細かく指定する必要はない。むしろ<strong>サービスの中身（何のサービスか・売りたいもの・載せたい機能）</strong>を伝える方が効く</li>
   <li>最初に渡すプロンプト例:
     <pre><code>Slack AI サブスク SaaS『玄米茶』の LP を作りたい。
 月額／年額プランを売りたい。
-載せたいのは特徴・料金プラン・FAQ・お問い合わせへの導線。
-ターゲットはライトエンジニア層。</code></pre>
+LP に載せるセクションは 特徴・料金プラン・FAQ の3つ。
+ナビには お問い合わせ と マイページ へのリンクも置く（それらのページ自体は作らなくてよい）。
+ターゲットはライトエンジニア層。
+デザイン案は3つ出してほしい。</code></pre>
+    この程度の粒度で十分。色・フォント・トーンは Claude Design が聞いてくれるので最初から細かく書かなくてよい
     <figure class="diagram">
-    <img src="img/claude-design-prompt.png" alt="Claude Design のプロンプト入力画面">
-    </figure>
-    この程度の粒度で十分。色・フォント・トーンは Claude Design が質問してくれるので最初から細かく書かなくてよい
-    <figure class="diagram">
-    <img src="img/claude-design-questions.png" alt="Claude Design がトーン・配色などを質問してくれる画面">
+    <img src="img/CD-firstprompt.png" alt="Claude Design の入力欄に「Make UI mockups for」に続けてプロンプトを書き込んだ状態">
     </figure></li>
-  <li>質問された時に<strong>「デザイン案を3つ出してもらう」よう伝える</strong>（生成には数分かかる。待っている間に <code>SCREEN_SPEC.md</code>（[2] で使う画面仕様）を書き始めてよい）</li>
-  <li>ページ構成の選択肢（「LP 一枚」「複数ページ」など）を聞かれたら<strong>「LP 一枚」を選ぶ</strong>。マイページ等の他ページは Claude Design では作らず、[2] Claude Code で実装する</li>
+  <li>送ると<strong>確認フォーム</strong>が出る（「6問だけ。空欄のままでも送信OK、その場合は私が判断します」）。答え方は次のとおり
+    <ul>
+    <li><strong>「ビジュアルの下敷きにするデザインシステムはありますか？」→ 空欄のまま</strong></li>
+    <li><strong>「既存のコードベース／リポジトリはありますか？」→ 空欄のまま</strong></li>
+    <li>サービスの中身・料金プランなど<strong>内容の質問には答える</strong>。決まっていなければ空欄でよく、その場合は Claude Design が仮の値を置く</li>
+    </ul>
+    <figure class="diagram">
+    <img src="img/CD-Question.png" alt="Claude Design の確認フォーム。デザインシステム・既存リポジトリ・サービスの中身・料金プランの中身などを6問まとめて聞かれる画面">
+    </figure></li>
   </ul>
 </li>
 <li><strong>出てきた3案を見比べて1つ選ぶ</strong>
   <ul>
   <li>最初の1案でなんとなく進めず、<strong>3案を見比べてから決める</strong>（選択肢を見てから選ぶのが AI 活用のコツ）</li>
+  <li>決めたらチャット欄で <strong>「1a でお願いします。他のものは消しても構いません」</strong>のように伝える。選んだ案だけがフルページに整えられる</li>
   </ul>
   <figure class="diagram">
-  <img src="img/ClaudeDesign3p.png" alt="Claude Design で3案が横並びに表示されている画面">
+  <img src="img/CD-created3plan.png" alt="Claude Design のキャンバスにデザイン3案が並んで置かれ、ズーム率 12% で一望している画面">
   </figure>
 </li>
-<li><strong>トーン・配色・アクセントは画面上部の「+ Tweaks」から後で調整できる</strong>
+<li><strong>トーン・配色・アクセントは Tweaks から後で調整できる</strong>
+  <ul>
+  <li>画面上部ツールバーの <strong>Tweaks アイコン</strong>（更新アイコンの隣）を押すと「Describe a tweak...」入力欄と「Ideas」が出る。<strong>ここに切り替えたい軸を書いて送る</strong>（「Ideas」を押せば候補を出してくれる）</li>
+  </ul>
   <figure class="diagram">
-  <img src="img/ClaudeDesign_tweaks1.png" alt="Claude Design の Tweaks ボタン — 「+ Tweaks」を押すと「Describe a tweak...」入力欄と「Ideas」が表示される">
+  <img class="portrait" src="img/CD-createTweak.png" alt="Claude Design のツールバーの Tweaks アイコンを押すと「Describe a tweak...」入力欄と「Ideas」が表示される">
   </figure>
+  <ul>
+  <li><strong>Tweaks が生成されると</strong>上部にバーが並び、ドロップダウンやスウォッチでその場で切り替えられるようになる（例: <code>accent</code> = 深緑・弁柄・藍・墨、<code>paper</code> = 生成り紙・白磁・鳥の子、<code>rhythm</code> = ゆったり・標準・引き締め）。<strong>どの軸が出るかはデザインごとに変わる</strong></li>
+  </ul>
   <figure class="diagram">
-  <img src="img/ClaudeDesign_tweaks2.png" alt="Claude Design の Tweaks パネル — 見た目（paper・layout）やコピー（voice）をプリセットで切り替えられる" class="portrait">
+  <img src="img/CD-tweaks.png" alt="Claude Design の Tweaks バー — accent（色スウォッチ）・paper・rhythm をその場で切り替えられる">
   </figure>
 </li>
 <li><strong>LP を見直し、不要なセクションや機能はチャットで削除・修正を依頼する</strong>
   <ul>
   <li>Claude Design はプロンプトの意図を超えて機能やセクションを追加することがある。「このセクションは不要です」「このボタンを消してください」とチャット欄で伝えれば修正してもらえる</li>
+  <li>複数まとめて伝えてよい。例:「CTA が『Slack に追加』になっていますが『購入する』にしてください。ナビの『Slack に追加』は『マイページ』遷移ボタンにしてください。料金プランは横に並べてください」</li>
   </ul>
   <figure class="diagram">
-  <img src="img/claude-design-review.png" alt="Claude Design が生成したデザイン例（不要なセクションを確認している画面）">
-  </figure>
-  <ul>
-  <li><strong>「Mark up」タブなら画面に直接手描きで注釈しながら指示できる</strong>。直したい箇所を丸や矢印で示し、そのまま下の欄に指示を書いて送ると反映される</li>
-  </ul>
-  <figure class="diagram">
-  <img src="img/ClaudeDesign_Markup1.png" alt="Claude Design の Mark up タブ — 「動きを見る」ボタンに丸と矢印の注釈を描き、下の入力欄に「動きを見るボタンは要りません」と指示を送る画面">
-  </figure>
-  <figure class="diagram">
-  <img src="img/ClaudeDesign_Markup2.png" alt="Mark up の指示が反映され、「動きを見る」ボタンが削除された結果">
+  <img src="img/CD-brushup.png" alt="チャットで修正を依頼した結果のフルページ表示。ナビに 特徴・料金プラン・FAQ・お問い合わせ・マイページ が並び、CTA が「購入する」になっている">
   </figure>
 </li>
-<li>仕上がったデザインは <strong>Claude Design の Project を zip でエクスポート</strong>しておく
-  <ul><li>操作: 画面右上の「Share」ボタン → 「Project archive (.zip)」を選んでダウンロードする</li></ul>
+<li>仕上がったデザインを <strong>zip でエクスポート</strong>しておく
+  <ul>
+  <li>画面右上の <strong>「Share」</strong> を押し、Export の <strong>「Claude Code — Implement this design in code」→「Send」</strong>を選ぶ</li>
+  </ul>
   <figure class="diagram">
-  <img src="img/ClaudeDesignShareZip.png" alt="Claude Design のエクスポート画面（Project archive .zip を選択）" class="portrait">
+  <img class="w500" src="img/CD-export1.png" alt="Claude Design の Share メニュー。Export に PNG・Project HTML・Claude Code・PowerPoint が並び、Claude Code の Send を選択する">
   </figure>
+  <ul>
+  <li><strong>Hand off to Claude Code</strong> ダイアログが開くので、<strong>「Download .zip」</strong>でダウンロードする（タブは <strong>Local agent</strong> のまま）</li>
+  <li>隣の <strong>「Copy prompt」</strong>は Claude Code に貼るためのプロンプトを取るボタンだが、<strong>このワークショップでは使わない</strong>。[2] では <code>SCREEN_SPEC.md</code> と組み合わせた独自のプロンプトを使うためである</li>
+  </ul>
+  <figure class="diagram">
+  <img class="w600" src="img/CD-export2.png" alt="Hand off to Claude Code ダイアログ。Local agent / Web session タブ、対象ファイル、Download .zip ボタン、Copy prompt ボタンが並ぶ">
+  </figure>
+  <ul>
+  <li class="note">Export の <strong>「Project HTML」→「Download」</strong>からでも同じ zip が取れる。どちらでもよい</li>
+  </ul>
 </li>
 </ol>
 
@@ -711,7 +732,7 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 <li><strong>いきなり1案に飛びつかない</strong>。出てきた3案を見比べて選ぶ</li>
 <li><strong>言語化テキストを書くより、デザイン Project（zip）を丸ごと渡す</strong>のが [2] への一番の橋渡しになる</li>
 <li><strong>チャットは何度でも使える</strong>。「このボタンの色を変えて」「このセクションを上に移動して」など気になる点は遠慮なく伝える</li>
-<li><strong>他ページは指定しない</strong>。Claude Design はデザインシステム確定だけに使う</li>
+<li><strong>他ページの画面は作らせない</strong>。お問い合わせ・マイページはナビにリンクを置くだけでよく、ページの中身は [2] Claude Code で実装する。Claude Design はデザインシステム確定だけに使う</li>
 <li><strong>Claude Design の質問への回答の自由度</strong>
   <ul>
   <li><strong>自由に決めてよいもの</strong>: トーン、配色、キャッチコピーなどの見た目と言い回し。Claude Design の質問にそのまま答えればよい</li>
@@ -748,13 +769,36 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 ## /success (購入完了)
 - 購入完了メッセージ＋マイページへのリンク</code></pre>
 <details class="spec">
+<summary>手で書く代わりに Claude Code に書かせる — オプション</summary>
+<p>次のプロンプトの<strong>上3行を自分のサービスに書き換えて</strong>送る（「制約:」以下はそのままでよい）。[1] の3案生成の待ち時間に進められる。</p>
+<pre><code>リポジトリのルートに SCREEN_SPEC.md を作って。
+
+サービス概要: &lt;1〜2行。何をするサービスか&gt;
+料金: &lt;月額・年額の金額&gt;
+画面: / (LP) ・ /contact ・ /mypage ・ /success の4枚
+
+各画面について「画面に何が表示されるか」を箇条書きで書いて。
+コンポーネント名やライブラリ名など実装の話は書かないこと。
+
+制約:
+・LP のセクションは ヒーロー / 特徴 / 使い方 / 料金 / FAQ
+・グローバルナビに 特徴 / 料金 / FAQ / お問い合わせ / マイページ を置く
+・/mypage はメールアドレス入力で本人確認してから
+  アカウント情報 / 購入の証 / サブスクリプション状況 を表示する
+・/success は購入完了メッセージとマイページへのリンク
+・購入フローは決済なしの簡易版
+  （料金セクションの購入ボタン → メール入力 → 購入の証を発行 → /success）</code></pre>
+<p class="note">「購入の証」の呼び名（ライセンスキー／API キー／ダウンロードコードなど）は自分の題材に合わせて決めてよい。制約に書いていないので AI が決めてくるが、気に入らなければ直す。</p>
+<p>⚠️ 生成された <code>SCREEN_SPEC.md</code> は<strong>最初から最後まで読み、自分の意図と違う箇所を直してから [2] に進む</strong>こと。ここで直さなかった箇所はそのまま実装され、Section 3 [11] のテスト設計でも「正しい仕様」として扱われる。上の雛形の内容を満たしているかが最低限の確認点になる。</p>
+</details>
+<details class="spec">
 <summary>もっと具体的な記入例（玄米茶サンプル）を見る — 参考</summary>
 <pre><code># SCREEN_SPEC.md — 玄米茶（Slack AI サブスク SaaS）
 
 サービス概要: Slack に入れると会話の要約・タスク代行・検索をしてくれる AI bot。月額/年額のサブスク。
 
 ## 共通
-- グローバルナビ: ロゴ「玄米茶」/ 特徴 / 料金 / FAQ / お問い合わせ / マイページ / **購入する**（CTA）
+- グローバルナビ: ロゴ「玄米茶」/ 特徴 / 料金 / FAQ / お問い合わせ / マイページ
 - CTA「購入する」は料金セクション（`#pricing`）へ。**「無料で試す」等の文言は使わない**
 - フッター: ナビ再掲・© 玄米茶
 
@@ -1983,22 +2027,48 @@ END;
 <h2 id="s12">[12] E2E テスト（画面を通して確かめる）<span class="diff">★★★</span></h2>
 <p><strong>お題</strong>: <a href="#s6-t2">[6] ②</a> の表から<strong>2本</strong>を選び、ブラウザ操作のテストにする<br>
 <strong>ツール</strong>: Playwright（Codegen）＋ Claude Code<br>
-<strong>前提</strong>: <a href="#s7">[7]</a> まで完了していること／<a href="#s6">[6]</a> の「## テスト項目」の表があること／<strong>Node.js 22 以上</strong>（<code>node -v</code> で確認）<br>
-<strong>学び</strong>: AI が作ったものを鵜呑みにせず、<strong>画面を通して自分で確かめられる</strong>ようになる。決めたことが守られているかを見て、まだ決めていなかったことをその場で見つけて決める</p>
+<strong>学び</strong>:AI が作ったものを鵜呑みにせず、<strong>画面を通して自分で確かめられる</strong>ようになる。決めたことが守られているかを見て、まだ決めていなかったことをその場で見つけて決める</p>
+
+<h3>E2E テストの考え方</h3>
+<p><strong>E2E（End to End）テスト</strong>とは、本物のブラウザでアプリを操作し、画面から DB までを通して確かめるテストである。<a href="#s6">[6]</a> のテストが部品を1つずつ台の上で検査するのに対して、E2E は組み上がったものに実際に乗ってみる。</p>
+<figure class="diagram">
+<img src="img/e2e_test_scope.svg" alt="[6] と [12] の守備範囲: 画面(React)—HTTP—Worker(Hono)—D1 の経路のうち、[6] の画面テストは画面だけ、API テストは Worker〜D1 だけをカバーし、あいだの HTTP のつなぎ目はどちらも通らない。[12] は画面から D1 までを1本でカバーする">
+</figure>
+<p>[6] は経路の左半分と右半分を別々に固める（画面テストは HTTP をモック、API テストは外部 API をモック）。どちらのテストも<strong>自分の側の想定でモックを書く</strong>ため、たとえばバックエンドが返すデータの項目名とフロントが読み取る項目名が食い違っていても、両方とも緑になる。実際に通信させて初めて、食い違いは「画面が空欄」のような形で現れる。この噛み合わせを確かめるのが E2E である。</p>
+<figure class="diagram">
+<img src="img/e2e_mock_mismatch.svg" alt="もし項目名が食い違っていたら: 画面は項目名 A を読み、Worker は項目名 B で返している。[6] の画面テストはモックを A で書き、API テストは期待値を B で書くので、どちらも緑のまま食い違いは誰も見ない。実際に通信する [12] の E2E だけが、画面の空欄として気づく">
+</figure>
+<p>E2E は [6] の置き換えではなく<strong>補完</strong>である。通して初めて破れが見える行だけをこの章で書き、それ以外の行は [6] の関数・API・画面のテストが引き取る。</p>
+<details class="spec">
+<summary>[6] と [12] の守備範囲の違いを、実際に起きうるバグで見る</summary>
+<table>
+<thead><tr><th>実際に起きうるバグ</th><th>[6] のテスト</th><th>[12] の E2E</th></tr></thead>
+<tbody>
+<tr><td>フロントが項目名を綴り間違えて画面が空欄</td><td><strong>見逃す</strong></td><td>気づける</td></tr>
+<tr><td><code>npm run build:front</code> を忘れて古い画面が配信されている</td><td><strong>見逃す</strong></td><td>気づける</td></tr>
+<tr><td>他人のメールで開いたとき前の人の購入の証が画面に残る</td><td><strong>見逃す</strong></td><td>気づける</td></tr>
+<tr><td>画面に導線が無い API を直接叩くと、他人の購入の証が返る</td><td>気づける（T-005 のように API を直接叩ける）</td><td><strong>見逃す</strong>（画面から辿れる操作しか書けない）</td></tr>
+<tr><td>DB に保存された中身が壊れている（画面には表示されない）</td><td>気づける（T-003 のように DB を直接見られる）</td><td><strong>見逃す</strong>（E2E が見るのは画面だけ）</td></tr>
+</tbody>
+</table>
+</details>
 
 <h3>Playwright とは</h3>
-<p>ブラウザを実際に動かしてアプリを操作するテストツールである。付属の <strong>Codegen</strong> を使うと、自分が画面でやった操作がそのままテストコードとして書き出される。そのため、テストの書き始めでつまずかない。</p>
-<p><a href="#s6">[6]</a> の Vitest が関数や API を単体で確かめるのに対して、Playwright は画面を通した一連の流れを確かめる。</p>
+<p>この E2E テストに使うのが <strong>Playwright</strong> である。ブラウザを実際に動かしてアプリを操作するテストツールで、付属の <strong>Codegen</strong> を使うと、自分が画面でやった操作がそのままテストコードとして書き出される。そのため、テストの書き始めでつまずかない。</p>
 
 <h3>流れ</h3>
-<ul>
-<li>⓪ 準備</li>
-<li>① テストする行を2本決める</li>
-<li>② 操作を録画する</li>
-<li>③ 検証を足して実行する</li>
-<li>④ 赤の原因を決める（赤が出たときだけ）</li>
-<li>⑤ push する</li>
-</ul>
+<table>
+<thead><tr><th>工程</th><th>やること</th></tr></thead>
+<tbody>
+<tr><td>⓪ 準備</td><td>Playwright を入れ、テスト対象のアプリを起動しておく</td></tr>
+<tr><td>① テストする行を2本決める</td><td><a href="#s6-t2">[6] ②</a> の表から、ブラウザで確かめる行を選ぶ</td></tr>
+<tr><td>② 操作を録画する</td><td>Codegen で画面を操作し、操作をコードとして書き出す</td></tr>
+<tr><td>③ 検証を足して実行する</td><td>録画したファイルに「期待結果どおりか」を判定する行を AI に足させ、実行して結果を表に書く</td></tr>
+<tr><td>④ 赤の原因を決める</td><td>実装・テスト・決めていなかった仕様のどれが原因かを切り分ける（赤が出たときだけ）</td></tr>
+<tr><td>⑤ push する</td><td>実行結果の生成物を除いてコミット・push する</td></tr>
+</tbody>
+</table>
+<p>② と ③ が2段に分かれているのは、Codegen が書き出すのは操作の行だけで、<strong>判定（<code>expect</code>）を1行も書かない</strong>ためである。かといって最初から AI にテストを丸ごと書かせると、AI は実装を読んで今の動きをバグごと正解にする。そこで、操作の骨格は録画で固定し、判定だけを <a href="#s6-t2">[6] ②</a> の表を根拠に AI に足させる。</p>
 <p>このうち<strong>自分で考えるのは ① の行の選択、③ の検証の確認、④ の赤の判断</strong>である。ほかは Codegen と AI が進める。</p>
 <p class="note">「何をテストするか」は <a href="#s6-t2">[6] ②</a> で決めてある。この章はそれを Playwright で実行に移す工程なので、決め直さない。</p>
 
@@ -2109,11 +2179,16 @@ npx playwright test --project=setup</code></pre>
 <p><strong>通しの行が無い場合は、ここで2本作る。</strong><a href="#s6-t1">[6] ①</a> の「## テスト要件」から、<strong>画面から DB まで通して初めて破れが見えるもの</strong>を2つ選び、表に「通し」の行を足す。前提条件と期待結果は、同じ要件の「画面」の行を見れば書ける。足した行の結果列には「[12] で確認予定」と書いておく（③ の実行で上書きする）。</p>
 
 <blockquote class="warn">
-<p><strong>⚠️ 外部サービスの画面を通る行は、ここで外す。</strong></p>
-<p>Playwright は Google のログイン画面や Stripe の決済画面を自動操作できない。<a href="#s9">[9]</a> や <a href="#s10">[10]</a> を実施した人は、その画面を通らないと再現できない行が出てくる。</p>
-<p><a href="#s10">[10]</a>（Clerk）の分は、⓪ 準備の前に置いた折りたたみ（[9][10] 実施済みの人向け）の <code>@clerk/testing</code> で回避できる。</p>
-<p><a href="#s9">[9]</a>（Stripe）の購入操作そのものは回避できない。<strong>前提条件を「購入済みのアカウント」に置き、購入後の表示を見る</strong>行に振り替える。</p>
-<p>振り替えられない行は選ばず、結果列に「決済画面の内側なので E2E 対象外。Stripe の設定として確認する」と書く。決済画面の中の不具合は Stripe 側の設定に由来するので、直す先が自分のリポジトリにない。</p>
+<p><strong>⚠️ [9][10] を実施した人へ: Google のログイン画面と Stripe の決済画面を通る行は、そのままでは選べない。</strong></p>
+<p>Playwright はこの2つの画面を自動操作できない。候補の行がどれに当たるかで、扱いを決める。</p>
+<table>
+<thead><tr><th>候補の行</th><th>この2本に選べるか</th></tr></thead>
+<tbody>
+<tr><td>ログインした先の画面を確かめる行（<a href="#s10">[10]</a>）</td><td><strong>選べる</strong>。⓪ 準備の前の折りたたみの <code>@clerk/testing</code> を使うと、ログイン画面を通らず認証済みの状態から録画できる</td></tr>
+<tr><td>購入したあとの表示を確かめる行（<a href="#s9">[9]</a>）</td><td><strong>前提条件を「購入済みのアカウント」に書き換えれば選べる</strong>。購入操作は録画に含めず、購入済みの状態から始める</td></tr>
+<tr><td>Stripe の決済画面の中の操作そのものを確かめる行（<a href="#s9">[9]</a>）</td><td><strong>選ばない</strong>。結果列に「決済画面の内側なので E2E 対象外。Stripe の設定として確認する」と書く。決済画面の中の不具合は Stripe 側の設定に由来し、直す先が自分のリポジトリに無い</td></tr>
+</tbody>
+</table>
 </blockquote>
 
 <p class="note"><strong>完了</strong>: 表の行を2つ選べていて、それぞれ前提条件と期待結果が埋まっている。</p>
@@ -2124,7 +2199,7 @@ npx playwright test --project=setup</code></pre>
 <pre><code>cd &lt;リポジトリのルート&gt;
 npx playwright codegen http://localhost:8787/ -o tests/&lt;ファイル名&gt;.spec.ts</code></pre>
 
-<p><strong>末尾のファイル名は自分で決める。</strong> <code>-o</code> は「録画した結果をどこに書き出すか」の指定である。① で2本選んだので、名前も2つ要る。</p>
+<p><strong>末尾のファイル名は自分で決める。</strong>① で2本選んだので、名前も2つ要る。</p>
 
 <p><strong>名前の付け方</strong>: <code>tests/&lt;表の番号&gt;-&lt;何を守るか分かる短い名前&gt;.spec.ts</code></p>
 <details class="spec">
@@ -2138,15 +2213,9 @@ npx playwright codegen http://localhost:8787/ -o tests/&lt;ファイル名&gt;.s
 </table>
 </details>
 <ul>
-<li>置き場所は <code>tests/</code> である。⓪ の準備で生成された <code>playwright.config.ts</code> に <code>testDir: './tests'</code> という行があり、<strong>この場所だけがテストの探索対象</strong>になっている。別の場所に置くと実行されない</li>
-<li>番号は表の行番号（<code>T-008</code> など）に合わせる。そうしておくと、テストが落ちたとき<strong>表のどの行のことか</strong>すぐ分かる</li>
-<li>拡張子は <code>.spec.ts</code> である。<strong>この拡張子で終わるファイルだけがテストとして拾われる</strong>（<code>.test.ts</code> も可。<code>.ts</code> だけだと無視される）</li>
+<li>置き場所は <code>tests/</code>、拡張子は <code>.spec.ts</code>。<strong>どちらかが違うとテストとして拾われない</strong></li>
+<li>番号は表の行番号（<code>T-008</code> など）に合わせる。テストが落ちたとき、表のどの行のことかすぐ分かる</li>
 </ul>
-
-<blockquote class="warn">
-<p><strong>⚠️ <code>-o</code> は実行した場所からの相対パス。</strong></p>
-<p><code>tests/</code> の中で実行すると保存先が見つからずに落ちる。<strong>録画した内容はそのまま消える。</strong></p>
-</blockquote>
 
 <figure class="diagram">
 <img src="img/PlaywrightCodegenStart.png" alt="Codegen 起動直後の画面 — 左に操作対象のブラウザ、右に Playwright Inspector が並ぶ。Inspector 側には goto の1行だけが書かれており、判定の行はまだ無い">
@@ -2189,7 +2258,9 @@ await page.goto('https://&lt;認証サービスのホスト&gt;/sign-in?redirect
 
 <h3>③ 検証を足して実行する</h3>
 
-<p><strong>やること</strong>: 録画したファイル1本ずつ、AI に検証を足させる。</p>
+<p>② で録画したファイルは、操作を再生するだけで<strong>まだ何も確かめていない</strong>。判定（<code>expect</code>）が1行も無いため、このまま実行すると、画面の表示が間違っていても操作さえ通れば緑になる。表の「期待結果」どおりの画面になったかを判定する行が足されて、初めてテストになる。</p>
+
+<p><strong>やること</strong>: 録画したファイル1本ずつ、AI に検証（期待結果の判定）を足させる。</p>
 <p><strong>埋めるのは <code>&lt; &gt;</code> の1箇所だけである。</strong>ファイル名に表の番号が入っているので、どの行かはそれで伝わる。あとの3行はそのままコピーする。</p>
 <pre><code>tests/&lt;録画したファイル名&gt; を、docs/TEST.md の「## テスト項目」の
 同じ番号の行に合わせて仕上げて。
@@ -2200,8 +2271,7 @@ await page.goto('https://&lt;認証サービスのホスト&gt;/sign-in?redirect
 
 <blockquote class="warn">
 <p><strong>⚠️ 「このアプリのテストを書いて」と頼まないこと。</strong></p>
-<p>そう頼むと AI は実装を読んで「今の動き」を正解として固定する。今あるバグごと正解になってしまう。</p>
-<p>表だけを根拠にさせるため、2行目の「実装コードは読まないこと」を必ず入れる。</p>
+<p>そう頼むと AI は実装を読み、今の動きをバグごと正解にする（「流れ」に書いた理由と同じ）。表だけを根拠にさせるため、2行目の「実装コードは読まないこと」を必ず入れる。</p>
 </blockquote>
 
 <p><strong>自分でやること</strong>: AI が書いたテストを開き、確認として足りているかを見る。</p>
@@ -2276,7 +2346,7 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
 <h3 class="warn">⚠️ ハマりどころ</h3>
 <ul>
 <li><strong><code>frontend</code> の <code>npm run dev</code> で録画してしまう</strong>: API が動かないので、購入も送信も失敗する。<code>backend</code> の <code>npm run dev</code> が表示した URL を使うこと</li>
-<li><strong><code>tests/</code> の中で <code>codegen -o tests/...</code> を実行する</strong>: 保存先が見つからずに落ちて、録画が消える</li>
+<li><strong><code>tests/</code> の中で <code>codegen -o tests/...</code> を実行する</strong>: <code>-o</code> は実行した場所からの相対パスなので保存先が見つからず、録画がそのまま消える。必ずリポジトリのルートで実行する</li>
 <li><strong><code>npm run build:front</code> を忘れる</strong>: 画面が古いまま配信される。しかも [6] のテストは全部緑になるので、E2E 以外では気づけない</li>
 <li><strong>同じメールアドレスを使い回す</strong>: テストは並列で走るので、互いのデータを踏む</li>
 </ul>
@@ -2290,28 +2360,6 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
 </ul>
 <p class="note"><a href="#s6">[6]</a> は「通し」以外の行について、緑にするか、緑にしない／できない理由を結果列に書くところまでを完了条件にしている。通しの行だけがこの章に回されているので、ここで結果列が埋まると <code>TEST.md</code> の表に空欄がなくなる。</p>
 
-<details class="spec">
-<summary>なぜ [6] の機能テストとは別にやるのか（部品検査と試乗）</summary>
-<p>[6] のテストは<strong>部品を1つずつ台の上で検査する</strong>。E2E は<strong>組み上がったものに実際に乗ってみる</strong>。守っている場所が違う。</p>
-<pre><code>         画面(React) ─── HTTP ─── Worker(Hono) ── D1
-[6]    ├────┤                   ├────────┤
-[12]     ├───────────────────────────────────┤
-                        ↑
-              [6] はここを見ていない</code></pre>
-<p>[6] は経路の<strong>左半分と右半分を別々に固める</strong>（画面テストは HTTP をモック、API テストは外部 API をモック）。</p>
-<p>ところが<strong>その2つが噛み合っているかは誰も見ていない</strong>。バックエンドが <code>licenseMasked</code> を返しフロントが <code>license_masked</code> を読んでいても、両方とも緑になる。</p>
-<table>
-<thead><tr><th>実際に起きうるバグ</th><th>[6] のテスト</th><th>[12] の E2E</th></tr></thead>
-<tbody>
-<tr><td>フロントが項目名を綴り間違えて画面が空欄</td><td><strong>見逃す</strong></td><td>気づける</td></tr>
-<tr><td><code>npm run build:front</code> を忘れて古い画面が配信されている</td><td><strong>見逃す</strong></td><td>気づける</td></tr>
-<tr><td>他人のメールで開いたとき前の人の購入の証が画面に残る</td><td><strong>見逃す</strong></td><td>気づける</td></tr>
-<tr><td>画面に導線が無い API を誰でも叩ける</td><td>気づける</td><td><strong>見逃す</strong></td></tr>
-<tr><td>連投時のレート制限が効かない</td><td>気づける</td><td><strong>見逃す</strong></td></tr>
-</tbody>
-</table>
-<p>E2E は [6] の置き換えではなく<strong>補完</strong>である。だから「通し」にしなかった行は [6] の関数・API・画面のテストが引き取る。</p>
-</details>
 <hr>
 
 <h2 id="s13">[13] 自動デプロイ（Workers Builds）<span class="diff">★★☆</span></h2>
