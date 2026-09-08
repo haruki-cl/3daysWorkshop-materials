@@ -1,74 +1,100 @@
-<svg width="100%" viewBox="0 0 720 600" role="img" xmlns="http://www.w3.org/2000/svg">
+<svg width="100%" viewBox="0 0 760 424" role="img" xmlns="http://www.w3.org/2000/svg">
   <title>[4] Claude Code でバックエンド作成 の流れ</title>
-  <desc>手順1 Hono + Workers の雛形作成、手順2 D1 の作成と wrangler.jsonc への登録、手順3 API の実装、手順4 ローカル DB のマイグレーション、手順5 フロントとバックエンドの Worker 統合、手順6 モック表示の実 API 差し替え、の6手順を順に進み、最後にブラウザで4項目を目視確認して [5] レビューへ進む。</desc>
+  <desc>左から右に3フェーズ。フェーズ1 土台をつくる（手順1 Worker の雛形を作る、手順2 クラウド D1 を作る）→ フェーズ2 中身を実装する（手順3 API を実装させる、手順4 ローカル DB を用意する）→ フェーズ3 1本にまとめる（手順5 Worker に統合する、手順6 モック表示を実 API に差し替える）。最後にブラウザで4点を確認して [5] レビューへ進む。</desc>
 
   <defs>
-    <marker id="s4-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M2 1L8 5L2 9" fill="none" stroke="#3a7bd5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <marker id="s4b-h" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#3a7bd5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
     </marker>
-    <marker id="s4-arr-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M2 1L8 5L2 9" fill="none" stroke="#0d9488" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <marker id="s4b-v" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#a8c2e2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="s4b-t" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#0d9488" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
     </marker>
     <style>
-      .ttl { font-family: "Hiragino Mincho ProN","Yu Mincho",serif; font-size:16px; font-weight:700; fill:#0f766e; }
-      .st  { font-family: "Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif; font-size:12px; font-weight:700; fill:#1a4a80; }
-      .sub { font-family: "Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif; font-size:10px; fill:#6b7280; }
-      .num { font-family: "Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif; font-size:12px; font-weight:700; fill:#ffffff; }
-      .tag { font-family: "Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif; font-size:9px; font-weight:700; fill:#b45309; }
-      .mono{ font-family: SFMono-Regular,Menlo,Consolas,monospace; font-size:9.5px; fill:#3a7bd5; }
-      .gl  { font-family: "Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif; font-size:11px; font-weight:700; fill:#0f766e; }
-      .gs  { font-family: "Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif; font-size:10px; fill:#0f766e; }
+      .ttl { font-family:"Hiragino Mincho ProN","Yu Mincho",serif; font-size:17px; font-weight:700; fill:#0f766e; }
+      .ph  { font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif; font-size:12.5px; font-weight:700; fill:#1a4a80; }
+      .emj { font-size:17px; }
+      .emjb{ font-size:19px; }
+      .st  { font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif; font-size:12.5px; font-weight:700; fill:#1a4a80; }
+      .hint{ font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif; font-size:10px; fill:#6b7280; }
+      .mono{ font-family:SFMono-Regular,Menlo,Consolas,monospace; font-size:9.5px; fill:#3a7bd5; }
+      .num { font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif; font-size:11px; font-weight:700; fill:#ffffff; }
+      .gl  { font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif; font-size:12px; font-weight:700; fill:#0f766e; }
+      .gs  { font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif; font-size:10.5px; fill:#0f766e; }
     </style>
   </defs>
 
-  <rect width="720" height="600" rx="16" fill="#faf8f2"/>
-  <text x="360" y="34" text-anchor="middle" class="ttl">[4] Claude Code でバックエンド作成 の流れ</text>
+  <rect width="760" height="424" rx="16" fill="#faf8f2"/>
+  <text x="380" y="36" text-anchor="middle" class="ttl">[4] Claude Code でバックエンド作成 の流れ</text>
 
-  <!-- 1 -->
-  <rect x="64" y="64" width="592" height="54" rx="10" fill="#ffffff" stroke="#3a7bd5" stroke-width="1.5"/>
-  <circle cx="92" cy="91" r="13" fill="#3a7bd5"/><text x="92" y="95" text-anchor="middle" class="num">1</text>
-  <text x="118" y="86" class="st">Hono + Cloudflare Workers の雛形を作らせる</text>
-  <text x="118" y="105" class="sub">できるもの: backend/ に src/index.ts・wrangler.jsonc・package.json・.gitignore（name はフロントと同じにする）</text>
-  <line x1="360" y1="118" x2="360" y2="136" stroke="#3a7bd5" stroke-width="1.5" marker-end="url(#s4-arr)"/>
+  <!-- ========== フェーズ1 ========== -->
+  <rect x="24" y="58" width="216" height="240" rx="12" fill="#eff4fa"/>
+  <text x="42" y="86" class="emjb">🧱</text>
+  <text x="68" y="86" class="ph">土台をつくる</text>
 
-  <!-- 2 -->
-  <rect x="64" y="140" width="592" height="54" rx="10" fill="#ffffff" stroke="#3a7bd5" stroke-width="1.5"/>
-  <circle cx="92" cy="167" r="13" fill="#3a7bd5"/><text x="92" y="171" text-anchor="middle" class="num">2</text>
-  <text x="118" y="162" class="st">クラウドの D1 を作って wrangler.jsonc に登録する</text>
-  <text x="118" y="181" class="sub">できるもの: 実在の database_id。ローカル開発では使わないが、これが無いとデプロイが失敗する</text>
-  <text x="644" y="162" text-anchor="end" class="tag">[7] で効く</text>
-  <line x1="360" y1="194" x2="360" y2="212" stroke="#3a7bd5" stroke-width="1.5" marker-end="url(#s4-arr)"/>
+  <rect x="38" y="104" width="188" height="80" rx="10" fill="#fff" stroke="#3a7bd5" stroke-width="1.5"/>
+  <circle cx="56" cy="124" r="10" fill="#3a7bd5"/><text x="56" y="128" text-anchor="middle" class="num">1</text>
+  <text x="74" y="128" class="emj">⚙️</text>
+  <text x="56" y="156" class="st">Worker の雛形を作る</text>
+  <text x="56" y="172" class="hint"><tspan class="mono">backend/</tspan> に雛形一式</text>
 
-  <!-- 3 -->
-  <rect x="64" y="216" width="592" height="54" rx="10" fill="#ffffff" stroke="#3a7bd5" stroke-width="1.5"/>
-  <circle cx="92" cy="243" r="13" fill="#3a7bd5"/><text x="92" y="247" text-anchor="middle" class="num">3</text>
-  <text x="118" y="238" class="st">API をまとめて実装させる</text>
-  <text x="118" y="257" class="sub">問い合わせの保存 / 購入の証の発行（決済なしの簡易版）/ メールに紐づく情報の取得。パスと入出力は AI に任せる</text>
-  <line x1="360" y1="270" x2="360" y2="288" stroke="#3a7bd5" stroke-width="1.5" marker-end="url(#s4-arr)"/>
+  <line x1="132" y1="186" x2="132" y2="202" stroke="#a8c2e2" stroke-width="2" marker-end="url(#s4b-v)"/>
 
-  <!-- 4 -->
-  <rect x="64" y="292" width="592" height="54" rx="10" fill="#ffffff" stroke="#3a7bd5" stroke-width="1.5"/>
-  <circle cx="92" cy="319" r="13" fill="#3a7bd5"/><text x="92" y="323" text-anchor="middle" class="num">4</text>
-  <text x="118" y="314" class="st">ローカル用の DB を用意する（マイグレーション）</text>
-  <text x="118" y="333" class="sub">npm run db:migrate:local — 開発中はローカル D1。クラウドの D1 への反映は [7] デプロイ時</text>
-  <line x1="360" y1="346" x2="360" y2="364" stroke="#3a7bd5" stroke-width="1.5" marker-end="url(#s4-arr)"/>
+  <rect x="38" y="204" width="188" height="80" rx="10" fill="#fff" stroke="#3a7bd5" stroke-width="1.5"/>
+  <circle cx="56" cy="224" r="10" fill="#3a7bd5"/><text x="56" y="228" text-anchor="middle" class="num">2</text>
+  <text x="74" y="228" class="emj">🗄️</text>
+  <text x="56" y="256" class="st">クラウド D1 を作る</text>
+  <text x="56" y="272" class="hint"><tspan class="mono">database_id</tspan> を登録</text>
 
-  <!-- 5 -->
-  <rect x="64" y="368" width="592" height="54" rx="10" fill="#ffffff" stroke="#3a7bd5" stroke-width="1.5"/>
-  <circle cx="92" cy="395" r="13" fill="#3a7bd5"/><text x="92" y="399" text-anchor="middle" class="num">5</text>
-  <text x="118" y="390" class="st">フロントとバックエンドを1つの Worker にまとめる</text>
-  <text x="118" y="409" class="sub">フロントも API も同じ URL から出る。以降のデプロイは backend/ から1回で済む</text>
-  <line x1="360" y1="422" x2="360" y2="440" stroke="#3a7bd5" stroke-width="1.5" marker-end="url(#s4-arr)"/>
+  <line x1="246" y1="178" x2="268" y2="178" stroke="#3a7bd5" stroke-width="1.8" marker-end="url(#s4b-h)"/>
 
-  <!-- 6 -->
-  <rect x="64" y="444" width="592" height="54" rx="10" fill="#ffffff" stroke="#3a7bd5" stroke-width="1.5"/>
-  <circle cx="92" cy="471" r="13" fill="#3a7bd5"/><text x="92" y="475" text-anchor="middle" class="num">6</text>
-  <text x="118" y="466" class="st">フロントのモック表示を実 API 呼び出しに差し替える</text>
-  <text x="118" y="485" class="sub">同一オリジンなので /api/... の相対パスで呼ぶ</text>
-  <line x1="360" y1="498" x2="360" y2="518" stroke="#0d9488" stroke-width="1.5" marker-end="url(#s4-arr-teal)"/>
+  <!-- ========== フェーズ2 ========== -->
+  <rect x="272" y="58" width="216" height="240" rx="12" fill="#eff4fa"/>
+  <text x="290" y="86" class="emjb">🔧</text>
+  <text x="316" y="86" class="ph">中身を実装する</text>
 
-  <!-- 完了の定義 -->
-  <rect x="64" y="522" width="592" height="60" rx="10" fill="#eaf7f4" stroke="#0d9488" stroke-width="1.5"/>
-  <text x="80" y="544" class="gl">✅ 完了の定義 — ブラウザで目視確認して [5] レビュー へ</text>
-  <text x="80" y="565" class="gs">① LP 表示　② SPA ルーティング（/mypage が 404 にならない）　③ 空入力が弾かれる　④ 正常系が通る</text>
+  <rect x="286" y="104" width="188" height="80" rx="10" fill="#fff" stroke="#3a7bd5" stroke-width="1.5"/>
+  <circle cx="304" cy="124" r="10" fill="#3a7bd5"/><text x="304" y="128" text-anchor="middle" class="num">3</text>
+  <text x="322" y="128" class="emj">🔌</text>
+  <text x="304" y="156" class="st">API を実装させる</text>
+  <text x="304" y="172" class="hint">保存・発行・取得の3本</text>
+
+  <line x1="380" y1="186" x2="380" y2="202" stroke="#a8c2e2" stroke-width="2" marker-end="url(#s4b-v)"/>
+
+  <rect x="286" y="204" width="188" height="80" rx="10" fill="#fff" stroke="#3a7bd5" stroke-width="1.5"/>
+  <circle cx="304" cy="224" r="10" fill="#3a7bd5"/><text x="304" y="228" text-anchor="middle" class="num">4</text>
+  <text x="322" y="228" class="emj">📦</text>
+  <text x="304" y="256" class="st">ローカル DB を用意</text>
+  <text x="304" y="272" class="hint"><tspan class="mono">db:migrate:local</tspan></text>
+
+  <line x1="494" y1="178" x2="516" y2="178" stroke="#3a7bd5" stroke-width="1.8" marker-end="url(#s4b-h)"/>
+
+  <!-- ========== フェーズ3 ========== -->
+  <rect x="520" y="58" width="216" height="240" rx="12" fill="#eff4fa"/>
+  <text x="538" y="86" class="emjb">🔗</text>
+  <text x="564" y="86" class="ph">1本にまとめる</text>
+
+  <rect x="534" y="104" width="188" height="80" rx="10" fill="#fff" stroke="#3a7bd5" stroke-width="1.5"/>
+  <circle cx="552" cy="124" r="10" fill="#3a7bd5"/><text x="552" y="128" text-anchor="middle" class="num">5</text>
+  <text x="570" y="128" class="emj">🧩</text>
+  <text x="552" y="156" class="st">Worker 1本に統合</text>
+  <text x="552" y="172" class="hint">フロントも API も同じ URL</text>
+
+  <line x1="628" y1="186" x2="628" y2="202" stroke="#a8c2e2" stroke-width="2" marker-end="url(#s4b-v)"/>
+
+  <rect x="534" y="204" width="188" height="80" rx="10" fill="#fff" stroke="#3a7bd5" stroke-width="1.5"/>
+  <circle cx="552" cy="224" r="10" fill="#3a7bd5"/><text x="552" y="228" text-anchor="middle" class="num">6</text>
+  <text x="570" y="228" class="emj">🔄</text>
+  <text x="552" y="256" class="st">モック → 実 API</text>
+  <text x="552" y="272" class="hint"><tspan class="mono">/api/...</tspan> を相対パスで</text>
+
+  <!-- ゴール -->
+  <path d="M628 298 L628 318 L380 318 L380 336" fill="none" stroke="#0d9488" stroke-width="1.8" marker-end="url(#s4b-t)"/>
+
+  <rect x="24" y="342" width="712" height="60" rx="10" fill="#eaf7f4" stroke="#0d9488" stroke-width="1.5"/>
+  <text x="44" y="366" class="emj">🎯</text>
+  <text x="68" y="366" class="gl">完了の定義 — ブラウザで4点みて [5] レビュー へ</text>
+  <text x="44" y="388" class="gs">✅ LP が出る　✅ <tspan class="mono">/mypage</tspan> が 404 にならない　✅ 空入力が弾かれる　✅ 正常系が通る</text>
 </svg>

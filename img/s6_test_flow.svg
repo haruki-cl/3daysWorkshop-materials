@@ -1,0 +1,73 @@
+<svg width="100%" viewBox="0 0 720 330" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>[6] 機能テストの流れ</title>
+  <desc>① テスト要件と ② テスト設計は実装コードを読まない新しいセッションで行い、③ テスト環境準備からは実装セッションに戻る。各工程に人間がやること（👤）と AI にやらせること（🤖）を併記。④ テスト項目作成、⑤ テスト結果、⑥ コード修正と進み、直したら ⑤ に戻って再実行する</desc>
+
+  <defs>
+    <marker id="ar-g2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M1,0 L7,4 L1,8" fill="none" stroke="#8a8272" stroke-width="1.4"/>
+    </marker>
+    <marker id="ar-t2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M1,0 L7,4 L1,8" fill="none" stroke="#0d9488" stroke-width="1.4"/>
+    </marker>
+  </defs>
+
+  <rect width="720" height="330" rx="16" fill="#faf8f2"/>
+
+  <text x="360" y="32" text-anchor="middle" font-family="Hiragino Mincho ProN,Yu Mincho,serif" font-size="17" font-weight="700" fill="#0f766e">[6] 機能テストの流れ</text>
+  <line x1="230" y1="42" x2="490" y2="42" stroke="#c8a96a" stroke-width="1.5"/>
+
+  <g font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif">
+    <!-- session band for ①② -->
+    <rect x="52" y="72" width="396" height="82" rx="10" fill="none" stroke="#534ab7" stroke-width="1" stroke-dasharray="5 3"/>
+    <text x="60" y="66" font-size="11" font-weight="700" fill="#534ab7">新しいセッションで（実装コードを読まない）</text>
+    <text x="580" y="66" text-anchor="middle" font-size="11" fill="#6b6355">ここから実装セッションに戻る</text>
+
+    <!-- Row 1 -->
+    <rect x="60" y="80" width="160" height="66" rx="8" fill="#eeeefe" stroke="#534ab7" stroke-width="1.2"/>
+    <text x="140" y="100" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3c3489">① テスト要件</text>
+    <text x="140" y="117" text-anchor="middle" font-size="10" fill="#3c3489">👤 質問に答え、候補を取捨</text>
+    <text x="140" y="133" text-anchor="middle" font-size="10" fill="#3c3489">🤖 質問・壁打ち・書き出し</text>
+
+    <line x1="220" y1="113" x2="274" y2="113" stroke="#8a8272" stroke-width="1.5" marker-end="url(#ar-g2)"/>
+
+    <rect x="280" y="80" width="160" height="66" rx="8" fill="#eeeefe" stroke="#534ab7" stroke-width="1.2"/>
+    <text x="360" y="100" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3c3489">② テスト設計</text>
+    <text x="360" y="117" text-anchor="middle" font-size="10" fill="#3c3489">👤 抜けと不要な行を確認</text>
+    <text x="360" y="133" text-anchor="middle" font-size="10" fill="#3c3489">🤖 壊れる場所を表にする</text>
+
+    <line x1="440" y1="113" x2="494" y2="113" stroke="#8a8272" stroke-width="1.5" marker-end="url(#ar-g2)"/>
+
+    <rect x="500" y="80" width="160" height="66" rx="8" fill="#e6fafa" stroke="#0d9488" stroke-width="1.2"/>
+    <text x="580" y="100" text-anchor="middle" font-size="12.5" font-weight="700" fill="#085450">③ テスト環境準備</text>
+    <text x="580" y="125" text-anchor="middle" font-size="10" fill="#085450">🤖 Vitest 環境を用意</text>
+
+    <!-- elbow ③ → ④ -->
+    <path d="M580,146 V178 H140 V204" fill="none" stroke="#8a8272" stroke-width="1.5" marker-end="url(#ar-g2)"/>
+
+    <!-- Row 2 -->
+    <rect x="60" y="210" width="160" height="66" rx="8" fill="#e6fafa" stroke="#0d9488" stroke-width="1.2"/>
+    <text x="140" y="230" text-anchor="middle" font-size="12.5" font-weight="700" fill="#085450">④ テスト項目作成</text>
+    <text x="140" y="255" text-anchor="middle" font-size="10" fill="#085450">🤖 表のとおり実装</text>
+
+    <line x1="220" y1="243" x2="274" y2="243" stroke="#8a8272" stroke-width="1.5" marker-end="url(#ar-g2)"/>
+
+    <rect x="280" y="210" width="160" height="66" rx="8" fill="#e6fafa" stroke="#0d9488" stroke-width="1.2"/>
+    <text x="360" y="230" text-anchor="middle" font-size="12.5" font-weight="700" fill="#085450">⑤ テスト結果</text>
+    <text x="360" y="247" text-anchor="middle" font-size="10" fill="#085450">👤 どれをどう直すか決める</text>
+    <text x="360" y="263" text-anchor="middle" font-size="10" fill="#085450">🤖 原因の切り分け（直さない）</text>
+
+    <line x1="440" y1="243" x2="494" y2="243" stroke="#8a8272" stroke-width="1.5" marker-end="url(#ar-g2)"/>
+
+    <rect x="500" y="210" width="160" height="66" rx="8" fill="#e6fafa" stroke="#0d9488" stroke-width="1.2"/>
+    <text x="580" y="230" text-anchor="middle" font-size="12.5" font-weight="700" fill="#085450">⑥ コード修正</text>
+    <text x="580" y="247" text-anchor="middle" font-size="10" fill="#085450">👤 差分を確認し自分で実行</text>
+    <text x="580" y="263" text-anchor="middle" font-size="10" fill="#085450">🤖 実装かテストを直す</text>
+
+    <!-- loop ⑥ → ⑤ -->
+    <path d="M580,276 V298 H360 V282" fill="none" stroke="#0d9488" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ar-t2)"/>
+    <text x="470" y="292" text-anchor="middle" font-size="11" font-weight="700" fill="#0d9488">直したら再実行</text>
+
+    <!-- legend -->
+    <text x="60" y="316" font-size="10.5" fill="#6b6355">👤 = 人間がやること　🤖 = AI にやらせること</text>
+  </g>
+</svg>
