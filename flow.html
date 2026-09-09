@@ -958,22 +958,18 @@ wrangler whoami</code></pre>
 </li>
 <li id="s4-step3"><strong>API をまとめて実装させる</strong>
   <ul>
-  <li>必要な機能を日本語でまとめて伝え、Claude にいっぺんに実装させてよい。API のパス・入出力の設計は AI に任せる</li>
+  <li>要件は <code>SCREEN_SPEC.md</code> に書いてあるので、プロンプトで機能を並べ直さない。API のパス・入出力の設計は AI に任せる</li>
   <li>購入の証の発行は決済なしの簡易版でよい（<a href="#s9">[9]</a> で Stripe 購入 → Webhook 発行に差し替える）</li>
   </ul>
 <pre><code>Hono + Cloudflare Workers + TypeScript でバックエンドを実装して。
 D1（SQLite）を使うこと。マイグレーションファイルは migrations/ 以下に作って。
-frontend/ のコードを見て、それに対応する API を backend/ に実装して。
-
-必要な機能:
-- 問い合わせを受け付けて D1 に保存する
-- メールアドレスを受け取って購入の証を発行する（決済なしの簡易版）
-- メールアドレスに紐づく情報を D1 から返す</code></pre>
+ルートの SCREEN_SPEC.md と frontend/ のコードを見て、必要な API を backend/ に実装して。
+購入の証の発行は決済なしの簡易版でよい。</code></pre>
 
   <details class="spec"><summary>【補足】この作り方の割り切りと、実務で外せない設計を見る</summary>
-  <p>ここでは「<code>frontend/</code> を見て、それに対応する API を作って」と頼んでいる。3日で「動いて公開されている」状態まで到達することを優先した、ワークショップ用の割り切りである。</p>
+  <p>ここでは「<code>SCREEN_SPEC.md</code> と <code>frontend/</code> のコードを見て API を作って」と頼んでいる。3日で「動いて公開されている」状態まで到達することを優先した、ワークショップ用の割り切りである。</p>
 
-  <p>この作り方では、<strong>データモデルの根拠が「画面に映っている項目」だけ</strong>になる。画面が語るのは「今この瞬間に何を見せたいか」なので、そこから起こしたテーブルは画面が変わるたびに揺れる。</p>
+  <p><code>SCREEN_SPEC.md</code> は画面仕様なので、この作り方では<strong>データモデルの根拠が「画面に映っている項目」だけ</strong>になる。画面が語るのは「今この瞬間に何を見せたいか」なので、画面から起こしたテーブルは画面が変わるたびに揺れる。</p>
 
   <h4>ローンチ後に機能を足すと何が起きるか</h4>
   <p>ローンチ後に機能を足していく前提なら、最初の設計が効いてくる。特に先に決めておくべきなのは<strong>後から取り返しがつかないもの</strong>で、下の表の6つである。<strong>後から変えられるもの</strong>（正規化の度合い・インデックス・API のレスポンスの形・画面・集計）は、走りながら決めてよい。</p>
@@ -1016,21 +1012,11 @@ frontend/ のコードを見て、それに対応する API を backend/ に実�
   </details>
 </li>
 <li><strong>ローカル用の DB を用意する（マイグレーション）</strong>
-  <details class="spec"><summary>マイグレーションとは・ローカルと本番の使い分けを見る</summary>
-  <p>マイグレーション＝テーブル定義の SQL ファイル（<code>migrations/</code> 以下）を順に適用して、DB を作る・変える仕組みである。ここではローカル用の D1（<code>--local</code>）を用意する。開発中はローカル D1 を使用し、クラウドの D1 への反映は [7] デプロイ時に行う。</p>
-  <table>
-  <thead><tr><th>タイミング</th><th>コマンド</th><th>対象</th></tr></thead>
-  <tbody>
-  <tr><td>API 実装中（今ここ）</td><td><code>npm run db:migrate:local</code></td><td>手元の D1（ローカル）</td></tr>
-  <tr><td>デプロイ直前（[7]）</td><td><code>npm run db:migrate:remote</code></td><td>Cloudflare の D1（本番）</td></tr>
-  </tbody>
-  </table>
-  <figure class="diagram">
-  <img src="img/arch_local_vs_prod.svg" alt="ローカル vs 本番 アーキテクチャ図: 開発時も本番も Cloudflare Worker 一本で配信（ローカルは wrangler dev、本番は Cloudflare）。データはローカルと本番で別物">
-  </figure>
+  <details class="spec"><summary>マイグレーションとは</summary>
+  <p>マイグレーション＝テーブル定義の SQL ファイル（<code>migrations/</code> 以下）を順に適用して、DB を作る・変える仕組みである。ここではローカル用の D1（<code>--local</code>）を用意する。開発中はローカル D1 を使用し、クラウドの D1 への反映は [<a href="#s7">7</a>] デプロイ時に行う。</p>
   </details>
 Claude Code に依頼する:
-<pre><code>npm run db:migrate:local を実行してローカルの D1 にテーブルを作って。</code></pre>
+<pre><code>マイグレーションを実行してローカルの D1 にテーブルを作って。</code></pre>
 </li>
 <li id="s4-step5"><strong>フロントとバックエンドを1つの Worker にまとめる</strong>
   <p class="note">今は<strong>フロント用・バックエンド用で2つのサーバーが別々</strong>に動いている。これを<strong>Worker 一本にまとめる</strong>と、フロントも API も<strong>同じ URL</strong> から出るようになる。</p>
@@ -1044,29 +1030,18 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 </li>
 <li><strong>フロントのモック表示を実 API 呼び出しに差し替える</strong>
   Claude Code への指示例:
-<pre><code>モックを実 API 呼び出しに変えて。フロントと API は同一オリジンなので /api/... の相対パスで呼ぶ。</code></pre>
+<pre><code>フロントのモック表示を実 API 呼び出しに変えて。
+フロントと API は同じ Worker から配信されているので、
+http://localhost:... のようなホスト名は書かず、/api/... の形で呼ぶ。</code></pre>
 </li>
 </ol>
 
-<h3 id="s4-scripts">必要な npm scripts（よく使う操作に名前を付けておく）</h3>
-<p><code>wrangler …</code> の長いコマンドを毎回打つ代わりに、<strong>よく使う操作を <code>package.json</code> の script にまとめておく</strong>と楽である。確認も追加も Claude Code に任せる：</p>
-<table>
-<thead><tr><th>script</th><th>中身</th><th>用途</th></tr></thead>
-<tbody>
-<tr><td><code>dev</code></td><td><code>wrangler dev</code></td><td>ローカル起動</td></tr>
-<tr><td><code>build:front</code></td><td><code>npm --prefix ../frontend run build</code></td><td>フロントを dist/ にビルド</td></tr>
-<tr><td><code>db:migrate:local</code></td><td><code>wrangler d1 migrations apply DB --local</code></td><td>ローカル D1 にマイグレーション</td></tr>
-<tr><td><code>db:migrate:remote</code></td><td><code>wrangler d1 migrations apply DB --remote</code></td><td>本番 D1 にマイグレーション（[7]で使う）</td></tr>
-<tr><td><code>deploy</code></td><td><code>npm run build:front &amp;&amp; wrangler deploy</code></td><td>ビルド→デプロイ一発（[7]で使う）</td></tr>
-<tr><td><code>test</code></td><td><code>vitest run</code></td><td>テスト（[6]で使う）</td></tr>
-</tbody>
-</table>
-<pre><code>package.json に以下の npm scripts が無ければ追加して。
+<h3 id="s4-scripts">npm scripts を2つ追加する</h3>
+<p>毎回打つには長い操作だけ、<code>package.json</code> の script に名前を付けておく。追加は Claude Code に任せる：</p>
+<pre><code>backend/package.json に以下の npm scripts が無ければ追加して。
 - build:front: npm --prefix ../frontend run build
-- db:migrate:local: wrangler d1 migrations apply DB --local
-- db:migrate:remote: wrangler d1 migrations apply DB --remote
-- deploy: npm run build:front && wrangler deploy
-- test: vitest run</code></pre>
+- deploy: npm run build:front && wrangler deploy</code></pre>
+<p class="note"><code>build:front</code> はフロントを <code>dist/</code> にビルドする（ローカル確認のたびに使う）。<code>deploy</code> はビルドとデプロイをまとめたもので、<strong>ビルド忘れによる「古い画面が公開される」を防ぐ</strong>ため [<a href="#s7">7</a>] で使う。</p>
 
 <h3>ローカルでの動かし方</h3>
 <p>自分でコマンドを打たず、<strong>Claude Code に依頼して実行させるのが基本である</strong>:</p>
@@ -1087,20 +1062,17 @@ SPA なので未知のパスは index.html にフォールバックさせて。<
 <p><code>npm run build:front &amp;&amp; npm run dev</code> でサーバーを起動し、以下を<strong>ブラウザで目視確認</strong>する（⚠️ コマンドの結果だけで満足しない。表示と遷移はブラウザでしか確認できない）：</p>
 <ol>
 <li><strong>LP 表示</strong>: ブラウザで表示された URL のトップ（<code>/</code>）を開き、LP が崩れずに表示されること</li>
-<li><strong>SPA ルーティング</strong>: ブラウザで <code>/mypage</code> を開き、404 にならず画面が表示されること
-  <details class="spec"><summary>404 になる場合</summary>
-  <p><code>wrangler.jsonc</code> の <code>assets.not_found_handling</code> に <code>"single-page-application"</code> を追加してから再起動する。</p>
-  </details>
-</li>
-<li><strong>バリデーション（入力チェック）が弾く</strong>: ブラウザで問い合わせフォームを開き、name・email・本文のどれかを空のまま送信する → エラーメッセージが表示されること
+<li><strong>正常系の動作</strong>: 問い合わせフォームに正しい値を入れて送信 → 画面の表示が期待どおり変わること
   <ul>
-  <li>DevTools の Network タブで <code>400</code> が返っていれば、API 側の検証も効いている</li>
-  <li>ブラウザの必須チェック（<code>required</code>）で止まった場合は、リクエスト自体が飛ばないので 400 は出ない。API 側だけを確かめるなら、Console から不正なボディを直接送る（パスは AI が決めたものに読み替える）
-<pre><code>fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})</code></pre>
-  </li>
+  <li>DevTools の Network タブに <code>/api/...</code> へのリクエストが出ていて、成功のレスポンスが返っていること。ここでフロントと API がつながったことを確認する</li>
   </ul>
 </li>
-<li><strong>正常系の動作</strong>: 問い合わせフォームに正しい値を入れて送信 → 成功レスポンスが返り、画面の表示が期待どおり変わること</li>
+<li><strong>統合後も <code>/mypage</code> が表示できる</strong>: ブラウザのアドレスバーに <code>/mypage</code> を直接入れて開き、404 にならず画面が表示されること
+  <details class="spec"><summary>404 になる場合</summary>
+  <p>SPA は <code>index.html</code> 1枚なので、<code>/mypage</code> というファイルは存在しない。アドレスバーに直接入れると、Worker はファイルを探して見つけられず 404 を返す。</p>
+  <p>直し方: 知らないパスには <code>index.html</code> を返すよう、<code>backend/wrangler.jsonc</code> の <code>assets.not_found_handling</code> に <code>"single-page-application"</code> を追加して再起動する。</p>
+  </details>
+</li>
 </ol>
 
 <hr>
@@ -1487,7 +1459,7 @@ skipped があってもテスト全体は成功として扱われるので、画
 問題があれば修正して。</code></pre>
 </li>
 <li>リモート DB にマイグレーションを適用する
-<pre><code>npm run db:migrate:remote を実行して本番の D1 にテーブルを作って。</code></pre>
+<pre><code>マイグレーションを実行して本番の D1 にテーブルを作って。</code></pre>
 </li>
 <li>デプロイは<strong>必ず <code>backend/</code> から</strong>行う。<code>frontend/</code> で <code>wrangler deploy</code> すると、フロントだけが上がり、API が繋がらない:
 <pre><code>cd backend
@@ -1502,7 +1474,7 @@ npm run deploy</code></pre>
 <li><strong>[6] の表の結果列が埋まっているのを確認してから公開する</strong></li>
 <li>ここまでは手元で <code>wrangler deploy</code> を叩く<strong>手動デプロイ</strong>である。<code>git push</code> するだけで自動デプロイしたい場合は、Section 3 オプション <a href="#s13">[13] 自動デプロイ</a> で扱う</li>
 <li><strong>ビルドが通らないとデプロイも止まる。</strong>デプロイ前にローカルで <code>npm run build:front</code> が成功するか確認しておくと安全である</li>
-<li>リモート D1 のマイグレーション（<code>db:migrate:remote</code>）を忘れると、API が「テーブルが無い」で失敗する</li>
+<li>リモート D1 のマイグレーション（<code>--remote</code>）を忘れると、API が「テーブルが無い」で失敗する</li>
 </ul>
 
 <h3>完了したら push する</h3>

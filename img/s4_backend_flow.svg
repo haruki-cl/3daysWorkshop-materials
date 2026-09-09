@@ -1,6 +1,6 @@
 <svg width="100%" viewBox="0 0 760 424" role="img" xmlns="http://www.w3.org/2000/svg">
   <title>[4] Claude Code でバックエンド作成 の流れ</title>
-  <desc>左から右に3フェーズ。フェーズ1 土台をつくる（手順1 Worker の雛形を作る、手順2 クラウド D1 を作る）→ フェーズ2 中身を実装する（手順3 API を実装させる、手順4 ローカル DB を用意する）→ フェーズ3 1本にまとめる（手順5 Worker に統合する、手順6 モック表示を実 API に差し替える）。最後にブラウザで4点を確認して [5] レビューへ進む。</desc>
+  <desc>左から右に3フェーズ。フェーズ1 土台をつくる（手順1 Worker の雛形を作る、手順2 クラウド D1 を作る）→ フェーズ2 中身を実装する（手順3 API を実装させる、手順4 ローカル DB を用意する）→ フェーズ3 1本にまとめる（手順5 Worker に統合する、手順6 モック表示を実 API に差し替える）。最後にブラウザで3点を確認して [5] レビューへ進む。</desc>
 
   <defs>
     <marker id="s4b-h" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
@@ -67,7 +67,7 @@
   <circle cx="304" cy="224" r="10" fill="#3a7bd5"/><text x="304" y="228" text-anchor="middle" class="num">4</text>
   <text x="322" y="228" class="emj">📦</text>
   <text x="304" y="256" class="st">ローカル DB を用意</text>
-  <text x="304" y="272" class="hint"><tspan class="mono">db:migrate:local</tspan></text>
+  <text x="304" y="272" class="hint">migrations を <tspan class="mono">--local</tspan> で適用</text>
 
   <line x1="494" y1="178" x2="516" y2="178" stroke="#3a7bd5" stroke-width="1.8" marker-end="url(#s4b-h)"/>
 
@@ -95,6 +95,6 @@
 
   <rect x="24" y="342" width="712" height="60" rx="10" fill="#eaf7f4" stroke="#0d9488" stroke-width="1.5"/>
   <text x="44" y="366" class="emj">🎯</text>
-  <text x="68" y="366" class="gl">完了の定義 — ブラウザで4点みて [5] レビュー へ</text>
-  <text x="44" y="388" class="gs">✅ LP が出る　✅ <tspan class="mono">/mypage</tspan> が 404 にならない　✅ 空入力が弾かれる　✅ 正常系が通る</text>
+  <text x="68" y="366" class="gl">完了の定義 — ブラウザで3点みて [5] レビュー へ</text>
+  <text x="44" y="388" class="gs">✅ LP が出る　✅ 正常系が通る（Network タブで <tspan class="mono">/api/...</tspan> を確認）　✅ <tspan class="mono">/mypage</tspan> が表示される</text>
 </svg>
