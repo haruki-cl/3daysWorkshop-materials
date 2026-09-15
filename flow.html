@@ -453,7 +453,7 @@ details.spec pre{margin:.5em 0 0;}
 <tr><td>1:30–2:00</td><td><strong>最終発表会（1人3分）＋ ラップアップ・アンケート</strong></td></tr>
 </tbody>
 </table>
-<p class="note">各セクションとも、固定の休憩枠は設けない。<strong>AI の生成待ち（[1] の3案生成・[4] の実装生成など数分かかる場面）を小休止・雑談に充てる</strong>。長い生成中は席を立ってよい。</p>
+<p class="note">各セクションとも、固定の休憩枠は設けない。小休止は各自のタイミングでとってよい。</p>
 <p class="note">進み方は各自のペースでよく、予定より早く終わった人はそのまま次の実装に進んでよい。また <strong>Section 3 の [8]〜[14] はオプション課題</strong>で、この時間は各自が資料を読みながら選んで進める形になる。わからないことがあれば、講師にチャット等で質問してほしい。</p>
 <hr>
 
@@ -495,7 +495,7 @@ details.spec pre{margin:.5em 0 0;}
 <hr>
 
 <h2 id="s07">Git ブランチ（dev → main）</h2>
-<p>前提: GitHub でリポジトリ（名前は全員共通で <code>3days-workshop</code>、<strong>Private</strong>）を新規作成し、ローカルに clone してから以下を実施する。フロント・バックエンドは同じリポジトリ（モノレポ）で管理する。</p>
+<p>前提: GitHub（<strong>社内メールアドレスでログインした個人アカウント</strong>。組織配下ではない）でリポジトリ（名前は全員共通で <code>3days-workshop</code>、<strong>Private</strong>）を新規作成し、ローカルに clone してから以下を実施する。フロント・バックエンドは同じリポジトリ（モノレポ）で管理する。</p>
 <ul>
 <li>最初に <strong><code>dev</code> ブランチを切り、作業はすべて <code>dev</code></strong> で進める</li>
 <li>区切りのいいところで<strong>こまめに commit / push する</strong>（環境が壊れても作業を失わないための保険）</li>
@@ -760,7 +760,8 @@ LP に載せるセクションは 特徴・料金プラン・FAQ の3つ。
 <p><strong>ゴール:</strong> デザイン通りの SPA（Single Page Application＝1枚の <code>index.html</code> を JavaScript が書き換えて全ページを表示する作り）の全画面がローカル（<code>npm run dev</code> で起動する URL）で動く（Section 1 終了時の到達点）</p>
 
 <h3 id="s2-spec">まず: SCREEN_SPEC.md を作る</h3>
-<p>Claude Code にプロンプトを渡す前に、リポジトリのルートに <code>SCREEN_SPEC.md</code> を作る。これをコピーして、<strong>自分のサービスの内容に適宜書き換える</strong>：</p>
+<p><code>SCREEN_SPEC.md</code> は、このワークショップで<strong>人間が仕様を決める唯一の場所</strong>である。<a href="#s2">[2]</a> のフロント実装も <a href="#s6">[6]</a> の機能テストも、ここに書いた内容を正しい仕様として扱う。</p>
+<p><a href="#s2">[2]</a> のプロンプトを渡す前に、リポジトリのルートに <code>SCREEN_SPEC.md</code> を作る。<strong>Claude Code に作ってもらうのを勧める</strong>。自分で書く場合は、下をコピーして<strong>自分のサービスの内容に適宜書き換える</strong>：</p>
 <pre><code># SCREEN_SPEC.md
 
 ## / (LP)
@@ -775,8 +776,8 @@ LP に載せるセクションは 特徴・料金プラン・FAQ の3つ。
 ## /success (購入完了)
 - 購入完了メッセージ＋マイページへのリンク</code></pre>
 <details class="spec">
-<summary>手で書く代わりに Claude Code に書かせる — オプション</summary>
-<p>次のプロンプトの<strong>上3行を自分のサービスに書き換えて</strong>送る（「制約:」以下はそのままでよい）。[1] の3案生成の待ち時間に進められる。</p>
+<summary>Claude Code に書かせる</summary>
+<p>次のプロンプトの<strong>上3行を自分のサービスに書き換えて</strong>送る（「制約:」以下はそのままでよい）。</p>
 <pre><code>リポジトリのルートに SCREEN_SPEC.md を作って。
 
 サービス概要: &lt;1〜2行。何をするサービスか&gt;
@@ -899,6 +900,33 @@ wrangler whoami</code></pre>
 <li>URL をチャットに貼って共有する</li>
 </ol>
 <p class="note">Section 1 のデプロイは API が無いのでデータはモック表示のままである。Section 2 で API を追加して同じ URL のまま再デプロイする。</p>
+
+<details class="spec">
+<summary>参考：独自ドメインで公開する</summary>
+<p><code>workers.dev</code> のサブドメインではなく、自分で取得したドメインで公開することもできる。Cloudflare でドメインを買えば、Worker の画面から一気通貫でできる。ここでは手順の概要だけ示す。<strong>当日はやらない</strong>（ドメイン取得が有料であるため）。</p>
+<ol>
+<li><strong>Worker の Domains タブを開く。</strong> Workers &amp; Pages → 自分の Worker → <strong>Domains</strong>。「Custom Domains and Routes」の <strong>+ Add Domain</strong> をクリックする
+<figure class="diagram">
+<img src="img/CloudflareCustomDomain1.png" alt="Worker の Domains タブ — 「Custom Domains and Routes」の「+ Add Domain」ボタン">
+</figure>
+</li>
+<li><strong>ドメインを購入する。</strong> 「Connect domain」のダイアログが開く。まだドメインを持っていなければ「No zones found」と表示されるので、<strong>Purchase Domain</strong> をクリックする
+<figure class="diagram">
+<img src="img/CloudflareCustomDomain2.png" alt="Connect domain ダイアログ — ゾーンが無い場合は「Purchase Domain」をクリック">
+</figure>
+</li>
+<li><strong>ドメインを検索して登録する。</strong> 使いたい名前を入力すると候補と価格が表示される。<code>.com</code> で $10 前後（各自の負担）。<strong>Register</strong> で購入する
+<figure class="diagram">
+<img src="img/CloudflareCustomDomain3.png" alt="Purchase domain 画面 — 名前を入力すると候補と価格が並び、「Register」で購入する">
+</figure>
+</li>
+</ol>
+<ul>
+<li>Cloudflare で購入するとゾーンも自動で作られるので、ネームサーバーの設定は要らない。他社で取得したドメインを使う場合は、先に Cloudflare にゾーンとして追加し、ネームサーバーを切り替えておく必要がある</li>
+<li>Custom Domain を設定すると、DNS レコードと証明書は Cloudflare が自動で作る</li>
+<li>使い終わったら<strong>自動更新を止める</strong>。Custom Domain を消しても証明書は自動では消えないので、SSL/TLS のダッシュボードから手動で削除する</li>
+</ul>
+</details>
 
 <h3 class="done">✅ Section 1 の到達点</h3>
 <ul>
@@ -1125,7 +1153,11 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 <h3>機能テストの考え方</h3>
 <p>この工程の目的は、テストを緑にすることではなく、守るべきことを決め、一つずつ確かめて結果を書き残すことにある。</p>
 
-<p>アプリを誰が使うか、何が起きたら困るかを知っているのは人間だけである。さらにテストが落ちたとき、AI は問答無用でテスト条件を緩めて通すことがある。そのため要件を決めるところから結果を判定するところまで、全部を AI に任せることはできない。</p>
+<p>アプリを誰が使うか、何が起きたら困るかを知っているのは人間だけである。</p>
+
+<p>さらに、AI には <strong>Reward Hacking（報酬ハッキング）</strong> と呼ばれる挙動がある。目的（要件を満たすこと）ではなく、評価指標（テストが緑になること）の方を満たしに行く挙動である。テストの期待値を緩める、<code>test.skip</code> で飛ばす——いずれも「緑」という指標は満たすが、要件は何も確かめられていない。</p>
+
+<p>そのため、テストコードを書く作業そのものは AI に任せてよいが、「決める」ことと「確かめる」ことは人間が行う。即ち、守るべきことと落ちた原因は人間が決め、結果は人間が自分の目で確かめることで<strong>品質保証の責任を常に人間に持たせておく</strong>。</p>
 
 <h3>流れ</h3>
 <figure class="diagram">
@@ -1162,6 +1194,7 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 質問には次を必ず含めること。
 ・漏れたら一番困る情報は何か
 ・壊れたら・止まったら一番困る操作は何か
+・受け付けてはいけない入力、させてはいけない操作は何か
 
 書くのは「アプリが守るべきこと」だけにする。
 ・主語はアプリか利用者にする。開発者やテストコードを主語にしない
@@ -1202,8 +1235,16 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 <ul>
 <li>ここで出た要件が以降すべての土台になるので、モデルは<strong>高精度なもの（Fable / Opus）</strong>を使う。Effort は既定の Medium で足りる</li>
 <li>書き終えた「## テスト要件」は、② テスト設計 以降で AI に書き換えさせない。上書きされると、② テスト設計で行を判定する根拠と、⑤ テスト結果で原因を帰属させる根拠が消える</li>
-<li>テスト要件で守るべきことを漏れなく列挙しきることは目標にしない。列挙し漏れが無いことを確かめる手段がないので、いくら時間をかけても終わったと判断できない</li>
+<li><strong>要件は 3〜5本に絞る。</strong>守るべきことを漏れなく列挙しきることは目標にしない</li>
 </ul>
+
+<details class="spec">
+<summary>参考：本来はどう進めるか</summary>
+<ul>
+<li>本ワークショップでは要件を 3〜5本に制限している。Section 2 の時間内に①〜⑥を一度通すための上限で、テストの十分性から決めた数ではない</li>
+<li>本来は本数に上限を置かない。守るべきことはサービスの性質で決まるもので、時間で決めるものではない。洗い出したうえで優先度を付け、どこから着手するかを決める</li>
+</ul>
+</details>
 
 <h3 id="s6-t2">② テスト設計</h3>
 
@@ -2523,6 +2564,7 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
 共通の前提:
 - Cloudflare API トークンは backend/.cf-ops.token に CLOUDFLARE_API_TOKEN=... の形式で置いてある。
   集計が必要なスキルはこのファイルを読んで使う（.dev.vars は読まない）
+- アカウントIDは &lt;wrangler whoami の出力から控えた値&gt; である
 - 使っていないサービス（Stripe/Clerk/Resend など）があれば対象から外して
 - 5つを順に実行して結果をまとめる統合スキル ops-check も作って。「運用チェックして」で ops-check が動くようにして</code></pre>
 </li>
