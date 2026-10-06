@@ -498,7 +498,7 @@ details.spec pre{margin:.5em 0 0;}
 <p>前提: GitHub（<strong>社内メールアドレスでログインした個人アカウント</strong>。組織配下ではない）でリポジトリ（名前は全員共通で <code>3days-workshop</code>、<strong>Private</strong>）を新規作成し、ローカルに clone してから以下を実施する。フロント・バックエンドは同じリポジトリ（モノレポ）で管理する。</p>
 <ul>
 <li>最初に <strong><code>dev</code> ブランチを切り、作業はすべて <code>dev</code></strong> で進める</li>
-<li>区切りのいいところで<strong>こまめに commit / push する</strong>（環境が壊れても作業を失わないための保険）</li>
+<li>区切りのいいところで<strong>こまめに commit / push する</strong>（環境が壊れても作業を失わないための保険）。ただし <a href="#s4">[4]</a> の間は <strong>commit まで</strong>にし、push は <a href="#s5">[5]</a> のレビュー後にまとめて行う（push 済みの変更は [5] の <code>/code-review</code> の点検対象から外れるため）</li>
 <li><strong>各セクションのクロージングで「dev に push 済みか」を必ず確認する</strong>（次のセクションのキャッチアップが楽になる）</li>
 <li><code>dev</code> → <code>main</code> への<strong>マージは、セキュリティ課題（SonarCloud 解析）に着手する前に行う</strong>（SonarCloud 無料版は <code>main</code> ブランチしか解析しないため）</li>
 </ul>
@@ -628,14 +628,14 @@ Claude Design はトークン消費量が多く、標準的なプランでは全
 <p>同じバー右側の <strong>「Model」</strong> を押すとモデル一覧が開き、その下に <strong>Effort</strong>（AI がどれだけ深く考えるかの設定）の項目がある。
 <strong>Effort が高いほど品質は上がるが、トークン消費も増える</strong>。</p>
 <ul>
-<li>モデルは <strong>Opus 5</strong> を選ぶ</li>
+<li>モデルは <strong>最新の Opus</strong> を選ぶ</li>
 <li><strong>推奨は Effort: Medium</strong>。Team standard などトークンに余裕がないプラン向けである。一周体験が目的なのでこれで十分である</li>
 <li>Team Premium / Max などトークンに余裕があるプランの人は <strong>High 以上</strong>に上げてよい</li>
 </ul>
 <figure class="diagram">
-<img src="img/CD-modelAndEffort.png" alt="Claude Design の Model ドロップダウン。Fable 5.1・Opus 5（選択中）・Sonnet 5・Haiku 4.5 が並び、その下に Effort の設定項目がある">
+<img src="img/CD-modelAndEffort.png" alt="Claude Design の Model ドロップダウン。Fable・Opus（選択中）・Sonnet・Haiku が並び、その下に Effort の設定項目がある">
 </figure>
-<p class="note">上の画像は Effort を High にした例である。生成が始まったあとは画面左下に <code>Opus 5　Medium</code> のようにモデル名と Effort が表示され、そこからも変更できる。</p>
+<p class="note">上の画像は Effort を High にした例である。生成が始まったあとは画面左下にモデル名と Effort が表示され、そこからも変更できる。</p>
 <p class="note">Claude Design は Beta であり、画面の配置・名称・機能はバージョン更新で変わる（プラン・環境によって表示が異なる場合もある）。この資料のスクリーンショットと違っていても、<strong>やること自体（種類を選ぶ／デザインシステムを None にする／プロンプトを送る）は変わらない</strong>。見当たらない場合は入力欄の周辺・設定メニューを探す。</p>
 
 <h3>流れ</h3>
@@ -1108,6 +1108,8 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
   </details>
 </li>
 </ol>
+<p>確認できたら、ここまでの作業を<strong>コミットする（push はまだしない）</strong>。push は <a href="#s5">[5]</a> のレビュー後にまとめて行う。</p>
+<pre><code>バックエンド実装の作業をコミットして。push はまだしないで。</code></pre>
 
 <hr>
 
@@ -1116,6 +1118,7 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 
 <h3>Claude Code のコマンドで点検する</h3>
 <p>ローカルの差分を、Claude Code の組み込みコマンドで点検する。</p>
+<p class="note"><strong>始める前に、<a href="#s4">[4]</a> の作業がコミット済み（push はまだ）か確認する。</strong><code>/code-review</code> は「まだ push していないコミット＋未コミットの変更」を、<code>/security-review</code> は「origin のデフォルトブランチ（通常は <code>main</code>）との差分」を点検する。ただし <code>/security-review</code> は git に追加していない新規ファイルを差分に含めない。コミットしておけば、[4] で作った新規ファイルが両方の点検対象に入る。未コミットなら「バックエンド実装の作業をコミットして。push はまだしないで。」と頼む。</p>
   <p class="note">⚙️ <strong>Claude Code の Effort（どれだけ深く考えるか）はトークン消費に直結する。</strong>レビューはコード全体を読むため特に消費が大きい。</p>
   <p class="note"><strong>既定の Medium で実行するのを推奨</strong>（Team standard などトークンに余裕がないプランで途中枯渇を防ぐため）。Team Premium / Max などトークンに余裕があるプランの人は High 以上に上げてよい。</p>
 <ul>
@@ -1123,6 +1126,17 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 <li><code>/security-review</code> — セキュリティ観点のレビューである。SQL インジェクション等・認証の抜け・シークレットの扱いなどを確認してくれる</li>
 </ul>
 <p class="note"><strong>security-guidance</strong>（Section 1 で導入したプラグイン）は、編集・コミットのたびに<strong>自動で</strong>セキュリティ点検が走っている。自分で実行する必要はない。</p>
+<p><strong>進め方</strong>:</p>
+<ol>
+<li><code>/code-review</code> を実行する。レビューは裏で動くので、結果を待たずに続けて <code>/security-review</code> を実行してよい</li>
+<li><code>--fix</code>（指摘を自動で反映するオプション）は付けない。指摘ごとに直すか直さないかを自分で判断する</li>
+<li>2つの結果が出そろってから、まとめて直させる。同じ問題を両方が指摘することがある（下の実行例でも IDOR を両方が指摘している）</li>
+<li>直した後に2つのレビューをやり直す必要は基本ない。Claude が直した分は security-guidance が自動で点検する。大きく作り直したときだけ <code>/code-review</code> をもう一度実行する</li>
+</ol>
+<details class="spec"><summary><code>/security-review</code> が <code>ambiguous argument 'origin/HEAD'</code> で失敗する場合</summary>
+<p>手元に「origin のデフォルトブランチ」の記録（<code>origin/HEAD</code>）が無いと、比較元が分からず失敗する。空のリポジトリを clone した場合などに起きる。次を実行してから、もう一度 <code>/security-review</code> を実行する。</p>
+<pre><code>git remote set-head origin -a</code></pre>
+</details>
 <figure class="diagram">
 <img src="img/CodeReviewSample.png" alt="/code-review の実行例。未認証エンドポイントに対する指摘が4件、失敗シナリオ付きで表示されている">
 <figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">/code-review の実行例: 未認証で他人の連絡先 PII を返す重大バグ（IDOR/PII 漏洩）などを、根拠となる失敗シナリオ付きで指摘している（欠陥のないファイルは「問題なし」と判定）</figcaption>
