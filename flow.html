@@ -1345,7 +1345,7 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 必要なテスト環境だけを用意して。
 
 ・関数・API のテスト（backend/）: @cloudflare/vitest-plugin と vitest@^4.1.0 を使い、
-  設定は cloudflareTest プラグイン方式で書く（@cloudflare/vitest-pool-workers は旧名なので使わない）
+  設定は cloudflareTest プラグイン方式で書く
 ・画面のテスト（frontend/）: vitest@^4.1.0 を jsdom 環境で使い、
   @testing-library/react で描画・操作する
 ・「通し」の行は [12] で扱うので、Playwright など E2E の環境は入れないこと
@@ -1353,7 +1353,7 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 
 <ul>
 <li><strong>バックエンドは Workers、フロントは jsdom</strong> を実行環境に用いる</li>
-<li><code>@cloudflare/vitest-plugin</code>＝バックエンドのテストを Workers と同じ実行環境で動かす公式アダプタである（2026-08 に旧名 <code>@cloudflare/vitest-pool-workers</code> から改名。Vitest 5 には未対応のため、Vitest は 4 系に固定する）</li>
+<li><code>@cloudflare/vitest-plugin</code>＝バックエンドのテストを Workers と同じ実行環境で動かす公式アダプタである</li>
 </ul>
 
 <h3 id="s6-t4">④ テスト項目作成</h3>
