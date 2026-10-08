@@ -327,7 +327,7 @@ details.spec pre{margin:.5em 0 0;}
   </ul>
   </details>
 </li>
-<li><strong>Node.js 24 LTS（長期サポート版）を推奨</strong>（最低 20 以上。18 はサポート終了）
+<li><strong>Node.js 24 LTS（長期サポート版）以上が必須</strong>（22 以前は不可。22 に付属する npm 10 では、<a href="#s6-t3">[6] ③</a> のテスト用パッケージの導入が失敗するため）
   <details class="spec"><summary>インストール方法を見る</summary>
   <ul>
   <li>未インストールなら <a target="_blank" rel="noopener" href="https://nodejs.org/">nodejs.org</a> のインストーラーで導入する</li>
@@ -368,7 +368,7 @@ details.spec pre{margin:.5em 0 0;}
 
 <h2 id="s-env">環境確認</h2>
 <ul>
-<li><code>node -v</code>（<strong>24 LTS 推奨、最低 20 以上</strong>）/ <code>git --version</code> / <code>claude --version</code> を確認する</li>
+<li><code>node -v</code>（<strong>24 以上が必須</strong>）/ <code>git --version</code> / <code>claude --version</code> を確認する</li>
 <li><strong>Claude Code がログイン済み</strong>で起動できるか（<code>claude</code> を叩いて会話できる状態か）</li>
 <li><strong>Claude Design</strong> に claude.ai でアクセスできるか（<a target="_blank" rel="noopener" href="https://claude.ai/design">https://claude.ai/design</a> にブラウザでログイン確認）</li>
 <li>Cloudflare アカウントにログインできるか（<a target="_blank" rel="noopener" href="https://dash.cloudflare.com/">https://dash.cloudflare.com/</a>。<code>wrangler login</code> は Section 1 の [3] フロントデプロイで実行する）</li>
@@ -471,7 +471,7 @@ details.spec pre{margin:.5em 0 0;}
 <tr><td>バックエンド</td><td>Hono (TypeScript)</td><td>軽量な Web フレームワーク。Workers と相性抜群</td></tr>
 <tr><td>実行基盤</td><td>Cloudflare Workers</td><td>無料枠で本番公開まで行ける</td></tr>
 <tr><td>DB</td><td>Cloudflare D1</td><td>SQLite データベース。Workers にビルトインでセットアップ最小</td></tr>
-<tr><td>テスト</td><td>Vitest（+ vitest-pool-workers）</td><td>フロント・バックエンドで統一できる</td></tr>
+<tr><td>テスト</td><td>Vitest（+ @cloudflare/vitest-plugin）</td><td>フロント・バックエンドで統一できる</td></tr>
 <tr><td>メール（Section 3）</td><td>Resend（[8]）</td><td>メール送信 API。無料枠で自分宛の送信をすぐ試せる</td></tr>
 <tr><td>決済（Section 3）</td><td>Stripe（[9]）</td><td>決済のデファクト。テストモードで本物の課金なしに一周できる</td></tr>
 <tr><td>認証（Section 3）</td><td>Clerk（[10]）</td><td>ユーザー認証 SaaS。ログイン UI とトークン検証をまとめて任せられる</td></tr>
@@ -491,6 +491,7 @@ details.spec pre{margin:.5em 0 0;}
 <tr><td>テスト（[6]）</td><td><code>vitest@4.1.10</code> / <code>@cloudflare/vitest-pool-workers@0.18.0</code></td></tr>
 </tbody>
 </table>
+<p class="note">※ 2026-08 に <code>@cloudflare/vitest-pool-workers</code> は <code>@cloudflare/vitest-plugin</code> に改名された。今から入れる場合は <code>vitest@^4.1.0</code> と <code>@cloudflare/vitest-plugin</code> を使う（<a href="#s6-t3">[6] ③</a> 参照）。</p>
 
 <hr>
 
@@ -1119,8 +1120,7 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 <h3>Claude Code のコマンドで点検する</h3>
 <p>ローカルの差分を、Claude Code の組み込みコマンドで点検する。</p>
 <p class="note"><strong>始める前に、<a href="#s4">[4]</a> の作業がコミット済み（push はまだ）か確認する。</strong><code>/code-review</code> は「まだ push していないコミット＋未コミットの変更」を、<code>/security-review</code> は「origin のデフォルトブランチ（通常は <code>main</code>）との差分」を点検する。ただし <code>/security-review</code> は git に追加していない新規ファイルを差分に含めない。コミットしておけば、[4] で作った新規ファイルが両方の点検対象に入る。未コミットなら「バックエンド実装の作業をコミットして。push はまだしないで。」と頼む。</p>
-  <p class="note">⚙️ <strong>Claude Code の Effort（どれだけ深く考えるか）はトークン消費に直結する。</strong>レビューはコード全体を読むため特に消費が大きい。</p>
-  <p class="note"><strong>既定の Medium で実行するのを推奨</strong>（Team standard などトークンに余裕がないプランで途中枯渇を防ぐため）。Team Premium / Max などトークンに余裕があるプランの人は High 以上に上げてよい。</p>
+<p class="note">⚙️ <strong>Effort（どれだけ深く考えるか）は既定の Medium のまま実行するのを推奨</strong>。Effort はトークン消費に直結し、レビューは特に消費が大きいため、Team standard などトークンに余裕がないプランでは途中で枯渇しやすい。Team Premium / Max などトークンに余裕があるプランの人は High 以上に上げてよい。</p>
 <ul>
 <li><code>/code-review</code> — コードの正しさ・簡潔さ・効率を見るレビューである。バグや冗長な実装を指摘してくれる</li>
 <li><code>/security-review</code> — セキュリティ観点のレビューである。SQL インジェクション等・認証の抜け・シークレットの扱いなどを確認してくれる</li>
@@ -1219,6 +1219,7 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 
 決まったら docs/TEST.md の「## テスト要件」に箇条書きで書いて。
 各項目は「〜してはいけない」「〜は必ず」の形にすること。
+・3〜5本に絞る。候補が多いときは、破られたときの被害が大きいものを残す
 ・小見出しで分類しない</code></pre>
   <p>「わからないことは推測せず質問して」の一行がないと、AI は「一般利用者向けの公開サービスと仮定して」のように、<strong>わからないことを推測で埋めて先に進む</strong>。推測で置いた前提から導いた要件も、やはり推測である。</p>
 
@@ -1229,7 +1230,7 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
   <p>「発行した購入の証が消えない」なら、破られたときに「金を受け取ってモノを渡していない状態になる」と言えるため、これは載せる。落ちるのは次のような候補である。</p>
   <ul>
   <li><strong>表示が速い</strong> — 何秒から問題なのかを決めていないので、破られたかどうかが言えない</li>
-  <li><strong>エラーが出ない</strong> — 何も起きていない状態と区別できないので、破られたかどうかが言えない</li>
+  <li><strong>エラーが出ない</strong> — 何も処理されずに黙って終わっても成り立つので、守れているかどうかの判断に使えない</li>
   </ul>
   <p>落とした候補は消して終わりでよい。期待結果が書けないので、② テスト設計で表の行にならない。</p>
 </li>
@@ -1343,16 +1344,16 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 <pre><code>docs/TEST.md の「## テスト項目」の「どこで確かめる」列を見て、
 必要なテスト環境だけを用意して。
 
-・関数・API のテスト（backend/）: @cloudflare/vitest-pool-workers を使い、
-  設定は cloudflareTest プラグイン方式で書く
-・画面のテスト（frontend/）: 同じ Vitest を jsdom 環境で使い、
+・関数・API のテスト（backend/）: @cloudflare/vitest-plugin と vitest@^4.1.0 を使い、
+  設定は cloudflareTest プラグイン方式で書く（@cloudflare/vitest-pool-workers は旧名なので使わない）
+・画面のテスト（frontend/）: vitest@^4.1.0 を jsdom 環境で使い、
   @testing-library/react で描画・操作する
 ・「通し」の行は [12] で扱うので、Playwright など E2E の環境は入れないこと
 ・表に出てこない種類の環境は入れないこと</code></pre>
 
 <ul>
 <li><strong>バックエンドは Workers、フロントは jsdom</strong> を実行環境に用いる</li>
-<li><code>@cloudflare/vitest-pool-workers</code>＝バックエンドのテストを Workers と同じ実行環境で動かす公式アダプタである</li>
+<li><code>@cloudflare/vitest-plugin</code>＝バックエンドのテストを Workers と同じ実行環境で動かす公式アダプタである（2026-08 に旧名 <code>@cloudflare/vitest-pool-workers</code> から改名。Vitest 5 には未対応のため、Vitest は 4 系に固定する）</li>
 </ul>
 
 <h3 id="s6-t4">④ テスト項目作成</h3>
