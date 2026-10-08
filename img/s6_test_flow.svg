@@ -1,6 +1,6 @@
 <svg width="100%" viewBox="0 0 720 330" role="img" xmlns="http://www.w3.org/2000/svg">
   <title>[6] 機能テストの流れ</title>
-  <desc>① テスト要件と ② テスト設計は実装コードを読まない新しいセッションで行い、③ テスト環境準備からは実装セッションに戻る。各工程に人間がやること（👤）と AI にやらせること（🤖）を併記。④ テスト項目作成、⑤ テスト結果、⑥ コード修正と進み、直したら ⑤ に戻って再実行する</desc>
+  <desc>① テスト要件と ② テスト設計は新しいセッションで行い（要件と期待結果は実装に合わせない）、③ テスト環境準備からは実装セッションに戻る。各工程に人間がやること（👤）と AI にやらせること（🤖）を併記。④ テスト項目作成、⑤ テスト結果、⑥ コード修正と進み、直したら ⑤ に戻って再実行する</desc>
 
   <defs>
     <marker id="ar-g2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
@@ -19,7 +19,7 @@
   <g font-family="Hiragino Kaku Gothic ProN,Yu Gothic,system-ui,sans-serif">
     <!-- session band for ①② -->
     <rect x="52" y="72" width="396" height="82" rx="10" fill="none" stroke="#534ab7" stroke-width="1" stroke-dasharray="5 3"/>
-    <text x="60" y="66" font-size="11" font-weight="700" fill="#534ab7">新しいセッションで（実装コードを読まない）</text>
+    <text x="60" y="66" font-size="11" font-weight="700" fill="#534ab7">新しいセッションで（要件と期待結果は実装に合わせない）</text>
     <text x="580" y="66" text-anchor="middle" font-size="11" fill="#6b6355">ここから実装セッションに戻る</text>
 
     <!-- Row 1 -->
