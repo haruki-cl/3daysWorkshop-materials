@@ -350,6 +350,15 @@ tr.focus td{background:var(--warn-bg);}
   </ul>
   </details>
 </li>
+<li><strong>Python 3.10 以上</strong>（<a href="#s06">Claude Code のセキュリティ対策</a>で入れる security-guidance プラグインが使う。<code>python3</code> / <code>python</code> / <code>py -3</code> のいずれかで起動できる＝PATH が通っていること）
+  <details class="spec"><summary>インストール方法と注意を見る</summary>
+  <ul>
+  <li>未インストールなら <a target="_blank" rel="noopener" href="https://www.python.org/downloads/">python.org</a> のインストーラーで導入する。Windows は「Add python.exe to PATH」にチェックを入れる</li>
+  <li>確認は <code>python3 --version</code>（Windows は <code>py -3 --version</code>）。3.10 未満だとプラグインのコミット時レビューが簡易版に落ちる</li>
+  <li>プラグインの初回起動時に <code>~/.claude/security/</code> へ仮想環境を作り、Claude Agent SDK を <code>pip</code> で入れる。そのためネットワーク接続が必要である</li>
+  </ul>
+  </details>
+</li>
 <li><strong>git</strong>（各 OS 標準の方法でインストールする）</li>
 </ul>
 
@@ -383,7 +392,7 @@ tr.focus td{background:var(--warn-bg);}
 
 <h2 id="s-env">環境確認</h2>
 <ul>
-<li><code>node -v</code>（<strong>24 以上が必須</strong>）/ <code>git --version</code> / <code>claude --version</code> を確認する</li>
+<li><code>node -v</code>（<strong>24 以上が必須</strong>）/ <code>git --version</code> / <code>claude --version</code> / <code>python3 --version</code>（<strong>3.10 以上</strong>。Windows は <code>py -3 --version</code>）を確認する</li>
 <li><strong>Claude Code がログイン済み</strong>で起動できるか（<code>claude</code> を叩いて会話できる状態か）</li>
 <li><strong>Claude Design</strong> に claude.ai でアクセスできるか（<a target="_blank" rel="noopener" href="https://claude.ai/design">https://claude.ai/design</a> にブラウザでログイン確認）</li>
 <li>Cloudflare アカウントにログインできるか（<a target="_blank" rel="noopener" href="https://dash.cloudflare.com/">https://dash.cloudflare.com/</a>。<code>wrangler login</code> は Section 1 の [3] フロントデプロイで実行する）</li>
@@ -1135,7 +1144,7 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 <h3>Claude Code のコマンドで点検する</h3>
 <p>ローカルの差分を、Claude Code の組み込みコマンドで点検する。</p>
 <p class="note"><strong>始める前に、<a href="#s4">[4]</a> の作業がコミット済み（push はまだ）か確認する。</strong><code>/code-review</code> は「まだ push していないコミット＋未コミットの変更」を、<code>/security-review</code> は「origin のデフォルトブランチ（通常は <code>main</code>）との差分」を点検する。ただし <code>/security-review</code> は git に追加していない新規ファイルを差分に含めない。コミットしておけば、[4] で作った新規ファイルが両方の点検対象に入る。未コミットなら「バックエンド実装の作業をコミットして。push はまだしないで。」と頼む。</p>
-<p class="note">⚙️ <strong><code>/code-review</code> には、後ろにレビューの深さ（<code>low</code> / <code>medium</code> / <code>high</code> / <code>xhigh</code> / <code>max</code>）を付けて実行する。推奨は <code>medium</code></strong>。深さはトークン消費に直結し、レビューは特に消費が大きいため、Team standard などトークンに余裕がないプランでは途中で枯渇しやすい。Team Premium / Max などトークンに余裕があるプランの人は <code>high</code> 以上に上げてよい。<br>深さを省くと、前回 <code>/code-review</code> に付けた深さがそのまま使われる。以前に <code>high</code> で実行していれば、気付かないまま <code>high</code> で動くので、毎回付ける。</p>
+<p class="note">⚙️ <strong><code>/code-review</code> には、後ろにレビューの深さ（<code>low</code> / <code>medium</code> / <code>high</code> / <code>xhigh</code> / <code>max</code>）を付けて実行する。推奨は <code>medium</code></strong>。深さはトークン消費に直結し、レビューは特に消費が大きいため、Team standard などトークンに余裕がないプランでは途中で枯渇しやすい。Team Premium / Max などトークンに余裕があるプランの人は <code>high</code> 以上に上げてよい。<br>深さを省くと、前回 <code>/code-review</code> に付けた深さが再利用される（<code>Reusing high effort, the level you typed last time</code> のような通知が出る）。以前に <code>high</code> で実行していれば通知を見落とすと <code>high</code> のまま動くので、毎回 <code>medium</code> を付ける。</p>
 <ul>
 <li><code>/code-review</code> — コードの正しさ・簡潔さ・効率を見るレビューである。バグや冗長な実装を指摘してくれる</li>
 <li><code>/security-review</code> — セキュリティ観点のレビューである。SQL インジェクション等・認証の抜け・シークレットの扱いなどを確認してくれる</li>
