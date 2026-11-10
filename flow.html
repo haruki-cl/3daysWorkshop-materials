@@ -2971,6 +2971,7 @@ PAGE_IDS.forEach(pid=>{
   sec.querySelectorAll('[id]').forEach(el=>{ PAGE_MAP[el.id]=pid; });
 });
 
+let lastTocId=null;
 function updateTocHighlight(){
   const hs=getHeadings();
   const threshold=80;
@@ -2978,9 +2979,20 @@ function updateTocHighlight(){
   for(let i=0;i<hs.length;i++){
     if(hs[i].getBoundingClientRect().top<=threshold) currentId=hs[i].id;
   }
+  let cur=null;
   document.querySelectorAll('#toc-panel a').forEach(a=>{
-    a.classList.toggle('toc-current',a.getAttribute('href').slice(1)===currentId);
+    const on=a.getAttribute('href').slice(1)===currentId;
+    a.classList.toggle('toc-current',on);
+    if(on) cur=a;
   });
+  // 現在地が変わったとき、そのリンクが目次の見える範囲の外なら、目次側をスクロールして中央付近に出す
+  if(cur && currentId!==lastTocId){
+    const pr=panel.getBoundingClientRect(), r=cur.getBoundingClientRect();
+    if(r.top<pr.top+40 || r.bottom>pr.bottom-40){
+      panel.scrollTo({top:panel.scrollTop+(r.top-pr.top)-(pr.height-r.height)/2,behavior:'smooth'});
+    }
+  }
+  lastTocId=currentId;
 }
 window.addEventListener('scroll',updateTocHighlight,{passive:true});
 
