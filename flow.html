@@ -229,6 +229,8 @@ details.spec pre{margin:.5em 0 0;}
 .diagram img.portrait{max-width:min(100%,360px);}
 .diagram img.w500{max-width:min(100%,500px);}
 .diagram img.w600{max-width:min(100%,600px);}
+.diagram img.w400{max-width:min(100%,400px);}
+.diagram img.w300{max-width:min(100%,300px);}
 .diagram.compact img{max-width:min(100%,480px);}
 #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:2000;
   cursor:zoom-out;align-items:center;justify-content:center;padding:16px;}
@@ -400,7 +402,7 @@ tr.focus td{background:var(--warn-bg);}
 <h2 id="s-map">全体マップ</h2>
 
 <figure class="diagram keep-light">
-<img src="img/workshop_flow_diagram.svg" alt="ワークショップフロー図: Core（[1]デザイン→[2]フロント→[3]デプロイ（フロントのみ）→[4]バックエンド（API＋DB）→[5]レビュー→[6]機能テスト→[7]デプロイ（バックエンドも公開））と Option（[8]メール/[9]決済/[10]ID連携/[11]セキュリティレビュー/[12]E2Eテスト/[13]自動デプロイ/[14]運用保守の自動化）">
+<img src="img/workshop_flow_diagram.svg" alt="ワークショップフロー図: Core（[1]デザイン→[2]フロント→[3]デプロイ（フロントのみ）→[4]バックエンド（API＋DB）→[5]レビュー→[6]機能テスト→[7]デプロイ（バックエンドも公開））と Option（[8]メール/[9]決済/[10]ID連携/[11]セキュリティレビュー/[12]E2Eテスト/[13]自動デプロイ/[14]運用保守の自動化/[15]Cloudflare のセキュリティ対策）">
 </figure>
 
 <table>
@@ -408,7 +410,7 @@ tr.focus td{background:var(--warn-bg);}
 <tbody>
 <tr><td><strong>Section 1</strong></td><td>UI設計（Claude Design）とフロント実装（Claude Code）</td><td>目的・技術紹介 / 環境確認 / [1] デザイン / [2] フロント / [3] フロントデプロイ</td></tr>
 <tr><td><strong>Section 2</strong></td><td>バックエンド実装（Claude Code）と品質担保</td><td>[4] バックエンド / [5] レビュー / [6] 機能テスト / [7] 再デプロイ（Section 1 と同じ URL に API を統合）</td></tr>
-<tr><td><strong>Section 3</strong></td><td>機能追加と品質確保（メール、決済、ID連携、自動デプロイ等）</td><td>オプション課題 [8]〜[14] / ラップアップ・発表会</td></tr>
+<tr><td><strong>Section 3</strong></td><td>機能追加と品質確保（メール、決済、ID連携、自動デプロイ等）</td><td>オプション課題 [8]〜[15] / ラップアップ・発表会</td></tr>
 </tbody>
 </table>
 
@@ -430,10 +432,11 @@ tr.focus td{background:var(--warn-bg);}
 <tr><td><strong>[12]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>Section 3</td><td>★★★</td><td>ブラウザで確かめる行を2本選んで <code>tests/</code> に spec を書き、実行して <code>docs/TEST.md</code> の結果列を埋める。赤が出た行は、直すか仕様として認めるかを自分で決める</td></tr>
 <tr><td><strong>[13]</strong></td><td>自動デプロイ（Cloudflare Workers Builds）</td><td>Section 3</td><td>★★☆</td><td>git push だけで自動デプロイされる設定を完了し、軽微な変更の push で Cloudflare ダッシュボードに新しいビルドが自動で現れることを確認できる</td></tr>
 <tr><td><strong>[14]</strong></td><td>運用保守の自動化（Cloudflare ログ確認・スキル化）</td><td>Section 3</td><td>★☆☆</td><td><code>wrangler tail</code> でログ確認できる・運用スキルが1つ動作する</td></tr>
+<tr><td><strong>[15]</strong></td><td>Cloudflare のセキュリティ対策（レート制限・Turnstile 等）</td><td>Section 3</td><td>★☆☆</td><td>書き込み系 API の連打で 429 が返るか、トークンのない購入 API への送信が 403 になるかの、どちらか1つ以上を確認できる</td></tr>
 </tbody>
 </table>
 <blockquote class="key">
-<p><strong>必達は [1]〜[7]（Section 1〜2 全員）</strong>。<br><strong>Section 3 の [8]〜[14] は任意である</strong>（やらない／1つだけ、も可）。</p>
+<p><strong>必達は [1]〜[7]（Section 1〜2 全員）</strong>。<br><strong>Section 3 の [8]〜[15] は任意である</strong>（やらない／1つだけ、も可）。</p>
 </blockquote>
 
 <hr>
@@ -470,12 +473,12 @@ tr.focus td{background:var(--warn-bg);}
 <thead><tr><th>経過</th><th>内容</th></tr></thead>
 <tbody>
 <tr><td>0:00–0:10</td><td>オプション課題のガイダンス（必須ではない・やらない・1つだけ、も可）</td></tr>
-<tr><td>0:10–1:30</td><td>自由作業: Section 1〜2 の残タスクを続ける、またはオプション課題（[8]〜[14] から1つ）——どちらでも可</td></tr>
+<tr><td>0:10–1:30</td><td>自由作業: Section 1〜2 の残タスクを続ける、またはオプション課題（[8]〜[15] から1つ）——どちらでも可</td></tr>
 <tr><td>1:30–2:00</td><td><strong>最終発表会（1人3分）＋ ラップアップ・アンケート</strong></td></tr>
 </tbody>
 </table>
 <p class="note">各セクションとも、固定の休憩枠は設けない。小休止は各自のタイミングでとってよい。</p>
-<p class="note">進み方は各自のペースでよく、予定より早く終わった人はそのまま次の実装に進んでよい。また <strong>Section 3 の [8]〜[14] はオプション課題</strong>で、この時間は各自が資料を読みながら選んで進める形になる。わからないことがあれば、講師にチャット等で質問してほしい。</p>
+<p class="note">進み方は各自のペースでよく、予定より早く終わった人はそのまま次の実装に進んでよい。また <strong>Section 3 の [8]〜[15] はオプション課題</strong>で、この時間は各自が資料を読みながら選んで進める形になる。わからないことがあれば、講師にチャット等で質問してほしい。</p>
 <hr>
 
 <h2 id="s05">使う技術の紹介</h2>
@@ -1571,9 +1574,10 @@ npm run deploy</code></pre>
 <tr><td><strong>[12]</strong></td><td>E2E テスト（画面を通して確かめる）</td><td>[6] の部品ごとのテストに加えて、<strong>画面から DB までを通したテスト</strong>が入る。部品どうしが噛み合っていない箇所や<strong>「決めていなかったこと」</strong>が見つかる</td><td>★★★</td><td><a href="#s12">→ [12] E2E テスト</a></td></tr>
 <tr><td><strong>[13]</strong></td><td>自動デプロイ（Workers Builds）</td><td><code>git push</code> するだけで<strong>Cloudflare へ自動的にビルド・デプロイ</strong>されるようになる（手動の <code>wrangler deploy</code> から卒業）</td><td>★★☆</td><td><a href="#s13">→ [13] 自動デプロイ</a></td></tr>
 <tr><td><strong>[14]</strong></td><td>運用保守の自動化</td><td>「運用チェックして」で<strong>監視・ログ・コストが見られる</strong>ように</td><td>★☆☆</td><td><a href="#s14">→ [14] 運用保守の自動化</a></td></tr>
+<tr><td><strong>[15]</strong></td><td>Cloudflare のセキュリティ対策</td><td>API の<strong>連打</strong>や、bot による<strong>購入フォームの大量送信</strong>を Cloudflare の機能で止められるようになる</td><td>★☆☆</td><td><a href="#s15">→ [15] セキュリティ対策</a></td></tr>
 </tbody>
 </table>
-<p class="note"><strong>選び方</strong>: 上の表の「追加すると制作物がどう変わるか」を見て、自分が作りたい変化で選ぶ。1つだけやるなら、軽い [8]・[14] から始めるとよい。<br>
+<p class="note"><strong>選び方</strong>: 上の表の「追加すると制作物がどう変わるか」を見て、自分が作りたい変化で選ぶ。1つだけやるなら、軽い [8]・[14]・[15] から始めるとよい。<br>
 <strong>所要時間の目安</strong>: ★☆☆ でおよそ 30〜45分、★★☆ でおよそ 45〜60分、★★★ で 60分以上である。<br>
 <strong>課題どうしの依存</strong>: 次の3つは順番に注意する。<br>
 ・[11] は [10]（本物の認証）まで終えていると効果が高い。というのも、偽造トークンの検証はモック認証では試せないためである。<br>
@@ -1922,6 +1926,7 @@ npm run deploy</code></pre>
 <strong>ツール</strong>: Claude Code（<code>/code-review</code>・<code>/security-review</code>・常時の <code>security-guidance</code>）＋ <strong>SonarCloud</strong><br>
 <strong>参考</strong>: [6] で作った <code>docs/TEST.md</code> の認証境界まわりのテスト。これを回帰テスト（直した問題が再発していないかを毎回確かめるテスト）の土台にする<br>
 <strong>学び</strong>: 「AI が書いたコード」を自分で点検できるようになる</p>
+<p class="note">ここではコードを点検する。API の連打や bot からの送信を Cloudflare の機能で止める守りは <a href="#s15">[15]</a> で扱う。</p>
 
 <h3>見る観点</h3>
 <ul>
@@ -2582,6 +2587,112 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
 
 <hr>
 
+<h2 id="s15">[15] Cloudflare のセキュリティ対策<span class="diff">★☆☆</span></h2>
+<p><strong>お題</strong>: Cloudflare の無料プランの機能で、公開中のアプリの守りを足す<br>
+<strong>実装先</strong>: Cloudflare ダッシュボード、<code>backend/wrangler.jsonc</code>、購入フォームと購入 API<br>
+<strong>前提</strong>: <a href="#s7">[7]</a> のデプロイが終わり、自分の公開 URL がある<br>
+<strong>学び</strong>: <a href="#s11">[11]</a> のようにコードを点検する守りとは別に、インフラ側で足せる守りを知る</p>
+
+<p>扱うのは次の2つである。どちらも無料プランのまま <code>workers.dev</code> で使える。</p>
+<table>
+<thead><tr><th>#</th><th>対策</th><th>防ぐもの</th><th>作業する場所</th></tr></thead>
+<tbody>
+<tr><td>①</td><td>レート制限</td><td>同じ相手からの API の連打</td><td><code>wrangler.jsonc</code> とコード</td></tr>
+<tr><td>②</td><td>Turnstile</td><td>bot による購入フォームの大量送信</td><td>ダッシュボードとコード</td></tr>
+</tbody>
+</table>
+
+<h3>① レート制限で API の連打を止める</h3>
+<p>Cloudflare Workers の <strong>Rate Limiting binding</strong> を使い、同じ接続元から短時間に送れる回数を制限する。上限を超えた送信には 429（Too Many Requests）を返す。対象は購入や問い合わせなどの書き込み系 API である。</p>
+<ol>
+<li><code>wrangler --version</code> が <strong>4.36.0 以上</strong>であることを確かめる（古ければ <code>npm install -g wrangler</code> で更新する）</li>
+<li>Claude Code にレート制限を入れてもらう
+<pre><code>書き込み系の API（購入、問い合わせなど）に、Cloudflare の Rate Limiting binding でレート制限をかけて。
+・backend/wrangler.jsonc の ratelimits に binding を追加する（limit は 5、period は 60）
+・数えるキーは接続元の IP（CF-Connecting-IP ヘッダー）にする
+・入力の検証や DB への書き込みより前に数え、上限を超えたら 429 を返す</code></pre>
+</li>
+<li>デプロイしてから、Claude Code に連打を試してもらう
+<pre><code>npm run deploy</code></pre>
+<pre><code>本番の購入 API に、中身が不正なリクエストを 20 回続けて送り、何回目から 429 が返るかを確かめて。
+DB に何も書き込まれていないことも確かめて。</code></pre>
+</li>
+</ol>
+<p class="note">レート制限は Cloudflare の拠点ごとに数えるため、上限ちょうどで止まるとは限らない（上限 2 回で試したところ、8 回目で止まった例がある）。回数を正確に守らせる仕組みではなく、<strong>大量の連打をおおまかに止める仕組み</strong>として使う。</p>
+
+<h3>② Turnstile で bot からの送信を止める</h3>
+<p>Turnstile は、CAPTCHA の代わりになる Cloudflare の機能である。フォームに置いた部品がブラウザの振る舞いを調べ、人間らしければトークンを発行する。多くの場合、利用者は画像パズルを解かずに済む。</p>
+<p>サーバー側では、受け取ったトークンを Cloudflare に問い合わせ（siteverify）、確認できた送信だけを処理する。そのため、画面を通らずに API を直接叩く bot は止まる。</p>
+<p>ここではダッシュボードの <strong>Spin</strong> を使う。Spin は、ウィジェットを作ったうえで AI 向けのプロンプトを発行する機能で、組み込みは Claude Code に任せられる。</p>
+<ol>
+<li>ダッシュボード左メニューの <strong>Application security → Turnstile</strong> を開き、右上の <strong>Set up with Spin</strong> を押す
+<figure class="diagram">
+<img src="img/s15_turnstile_menu.png" class="w300" alt="Cloudflare ダッシュボード左メニューの Application security を開き、Turnstile を選ぶ">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">左メニューの <strong>Application security → Turnstile</strong></figcaption>
+</figure>
+<figure class="diagram">
+<img src="img/s15_turnstile_add.png" class="w400" alt="Turnstile widgets 画面の右上にある Add widget manually と Set up with Spin の2つのボタン。Set up with Spin を押す">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">右上の <strong>Set up with Spin</strong> を押す</figcaption>
+</figure>
+</li>
+<li><strong>Domains</strong> に、自分の公開 URL から <code>https://</code> と末尾の <code>/</code> を除いた部分（<code>&lt;name&gt;.&lt;アカウントのサブドメイン&gt;.workers.dev</code>）を入れて Enter を押し、<strong>Set up</strong> を押す
+  <ul>
+  <li><code>localhost</code> と <code>127.0.0.1</code> は自動で追加されるので、ローカルでもそのまま動く。Widget name も自動で入る</li>
+  </ul>
+<figure class="diagram">
+<img src="img/s15_spin_setup.png" class="w400" alt="Set up Turnstile with Spin ダイアログ。Domains に自分の workers.dev の URL から https:// を除いた部分を入れ、Set up ボタンを押す">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">Domains に <code>&lt;name&gt;.&lt;アカウントのサブドメイン&gt;.workers.dev</code> を入れ、<strong>Set up</strong> を押す</figcaption>
+</figure>
+</li>
+<li>「Turnstile is ready」と出たら、プロンプトの欄の右上のボタンで<strong>プロンプトをコピー</strong>する。Secret はコピーしなくてよい（シークレットキーは Claude Code が Wrangler で取り出し、Worker に保存する）
+<figure class="diagram">
+<img src="img/s15_spin_ready.png" class="w400" alt="Turnstile is ready ダイアログ。Site key と Secret の欄の下に、AI に渡すプロンプトの欄がある。Secret の値は伏せている">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">枠で囲んだプロンプトをコピーする（Secret の値は伏せている）</figcaption>
+</figure>
+</li>
+<li>プロジェクトのルートで開いた Claude Code に、コピーしたプロンプトを貼って送る</li>
+<li>Claude Code の作業が終わったら、Worker の <strong>Settings → Variables and secrets</strong> を開き、<code>TURNSTILE_SECRET</code> が Secret（値は暗号化）として入っていることを確かめる。<code>TURNSTILE_HOSTNAMES</code> のような変数があれば、それが <code>wrangler.jsonc</code> の <code>vars</code> にも書かれているかを Claude Code に確かめてもらう（書かれていない変数は、次のデプロイで消える）
+<figure class="diagram">
+<img src="img/s15_spin_secret.png" class="w400" alt="Worker の Settings にある Runtime variables and secrets。TURNSTILE_HOSTNAMES が Variable、TURNSTILE_SECRET が Secret（Value encrypted）として並んでいる">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;"><code>TURNSTILE_SECRET</code> が Secret として入っていればよい</figcaption>
+</figure>
+</li>
+<li>デプロイし（<code>npm run deploy</code>）、ブラウザで購入フォームを開く。部品に「成功しました!」と出て、購入まで進めることを確かめる
+<figure class="diagram">
+<img src="img/s15_turnstile_success.png" class="w400" alt="購入モーダルのメールアドレス欄の下に Turnstile の部品が表示され、成功しました! と緑のチェックが出ている">
+<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">購入フォームに部品が表示され、「成功しました!」と出ればよい（玄米茶サンプルの例）</figcaption>
+</figure>
+</li>
+<li>画面を通らない送信が止まることを、Claude Code に確かめてもらう
+<pre><code>トークンを付けずに本番の購入 API を叩き、403 が返ることを確かめて。</code></pre>
+</li>
+</ol>
+<p class="note">途中で「Turnstile を操作する権限がない」として止まった場合は、<code>wrangler login</code> をやり直してから、もう一度プロンプトを送る。</p>
+
+<h3 class="done">✅ 完了の定義</h3>
+<p>① と ② の<strong>どちらか1つ以上</strong>ができていれば完了である。</p>
+<ul>
+<li>①: 書き込み系 API を連打すると 429 が返る</li>
+<li>②: 購入フォームに Turnstile が表示され、トークンのない購入 API への送信が 403 になる</li>
+</ul>
+<pre><code>Cloudflare のセキュリティ対策の作業をコミットして dev ブランチに push して。</code></pre>
+
+<details class="spec"><summary>参考：独自ドメインや有料プランが要る対策</summary>
+<p>次の機能は、Cloudflare に独自ドメイン（ゾーン）を登録しているか、有料プランを契約している場合に使える。<code>workers.dev</code> だけで公開している場合は使えない。独自ドメインの付け方は <a href="#s3">[3]</a> の「参考：独自ドメインで公開する」を参照する。</p>
+<table>
+<thead><tr><th>機能</th><th>できること</th><th>必要なもの</th></tr></thead>
+<tbody>
+<tr><td>WAF（マネージドルール）</td><td>既知の攻撃パターンを、Worker に届く前に止める</td><td>独自ドメイン（無料プランでも Free Managed Ruleset は使える）</td></tr>
+<tr><td>WAF のレート制限ルール</td><td>① のレート制限を、コードを書かずに画面で設定する</td><td>独自ドメイン（無料プランでは動作はブロックのみ）</td></tr>
+<tr><td>Bot Fight Mode</td><td>既知の bot の通信にチャレンジを出す。細かい調整はできない</td><td>独自ドメイン（無料プランで使える）</td></tr>
+<tr><td>API Shield</td><td>API の一覧化、認証の不備や BOLA（IDOR と同じ種類の脆弱性）の検出</td><td>Enterprise プラン</td></tr>
+</tbody>
+</table>
+<p>API Shield は、通信の傾向から怪しい箇所を推測する機能である。「この利用者がこのデータを見てよいか」はアプリの仕様で決まるので、<a href="#s11">[11]</a> のようにコードを読む点検の代わりにはならない。</p>
+</details>
+
+<hr>
+
 <h2 id="wrap">ラップアップ・発表会（Section 3 の最後 30 分）</h2>
 
 <h3>最終発表会（<strong>1人3分</strong>）</h3>
@@ -2623,6 +2734,7 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
 <tr><td>Clerk アプリ</td><td>残すならそのまま</td><td>不要ならアプリを削除。<code>frontend/.env</code> の鍵も消す</td></tr>
 <tr><td>Resend API キー</td><td>公開アプリでメール送信（[8]）を使い続けるなら残す</td><td><strong>ダッシュボードで API キーを Revoke（無効化）</strong></td></tr>
 <tr><td>SonarCloud / GitHub App</td><td>継続解析するなら残す</td><td>不要なら SonarCloud のプロジェクトを削除し、GitHub の Installed App から権限を解除</td></tr>
+<tr><td>Cloudflare Turnstile のウィジェット（<a href="#s15">[15]</a> を試した場合）</td><td>公開アプリで使い続けるなら残す</td><td>ダッシュボードの <strong>Application security → Turnstile</strong> でウィジェットを削除する。Worker を削除する場合も、ウィジェットはアカウントに残るので別に消す</td></tr>
 <tr><td>Cloudflare Workers Builds（Git 連携。<a href="#s13">[13]</a> を試した場合）</td><td>継続して自動デプロイを使うなら残す</td><td>不要なら Cloudflare 側で「Disconnect」し、GitHub 側でも<strong>2箇所</strong>解除する（表の下の折りたたみ参照）</td></tr>
 </tbody>
 </table></div>
@@ -2790,6 +2902,7 @@ await expect(page.getByText(/^GMC-/)).toBeVisible();</code></pre>
     <li><a href="#s12">[12] E2E テスト</a></li>
     <li><a href="#s13">[13] 自動デプロイ</a></li>
     <li><a href="#s14">[14] 運用保守の自動化</a></li>
+    <li><a href="#s15">[15] セキュリティ対策</a></li>
     <li><a href="#wrap">ラップアップ</a></li>
     <li><a href="#cleanup">後片付け</a></li>
   </ul>
