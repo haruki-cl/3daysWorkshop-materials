@@ -258,6 +258,46 @@ tr.focus td{background:var(--warn-bg);}
 .fl-s,.fl-l{fill:var(--muted);font-size:12px}
 .fl-e{fill:none;stroke:var(--muted);stroke-width:1.5}
 .fl-mk{fill:var(--muted)}
+
+/* [6] カード形式 */.card{scroll-margin-top:1em;border:1px solid var(--line);border-radius:12px;background:var(--paper);margin:1.2em 0 2.2em;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.card-hd{display:flex;align-items:baseline;gap:.8em;flex-wrap:wrap;padding:.9em 1.2em;border-bottom:1px solid var(--line)}
+.card-hd .no{font-size:1.15rem;font-weight:700}
+.card-hd .goal{color:var(--muted);font-size:.95rem}
+.lane{display:grid;grid-template-columns:7.5em 1fr;border-bottom:1px solid var(--line)}
+.lane:last-child{border-bottom:none}
+.lane>.who{padding:1em .9em;font-weight:700;font-size:.85rem;border-right:4px solid;line-height:1.5}
+.lane>.who small{display:block;font-weight:400;font-size:.75rem;margin-top:.3em}
+.lane>.body{padding:.8em 1.1em;min-width:0}
+.lane>.body>p{margin:.3em 0}
+.lane .body pre{margin:.2em 0}
+.lane.ai>.who{background:#e6fafa;color:var(--accent-deep);border-color:var(--accent)}
+.lane.hu>.who{background:var(--warn-bg);color:#8a5a12;border-color:var(--warn-bd)}
+.lane.key>.who{background:#fdecea;color:#a1342a;border-color:#e08a80}
+.chips{display:flex;flex-wrap:wrap;gap:.4em;margin:.1em 0 .7em}
+.chip{font-size:.8rem;border:1px solid var(--line);border-radius:6px;padding:.2em .6em;background:#fff}
+.chip b{color:var(--accent-deep);margin-right:.3em}
+.checks{list-style:none;margin:.2em 0;padding:0}
+.checks li{font-size:.95rem;color:var(--ink);margin:.45em 0;padding-left:1.7em;position:relative}
+.checks li::before{content:"";position:absolute;left:0;top:.2em;width:1em;height:1em;border:2px solid var(--warn-bd);border-radius:3px;background:#fff}
+.then{font-size:.85rem;color:var(--muted);margin:.5em 0 0}
+.card>details{padding:0 1.2em;border-top:1px solid var(--line)}
+.card>details+details{border-top:1px dashed var(--line)}
+.card>.diagram{margin:0;border:none;border-bottom:1px solid var(--line);border-radius:0}
+.sub{font-size:.75rem;font-weight:700;color:var(--muted);letter-spacing:.05em}
+/* 流れ */
+.steps{display:grid;grid-template-columns:repeat(6,1fr);gap:.5em;margin:1em 0 2em}
+.steps a{display:block;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:10px;background:#fff;padding:.7em .6em;font-size:.82rem;line-height:1.5}
+.steps a b{display:block;font-size:.95rem;margin-bottom:.3em;color:var(--accent-deep)}
+.steps a span{display:block;color:#8a5a12;background:var(--warn-bg);border-radius:4px;padding:.2em .4em}
+.steps a span.none{color:var(--muted);background:none;padding-left:0}
+.lead{display:grid;grid-template-columns:1fr 1fr;gap:1.2em;align-items:center}
+.lead .diagram{margin:0}
+.pill{display:inline-block;font-size:.8rem;font-weight:700;padding:.15em .7em;border-radius:99px;background:var(--warn-bg);color:#8a5a12;border:1px solid var(--warn-bd)}
+@media (max-width:720px){
+ .lane{grid-template-columns:1fr}.lane>.who{border-right:none;border-bottom:3px solid}
+ .steps{grid-template-columns:repeat(2,1fr)}
+ .lead{grid-template-columns:1fr}
+}
 </style></head>
 <body>
 <div class="wrap"><article>
@@ -393,6 +433,7 @@ tr.focus td{background:var(--warn-bg);}
 <ul>
 <li><code>node -v</code>（<strong>24 以上が必須</strong>）/ <code>git --version</code> / <code>claude --version</code> / <code>python3 --version</code>（<strong>3.10 以上</strong>。Windows は <code>py -3 --version</code>）を確認する</li>
 <li><strong>Claude Code がログイン済み</strong>で起動できるか（<code>claude</code> を叩いて会話できる状態か）</li>
+<li>Claude Code を <a href="#s-cc-settings">全員共通の設定</a>（最新の Opus・Effort Medium・Auto mode）で起動できるか</li>
 <li><strong>Claude Design</strong> に claude.ai でアクセスできるか（<a target="_blank" rel="noopener" href="https://claude.ai/design">https://claude.ai/design</a> にブラウザでログイン確認）</li>
 <li>Cloudflare アカウントにログインできるか（<a target="_blank" rel="noopener" href="https://dash.cloudflare.com/">https://dash.cloudflare.com/</a>。<code>wrangler login</code> は Section 1 の [3] フロントデプロイで実行する）</li>
 </ul>
@@ -423,7 +464,7 @@ tr.focus td{background:var(--warn-bg);}
 <tr><td><strong>[3]</strong></td><td>フロントデプロイ</td><td>Section 1</td><td></td><td><code>https://&lt;name&gt;.workers.dev</code> で LP が表示され、URL を他の参加者と共有できる</td></tr>
 <tr><td><strong>[4]</strong></td><td>バックエンド</td><td>Section 2</td><td></td><td>フロントと API がつながりローカルで一通りの機能が動く。問い合わせ API は不正入力で弾かれる</td></tr>
 <tr><td><strong>[5]</strong></td><td>レビュー</td><td>Section 2</td><td></td><td><code>/code-review</code> と <code>/security-review</code> を実行し、指摘を直したうえで dev に push できている</td></tr>
-<tr><td><strong>[6]</strong></td><td>機能テスト</td><td>Section 2</td><td></td><td><code>docs/TEST.md</code> に要件と項目の表があり、<strong>結果列がすべて埋まっている</strong>。「通し」以外の行は緑（<code>backend/</code> と <code>frontend/</code> それぞれで実行）</td></tr>
+<tr><td><strong>[6]</strong></td><td>機能テスト</td><td>Section 2</td><td></td><td><code>docs/TEST.md</code> にテスト要件とテスト項目の表があり、<strong>結果列がすべて埋まっている</strong>。「通し」以外の行は緑か「未修理」</td></tr>
 <tr><td><strong>[7]</strong></td><td>デプロイ</td><td>Section 2</td><td></td><td>自分の <code>https://&lt;name&gt;.workers.dev</code> で LP が表示され <code>/mypage</code> も 404 にならない</td></tr>
 <tr><td><strong>[8]</strong></td><td>メール（Resend）</td><td>Section 3</td><td>★☆☆</td><td>問い合わせ受付や購入の証の送付などのメールを実装し、自分宛に届くことを確認できる</td></tr>
 <tr><td><strong>[9]</strong></td><td>決済（Stripe）</td><td>Section 3</td><td>★★★</td><td>Stripe Checkout → Webhook で購入の証を自動発行。テスト用カードでマイページに購入の証が表示されること</td></tr>
@@ -543,6 +584,17 @@ tr.focus td{background:var(--warn-bg);}
 </section><!-- /ps-overview -->
 <section class="page-section" id="ps-section1">
 <h1 id="section1">Section 1: UI設計（Claude Design）とフロント実装（Claude Code）</h1>
+
+<h2 id="s-cc-settings">Claude Code の設定を揃える（全員共通）</h2>
+<p>このワークショップでは、全員が Claude Code を次の設定で使う。人によって設定が違うと、所要時間や AI の出力が揃わず、つまずいたときの切り分けもしにくくなるためである。</p>
+<table>
+<thead><tr><th>項目</th><th>設定</th><th>意味</th></tr></thead>
+<tbody>
+<tr><td>モデル</td><td><strong>最新の Opus</strong></td><td>使う AI のモデル</td></tr>
+<tr><td>Effort</td><td><strong>Medium</strong></td><td>AI がどれだけ深く考えるか。高いほど品質は上がるが、トークン消費も増える</td></tr>
+<tr><td>モード</td><td><strong>Auto mode</strong></td><td>AI が操作のたびに許可を求めず進めるモード。危ない操作は Claude Code 側で止められる</td></tr>
+</tbody>
+</table>
 
 <h2 id="s06">Claude Code のセキュリティ対策（最初に1回）</h2>
 
@@ -821,7 +873,7 @@ LP に載せるセクションは 特徴・料金プラン・FAQ の3つ。
 ・購入フローは決済なしの簡易版
   （料金セクションの購入ボタン → メール入力 → 購入の証を発行 → /success）</code></pre>
 <p class="note">「購入の証」の呼び名（ライセンスキー／API キー／ダウンロードコードなど）は自分の題材に合わせて決めてよい。制約に書いていないので AI が決めてくるが、気に入らなければ直す。</p>
-<p>⚠️ 生成された <code>SCREEN_SPEC.md</code> は<strong>最初から最後まで読み、自分の意図と違う箇所を直してから [2] に進む</strong>こと。ここで直さなかった箇所はそのまま実装され、Section 3 [11] のテスト設計でも「正しい仕様」として扱われる。上の雛形の内容を満たしているかが最低限の確認点になる。</p>
+<p>⚠️ 生成された <code>SCREEN_SPEC.md</code> は<strong>最初から最後まで読み、自分の意図と違う箇所を直してから [2] に進む</strong>こと。ここで直さなかった箇所はそのまま実装され、Section 2 [6] のテスト設計でも「正しい仕様」として扱われる。上の雛形の内容を満たしているかが最低限の確認点になる。</p>
 </details>
 <details class="spec">
 <summary>もっと具体的な記入例（玄米茶サンプル）を見る — 参考</summary>
@@ -858,8 +910,8 @@ LP に載せるセクションは 特徴・料金プラン・FAQ の3つ。
 ## /success (購入完了)
 - メールアドレス入力後の購入完了メッセージ ＋ 発行されたライセンスキー表示 ＋ マイページへのリンク
 
-## 購入フロー（Section 2・決済なし簡易版）
-- 「購入する」→ メールアドレス入力 → `POST` でライセンスキー発行 → `/success` で表示（Section 3 [9] で Stripe に差し替え）</code></pre>
+## 購入フロー（決済なし簡易版）
+- 「購入する」→ メールアドレス入力 → `POST` でライセンスキー発行 → `/success` で表示（後で Stripe 決済に差し替える）</code></pre>
 </details>
 
 <h3>流れ</h3>
@@ -1185,45 +1237,32 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 
 <hr>
 
+
 <h2 id="s6">[6] 機能テスト</h2>
 <p><strong>ゴール:</strong> アプリが守るべきことを決め、テストで確かめて、失敗した行を直す。</p>
-
-<h3>機能テストの考え方</h3>
-<p>この工程の目的は、テストを緑にすることではない。守るべきことを決め、確かめ、結果を書き残すことにある。</p>
-
-<p>AI には <strong>Reward Hacking（報酬ハッキング）</strong> と呼ばれる挙動がある。要件を満たすことより、テストを緑にすることを優先してしまう挙動で、期待値を緩める、<code>test.skip</code> で飛ばす、といった形で現れる。そのため、守るべきことと失敗の原因は人が決め、結果は人が自分の目で確かめる。</p>
-
-<figure class="diagram">
-<img class="w600" src="img/s6_reward_hacking.webp" alt="テストで起きる Reward Hacking の 3 つの形。期待値を緩める（toBe(3) を toBeDefined() に変えて通す）、テストをスキップする（失敗するテストに .skip を付けて実行対象から外す）、失敗するテストを消す（失敗するテスト自体を削除して合格率を 100% にする）">
-</figure>
-
-<p>ただし、テスト設計の期待結果を人が読むのは、被害がいちばん大きい要件 1 本（重点の要件。先頭に <code>!</code> を付ける）の行だけにする。全行を読むと、行数に比例して時間がかかるからである。</p>
+<div class="lead">
+<div>
+<blockquote class="key"><p><strong>目的は緑にすることではない。</strong><br>守るべきことを決め、確かめ、結果を書き残す。</p></blockquote>
+<p>AI はテスト要件を満たすより、テストを緑にすることを優先しがちである（<strong>Reward Hacking</strong>）。だから<strong>守るべきことと失敗の原因は人が決め、結果は人が自分の目で確かめる</strong>。</p>
+<p>ただし人が期待結果を読むのは、被害がいちばん大きいテスト要件 1 本（<span class="pill">!</span> を付ける）の行と、⑤ で「設計」と判定された行だけにする。</p>
+</div>
+<figure class="diagram"><img src="img/s6_reward_hacking.webp" alt="テストで起きる Reward Hacking の 3 つの形" style="max-width:100%"></figure>
+</div>
 
 <h3>流れ</h3>
-<table>
-<thead><tr><th>工程</th><th>人がすること</th></tr></thead>
-<tbody>
-<tr><td>① テスト要件</td><td>AI の質問に答え、重点の要件に <code>!</code> を付ける</td></tr>
-<tr><td>② テスト設計</td><td>重点の要件の行だけ読む</td></tr>
-<tr><td>③ テスト環境準備</td><td>なし</td></tr>
-<tr><td>④ テスト項目作成</td><td>突き合わせの結果が「なし」か見る</td></tr>
-<tr><td>⑤ テスト結果</td><td>判定の一覧を読む</td></tr>
-<tr><td>⑥ コード修正</td><td>「設計」の行を振り分け、直させたあと自分で確かめる</td></tr>
-</tbody>
-</table>
-
-<h3 id="s6-t1">① テスト要件</h3>
-
-<blockquote class="key">
-<p><strong>[6] は新しいセッションで始める。</strong><br>
-実装のコンテキストが残っていると、要件と期待結果が実装に引きずられる。</p>
-</blockquote>
-
-<p><strong>やること</strong>: AI の質問に 1 回答え、守るべきことを 3〜5 本にまとめる。</p>
-<pre><code>このアプリのテスト要件を決めたい。壁打ちに付き合ってほしい。
+<div class="steps">
+<a href="#s6-t1"><b>① テスト要件</b><span>質問に答え、<code>!</code> を付ける</span></a>
+<a href="#s6-t2"><b>② テスト設計</b><span><code>!</code> の行だけ読む</span></a>
+<a href="#s6-t3"><b>③ 環境準備</b><span class="none">人の作業なし</span></a>
+<a href="#s6-t4"><b>④ 項目作成</b><span>突き合わせが「なし」か</span></a>
+<a href="#s6-t5"><b>⑤ テスト結果</b><span>判定の一覧を読む</span></a>
+<a href="#s6-t6"><b>⑥ コード修正</b><span>「設計」の行を直し、自分で確かめる</span></a>
+</div>
+<p class="then">ベージュの部分が人の作業。各カードも同じ色分けで、<span style="color:var(--accent-deep);font-weight:700">青緑＝AI に送る</span>、<span style="color:#8a5a12;font-weight:700">ベージュ＝人がする</span>。</p>
+<div class="card " id="s6-t1"><div class="card-hd"><span class="no">① テスト要件</span><span class="goal">AI の質問に 1 回答え、守るべきことを 3〜5 本にまとめる</span></div><div class="lane key"><div class="who">最初に</div><div class="body"><p><strong>新しいセッションで始める。</strong>実装のコンテキストが残っていると、テスト要件と期待結果が実装に引きずられる。</p></div></div><div class="lane ai"><div class="who">AI に送る</div><div class="body"><pre><code>このアプリのテスト要件を決めたい。壁打ちに付き合ってほしい。
 読むのは SCREEN_SPEC.md だけにする。frontend/ と backend/ の実装コードは読まないこと。
 
-まず、要件を決めるために必要なことを、1回にまとめて3問まで私に質問して。
+まず、テスト要件を決めるために必要なことを、1回にまとめて3問まで私に質問して。
 わからないことは推測せず、必ず質問すること。
 質問には次を必ず含めること。
 ・漏れたら一番困る情報は何か
@@ -1241,37 +1280,20 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 各項目は「〜してはいけない」「〜は必ず」の形にすること。
 ・3〜5本に絞る。候補が多いときは、破られたときの被害が大きいものを残す
 ・被害が大きい順に並べる
-・小見出しで分類しない</code></pre>
-<p><strong>人がすること</strong>: 被害がいちばん大きい 1 本の先頭に <code>!</code> を書き足す。迷ったら、個人情報が漏れるもの、お金とモノの対応が崩れるものを選ぶ。</p>
-<details class="spec"><summary>書き上がりの例を見る</summary>
-<pre><code>## テスト要件
+・小見出しで分類しない</code></pre></div></div><div class="lane hu"><div class="who">人がする</div><div class="body"><ul class="checks"><li>AI の質問に 1 回答える</li><li>被害がいちばん大きい 1 本の先頭に <code>!</code> を書き足す</li></ul><p class="then">迷ったら、個人情報が漏れるもの、お金とモノの対応が崩れるものを選ぶ</p></div></div><details class="spec"><summary>書き上がりの例を見る</summary><pre><code>## テスト要件
 
 - ! 購入の証とメールアドレスを本人以外に返さない
 - 購入が成立したら購入の証は必ず発行され、再読込しても消えない
 - 同じ購入で二重に購入の証が発行されない
 - 認証が必要な API は未認証のアクセスを拒否する
-- 必須項目が空の入力を受け付けない</code></pre>
-</details>
-
-<h3 id="s6-t2">② テスト設計</h3>
-
-<p><strong>やること</strong>: 要件ごとに「どこが壊れていたら守られないか」を挙げさせ、場所ごとに 1 行にした表を作らせる（<code>docs/TEST.md</code> の「## テスト項目」）。この表がテスト設計になる。「発行した購入の証が消えない」なら、画面の送信、API の処理、DB への保存、読み出しのどれが壊れても守られないので、4 行になる。</p>
-
-<p>「どこで確かめる」列の語は次の 4 つである。</p>
-<ul>
-<li><strong>関数</strong>：関数を直接呼び、戻り値を見る</li>
-<li><strong>API</strong>：HTTP リクエストを投げ、レスポンスと DB を見る</li>
-<li><strong>画面</strong>：React を描画して操作し、描画された内容を見る</li>
-<li><strong>通し</strong>：本物のブラウザで操作する（<a href="#s12">[12]</a> で扱う）</li>
-</ul>
-<pre><code>docs/TEST.md の「## テスト要件」と SCREEN_SPEC.md を読んで、
+- 必須項目が空の入力を受け付けない</code></pre></details></div><div class="card " id="s6-t2"><div class="card-hd"><span class="no">② テスト設計</span><span class="goal">テスト要件ごとに「壊れうる場所」を 1 行ずつ表にさせる</span></div><div class="lane ai"><div class="who">AI に送る</div><div class="body"><div class="chips"><span class="chip"><b>関数</b>戻り値を見る</span><span class="chip"><b>API</b>レスポンスと DB</span><span class="chip"><b>画面</b>描画内容</span><span class="chip"><b>通し</b>本物のブラウザ（[12]）</span></div><pre><code>docs/TEST.md の「## テスト要件」と SCREEN_SPEC.md を読んで、
 同じファイルに「## テスト項目」として表を追記して。
 
-・要件1つについて「どこが壊れていたらこの要件が守られないか」を挙げ、
+・テスト要件1つについて「どこが壊れていたらこのテスト要件が守られないか」を挙げ、
   挙げた場所ごとに1行を作る
 ・列は「番号 | 守る項目 | どこで確かめる | 前提条件 | やること | 期待結果 | 結果」
-・先頭に ! の付いた要件の行を表の先頭に置き、「守る項目」の先頭にも ! を付ける
-・番号は T-001 から始まる連番にする（要件ごとに振り直さない）
+・先頭に ! の付いたテスト要件の行を表の先頭に置き、「守る項目」の先頭にも ! を付ける
+・番号は T-001 から始まる連番にする（テスト要件ごとに振り直さない）
 ・「どこで確かめる」は 関数 / API / 画面 / 通し のどれか。
   同じことを確かめられるなら、関数、API、画面、通しの順に範囲の狭いほうを選ぶ
 ・見る場所が違えば別の行にする（レスポンスを見る行と DB を見る行は分ける）
@@ -1279,11 +1301,8 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 ・「結果」列は空欄のままにする
 ・「## テスト要件」は読むだけ。書き換えないこと
 ・API のパスやリクエスト形式、要素の指定など「どう呼ぶか」は実装コードを見て合わせてよい
-・ただし期待結果（何が正しい結果か）の根拠は要件と SCREEN_SPEC.md の記述に置き、
-  実装の出力に合わせないこと</code></pre>
-<p><strong>人がすること</strong>: 重点の要件の行（先頭に <code>!</code>）だけ読み、壊れる場所が足りているか、期待結果が要件どおりかを見る。直したい点があれば AI に直させる。</p>
-<details class="spec"><summary>テスト項目の表の例を見る（重点の要件の行に色を付けている）</summary>
-<table>
+・ただし期待結果（何が正しい結果か）の根拠はテスト要件と SCREEN_SPEC.md の記述に置き、
+  実装の出力に合わせないこと</code></pre></div></div><div class="lane hu"><div class="who">人が確かめる</div><div class="body"><ul class="checks"><li>読むのは <code>!</code> の行だけ</li><li>壊れる場所が足りているか</li><li>期待結果がテスト要件どおりか（実装に合わせていないか）</li></ul><p class="then">直したい点があれば、AI に直させてから ③ へ</p></div></div><details class="spec"><summary>なぜ行を「壊れうる場所」ごとに分ける？</summary><p>「発行した購入の証が消えない」は、画面の送信・API の処理・DB への保存・読み出しのどれが壊れても守られない。だから 4 行になる。</p></details><details class="spec"><summary>テスト項目の表の例を見る（<code>!</code> の行に色）</summary><table>
 <thead><tr><th>番号</th><th>守る項目</th><th>どこで確かめる</th><th>前提条件</th><th>やること</th><th>期待結果</th><th>結果</th></tr></thead>
 <tbody>
 <tr class="focus"><td>T-001</td><td>! 購入の証を本人以外に返さない</td><td>API</td><td>A は購入済み、B は未購入</td><td>B として購入の証の取得 API を叩く</td><td>A の購入の証が返らない</td><td></td></tr>
@@ -1294,13 +1313,7 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 <tr><td>T-006</td><td>発行した購入の証が消えない</td><td>API</td><td>T-005 の状態</td><td>そのメールで取得 API を叩く</td><td>保存した購入の証が返る</td><td></td></tr>
 <tr><td>T-007</td><td>発行した購入の証が消えない</td><td>通し</td><td>購入フォームを表示</td><td>購入してから再読込する</td><td>マイページに購入の証が残っている</td><td></td></tr>
 </tbody>
-</table>
-</details>
-
-<h3 id="s6-t3">③ テスト環境準備</h3>
-
-<p><strong>やること</strong>: テスト項目の「どこで確かめる」列に出てきた種類だけ、テストの実行環境を用意させる。</p>
-<pre><code>docs/TEST.md の「## テスト項目」の「どこで確かめる」列を見て、
+</table></details></div><div class="card " id="s6-t3"><div class="card-hd"><span class="no">③ テスト環境準備</span><span class="goal">「どこで確かめる」列に出てきた種類だけ、環境を用意させる</span></div><div class="lane ai"><div class="who">AI に送る</div><div class="body"><pre><code>docs/TEST.md の「## テスト項目」の「どこで確かめる」列を見て、
 必要なテスト環境だけを用意して。
 
 ・関数・API のテスト（backend/）: @cloudflare/vitest-plugin と vitest@^4.1.0 を使い、
@@ -1308,20 +1321,14 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 ・画面のテスト（frontend/）: vitest@^4.1.0 を jsdom 環境で使い、
   @testing-library/react で描画・操作する
 ・package.json の test スクリプトは "vitest run" にする
-・「通し」の行は [12] で扱うので、Playwright など E2E の環境は入れないこと
-・「どこで確かめる」列に出てこない種類の環境は入れないこと</code></pre>
-<p class="note"><code>"vitest"</code> のままだと、手元の端末で <code>npm test</code> を打ったときにファイルの変更を待ち続け、終わらない。</p>
-
-<h3 id="s6-t4">④ テスト項目作成</h3>
-
-<p><strong>やること</strong>: テスト設計どおりにテストを書かせ、テスト項目が抜けていないかを番号で確かめる。</p>
-<pre><code>docs/TEST.md の「## テスト項目」の表に従ってテストを実装して。まだ実行しないこと。
+・「通し」の行は後の工程で扱うので、Playwright など E2E の環境は入れないこと
+・「どこで確かめる」列に出てこない種類の環境は入れないこと</code></pre></div></div></div><div class="card " id="s6-t4"><div class="card-hd"><span class="no">④ テスト項目作成</span><span class="goal">テスト設計どおりに書かせ、抜けを番号で確かめる</span></div><div class="lane ai"><div class="who">AI に送る</div><div class="body"><pre><code>docs/TEST.md の「## テスト項目」の表に従ってテストを実装して。まだ実行しないこと。
 
 ・テスト名の先頭にテスト項目の番号を入れる（例: test('T-005 発行後に DB に購入の証が1件保存されている', ...)）
 ・「期待結果」列の値をそのまま使い、実装コードから推測しないこと
 ・「## テスト項目」にない項目を勝手に足さないこと
 ・「どこで確かめる」が「通し」の行は実装しないこと
-・test.skip / it.todo / it.only を使わないこと
+・test.skip / test.fails / it.todo / it.only を使わないこと
 ・固定待ち（setTimeout などで一定時間待つ処理）を入れないこと
 ・モックしてよいのは外部サービス（メール送信、決済）と、画面のテストでの API の応答だけ
   （API の応答の形は backend の実装に合わせること）
@@ -1330,174 +1337,87 @@ http://localhost:... のようなホスト名は書かず、/api/... の形で�
 実装したら、テスト項目の番号とテスト名の番号を突き合わせて、
 どちらか片方にしかない番号を挙げて。
 「通し」の行は実装していないので、突き合わせから外すこと。
-出力はそのまま見せること。要約しないこと。判定はこちらでする。</code></pre>
-<p><strong>人がすること</strong>: 突き合わせの結果が「なし」か見る。「なし」なら、コミットしてタグを付けさせる。⑥ で、テストが書き換えられていないかをこのタグとの差分で確かめる。</p>
-<pre><code>docs/TEST.md とテストコードとテストの設定をコミットして、
-そのコミットに test-base というタグを付けて。</code></pre>
-
-<h3 id="s6-t5">⑤ テスト結果</h3>
-
-<p><strong>やること</strong>: テストを実行させ、失敗した行の原因を一覧にさせる。ここでは直させない。判定と修正をまとめて頼むと、AI は期待値を緩めて緑にする道を選びやすい。</p>
-<pre><code>backend/ と frontend/ でテストを実行して、
+出力はそのまま見せること。要約しないこと。判定はこちらでする。</code></pre></div></div><div class="lane hu"><div class="who">人が確かめる</div><div class="body"><ul class="checks"><li>突き合わせの結果が「なし」か</li></ul></div></div><div class="lane ai"><div class="who">AI に送る<small>「なし」でなければ</small></div><div class="body"><pre><code>片方にしかない番号をそろえて。
+・表にあってテストにない番号は、その行のテストを書く
+・テストにあって表にない番号は、番号の付け間違いなら直し、表にない項目なら消す
+そろえたら、もう一度突き合わせて、出力をそのまま見せて。</code></pre><p class="then">そろえたら、もう一度「なし」か見る</p></div></div><div class="lane ai"><div class="who">AI に送る<small>「なし」なら</small></div><div class="body"><pre><code>docs/TEST.md とテストコードとテストの設定をコミットして、
+そのコミットに test-base というタグを付けて。</code></pre></div></div><details class="spec"><summary>なぜここでコミットしてタグを付ける？</summary><p>テストを書き終え、まだ一度も実行していない状態を残すためである。結果を見たあとの AI は、テストを緩めて緑にしがちである。その前の版を基準として固定しておく。</p>
+<p>このタグは ⑥ で 3 回使う。</p>
+<ul>
+<li>手順 2：「設計」の行で、人が期待結果や前提条件を直したかを AI が見分ける</li>
+<li>手順 3：<code>git diff test-base</code> で、テストが書き換えられた範囲を見る</li>
+<li>手順 3：緩められたテストを、この版に戻させる</li>
+</ul></details></div><div class="card " id="s6-t5"><div class="card-hd"><span class="no">⑤ テスト結果</span><span class="goal">テストを実行させ、失敗した行の原因を判定させる。まだ直させない</span></div><div class="lane ai"><div class="who">AI に送る</div><div class="body"><pre><code>backend/ と frontend/ でテストを実行して、
 結果を docs/TEST.md の「## テスト項目」の「結果」列に書いて。
 
 ・緑だった行は「緑」
 ・「通し」の行は「[12] で確認予定」
 ・失敗した行は結果列に書かず、原因を次の3つのどれかで判定して、一覧で報告して
-  ・実装：実装が要件を満たしていない
+  ・実装：実装が SCREEN_SPEC.md どおりに動いていない
   ・テスト：テストの書き方が悪い（前提条件を用意していない、要素の指定が違う、など）
-  ・設計：テスト設計が誤っている（テスト項目の期待結果や前提条件が、要件と合っていない）
+  ・設計：テスト設計が誤っている（テスト項目の期待結果や前提条件が、SCREEN_SPEC.md と合っていない）
 ・「結果」列以外は書き換えないこと
 
-判定だけ報告して。まだ何も直さないこと。</code></pre>
-<p><strong>人がすること</strong>: 一覧を 1 回読み、判定に納得できない行があれば理由を聞き直す。全部緑なら ⑥ の手順 4 に進む。</p>
-
-<h3 id="s6-t6">⑥ コード修正</h3>
-
-<p><strong>やること</strong>: ⑤ の一覧にもとづいて、失敗した行を AI に直させる。直させたあと、テストが書き換えられていないかを自分で確かめる。</p>
-
-<figure class="diagram"><div class="flow-scroll">
-<svg viewBox="0 0 986 350" role="img" aria-labelledby="fl-title fl-desc">
+判定だけ報告して。まだ何も直さないこと。</code></pre></div></div><div class="lane hu"><div class="who">人が確かめる</div><div class="body"><ul class="checks"><li>一覧を 1 回読む</li><li>判定に納得できない行は、理由を聞き直す</li></ul><p class="then">全部緑なら ⑥ の手順 3 へ</p></div></div><details class="spec"><summary>なぜここでは直させない？</summary><p>判定と修正をまとめて頼むと、AI は期待値を緩めて緑にする道を選びやすい。</p></details></div><div class="card " id="s6-t6"><div class="card-hd"><span class="no">⑥ コード修正</span><span class="goal">失敗した行を直させ、テストが書き換えられていないかを自分で確かめる</span></div><figure class="diagram"><div class="flow-scroll"><svg viewBox="0 0 960 130" role="img" aria-labelledby="fl-title fl-desc">
 <title id="fl-title">⑥ コード修正の流れ</title>
-<desc id="fl-desc">⑤ の判定の一覧から始まる。手順 1 で人が判定「設計」の行を、期待結果と要件を見比べて「実装」か「テスト」に直す。手順 2 で AI が判定どおりに実装かテストを直して再実行する。まだ失敗するテストがあれば、手順 3 でもう一度だけ直させ、それでも失敗するテストは未修理として記録させる。手順 4 で人が自分でテストを実行し、件数と差分を見る。未修理が残っていれば、手順 5 で [7] デプロイに進むか決めて判定を書き、push する。</desc>
+<desc id="fl-desc">⑤ の判定の一覧から始まる。手順 1 で人が判定「設計」の行の期待結果と前提条件を SCREEN_SPEC.md と見比べ、違っていれば docs/TEST.md のその欄を直す。手順 2 で AI が判定どおりに実装かテストを直して再実行し、直らなかった行は未修理として記録する。手順 3 で人が自分でテストを実行し、件数と差分を見る。最後に push して [7] に進む。未修理の行は Section 3 で直す。</desc>
 <defs><marker id="fl-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="fl-mk"/></marker></defs>
 
 <rect x="10" y="6" width="18" height="14" rx="3" class="fl-ai"/><text x="34" y="18" class="fl-s">AI がすること</text>
 <rect x="140" y="6" width="18" height="14" rx="3" class="fl-hu"/><text x="164" y="18" class="fl-s">人がすること</text>
 
-<!-- 1 段目 -->
 <rect x="10" y="66" width="126" height="36" rx="18" class="fl-st"/>
 <text x="73" y="89" text-anchor="middle" class="fl-t13">⑤ の判定の一覧</text>
 <path d="M136 84 H160" class="fl-e" marker-end="url(#fl-ah)"/>
-
 <rect x="160" y="52" width="200" height="64" rx="8" class="fl-hu"/>
-<text x="260" y="74" text-anchor="middle" class="fl-t13">手順 1　「設計」の判定を直す</text>
-<text x="260" y="92" text-anchor="middle" class="fl-s">期待結果と前提条件を見比べ、</text>
-<text x="260" y="107" text-anchor="middle" class="fl-s">「実装」か「テスト」にする</text>
+<text x="260" y="74" text-anchor="middle" class="fl-t13">手順 1　「設計」の行を確かめる</text>
+<text x="260" y="92" text-anchor="middle" class="fl-s">SCREEN_SPEC.md と見比べ、</text>
+<text x="260" y="107" text-anchor="middle" class="fl-s">違えば行の欄を直す</text>
 <path d="M360 84 H384" class="fl-e" marker-end="url(#fl-ah)"/>
-
 <rect x="384" y="52" width="200" height="64" rx="8" class="fl-ai"/>
 <text x="484" y="74" text-anchor="middle" class="fl-t13">手順 2　失敗の原因を直させる</text>
-<text x="484" y="92" text-anchor="middle" class="fl-s">判定どおり、実装かテストを</text>
-<text x="484" y="107" text-anchor="middle" class="fl-s">直して再実行する</text>
-<path d="M584 84 H606" class="fl-e" marker-end="url(#fl-ah)"/>
-
-<polygon points="606,84 678,44 750,84 678,124" class="fl-dc"/>
-<text x="678" y="80" text-anchor="middle" class="fl-m">まだ失敗する</text>
-<text x="678" y="97" text-anchor="middle" class="fl-m">テストがある？</text>
-<path d="M750 84 H776" class="fl-e" marker-end="url(#fl-ah)"/>
-<text x="763" y="74" text-anchor="middle" class="fl-l">ある</text>
-
-<rect x="776" y="52" width="200" height="64" rx="8" class="fl-ai"/>
-<text x="876" y="74" text-anchor="middle" class="fl-t13">手順 3　もう一度だけ直させる</text>
-<text x="876" y="92" text-anchor="middle" class="fl-s">まだ失敗するテストの原因を</text>
-<text x="876" y="107" text-anchor="middle" class="fl-s">直させる（2 回目で最後）</text>
-<path d="M876 116 V170" class="fl-e" marker-end="url(#fl-ah)"/>
-
-<!-- 2 段目 -->
-<polygon points="804,210 876,170 948,210 876,250" class="fl-dc"/>
-<text x="876" y="206" text-anchor="middle" class="fl-m">まだ失敗する</text>
-<text x="876" y="223" text-anchor="middle" class="fl-m">テストがある？</text>
-
-<path d="M678 124 V210 H584" class="fl-e" marker-end="url(#fl-ah)"/>
-<text x="686" y="160" class="fl-l">ない</text>
-<path d="M804 210 H678" class="fl-e"/>
-<text x="741" y="202" text-anchor="middle" class="fl-l">ない</text>
-
-<rect x="384" y="178" width="200" height="64" rx="8" class="fl-hu"/>
-<text x="484" y="204" text-anchor="middle" class="fl-t13">手順 4　自分でテストを実行する</text>
-<text x="484" y="224" text-anchor="middle" class="fl-s">件数と、テストの差分を見る</text>
-<path d="M384 210 H332" class="fl-e" marker-end="url(#fl-ah)"/>
-
-<polygon points="188,210 260,170 332,210 260,250" class="fl-dc"/>
-<text x="260" y="206" text-anchor="middle" class="fl-m">「未修理」が</text>
-<text x="260" y="223" text-anchor="middle" class="fl-m">残っている？</text>
-<path d="M188 210 H136" class="fl-e" marker-end="url(#fl-ah)"/>
-<text x="162" y="202" text-anchor="middle" class="fl-l">ない</text>
-
-<rect x="10" y="192" width="126" height="36" rx="18" class="fl-st"/>
-<text x="73" y="215" text-anchor="middle" class="fl-t13">push する</text>
-
-<!-- 3 段目 -->
-<path d="M876 250 V286" class="fl-e" marker-end="url(#fl-ah)"/>
-<text x="884" y="272" class="fl-l">ある</text>
-<rect x="791" y="286" width="170" height="40" rx="8" class="fl-ai"/>
-<text x="876" y="311" text-anchor="middle" class="fl-m">「未修理」と記録させる</text>
-<path d="M791 306 H484 V242" class="fl-e" marker-end="url(#fl-ah)"/>
-
-<path d="M260 250 V282" class="fl-e" marker-end="url(#fl-ah)"/>
-<text x="268" y="270" class="fl-l">ある</text>
-<rect x="160" y="282" width="200" height="56" rx="8" class="fl-hu"/>
-<text x="260" y="305" text-anchor="middle" class="fl-t13">手順 5　デプロイするか決める</text>
-<text x="260" y="325" text-anchor="middle" class="fl-s">[7] に進むかを「判定:」に書く</text>
-<path d="M160 310 H73 V228" class="fl-e" marker-end="url(#fl-ah)"/>
-</svg>
-</div>
-<figcaption style="font-size:.85rem;color:var(--muted);margin-top:.5em;">⑥ コード修正の流れ。手順の番号は下の説明と対応している</figcaption>
-</figure>
-
-<ol>
-<li><strong>判定が「設計」の行を、人が要件と見比べて振り分ける。</strong>AI に任せると、期待結果を実装に合わせて書き換えてしまう。
-  <ul>
-  <li>期待結果か前提条件が要件と違う：その欄を自分で直し、判定を「テスト」にする</li>
-  <li>要件どおり：判定を「実装」にする</li>
-  </ul>
-</li>
-<li><strong>まとめて直させる。</strong>
-<pre><code>⑤ の一覧の判定どおりに直して。
-（手順 1 で判定を変えた行があれば、ここに書き足す。例: T-004 は「実装」、T-006 は「テスト」）
+<text x="484" y="92" text-anchor="middle" class="fl-s">判定どおり直して再実行し、</text>
+<text x="484" y="107" text-anchor="middle" class="fl-s">直らない行は「未修理」と書く</text>
+<path d="M584 84 H608" class="fl-e" marker-end="url(#fl-ah)"/>
+<rect x="608" y="52" width="200" height="64" rx="8" class="fl-hu"/>
+<text x="708" y="78" text-anchor="middle" class="fl-t13">手順 3　自分で実行する</text>
+<text x="708" y="98" text-anchor="middle" class="fl-s">件数と、テストの差分を見る</text>
+<path d="M808 84 H832" class="fl-e" marker-end="url(#fl-ah)"/>
+<rect x="832" y="66" width="118" height="36" rx="18" class="fl-st"/>
+<text x="891" y="89" text-anchor="middle" class="fl-t13">push する</text>
+</svg></div></figure><div class="lane hu"><div class="who">人がする<small>手順 1<br>「設計」の行を確かめる</small></div><div class="body"><ul class="checks"><li>その行の期待結果と前提条件を、SCREEN_SPEC.md と見比べる</li><li>違っていたら、<code>docs/TEST.md</code> のその欄を自分で直す（判定は「設計」のまま）</li></ul><p class="then">AI に任せると、期待結果を実装に合わせて書き換えてしまう</p></div></div><div class="lane ai"><div class="who">AI に送る<small>手順 2<br>まとめて直させる</small></div><div class="body"><p class="then" style="margin:0 0 .5em">直させるのは 1 回だけ。「未修理」の行は Section 3 の自由作業で直す</p><pre><code>さっきの判定の一覧のとおりに直して。
 
 ・「実装」の行は実装を直す。テストファイルは変更しないこと
 ・「テスト」の行はテストを直す。実装は変更しないこと。
   期待結果は docs/TEST.md の「## テスト項目」の文言から変えないこと
-・test.skip / it.todo / it.only を使わないこと
+・「設計」の行は、docs/TEST.md を test-base と比べる。
+  期待結果か前提条件が書き換わっていれば、その行に合わせてテストを直す。
+  実装は変更しないこと。書き換わっていなければ、「テスト」か「実装」かを判定し直してから直す
+・test.skip / test.fails / it.todo / it.only を使わないこと
 
 直したらテストを再実行して、緑になった行の「結果」列に
 「失敗 → 原因 → どう直したか」と書いて。
-・まだ失敗する行は空欄のままにして、番号を報告すること
-・「結果」列以外は書き換えないこと</code></pre>
-</li>
-<li><strong>まだ失敗する行があれば、手順 2 をもう一度だけ出す。</strong>2 回で直らない行は「未修理」にする。
-<pre><code>まだ失敗する行の「結果」列に「未修理 → 原因 → 直らなかった理由」と書いて。
+直らなかった行の「結果」列には「未修理 → 原因 → 直らなかった理由」と書いて。
 ・「結果」列に空欄を残さないこと
-・「結果」列以外は書き換えないこと</code></pre>
-</li>
-<li><strong>自分でテストを実行する。</strong>AI の報告では、skipped の件数が抜けやすい。
-<pre><code>cd backend &amp;&amp; npm test
-cd ../frontend &amp;&amp; npm test
-cd .. &amp;&amp; git diff --stat test-base -- '*.test.ts' '*.test.tsx'</code></pre>
-  <ul>
-  <li><code>Tests</code> の行：skipped が 0 件、failed が「未修理」の行数と同じ</li>
-  <li>差分のファイル：判定が「テスト」の行のものだけ</li>
-  <li>差分の中身：書き換わったテストが、テスト項目の「期待結果」と同じことを確かめているかを見る。違うことを確かめていたり、条件が緩くなっていたりしたら差し戻す</li>
-  </ul>
-  <details class="spec"><summary>差し戻す例を見る</summary>
-  <p>期待結果が「エラーが表示され、購入完了画面に移らない」の行で、AI はテストを次のように書き換えて緑にした。</p>
-<pre><code>// 書き換え前：エラー文が画面に出たかを確かめている
+・「結果」列以外は書き換えないこと</code></pre></div></div><div class="lane hu"><div class="who">自分で打つ<small>手順 3<br>自分でテストを実行する</small></div><div class="body"><pre><code>npm test --prefix backend
+npm test --prefix frontend
+git diff -W test-base -- '*.test.ts' '*.test.tsx'</code></pre><p class="then" style="margin:.3em 0 .6em">リポジトリ直下で打つ。テスト環境を入れていない側の <code>npm test</code> は打たない。終わらないときは、<code>package.json</code> の <code>test</code> スクリプトが <code>"vitest run"</code> かを確かめる。</p><ul class="checks"><li>skipped が 0 件で、failed が「未修理」の行数と同じ</li><li>テストの総数（backend と frontend の合計）が、「通し」以外の行数と同じ</li><li>差分の <code>+</code>・<code>-</code> の行：すぐ上の <code>test('T-…')</code> が、判定「テスト」か「設計」の行だけ</li><li>差分の中身：期待結果と同じことを確かめているか。緩めていたら、下のプロンプトで元に戻させて「未修理」にする</li><li>戻させたら、上の 3 行をもう一度打つ</li></ul></div></div><div class="lane ai"><div class="who">AI に送る<small>手順 3<br>緩んでいたら</small></div><div class="body"><pre><code>&lt;番号&gt; のテストを test-base の版に戻して、
+「結果」列を「未修理 → テストの書き換えが期待結果を緩めていた」に書き換えて。</code></pre></div></div><details class="spec"><summary>テストが緩められた例を見る</summary><p>期待結果が「エラーが表示され、購入完了画面に移らない」の行で、AI はテストを次のように書き換えて緑にした。</p><pre><code>// 書き換え前：エラー文が画面に出たかを確かめている
 expect(await screen.findByText('メールアドレスの形式が正しくありません')).toBeTruthy()
 
 // 書き換え後：入力欄の形式チェックの結果だけを確かめている
 const input = screen.getByLabelText('メールアドレス') as HTMLInputElement
-expect(input.checkValidity()).toBe(false)</code></pre>
-  <p>書き換え後のテストは、エラーが画面に出たかを確かめていない。理由を聞くと、AI は「期待結果を実装に合わせて読み替え、『テスト』と判定した」と答えた。本来は「設計」と判定し、人に戻すべき行である。</p>
-  </details>
-</li>
-<li><strong>「未修理」が残ったら、[7] に進むか決める。</strong>理由を <code>docs/TEST.md</code> の末尾に「判定:」として 1 行書く。
-<pre><code>判定: [7] に進む。T-005 は未修理だが、同じ要件の T-006 は緑なので保存はできていると見た。</code></pre>
-</li>
-</ol>
-
-<h3>完了したら push する</h3>
+expect(input.checkValidity()).toBe(false)</code></pre><p>書き換え後のテストは、エラーが画面に出たかを確かめていない。手順 3 でこれに気づいたら、テストを元に戻させて「未修理」にする。</p></details></div><h3>完了したら push する</h3>
 <pre><code>テスト工程の作業をコミットして dev ブランチに push して。
-test-base タグは push せず、削除して。</code></pre>
+test-base タグは push しないこと。手元には残す。</code></pre>
 
 <h3 class="done">✅ 完了の定義（<a href="#s7">[7]</a> へ進む条件）</h3>
 <ul>
-<li><code>docs/TEST.md</code> に「テスト要件」（先頭に <code>!</code> の付いた要件が 1 本）と「テスト項目」があり、結果列に空欄がない</li>
+<li><code>docs/TEST.md</code> に「テスト要件」（<code>!</code> 付きが 1 本）と「テスト項目」があり、結果列に空欄がない</li>
 <li>テスト項目の番号とテスト名の番号が一致している（「通し」の行を除く）</li>
-<li><code>backend/</code> と <code>frontend/</code> の <code>npm test</code> で、skipped が 0 件、failed が「未修理」の行数と同じ</li>
-<li>テストファイルの差分が、「テスト」と判定した行の範囲に収まっている</li>
-<li>「未修理」があれば、「判定:」が書かれている</li>
+<li><code>npm test</code> で、skipped が 0 件、failed が「未修理」の行数と同じ</li>
+<li>テストの総数（backend と frontend の合計）が、「通し」以外の行数と同じ</li>
+<li>テストファイルの差分が、「テスト」か「設計」と判定した行の範囲に収まっている</li>
 </ul>
 
 <hr>
@@ -1531,7 +1451,7 @@ npm run deploy</code></pre>
 
 <h3>ポイント</h3>
 <ul>
-<li><strong>[6] の結果列が埋まり、「未修理」があれば「判定:」が書かれているのを確認してから公開する</strong></li>
+<li><strong>[6] の結果列が埋まっているのを確認してから公開する</strong></li>
 <li>ここまでは手元で <code>wrangler deploy</code> を叩く<strong>手動デプロイ</strong>である。<code>git push</code> するだけで自動デプロイしたい場合は、Section 3 オプション <a href="#s13">[13] 自動デプロイ</a> で扱う</li>
 <li><strong>ビルドが通らないとデプロイも止まる。</strong>デプロイ前にローカルで <code>npm run build:front</code> が成功するか確認しておくと安全である</li>
 <li>リモート D1 のマイグレーション（<code>--remote</code>）を忘れると、API が「テーブルが無い」で失敗する</li>
@@ -2129,8 +2049,8 @@ END;
 <tr><td>フロントが項目名を綴り間違えて画面が空欄</td><td><strong>見逃す</strong></td><td>気づける</td></tr>
 <tr><td><code>npm run build:front</code> を忘れて古い画面が配信されている</td><td><strong>見逃す</strong></td><td>気づける</td></tr>
 <tr><td>他人のメールで開いたとき前の人の購入の証が画面に残る</td><td><strong>見逃す</strong></td><td>気づける</td></tr>
-<tr><td>画面に導線が無い API を直接叩くと、他人の購入の証が返る</td><td>気づける（T-005 のように API を直接叩ける）</td><td><strong>見逃す</strong>（画面から辿れる操作しか書けない）</td></tr>
-<tr><td>DB に保存された中身が壊れている（画面には表示されない）</td><td>気づける（T-003 のように DB を直接見られる）</td><td><strong>見逃す</strong>（E2E が見るのは画面だけ）</td></tr>
+<tr><td>画面に導線が無い API を直接叩くと、他人の購入の証が返る</td><td>気づける（T-002 のように API を直接叩ける）</td><td><strong>見逃す</strong>（画面から辿れる操作しか書けない）</td></tr>
+<tr><td>DB に保存された中身が壊れている（画面には表示されない）</td><td>気づける（T-005 のように DB を直接見られる）</td><td><strong>見逃す</strong>（E2E が見るのは画面だけ）</td></tr>
 </tbody>
 </table>
 </details>
@@ -2289,14 +2209,14 @@ npx playwright codegen http://localhost:8787/ -o tests/&lt;ファイル名&gt;.s
 <table>
 <thead><tr><th>① で選んだ行</th><th>ファイル名</th></tr></thead>
 <tbody>
-<tr><td>T-008 購入の証を本人以外に返さない</td><td><code>tests/T-008-other-user.spec.ts</code></td></tr>
-<tr><td>T-010 発行した購入の証が消えない</td><td><code>tests/T-010-key-persists.spec.ts</code></td></tr>
+<tr><td>T-007 発行した購入の証が消えない</td><td><code>tests/T-007-key-persists.spec.ts</code></td></tr>
+<tr><td>T-008 購入の証を本人以外に返さない（① で足した通しの行）</td><td><code>tests/T-008-other-user.spec.ts</code></td></tr>
 </tbody>
 </table>
 </details>
 <ul>
 <li>置き場所は <code>tests/</code>、拡張子は <code>.spec.ts</code>。<strong>どちらかが違うとテストとして拾われない</strong></li>
-<li>番号は表の行番号（<code>T-008</code> など）に合わせる。テストが落ちたとき、表のどの行のことかすぐ分かる</li>
+<li>番号は表の行番号（<code>T-007</code> など）に合わせる。テストが落ちたとき、表のどの行のことかすぐ分かる</li>
 </ul>
 
 <figure class="diagram">
@@ -2879,6 +2799,7 @@ DB に何も書き込まれていないことも確かめて。</code></pre>
   </ul>
   <a class="toc-group-label toc-sec1" href="#section1">Section 1 ― UI設計とフロント実装</a>
   <ul>
+    <li><a href="#s-cc-settings">Claude Code の設定</a></li>
     <li><a href="#s06">セキュリティ対策</a></li>
     <li><a href="#s0-repo">ディレクトリ構成</a></li>
     <li><a href="#s1">[1] Claude Design</a></li>
